@@ -1,0 +1,1134 @@
+{
+  "form": {
+    "id": "d3720dff-de27-4e79-a4ec-9dddb6553a45",
+    "name": "Park Inventory Test",
+    "description": null,
+    "record_title_key": "af72",
+    "title_field_keys": [
+      "af72"
+    ],
+    "status_field": {
+      "type": "StatusField",
+      "label": "Operator Level",
+      "key": "@status",
+      "data_name": "operator_level",
+      "default_value": "City",
+      "enabled": true,
+      "read_only": false,
+      "hidden": false,
+      "description": "At what level is the park managed?",
+      "choices": [
+        {
+          "label": "City",
+          "value": "City",
+          "color": "#87D30F"
+        },
+        {
+          "label": "Local",
+          "value": "Local",
+          "color": "#2D5D00"
+        },
+        {
+          "label": "County",
+          "value": "County",
+          "color": "#294184"
+        },
+        {
+          "label": "State",
+          "value": "State",
+          "color": "#1891C9"
+        },
+        {
+          "label": "National",
+          "value": "National",
+          "color": "#FFD300"
+        },
+        {
+          "label": "Private",
+          "value": "Private",
+          "color": "#FF8819"
+        },
+        {
+          "label": "Unknown",
+          "value": "Unknown",
+          "color": "#CB0D0C"
+        }
+      ],
+      "required": false,
+      "disabled": false
+    },
+    "elements": [
+      {
+        "type": "Label",
+        "key": "3325",
+        "label": "Enter Park Info",
+        "description": null,
+        "required": false,
+        "disabled": false,
+        "hidden": false,
+        "data_name": "enter_park_info",
+        "default_value": null,
+        "visible_conditions_type": null,
+        "visible_conditions": null,
+        "required_conditions_type": null,
+        "required_conditions": null
+      },
+      {
+        "type": "YesNoField",
+        "key": "92aa",
+        "label": "Open?",
+        "description": null,
+        "required": false,
+        "disabled": false,
+        "hidden": false,
+        "data_name": "open",
+        "default_value": null,
+        "visible_conditions_type": null,
+        "visible_conditions": null,
+        "required_conditions_type": null,
+        "required_conditions": null,
+        "positive": {
+          "label": "Yes",
+          "value": "yes"
+        },
+        "negative": {
+          "label": "No",
+          "value": "no"
+        },
+        "neutral": {
+          "label": "N/A",
+          "value": "n/a"
+        },
+        "neutral_enabled": false
+      },
+      {
+        "type": "TextField",
+        "key": "af72",
+        "label": "Park Name",
+        "description": null,
+        "required": false,
+        "disabled": false,
+        "hidden": false,
+        "data_name": "park_name",
+        "default_value": null,
+        "visible_conditions_type": null,
+        "visible_conditions": null,
+        "required_conditions_type": null,
+        "required_conditions": null,
+        "numeric": false,
+        "pattern": null,
+        "pattern_description": null,
+        "min_length": null,
+        "max_length": null
+      },
+      {
+        "type": "BarcodeField",
+        "key": "3fcc",
+        "label": "Barcode",
+        "description": null,
+        "required": false,
+        "disabled": false,
+        "hidden": false,
+        "data_name": "barcode",
+        "default_value": null,
+        "visible_conditions_type": null,
+        "visible_conditions": null,
+        "required_conditions_type": null,
+        "required_conditions": null
+      },
+      {
+        "type": "TextField",
+        "key": "5046",
+        "label": "Cost",
+        "description": null,
+        "required": false,
+        "disabled": false,
+        "hidden": false,
+        "data_name": "cost",
+        "default_value": null,
+        "visible_conditions_type": null,
+        "visible_conditions": null,
+        "required_conditions_type": null,
+        "required_conditions": null,
+        "numeric": true,
+        "format": "decimal",
+        "min": null,
+        "max": null,
+        "min_length": null,
+        "max_length": null
+      },
+      {
+        "type": "TextField",
+        "key": "196d",
+        "label": "Age",
+        "description": null,
+        "required": false,
+        "disabled": false,
+        "hidden": false,
+        "data_name": "age",
+        "default_value": null,
+        "visible_conditions_type": null,
+        "visible_conditions": null,
+        "required_conditions_type": null,
+        "required_conditions": null,
+        "numeric": true,
+        "format": "integer",
+        "min": null,
+        "max": null,
+        "min_length": null,
+        "max_length": null
+      },
+      {
+        "type": "TextField",
+        "key": "483d",
+        "label": "Operator",
+        "description": null,
+        "required": false,
+        "disabled": false,
+        "hidden": false,
+        "data_name": "operator",
+        "default_value": null,
+        "visible_conditions_type": null,
+        "visible_conditions": null,
+        "required_conditions_type": null,
+        "required_conditions": null,
+        "numeric": false,
+        "pattern": null,
+        "pattern_description": null,
+        "min_length": null,
+        "max_length": null
+      },
+      {
+        "type": "ChoiceField",
+        "key": "cff4",
+        "label": "Type of Facility",
+        "description": null,
+        "required": false,
+        "disabled": false,
+        "hidden": false,
+        "data_name": "type_of_facility",
+        "default_value": "Park / Recreation Area",
+        "visible_conditions_type": null,
+        "visible_conditions": null,
+        "required_conditions_type": null,
+        "required_conditions": null,
+        "multiple": false,
+        "allow_other": true,
+        "choices": [
+          {
+            "label": "Campsite",
+            "value": "Campsite"
+          },
+          {
+            "label": "Fish & Wildlife Area",
+            "value": "Fish & Wildlife Area"
+          },
+          {
+            "label": "Fishing / Boat Access",
+            "value": "Fishing / Boat Access"
+          },
+          {
+            "label": "Forest",
+            "value": "Forest"
+          },
+          {
+            "label": "Historic Site",
+            "value": "Historic Site"
+          },
+          {
+            "label": "Nature Preserve",
+            "value": "Nature Preserve"
+          },
+          {
+            "label": "Park / Recreation Area",
+            "value": "Park / Recreation Area"
+          },
+          {
+            "label": "Pool",
+            "value": "Pool"
+          },
+          {
+            "label": "Reservoir",
+            "value": "Reservoir"
+          },
+          {
+            "label": "Trailhead",
+            "value": "Trailhead"
+          }
+        ]
+      },
+      {
+        "type": "Section",
+        "key": "6d7a",
+        "label": "Contact Info",
+        "description": null,
+        "required": false,
+        "disabled": false,
+        "hidden": false,
+        "data_name": "contact_info",
+        "default_value": null,
+        "visible_conditions_type": null,
+        "visible_conditions": null,
+        "required_conditions_type": null,
+        "required_conditions": null,
+        "display": "inline",
+        "elements": [
+          {
+            "type": "AddressField",
+            "key": "0fd9",
+            "label": "Address",
+            "description": null,
+            "required": false,
+            "disabled": false,
+            "hidden": false,
+            "data_name": "address",
+            "default_value": null,
+            "visible_conditions_type": null,
+            "visible_conditions": null,
+            "required_conditions_type": null,
+            "required_conditions": null,
+            "auto_populate": true
+          },
+          {
+            "type": "TextField",
+            "key": "6427",
+            "label": "Operating Hours",
+            "description": null,
+            "required": false,
+            "disabled": false,
+            "hidden": false,
+            "data_name": "operating_hours",
+            "default_value": null,
+            "visible_conditions_type": null,
+            "visible_conditions": null,
+            "required_conditions_type": null,
+            "required_conditions": null,
+            "numeric": false,
+            "pattern": null,
+            "pattern_description": null,
+            "min_length": null,
+            "max_length": null
+          }
+        ]
+      },
+      {
+        "type": "Repeatable",
+        "key": "4ccf",
+        "label": "Park Features",
+        "description": null,
+        "required": false,
+        "disabled": false,
+        "hidden": false,
+        "data_name": "park_features",
+        "default_value": null,
+        "visible_conditions_type": null,
+        "visible_conditions": null,
+        "required_conditions_type": null,
+        "required_conditions": null,
+        "elements": [
+          {
+            "type": "ClassificationField",
+            "key": "f79c",
+            "label": "Feature Type",
+            "description": null,
+            "required": false,
+            "disabled": false,
+            "hidden": false,
+            "data_name": "feature_type",
+            "default_value": null,
+            "visible_conditions_type": null,
+            "visible_conditions": null,
+            "required_conditions_type": null,
+            "required_conditions": null,
+            "allow_other": true,
+            "classification_set_schema": {
+              "name": "Park Features",
+              "description": "",
+              "created_at": "2015-03-22T15:50:08Z",
+              "updated_at": "2015-03-22T15:50:08Z",
+              "items": [
+                {
+                  "label": "Amenities",
+                  "value": "Amenities",
+                  "child_classifications": [
+                    {
+                      "label": "Bench",
+                      "value": "Bench"
+                    },
+                    {
+                      "label": "Campsite",
+                      "value": "Campsite"
+                    },
+                    {
+                      "label": "Concession Stand",
+                      "value": "Concession Stand"
+                    },
+                    {
+                      "label": "Exercise Equipment",
+                      "value": "Exercise Equipment"
+                    },
+                    {
+                      "label": "Grill / Barbecue",
+                      "value": "Grill / Barbecue"
+                    },
+                    {
+                      "label": "Information Kiosk",
+                      "value": "Information Kiosk"
+                    },
+                    {
+                      "label": "Light",
+                      "value": "Light"
+                    },
+                    {
+                      "label": "Lookout Tower",
+                      "value": "Lookout Tower"
+                    },
+                    {
+                      "label": "Picnic Table",
+                      "value": "Picnic Table"
+                    },
+                    {
+                      "label": "Power Source / Outlet",
+                      "value": "Power Source / Outlet"
+                    },
+                    {
+                      "label": "Restroom",
+                      "value": "Restroom"
+                    },
+                    {
+                      "label": "Shelter",
+                      "value": "Shelter"
+                    },
+                    {
+                      "label": "Storage / Shed",
+                      "value": "Storage / Shed"
+                    },
+                    {
+                      "label": "Wastebasket / Trash Can",
+                      "value": "Wastebasket / Trash Can"
+                    },
+                    {
+                      "label": "Water Faucet",
+                      "value": "Water Faucet"
+                    },
+                    {
+                      "label": "Water Fountain",
+                      "value": "Water Fountain"
+                    }
+                  ]
+                },
+                {
+                  "label": "Attractions / Signs",
+                  "value": "Attractions / Signs",
+                  "child_classifications": [
+                    {
+                      "label": "Flagpole",
+                      "value": "Flagpole"
+                    },
+                    {
+                      "label": "Fountain",
+                      "value": "Fountain"
+                    },
+                    {
+                      "label": "Guide Sign",
+                      "value": "Guide Sign"
+                    },
+                    {
+                      "label": "Historic Site",
+                      "value": "Historic Site"
+                    },
+                    {
+                      "label": "Monument / Memorial",
+                      "value": "Monument / Memorial"
+                    },
+                    {
+                      "label": "Scenic Lookout",
+                      "value": "Scenic Lookout"
+                    }
+                  ]
+                },
+                {
+                  "label": "Bike",
+                  "value": "Bike",
+                  "child_classifications": [
+                    {
+                      "label": "Bike Parking",
+                      "value": "Bike Parking"
+                    },
+                    {
+                      "label": "Bike Rental",
+                      "value": "Bike Rental"
+                    }
+                  ]
+                },
+                {
+                  "label": "Boating / Water",
+                  "value": "Boating",
+                  "child_classifications": [
+                    {
+                      "label": "Kayak / Boat Rack",
+                      "value": "Kayak / Boat Rack"
+                    },
+                    {
+                      "label": "Launch Ramp",
+                      "value": "Launch Ramp"
+                    },
+                    {
+                      "label": "Pier / Dock",
+                      "value": "Pier / Dock"
+                    },
+                    {
+                      "label": "Pond",
+                      "value": "Pond"
+                    }
+                  ]
+                },
+                {
+                  "label": "Courts",
+                  "value": "Courts",
+                  "child_classifications": [
+                    {
+                      "label": "Basketball",
+                      "value": "Basketball"
+                    },
+                    {
+                      "label": "Racquetball",
+                      "value": "Racquetball"
+                    },
+                    {
+                      "label": "Skatepark",
+                      "value": "Skatepark"
+                    },
+                    {
+                      "label": "Tennis",
+                      "value": "Tennis"
+                    },
+                    {
+                      "label": "Tetherball",
+                      "value": "Tetherball"
+                    },
+                    {
+                      "label": "Volleyball",
+                      "value": "Volleyball"
+                    }
+                  ]
+                },
+                {
+                  "label": "Fields",
+                  "value": "Fields",
+                  "child_classifications": [
+                    {
+                      "label": "Baseball / Softball",
+                      "value": "Baseball / Softball"
+                    },
+                    {
+                      "label": "Disc Golf",
+                      "value": "Disc Golf"
+                    },
+                    {
+                      "label": "General Use",
+                      "value": "General"
+                    },
+                    {
+                      "label": "Horseshoe Pit",
+                      "value": "Horseshoe Pit"
+                    },
+                    {
+                      "label": "Soccer / Football",
+                      "value": "Soccer / Football"
+                    }
+                  ]
+                },
+                {
+                  "label": "Playground",
+                  "value": "Playground",
+                  "child_classifications": [
+                    {
+                      "label": "Merry-Go-Round",
+                      "value": "Merry-Go-Round"
+                    },
+                    {
+                      "label": "Monkey Bars",
+                      "value": "Monkey Bars"
+                    },
+                    {
+                      "label": "Playground Structure",
+                      "value": "Playground Structure"
+                    },
+                    {
+                      "label": "See-Saw",
+                      "value": "See-Saw"
+                    },
+                    {
+                      "label": "Slide",
+                      "value": "Slide"
+                    },
+                    {
+                      "label": "Spring Animals",
+                      "value": "Spring Animals"
+                    },
+                    {
+                      "label": "Swingset",
+                      "value": "Swingset"
+                    }
+                  ]
+                },
+                {
+                  "label": "Trails",
+                  "value": "Trails",
+                  "child_classifications": [
+                    {
+                      "label": "Boardwalk",
+                      "value": "Boardwalk"
+                    },
+                    {
+                      "label": "Bridge",
+                      "value": "Bridge"
+                    },
+                    {
+                      "label": "Trailhead",
+                      "value": "Trailhead"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "type": "PhotoField",
+            "key": "0fe3",
+            "label": "Photos",
+            "description": null,
+            "required": false,
+            "disabled": false,
+            "hidden": false,
+            "data_name": "photos",
+            "default_value": null,
+            "visible_conditions_type": null,
+            "visible_conditions": null,
+            "required_conditions_type": null,
+            "required_conditions": null,
+            "min_length": null,
+            "max_length": null
+          },
+          {
+            "type": "ChoiceField",
+            "key": "4cf8",
+            "label": "Status",
+            "description": null,
+            "required": false,
+            "disabled": false,
+            "hidden": false,
+            "data_name": "status",
+            "default_value": "Good",
+            "visible_conditions_type": null,
+            "visible_conditions": null,
+            "required_conditions_type": null,
+            "required_conditions": null,
+            "multiple": false,
+            "allow_other": false,
+            "choices": [
+              {
+                "label": "Good",
+                "value": "Good"
+              },
+              {
+                "label": "Damaged",
+                "value": "Damaged"
+              },
+              {
+                "label": "Graffiti / Vandalism",
+                "value": "Graffiti / Vandalism"
+              },
+              {
+                "label": "Needs Repair",
+                "value": "Needs Repair"
+              }
+            ]
+          },
+          {
+            "type": "TextField",
+            "key": "335a",
+            "label": "Issue Comment",
+            "description": null,
+            "required": false,
+            "disabled": false,
+            "hidden": false,
+            "data_name": "issue_comment",
+            "default_value": null,
+            "visible_conditions_type": null,
+            "visible_conditions": null,
+            "required_conditions_type": null,
+            "required_conditions": null,
+            "numeric": false,
+            "pattern": null,
+            "pattern_description": null,
+            "min_length": null,
+            "max_length": null
+          },
+          {
+            "type": "TextField",
+            "key": "3789",
+            "label": "New Repeatable Text Field",
+            "description": null,
+            "required": false,
+            "disabled": false,
+            "hidden": false,
+            "data_name": "new_repeatable_text_field",
+            "default_value": null,
+            "visible_conditions_type": null,
+            "visible_conditions": null,
+            "required_conditions_type": null,
+            "required_conditions": null,
+            "numeric": false,
+            "pattern": null,
+            "pattern_description": null,
+            "min_length": null,
+            "max_length": null
+          }
+        ],
+        "title_field_key": "f79c",
+        "title_field_keys": [
+          "f79c"
+        ],
+        "geometry_types": [
+          "Point"
+        ],
+        "geometry_required": false,
+        "min_length": null,
+        "max_length": null
+      },
+      {
+        "type": "ChoiceField",
+        "key": "c00a",
+        "label": "Select Colors",
+        "description": null,
+        "required": false,
+        "disabled": false,
+        "hidden": false,
+        "data_name": "select_colors",
+        "default_value": null,
+        "visible_conditions_type": null,
+        "visible_conditions": null,
+        "required_conditions_type": null,
+        "required_conditions": null,
+        "multiple": true,
+        "allow_other": true,
+        "choices": [
+          {
+            "label": "Brown",
+            "value": "Brown"
+          },
+          {
+            "label": "Orange",
+            "value": "Orange"
+          },
+          {
+            "label": "Yellow",
+            "value": "Yellow"
+          },
+          {
+            "label": "Green",
+            "value": "Green"
+          }
+        ],
+        "min_length": null,
+        "max_length": null
+      },
+      {
+        "type": "ClassificationField",
+        "key": "3b66",
+        "label": "Classification Test",
+        "description": null,
+        "required": false,
+        "disabled": false,
+        "hidden": false,
+        "data_name": "classification_test",
+        "default_value": null,
+        "visible_conditions_type": null,
+        "visible_conditions": null,
+        "required_conditions_type": null,
+        "required_conditions": null,
+        "allow_other": false,
+        "classification_set_schema": {
+          "name": "Park Features",
+          "description": "",
+          "created_at": "2015-03-22T15:50:08Z",
+          "updated_at": "2015-03-22T15:50:08Z",
+          "items": [
+            {
+              "label": "Amenities",
+              "value": "Amenities",
+              "child_classifications": [
+                {
+                  "label": "Bench",
+                  "value": "Bench"
+                },
+                {
+                  "label": "Campsite",
+                  "value": "Campsite"
+                },
+                {
+                  "label": "Concession Stand",
+                  "value": "Concession Stand"
+                },
+                {
+                  "label": "Exercise Equipment",
+                  "value": "Exercise Equipment"
+                },
+                {
+                  "label": "Grill / Barbecue",
+                  "value": "Grill / Barbecue"
+                },
+                {
+                  "label": "Information Kiosk",
+                  "value": "Information Kiosk"
+                },
+                {
+                  "label": "Light",
+                  "value": "Light"
+                },
+                {
+                  "label": "Lookout Tower",
+                  "value": "Lookout Tower"
+                },
+                {
+                  "label": "Picnic Table",
+                  "value": "Picnic Table"
+                },
+                {
+                  "label": "Power Source / Outlet",
+                  "value": "Power Source / Outlet"
+                },
+                {
+                  "label": "Restroom",
+                  "value": "Restroom"
+                },
+                {
+                  "label": "Shelter",
+                  "value": "Shelter"
+                },
+                {
+                  "label": "Storage / Shed",
+                  "value": "Storage / Shed"
+                },
+                {
+                  "label": "Wastebasket / Trash Can",
+                  "value": "Wastebasket / Trash Can"
+                },
+                {
+                  "label": "Water Faucet",
+                  "value": "Water Faucet"
+                },
+                {
+                  "label": "Water Fountain",
+                  "value": "Water Fountain"
+                }
+              ]
+            },
+            {
+              "label": "Attractions / Signs",
+              "value": "Attractions / Signs",
+              "child_classifications": [
+                {
+                  "label": "Flagpole",
+                  "value": "Flagpole"
+                },
+                {
+                  "label": "Fountain",
+                  "value": "Fountain"
+                },
+                {
+                  "label": "Guide Sign",
+                  "value": "Guide Sign"
+                },
+                {
+                  "label": "Historic Site",
+                  "value": "Historic Site"
+                },
+                {
+                  "label": "Monument / Memorial",
+                  "value": "Monument / Memorial"
+                },
+                {
+                  "label": "Scenic Lookout",
+                  "value": "Scenic Lookout"
+                }
+              ]
+            },
+            {
+              "label": "Bike",
+              "value": "Bike",
+              "child_classifications": [
+                {
+                  "label": "Bike Parking",
+                  "value": "Bike Parking"
+                },
+                {
+                  "label": "Bike Rental",
+                  "value": "Bike Rental"
+                }
+              ]
+            },
+            {
+              "label": "Boating / Water",
+              "value": "Boating",
+              "child_classifications": [
+                {
+                  "label": "Kayak / Boat Rack",
+                  "value": "Kayak / Boat Rack"
+                },
+                {
+                  "label": "Launch Ramp",
+                  "value": "Launch Ramp"
+                },
+                {
+                  "label": "Pier / Dock",
+                  "value": "Pier / Dock"
+                },
+                {
+                  "label": "Pond",
+                  "value": "Pond"
+                }
+              ]
+            },
+            {
+              "label": "Courts",
+              "value": "Courts",
+              "child_classifications": [
+                {
+                  "label": "Basketball",
+                  "value": "Basketball"
+                },
+                {
+                  "label": "Racquetball",
+                  "value": "Racquetball"
+                },
+                {
+                  "label": "Skatepark",
+                  "value": "Skatepark"
+                },
+                {
+                  "label": "Tennis",
+                  "value": "Tennis"
+                },
+                {
+                  "label": "Tetherball",
+                  "value": "Tetherball"
+                },
+                {
+                  "label": "Volleyball",
+                  "value": "Volleyball"
+                }
+              ]
+            },
+            {
+              "label": "Fields",
+              "value": "Fields",
+              "child_classifications": [
+                {
+                  "label": "Baseball / Softball",
+                  "value": "Baseball / Softball"
+                },
+                {
+                  "label": "Disc Golf",
+                  "value": "Disc Golf"
+                },
+                {
+                  "label": "General Use",
+                  "value": "General"
+                },
+                {
+                  "label": "Horseshoe Pit",
+                  "value": "Horseshoe Pit"
+                },
+                {
+                  "label": "Soccer / Football",
+                  "value": "Soccer / Football"
+                }
+              ]
+            },
+            {
+              "label": "Playground",
+              "value": "Playground",
+              "child_classifications": [
+                {
+                  "label": "Merry-Go-Round",
+                  "value": "Merry-Go-Round"
+                },
+                {
+                  "label": "Monkey Bars",
+                  "value": "Monkey Bars"
+                },
+                {
+                  "label": "Playground Structure",
+                  "value": "Playground Structure"
+                },
+                {
+                  "label": "See-Saw",
+                  "value": "See-Saw"
+                },
+                {
+                  "label": "Slide",
+                  "value": "Slide"
+                },
+                {
+                  "label": "Spring Animals",
+                  "value": "Spring Animals"
+                },
+                {
+                  "label": "Swingset",
+                  "value": "Swingset"
+                }
+              ]
+            },
+            {
+              "label": "Trails",
+              "value": "Trails",
+              "child_classifications": [
+                {
+                  "label": "Boardwalk",
+                  "value": "Boardwalk"
+                },
+                {
+                  "label": "Bridge",
+                  "value": "Bridge"
+                },
+                {
+                  "label": "Trailhead",
+                  "value": "Trailhead"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "type": "DateTimeField",
+        "key": "d088",
+        "label": "Date",
+        "description": null,
+        "required": false,
+        "disabled": false,
+        "hidden": false,
+        "data_name": "date",
+        "default_value": null,
+        "visible_conditions_type": null,
+        "visible_conditions": null,
+        "required_conditions_type": null,
+        "required_conditions": null
+      },
+      {
+        "type": "TimeField",
+        "key": "f654",
+        "label": "Time",
+        "description": null,
+        "required": false,
+        "disabled": false,
+        "hidden": false,
+        "data_name": "time",
+        "default_value": null,
+        "visible_conditions_type": null,
+        "visible_conditions": null,
+        "required_conditions_type": null,
+        "required_conditions": null
+      },
+      {
+        "type": "PhotoField",
+        "key": "5dcd",
+        "label": "Photos",
+        "description": null,
+        "required": false,
+        "disabled": false,
+        "hidden": false,
+        "data_name": "park_photos",
+        "default_value": null,
+        "visible_conditions_type": null,
+        "visible_conditions": null,
+        "required_conditions_type": null,
+        "required_conditions": null,
+        "min_length": null,
+        "max_length": null
+      },
+      {
+        "type": "VideoField",
+        "key": "9f01",
+        "label": "Videos",
+        "description": null,
+        "required": false,
+        "disabled": false,
+        "hidden": false,
+        "data_name": "videos",
+        "default_value": null,
+        "visible_conditions_type": null,
+        "visible_conditions": null,
+        "required_conditions_type": null,
+        "required_conditions": null,
+        "track_enabled": true,
+        "audio_enabled": true,
+        "min_length": null,
+        "max_length": null
+      },
+      {
+        "type": "SignatureField",
+        "key": "c71a",
+        "label": "Signature",
+        "description": null,
+        "required": false,
+        "disabled": false,
+        "hidden": false,
+        "data_name": "signature",
+        "default_value": null,
+        "visible_conditions_type": null,
+        "visible_conditions": null,
+        "required_conditions_type": null,
+        "required_conditions": null,
+        "agreement_text": ""
+      },
+      {
+        "type": "CalculatedField",
+        "key": "f113",
+        "label": "Calc Field",
+        "description": null,
+        "required": false,
+        "disabled": false,
+        "hidden": false,
+        "data_name": "calculated_park_name",
+        "default_value": null,
+        "visible_conditions_type": null,
+        "visible_conditions": null,
+        "required_conditions_type": null,
+        "required_conditions": [
+
+        ],
+        "expression": "$park_name + ' ' + $operator",
+        "display": {
+          "style": "number",
+          "currency": null
+        },
+        "default_values": null
+      },
+      {
+        "type": "TextField",
+        "key": "b9d9",
+        "label": "Calculation Description",
+        "description": null,
+        "required": false,
+        "disabled": false,
+        "hidden": false,
+        "data_name": "calculation_description",
+        "default_value": null,
+        "visible_conditions_type": null,
+        "visible_conditions": null,
+        "required_conditions_type": null,
+        "required_conditions": null,
+        "numeric": false,
+        "pattern": null,
+        "pattern_description": null,
+        "min_length": null,
+        "max_length": null
+      }
+    ],
+    "image": "https://fulcrumapp.s3.amazonaws.com/form-images/990068fa-00fb-4d4a-956e-3602a2c329a6-819f8a72-2aa2-49c0-92f8-7bfc94f3541b.png"
+  }
+}

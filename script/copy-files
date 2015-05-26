@@ -1,0 +1,36 @@
+#!/usr/bin/env coffee
+
+fs = require 'fs-sync'
+_ = require 'underscore'
+path = require 'path'
+
+android = process.env.FULCRUM_ANDROID
+ios     = process.env.FULCRUM_IOS
+web     = process.env.FULCRUM_WEB
+
+if not android and not ios and not web and not site
+   console.error """
+   You must set one of:
+   FULCRUM_ANDROID
+   FULCRUM_IOS
+   FULCRUM_WEB
+   """
+
+   process.exit(1)
+
+sqlitejs = './dist/sqlite.js'
+postgresjs = './dist/postgres.js'
+
+copyFile = (src, dest) ->
+  console.log "Copying #{src} to #{dest}"
+  fs.copy(src, dest, force: true)
+
+# if android
+#   copyFile(sqlitejs, path.join(android, 'src', 'main', 'res', 'raw', 'sqlite.js'))
+
+# if ios
+#   copyFile(sqlitejs, path.join(ios, 'Fulcrum', 'Resources', 'sqlite.js'))
+
+if web
+  copyFile(sqlitejs, path.join(web, 'public', 'resources', 'sqlite.js'))
+  copyFile(postgresjs, path.join(web, 'public', 'resources', 'postgres.js'))

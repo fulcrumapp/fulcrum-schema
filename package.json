@@ -1,0 +1,35 @@
+{
+  "name": "fulcrum-schema",
+  "version": "0.0.1",
+  "description": "Table schemas for Fulcrum apps",
+  "main": "./index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/fulcrumapp/fulcrum-schema.git"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "make test"
+  },
+  "author": "Zac McCormick <zac.mccormick@gmail.com> (http://github.com/zhm)",
+  "license": "BSD",
+  "dependencies": {
+    "underscore": "^1.7.0"
+  },
+  "devDependencies": {
+    "coffee-script": "^1.8.0",
+    "coffeeify": "^1.0.0",
+    "fs-sync": "^0.2.5",
+    "html-entities": "^1.1.2",
+    "intl": "^0.1.4",
+    "jsdoc": "^3.3.0-alpha13",
+    "marked": "^0.3.2",
+    "mocha": "^2.1.0",
+    "season": "^5.0.3",
+    "should": "^4.4.2",
+    "spawn-sync": "^1.0.1",
+    "uglify-js": "^2.4.16"
+  }
+}
