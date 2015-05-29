@@ -7,7 +7,7 @@ class SchemaGenerator
     @changes
 
   generate: ->
-    _.map @transform(), @statementForChange
+    _.flatten(_.map(@transform(), @statementForChange))
 
   statementForChange: (change) =>
     switch change.type

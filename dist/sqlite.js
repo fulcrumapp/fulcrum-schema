@@ -425,7 +425,7 @@ SchemaGenerator = (function() {
   };
 
   SchemaGenerator.prototype.generate = function() {
-    return _.map(this.transform(), this.statementForChange);
+    return _.flatten(_.map(this.transform(), this.statementForChange));
   };
 
   SchemaGenerator.prototype.statementForChange = function(change) {
