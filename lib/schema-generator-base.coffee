@@ -32,6 +32,9 @@ class SchemaGeneratorBase extends SchemaGenerator
 
         ids.push(drop.options.newTable.id)
 
+    @processViews(changes)
+    @processIndexes(changes)
+
     changes
 
   escape: (identifier) ->
@@ -46,6 +49,9 @@ class SchemaGeneratorBase extends SchemaGenerator
 
   projectionForTable: (table) ->
     _.map table.columns, (column) -> column.name
+
+  projectionForView: (table) ->
+    _.map table.columns, (column) => "#{@escape(column.name)} AS #{@escape(column.dataName)}"
 
   mappingForTables: (oldTable, newTable) ->
     mappings = []
@@ -70,7 +76,7 @@ class SchemaGeneratorBase extends SchemaGenerator
     @escape(@tableSchema) + '.'
 
   createTable: (change) ->
-    "CREATE TABLE #{@escapedSchema()}#{@escape(@tablePrefix + change.options.table.name)} (#{@columnsForTable(change.options.table).join(', ')});"
+    "CREATE TABLE #{@escapedSchema()}#{@escape(@tablePrefix + change.options.newTable.name)} (#{@columnsForTable(change.options.newTable).join(', ')});"
 
   transformToText: (columnName) ->
     throw new Error('derived class must implement transformToText')
@@ -114,7 +120,7 @@ class SchemaGeneratorBase extends SchemaGenerator
     parts
 
   dropTable: (change) ->
-    "DROP TABLE IF EXISTS #{@escapedSchema()}#{@escape(change.options.table.name)};"
+    "DROP TABLE IF EXISTS #{@escapedSchema()}#{@escape(@tablePrefix + change.options.oldTable.name)};"
 
   addColumn: (change) ->
     "ALTER TABLE #{@escapedSchema()}#{@escape(@tablePrefix + change.options.newTable.name)} ADD COLUMN #{@columnDefinition(change.options.column)};"
@@ -124,5 +130,31 @@ class SchemaGeneratorBase extends SchemaGenerator
 
   renameColumn: (change) ->
     throw new Error('renameColumn is not implemented.')
+
+  tableName: (table) ->
+    "#{@escapedSchema()}#{@escape(@tablePrefix + table.name)}"
+
+  viewName: (table) ->
+    "#{@escapedSchema()}#{@escape(@tablePrefix + table.name + '_view')}"
+
+  dropView: (change) ->
+    "DROP VIEW IF EXISTS #{@viewName(change.options.oldTable)};"
+
+  createView: (change) ->
+    "CREATE VIEW IF NOT EXISTS #{@viewName(change.options.newTable)} AS SELECT #{@projectionForView(change.options.newTable)} FROM #{@tableName(change.options.newTable)};"
+
+  processViews: (changes) ->
+    views = []
+
+    for change in changes
+      if change.options.newTable and not _.contains(views, change.options.newTable.name)
+        views.push(change.options.newTable.id)
+
+    for table in @newSchema.tables
+      if _.contains(views, table.id)
+        changes.push(new SchemaChange('drop-view', oldTable: table))
+        changes.push(new SchemaChange('create-view', newTable: table))
+
+  processIndexes: (changes) ->
 
 module.exports = SchemaGeneratorBase

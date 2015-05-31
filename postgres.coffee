@@ -24,7 +24,7 @@ instance.compareForms = ->
 
     diff = schemaDiff.diff()
 
-    generator = new PostgresSchemaGenerator(diff)
+    generator = new PostgresSchemaGenerator(diff, newSchema)
     generator.tableSchema = instance.schema
 
     generator.generate()

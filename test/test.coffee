@@ -56,8 +56,8 @@ describe 'SqliteSchemaGenerator', ->
 
     schemaDiff = new SchemaDiff(oldSchema, newSchema)
     diff = schemaDiff.diff()
-    sqlite = new SqliteSchemaGenerator(diff)
-    # sqlite.tableSchema = 'schema'
+    sqlite = new SqliteSchemaGenerator(diff, newSchema)
+    sqlite.tableSchema = 'org_1'
     # sqlite.tablePrefix = 'account_1_'
     sql = sqlite.generate()
     dumpScript(sql)

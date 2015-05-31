@@ -23,13 +23,13 @@ class SchemaDiff
         if newTable.name isnt oldTable.name
           @changes.push(new SchemaChange('rename-table', oldTable: oldTable, newTable: newTable))
       else
-        @changes.push(new SchemaChange('drop-table', table: oldTable))
+        @changes.push(new SchemaChange('drop-table', oldTable: oldTable))
 
     @new?.tables.forEach (newTable) =>
       oldTable = _.find @old?.tables, (t) -> t.id is newTable.id
 
       unless oldTable
-        @changes.push(new SchemaChange('create-table', table: newTable))
+        @changes.push(new SchemaChange('create-table', newTable: newTable))
 
   conflate: ->
     recreates = _.select @changes, (change) =>

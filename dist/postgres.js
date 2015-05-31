@@ -2,10 +2,11 @@
 var Column;
 
 Column = (function() {
-  function Column(id, name, type) {
+  function Column(id, name, type, dataName) {
     this.id = id;
     this.name = name;
     this.type = type;
+    this.dataName = dataName;
   }
 
   Column.prototype.isEqualTo = function(column) {
@@ -127,7 +128,7 @@ SchemaDiff = (function() {
             }
           } else {
             return _this.changes.push(new SchemaChange('drop-table', {
-              table: oldTable
+              oldTable: oldTable
             }));
           }
         };
@@ -141,7 +142,7 @@ SchemaDiff = (function() {
         });
         if (!oldTable) {
           return _this.changes.push(new SchemaChange('create-table', {
-            table: newTable
+            newTable: newTable
           }));
         }
       };
@@ -321,6 +322,8 @@ SchemaGeneratorBase = (function(superClass) {
         ids.push(drop.options.newTable.id);
       }
     }
+    this.processViews(changes);
+    this.processIndexes(changes);
     return changes;
   };
 
@@ -343,6 +346,14 @@ SchemaGeneratorBase = (function(superClass) {
     return _.map(table.columns, function(column) {
       return column.name;
     });
+  };
+
+  SchemaGeneratorBase.prototype.projectionForView = function(table) {
+    return _.map(table.columns, (function(_this) {
+      return function(column) {
+        return (_this.escape(column.name)) + " AS " + (_this.escape(column.dataName));
+      };
+    })(this));
   };
 
   SchemaGeneratorBase.prototype.mappingForTables = function(oldTable, newTable) {
@@ -380,7 +391,7 @@ SchemaGeneratorBase = (function(superClass) {
   };
 
   SchemaGeneratorBase.prototype.createTable = function(change) {
-    return "CREATE TABLE " + (this.escapedSchema()) + (this.escape(this.tablePrefix + change.options.table.name)) + " (" + (this.columnsForTable(change.options.table).join(', ')) + ");";
+    return "CREATE TABLE " + (this.escapedSchema()) + (this.escape(this.tablePrefix + change.options.newTable.name)) + " (" + (this.columnsForTable(change.options.newTable).join(', ')) + ");";
   };
 
   SchemaGeneratorBase.prototype.transformToText = function(columnName) {
@@ -428,7 +439,7 @@ SchemaGeneratorBase = (function(superClass) {
   };
 
   SchemaGeneratorBase.prototype.dropTable = function(change) {
-    return "DROP TABLE IF EXISTS " + (this.escapedSchema()) + (this.escape(change.options.table.name)) + ";";
+    return "DROP TABLE IF EXISTS " + (this.escapedSchema()) + (this.escape(this.tablePrefix + change.options.oldTable.name)) + ";";
   };
 
   SchemaGeneratorBase.prototype.addColumn = function(change) {
@@ -442,6 +453,51 @@ SchemaGeneratorBase = (function(superClass) {
   SchemaGeneratorBase.prototype.renameColumn = function(change) {
     throw new Error('renameColumn is not implemented.');
   };
+
+  SchemaGeneratorBase.prototype.tableName = function(table) {
+    return "" + (this.escapedSchema()) + (this.escape(this.tablePrefix + table.name));
+  };
+
+  SchemaGeneratorBase.prototype.viewName = function(table) {
+    return "" + (this.escapedSchema()) + (this.escape(this.tablePrefix + table.name + '_view'));
+  };
+
+  SchemaGeneratorBase.prototype.dropView = function(change) {
+    return "DROP VIEW IF EXISTS " + (this.viewName(change.options.oldTable)) + ";";
+  };
+
+  SchemaGeneratorBase.prototype.createView = function(change) {
+    return "CREATE VIEW IF NOT EXISTS " + (this.viewName(change.options.newTable)) + " AS SELECT " + (this.projectionForView(change.options.newTable)) + " FROM " + (this.tableName(change.options.newTable)) + ";";
+  };
+
+  SchemaGeneratorBase.prototype.processViews = function(changes) {
+    var change, i, j, len, len1, ref, results, table, views;
+    views = [];
+    for (i = 0, len = changes.length; i < len; i++) {
+      change = changes[i];
+      if (change.options.newTable && !_.contains(views, change.options.newTable.name)) {
+        views.push(change.options.newTable.id);
+      }
+    }
+    ref = this.newSchema.tables;
+    results = [];
+    for (j = 0, len1 = ref.length; j < len1; j++) {
+      table = ref[j];
+      if (_.contains(views, table.id)) {
+        changes.push(new SchemaChange('drop-view', {
+          oldTable: table
+        }));
+        results.push(changes.push(new SchemaChange('create-view', {
+          newTable: table
+        })));
+      } else {
+        results.push(void 0);
+      }
+    }
+    return results;
+  };
+
+  SchemaGeneratorBase.prototype.processIndexes = function(changes) {};
 
   return SchemaGeneratorBase;
 
@@ -458,8 +514,9 @@ var SchemaGenerator, _,
 _ = require('underscore');
 
 SchemaGenerator = (function() {
-  function SchemaGenerator(changes) {
+  function SchemaGenerator(changes, newSchema) {
     this.changes = changes;
+    this.newSchema = newSchema;
     this.statementForChange = bind(this.statementForChange, this);
   }
 
@@ -468,7 +525,8 @@ SchemaGenerator = (function() {
   };
 
   SchemaGenerator.prototype.generate = function() {
-    return _.flatten(_.map(this.transform(), this.statementForChange));
+    this.schemaChanges = _.flatten(_.map(this.transform(), this.statementForChange));
+    return this.schemaChanges;
   };
 
   SchemaGenerator.prototype.statementForChange = function(change) {
@@ -485,6 +543,12 @@ SchemaGenerator = (function() {
         return this.dropColumn(change);
       case 'rename-column':
         return this.renameColumn(change);
+      case 'drop-view':
+        return this.dropView(change);
+      case 'create-view':
+        return this.createView(change);
+      case 'create-index':
+        return this.createIndex(change);
       default:
         throw new Error("Invalid change type " + change.type);
     }
@@ -512,6 +576,18 @@ SchemaGenerator = (function() {
 
   SchemaGenerator.prototype.renameColumn = function(change) {
     throw new Error('renameColumn must be implemented in a derived class');
+  };
+
+  SchemaGenerator.prototype.dropView = function(change) {
+    throw new Error('dropView must be implemented in a derived class');
+  };
+
+  SchemaGenerator.prototype.createView = function(change) {
+    throw new Error('createView must be implemented in a derived class');
+  };
+
+  SchemaGenerator.prototype.createIndex = function(change) {
+    throw new Error('createIndex must be implemented in a derived class');
   };
 
   return SchemaGenerator;
@@ -546,25 +622,74 @@ Schema = (function() {
     return object.name || object.data_name;
   };
 
+  Schema.FORM_SYSTEM_COLUMNS = [
+    {
+      name: 'id',
+      type: 'pk'
+    }, {
+      name: 'record_id',
+      type: 'integer'
+    }, {
+      name: 'record_resource_id',
+      type: 'string'
+    }, {
+      name: 'project_id',
+      type: 'integer'
+    }, {
+      name: 'assigned_to_id',
+      type: 'integer'
+    }, {
+      name: 'status',
+      type: 'string'
+    }, {
+      name: 'latitude',
+      type: 'double'
+    }, {
+      name: 'longitude',
+      type: 'double'
+    }, {
+      name: 'created_at',
+      type: 'date'
+    }, {
+      name: 'updated_at',
+      type: 'date'
+    }
+  ];
+
+  Schema.FORM_VALUE_COLUMNS = [
+    {
+      name: 'record_id',
+      type: 'integer'
+    }, {
+      name: 'parent_resource_id',
+      type: 'string'
+    }, {
+      name: 'key',
+      type: 'string'
+    }, {
+      name: 'text_value',
+      type: 'string'
+    }, {
+      name: 'number_value',
+      type: 'double'
+    }
+  ];
+
   Schema.prototype.buildSchema = function() {
+    var column, i, j, len, len1, ref, ref1;
     this.tables = [];
-    this.formTable = new Table("form_" + this.form.id, "form_" + this.form.id);
-    this.formTable.addColumn('id', 'id', 'pk');
-    this.formTable.addColumn('record_id', 'record_id', 'integer');
-    this.formTable.addColumn('record_resource_id', 'record_resource_id', 'string');
-    this.formTable.addColumn('project_id', 'project_id', 'integer');
-    this.formTable.addColumn('assigned_to_id', 'assigned_to_id', 'integer');
-    this.formTable.addColumn('status', 'status', 'string');
-    this.formTable.addColumn('latitude', 'latitude', 'double');
-    this.formTable.addColumn('longitude', 'longitude', 'double');
-    this.formTable.addColumn('created_at', 'created_at', 'date');
-    this.formTable.addColumn('updated_at', 'updated_at', 'date');
-    this.valuesTable = new Table("form_" + this.form.id + "_values", "form_" + this.form.id + "_values");
-    this.valuesTable.addColumn('record_id', 'record_id', 'integer');
-    this.valuesTable.addColumn('parent_resource_id', 'parent_resource_id', 'string');
-    this.valuesTable.addColumn('key', 'key', 'string');
-    this.valuesTable.addColumn('text_value', 'text_value', 'string');
-    this.valuesTable.addColumn('number_value', 'number_value', 'double');
+    this.formTable = new Table("form_" + this.form.id, "form_" + this.form.id, 'form');
+    ref = Schema.FORM_SYSTEM_COLUMNS;
+    for (i = 0, len = ref.length; i < len; i++) {
+      column = ref[i];
+      this.formTable.addColumn(column);
+    }
+    this.valuesTable = new Table("form_" + this.form.id + "_values", "form_" + this.form.id + "_values", 'values');
+    ref1 = Schema.FORM_VALUE_COLUMNS;
+    for (j = 0, len1 = ref1.length; j < len1; j++) {
+      column = ref1[j];
+      this.valuesTable.addColumn(column);
+    }
     this.tables.push(this.formTable);
     this.tables.push(this.valuesTable);
     this.schemaElements.forEach((function(_this) {
@@ -669,13 +794,20 @@ Schema = (function() {
   };
 
   Schema.prototype.addElement = function(table, element, type, suffix) {
+    var column;
     if (suffix == null) {
       suffix = '';
     }
     if (suffix) {
       suffix = '_' + suffix;
     }
-    return table.addColumn(this.prefix + element.key + suffix, this.prefix + element.key + suffix, type);
+    column = {
+      id: this.prefix + element.key + suffix,
+      name: this.prefix + element.key + suffix,
+      type: type,
+      dataName: element.data_name + suffix
+    };
+    return table.addColumn(column);
   };
 
   Schema.prototype.addMediaElement = function(table, element) {
@@ -684,16 +816,47 @@ Schema = (function() {
 
   Schema.prototype.addRepeatableElement = function(table, element) {
     var childElements, elements, repeatableTable;
-    repeatableTable = new Table(table.id + '_' + element.key, table.name + '_' + element.key);
-    repeatableTable.addColumn('id', 'id', 'pk');
-    repeatableTable.addColumn(element.key + '_record_id', 'record_id', 'integer');
-    repeatableTable.addColumn(element.key + '_record_resource_id', 'record_resource_id', 'string');
-    repeatableTable.addColumn(element.key + '_resource_id', 'resource_id', 'string');
-    repeatableTable.addColumn(element.key + '_parent_resource_id', 'parent_resource_id', 'string');
-    repeatableTable.addColumn('latitude', 'latitude', 'double');
-    repeatableTable.addColumn('longitude', 'longitude', 'double');
-    repeatableTable.addColumn('created_at', 'created_at', 'date');
-    repeatableTable.addColumn('updated_at', 'updated_at', 'date');
+    repeatableTable = new Table(table.id + '_' + element.key, table.name + '_' + element.key, 'repeatable');
+    repeatableTable.addColumn({
+      name: 'id',
+      type: 'pk'
+    });
+    repeatableTable.addColumn({
+      id: element.key + '_record_id',
+      name: 'record_id',
+      type: 'integer'
+    });
+    repeatableTable.addColumn({
+      id: element.key + '_record_resource_id',
+      name: 'record_resource_id',
+      type: 'string'
+    });
+    repeatableTable.addColumn({
+      id: element.key + '_resource_id',
+      name: 'resource_id',
+      type: 'string'
+    });
+    repeatableTable.addColumn({
+      id: element.key + '_parent_resource_id',
+      name: 'parent_resource_id',
+      type: 'string'
+    });
+    repeatableTable.addColumn({
+      name: 'latitude',
+      type: 'double'
+    });
+    repeatableTable.addColumn({
+      name: 'longitude',
+      type: 'double'
+    });
+    repeatableTable.addColumn({
+      name: 'created_at',
+      type: 'date'
+    });
+    repeatableTable.addColumn({
+      name: 'updated_at',
+      type: 'date'
+    });
     this.tables.push(repeatableTable);
     elements = Utils.flattenElements(element.elements, false);
     childElements = this.elementsForSchema(elements);
@@ -722,18 +885,29 @@ var Column, Table;
 Column = require('./column');
 
 Table = (function() {
-  function Table(id1, name1) {
-    this.id = id1;
-    this.name = name1;
+  function Table(id, name, type) {
+    this.id = id;
+    this.name = name;
+    this.type = type;
     this.columns = [];
   }
 
-  Table.prototype.addColumn = function(id, name, type) {
-    var column;
-    if (arguments.length !== 3) {
-      throw new Error('must provide id, name and type parameters');
+  Table.prototype.addColumn = function(opts) {
+    var column, hasParameters;
+    if (opts.id == null) {
+      opts.id = opts.name;
     }
-    column = new Column(id, name, type);
+    if (opts.name == null) {
+      opts.name = opts.id;
+    }
+    if (opts.dataName == null) {
+      opts.dataName = opts.name;
+    }
+    hasParameters = opts.id && opts.name && opts.type && opts.dataName;
+    if (!hasParameters) {
+      throw new Error('must provide id, name, type and dataName parameters');
+    }
+    column = new Column(opts.id, opts.name, opts.type, opts.dataName);
     return this.columns.push(column);
   };
 
@@ -2470,7 +2644,7 @@ instance.compareForms = function() {
     }
     schemaDiff = new SchemaDiff(oldSchema, newSchema);
     diff = schemaDiff.diff();
-    generator = new PostgresSchemaGenerator(diff);
+    generator = new PostgresSchemaGenerator(diff, newSchema);
     generator.tableSchema = instance.schema;
     return generator.generate();
   } catch (_error) {
