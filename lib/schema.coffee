@@ -43,6 +43,8 @@ class Schema
     @formTable.addColumn('status', 'status', 'string')
     @formTable.addColumn('latitude', 'latitude', 'double')
     @formTable.addColumn('longitude', 'longitude', 'double')
+    @formTable.addColumn('created_at', 'created_at', 'date')
+    @formTable.addColumn('updated_at', 'updated_at', 'date')
 
     @valuesTable = new Table("form_#{@form.id}_values", "form_#{@form.id}_values")
     @valuesTable.addColumn('record_id', 'record_id', 'integer')
@@ -153,6 +155,8 @@ class Schema
     repeatableTable.addColumn(element.key + '_parent_resource_id', 'parent_resource_id', 'string')
     repeatableTable.addColumn('latitude', 'latitude', 'double')
     repeatableTable.addColumn('longitude', 'longitude', 'double')
+    repeatableTable.addColumn('created_at', 'created_at', 'date')
+    repeatableTable.addColumn('updated_at', 'updated_at', 'date')
 
     @tables.push(repeatableTable)
 

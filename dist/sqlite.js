@@ -514,6 +514,8 @@ Schema = (function() {
     this.formTable.addColumn('status', 'status', 'string');
     this.formTable.addColumn('latitude', 'latitude', 'double');
     this.formTable.addColumn('longitude', 'longitude', 'double');
+    this.formTable.addColumn('created_at', 'created_at', 'date');
+    this.formTable.addColumn('updated_at', 'updated_at', 'date');
     this.valuesTable = new Table("form_" + this.form.id + "_values", "form_" + this.form.id + "_values");
     this.valuesTable.addColumn('record_id', 'record_id', 'integer');
     this.valuesTable.addColumn('parent_resource_id', 'parent_resource_id', 'string');
@@ -647,6 +649,8 @@ Schema = (function() {
     repeatableTable.addColumn(element.key + '_parent_resource_id', 'parent_resource_id', 'string');
     repeatableTable.addColumn('latitude', 'latitude', 'double');
     repeatableTable.addColumn('longitude', 'longitude', 'double');
+    repeatableTable.addColumn('created_at', 'created_at', 'date');
+    repeatableTable.addColumn('updated_at', 'updated_at', 'date');
     this.tables.push(repeatableTable);
     elements = Utils.flattenElements(element.elements, false);
     childElements = this.elementsForSchema(elements);
