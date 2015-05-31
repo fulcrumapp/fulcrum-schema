@@ -147,7 +147,7 @@ class SchemaGeneratorBase extends SchemaGenerator
     views = []
 
     for change in changes
-      if change.options.newTable and not _.contains(views, change.options.newTable.name)
+      if change.options.newTable and change.options.newTable.type isnt 'values' and not _.contains(views, change.options.newTable.name)
         views.push(change.options.newTable.id)
 
     for table in @newSchema.tables

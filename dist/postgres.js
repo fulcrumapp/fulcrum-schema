@@ -475,7 +475,7 @@ SchemaGeneratorBase = (function(superClass) {
     views = [];
     for (i = 0, len = changes.length; i < len; i++) {
       change = changes[i];
-      if (change.options.newTable && !_.contains(views, change.options.newTable.name)) {
+      if (change.options.newTable && change.options.newTable.type !== 'values' && !_.contains(views, change.options.newTable.name)) {
         views.push(change.options.newTable.id);
       }
     }
@@ -738,7 +738,7 @@ Schema = (function() {
       case 'TimeField':
         return this.addDoubleElement(elementTable, element);
       case 'Repeatable':
-        return this.addRepeatableElement(elementTable, element);
+        return this.addRepeatableElement(element);
       case 'AddressField':
         this.addStringElement(elementTable, element);
         this.addStringElement(elementTable, element, 'sub_thoroughfare');
@@ -814,9 +814,9 @@ Schema = (function() {
     return this.addStringElement(table, element);
   };
 
-  Schema.prototype.addRepeatableElement = function(table, element) {
+  Schema.prototype.addRepeatableElement = function(element) {
     var childElements, elements, repeatableTable;
-    repeatableTable = new Table(table.id + '_' + element.key, table.name + '_' + element.key, 'repeatable');
+    repeatableTable = new Table(this.formTable.id + '_' + element.key, this.formTable.name + '_' + element.key, 'repeatable');
     repeatableTable.addColumn({
       name: 'id',
       type: 'pk'

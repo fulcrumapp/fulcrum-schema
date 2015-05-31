@@ -114,7 +114,7 @@ class Schema
         @addDoubleElement(elementTable, element)
 
       when 'Repeatable'
-        @addRepeatableElement(elementTable, element)
+        @addRepeatableElement(element)
 
       when 'AddressField'
         @addStringElement(elementTable, element)                     # Full Address
@@ -166,8 +166,8 @@ class Schema
   addMediaElement: (table, element) ->
     @addStringElement(table, element)
 
-  addRepeatableElement: (table, element) ->
-    repeatableTable = new Table(table.id + '_' + element.key, table.name + '_' + element.key, 'repeatable')
+  addRepeatableElement: (element) ->
+    repeatableTable = new Table(@formTable.id + '_' + element.key, @formTable.name + '_' + element.key, 'repeatable')
     repeatableTable.addColumn(name: 'id', type: 'pk')
     repeatableTable.addColumn(id: element.key + '_record_id', name: 'record_id', type: 'integer')
     repeatableTable.addColumn(id: element.key + '_record_resource_id', name: 'record_resource_id', type: 'string')
