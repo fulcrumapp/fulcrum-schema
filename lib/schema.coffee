@@ -151,6 +151,8 @@ class Schema
     repeatableTable.addColumn(element.key + '_record_resource_id', 'record_resource_id', 'string')
     repeatableTable.addColumn(element.key + '_resource_id', 'resource_id', 'string')
     repeatableTable.addColumn(element.key + '_parent_resource_id', 'parent_resource_id', 'string')
+    repeatableTable.addColumn('latitude', 'latitude', 'double')
+    repeatableTable.addColumn('longitude', 'longitude', 'double')
 
     @tables.push(repeatableTable)
 
