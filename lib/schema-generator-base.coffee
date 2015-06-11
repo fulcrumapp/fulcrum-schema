@@ -32,7 +32,7 @@ class SchemaGeneratorBase extends SchemaGenerator
 
         ids.push(drop.options.newTable.id)
 
-    @processViews(changes)
+    @processViews(changes) if @options.enableViews
     @processIndexes(changes)
 
     changes
@@ -150,10 +150,11 @@ class SchemaGeneratorBase extends SchemaGenerator
       if change.options.newTable and change.options.newTable.type isnt 'values' and not _.contains(views, change.options.newTable.name)
         views.push(change.options.newTable.id)
 
-    for table in @newSchema.tables
-      if _.contains(views, table.id)
-        changes.push(new SchemaChange('drop-view', oldTable: table))
-        changes.push(new SchemaChange('create-view', newTable: table))
+    if @newSchema
+      for table in @newSchema.tables
+        if _.contains(views, table.id)
+          changes.push(new SchemaChange('drop-view', oldTable: table))
+          changes.push(new SchemaChange('create-view', newTable: table))
 
   processIndexes: (changes) ->
 

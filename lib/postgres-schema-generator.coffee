@@ -18,4 +18,13 @@ class PostgresSchemaGenerator extends SchemaGeneratorBase
   transformToDouble: (columnName) ->
     "convert_to_float(#{columnName})"
 
+  createView: (change) ->
+    """
+    CREATE OR REPLACE VIEW #{@viewName(change.options.newTable)}
+    AS SELECT
+      #{@projectionForView(change.options.newTable)}
+    FROM
+      #{@tableName(change.options.newTable)};
+    """
+
 module.exports = PostgresSchemaGenerator

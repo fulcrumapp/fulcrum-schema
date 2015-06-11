@@ -279,7 +279,9 @@ SchemaGeneratorBase = (function(superClass) {
         ids.push(drop.options.newTable.id);
       }
     }
-    this.processViews(changes);
+    if (this.options.enableViews) {
+      this.processViews(changes);
+    }
     this.processIndexes(changes);
     return changes;
   };
@@ -436,22 +438,24 @@ SchemaGeneratorBase = (function(superClass) {
         views.push(change.options.newTable.id);
       }
     }
-    ref = this.newSchema.tables;
-    results = [];
-    for (j = 0, len1 = ref.length; j < len1; j++) {
-      table = ref[j];
-      if (_.contains(views, table.id)) {
-        changes.push(new SchemaChange('drop-view', {
-          oldTable: table
-        }));
-        results.push(changes.push(new SchemaChange('create-view', {
-          newTable: table
-        })));
-      } else {
-        results.push(void 0);
+    if (this.newSchema) {
+      ref = this.newSchema.tables;
+      results = [];
+      for (j = 0, len1 = ref.length; j < len1; j++) {
+        table = ref[j];
+        if (_.contains(views, table.id)) {
+          changes.push(new SchemaChange('drop-view', {
+            oldTable: table
+          }));
+          results.push(changes.push(new SchemaChange('create-view', {
+            newTable: table
+          })));
+        } else {
+          results.push(void 0);
+        }
       }
+      return results;
     }
-    return results;
   };
 
   SchemaGeneratorBase.prototype.processIndexes = function(changes) {};
@@ -471,9 +475,10 @@ var SchemaGenerator, _,
 _ = require('underscore');
 
 SchemaGenerator = (function() {
-  function SchemaGenerator(changes, newSchema) {
+  function SchemaGenerator(changes, newSchema, options) {
     this.changes = changes;
     this.newSchema = newSchema;
+    this.options = options != null ? options : {};
     this.statementForChange = bind(this.statementForChange, this);
   }
 
