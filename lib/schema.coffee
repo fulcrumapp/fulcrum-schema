@@ -33,21 +33,22 @@ class Schema
 
   @FORM_SYSTEM_COLUMNS: [
     { name: 'id',                 type: 'pk' }
-    { name: 'record_id',          type: 'integer' }
-    { name: 'record_resource_id', type: 'string' }
+    { name: 'record_id',          type: 'integer', null: false }
+    { name: 'record_resource_id', type: 'string',  null: false }
     { name: 'project_id',         type: 'integer' }
     { name: 'assigned_to_id',     type: 'integer' }
     { name: 'status',             type: 'string' }
     { name: 'latitude',           type: 'double' }
     { name: 'longitude',          type: 'double' }
-    { name: 'created_at',         type: 'date' }
-    { name: 'updated_at',         type: 'date' }
+    { name: 'created_at',         type: 'date',    null: false }
+    { name: 'updated_at',         type: 'date',    null: false }
   ]
 
   @FORM_VALUE_COLUMNS: [
-    { name: 'record_id',          type: 'integer' }
+    { name: 'id',                 type: 'pk' }
+    { name: 'record_id',          type: 'integer', null: false }
     { name: 'parent_resource_id', type: 'string' }
-    { name: 'key',                type: 'string' }
+    { name: 'key',                type: 'string',  null: false }
     { name: 'text_value',         type: 'string' }
     { name: 'number_value',       type: 'double' }
   ]
@@ -169,14 +170,14 @@ class Schema
   addRepeatableElement: (element) ->
     repeatableTable = new Table(@formTable.id + '_' + element.key, @formTable.name + '_' + element.key, 'repeatable')
     repeatableTable.addColumn(name: 'id', type: 'pk')
-    repeatableTable.addColumn(id: element.key + '_record_id', name: 'record_id', type: 'integer')
-    repeatableTable.addColumn(id: element.key + '_record_resource_id', name: 'record_resource_id', type: 'string')
-    repeatableTable.addColumn(id: element.key + '_resource_id', name: 'resource_id', type: 'string')
+    repeatableTable.addColumn(id: element.key + '_record_id',          name: 'record_id',          type: 'integer', null: false)
+    repeatableTable.addColumn(id: element.key + '_record_resource_id', name: 'record_resource_id', type: 'string',  null: false)
+    repeatableTable.addColumn(id: element.key + '_resource_id',        name: 'resource_id',        type: 'string',  null: false)
     repeatableTable.addColumn(id: element.key + '_parent_resource_id', name: 'parent_resource_id', type: 'string')
-    repeatableTable.addColumn(name: 'latitude', type: 'double')
-    repeatableTable.addColumn(name: 'longitude', type: 'double')
-    repeatableTable.addColumn(name: 'created_at', type: 'date')
-    repeatableTable.addColumn(name: 'updated_at', type: 'date')
+    repeatableTable.addColumn(name: 'latitude',   type: 'double')
+    repeatableTable.addColumn(name: 'longitude',  type: 'double')
+    repeatableTable.addColumn(name: 'created_at', type: 'date', null: false)
+    repeatableTable.addColumn(name: 'updated_at', type: 'date', null: false)
 
     @tables.push(repeatableTable)
 

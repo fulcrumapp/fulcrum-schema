@@ -42,7 +42,13 @@ class SchemaGeneratorBase extends SchemaGenerator
     "\"#{identifier}\""
 
   columnDefinition: (column) =>
-    "#{@escape(column.name)} #{@typeForColumn(column)}"
+    "#{@escape(column.name)} #{@typeForColumn(column)}#{@columnModifiers(column)}"
+
+  columnModifiers: (column) ->
+    if column.null is false
+      ' NOT NULL'
+    else
+      ''
 
   columnsForTable: (table) ->
     _.map table.columns, @columnDefinition

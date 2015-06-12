@@ -2,15 +2,16 @@
 var Column;
 
 Column = (function() {
-  function Column(id, name, type, dataName) {
+  function Column(id, name, type, dataName, _null) {
     this.id = id;
     this.name = name;
     this.type = type;
     this.dataName = dataName;
+    this["null"] = _null;
   }
 
   Column.prototype.isEqualTo = function(column) {
-    return this.id === column.id && this.name === column.name && this.type === column.type;
+    return this.id === column.id && this.name === column.name && this.type === column.type && this["null"] === column["null"];
   };
 
   return Column;
@@ -294,7 +295,15 @@ SchemaGeneratorBase = (function(superClass) {
   };
 
   SchemaGeneratorBase.prototype.columnDefinition = function(column) {
-    return (this.escape(column.name)) + " " + (this.typeForColumn(column));
+    return (this.escape(column.name)) + " " + (this.typeForColumn(column)) + (this.columnModifiers(column));
+  };
+
+  SchemaGeneratorBase.prototype.columnModifiers = function(column) {
+    if (column["null"] === false) {
+      return ' NOT NULL';
+    } else {
+      return '';
+    }
   };
 
   SchemaGeneratorBase.prototype.columnsForTable = function(table) {
@@ -590,10 +599,12 @@ Schema = (function() {
       type: 'pk'
     }, {
       name: 'record_id',
-      type: 'integer'
+      type: 'integer',
+      "null": false
     }, {
       name: 'record_resource_id',
-      type: 'string'
+      type: 'string',
+      "null": false
     }, {
       name: 'project_id',
       type: 'integer'
@@ -611,23 +622,30 @@ Schema = (function() {
       type: 'double'
     }, {
       name: 'created_at',
-      type: 'date'
+      type: 'date',
+      "null": false
     }, {
       name: 'updated_at',
-      type: 'date'
+      type: 'date',
+      "null": false
     }
   ];
 
   Schema.FORM_VALUE_COLUMNS = [
     {
+      name: 'id',
+      type: 'pk'
+    }, {
       name: 'record_id',
-      type: 'integer'
+      type: 'integer',
+      "null": false
     }, {
       name: 'parent_resource_id',
       type: 'string'
     }, {
       name: 'key',
-      type: 'string'
+      type: 'string',
+      "null": false
     }, {
       name: 'text_value',
       type: 'string'
@@ -786,17 +804,20 @@ Schema = (function() {
     repeatableTable.addColumn({
       id: element.key + '_record_id',
       name: 'record_id',
-      type: 'integer'
+      type: 'integer',
+      "null": false
     });
     repeatableTable.addColumn({
       id: element.key + '_record_resource_id',
       name: 'record_resource_id',
-      type: 'string'
+      type: 'string',
+      "null": false
     });
     repeatableTable.addColumn({
       id: element.key + '_resource_id',
       name: 'resource_id',
-      type: 'string'
+      type: 'string',
+      "null": false
     });
     repeatableTable.addColumn({
       id: element.key + '_parent_resource_id',
@@ -813,11 +834,13 @@ Schema = (function() {
     });
     repeatableTable.addColumn({
       name: 'created_at',
-      type: 'date'
+      type: 'date',
+      "null": false
     });
     repeatableTable.addColumn({
       name: 'updated_at',
-      type: 'date'
+      type: 'date',
+      "null": false
     });
     this.tables.push(repeatableTable);
     elements = Utils.flattenElements(element.elements, false);
@@ -915,11 +938,14 @@ Table = (function() {
     if (opts.dataName == null) {
       opts.dataName = opts.name;
     }
+    if (opts["null"] == null) {
+      opts["null"] = true;
+    }
     hasParameters = opts.id && opts.name && opts.type && opts.dataName;
     if (!hasParameters) {
       throw new Error('must provide id, name, type and dataName parameters');
     }
-    column = new Column(opts.id, opts.name, opts.type, opts.dataName);
+    column = new Column(opts.id, opts.name, opts.type, opts.dataName, opts["null"]);
     return this.columns.push(column);
   };
 
