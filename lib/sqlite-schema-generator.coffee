@@ -27,6 +27,9 @@ class SqliteSchemaGenerator extends SchemaGeneratorBase
   END)
 "
 
+  createIndex: (change) ->
+    "CREATE INDEX IF NOT EXISTS #{@indexName(change.options.newTable, change.options.columns)} ON #{@tableName(change.options.newTable)} (#{change.options.columns.join(', ')});"
+
   escape: (identifier) ->
     return '' unless identifier and identifier.length isnt 0
     "`#{identifier}`"

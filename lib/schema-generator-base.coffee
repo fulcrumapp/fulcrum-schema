@@ -143,11 +143,17 @@ class SchemaGeneratorBase extends SchemaGenerator
   viewName: (table) ->
     "#{@escapedSchema()}#{@escape(@tablePrefix + table.name + '_view')}"
 
+  indexName: (table, columns) ->
+    @escape('idx_' + @tablePrefix + table.name + '_' + columns.join('_'))
+
   dropView: (change) ->
     "DROP VIEW IF EXISTS #{@viewName(change.options.oldTable)};"
 
   createView: (change) ->
     "CREATE VIEW IF NOT EXISTS #{@viewName(change.options.newTable)} AS SELECT #{@projectionForView(change.options.newTable)} FROM #{@tableName(change.options.newTable)};"
+
+  createIndex: (change) ->
+    "CREATE INDEX #{@indexName(change.options.newTable, change.options.columns)} ON #{@tableName(change.options.newTable)} (#{change.options.columns.join(', ')});"
 
   processViews: (changes) ->
     views = []
@@ -163,5 +169,19 @@ class SchemaGeneratorBase extends SchemaGenerator
           changes.push(new SchemaChange('create-view', newTable: table))
 
   processIndexes: (changes) ->
+    for change in changes
+      if _.contains(['create-table', 'recreate-table'], change.type)
+        switch change.options.newTable.type
+          when 'form'
+            changes.push(new SchemaChange('create-index', newTable: change.options.newTable, columns: ['record_id']))
+            changes.push(new SchemaChange('create-index', newTable: change.options.newTable, columns: ['record_resource_id']))
+          when 'repeatable'
+            changes.push(new SchemaChange('create-index', newTable: change.options.newTable, columns: ['record_id']))
+            changes.push(new SchemaChange('create-index', newTable: change.options.newTable, columns: ['record_resource_id']))
+            changes.push(new SchemaChange('create-index', newTable: change.options.newTable, columns: ['resource_id']))
+            changes.push(new SchemaChange('create-index', newTable: change.options.newTable, columns: ['parent_resource_id']))
+          when 'values'
+            changes.push(new SchemaChange('create-index', newTable: change.options.newTable, columns: ['record_id']))
+            changes.push(new SchemaChange('create-index', newTable: change.options.newTable, columns: ['parent_resource_id']))
 
 module.exports = SchemaGeneratorBase

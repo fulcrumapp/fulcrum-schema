@@ -18,6 +18,9 @@ class PostgresSchemaGenerator extends SchemaGeneratorBase
   transformToDouble: (columnName) ->
     "convert_to_float(#{columnName})"
 
+  createIndex: (change) ->
+    "CREATE INDEX #{@indexName(change.options.newTable, change.options.columns)} ON #{@tableName(change.options.newTable)} (#{change.options.columns.join(', ')});"
+
   createView: (change) ->
     """
     CREATE OR REPLACE VIEW #{@viewName(change.options.newTable)}

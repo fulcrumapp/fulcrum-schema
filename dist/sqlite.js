@@ -430,12 +430,20 @@ SchemaGeneratorBase = (function(superClass) {
     return "" + (this.escapedSchema()) + (this.escape(this.tablePrefix + table.name + '_view'));
   };
 
+  SchemaGeneratorBase.prototype.indexName = function(table, columns) {
+    return this.escape('idx_' + this.tablePrefix + table.name + '_' + columns.join('_'));
+  };
+
   SchemaGeneratorBase.prototype.dropView = function(change) {
     return "DROP VIEW IF EXISTS " + (this.viewName(change.options.oldTable)) + ";";
   };
 
   SchemaGeneratorBase.prototype.createView = function(change) {
     return "CREATE VIEW IF NOT EXISTS " + (this.viewName(change.options.newTable)) + " AS SELECT " + (this.projectionForView(change.options.newTable)) + " FROM " + (this.tableName(change.options.newTable)) + ";";
+  };
+
+  SchemaGeneratorBase.prototype.createIndex = function(change) {
+    return "CREATE INDEX " + (this.indexName(change.options.newTable, change.options.columns)) + " ON " + (this.tableName(change.options.newTable)) + " (" + (change.options.columns.join(', ')) + ");";
   };
 
   SchemaGeneratorBase.prototype.processViews = function(changes) {
@@ -467,7 +475,60 @@ SchemaGeneratorBase = (function(superClass) {
     }
   };
 
-  SchemaGeneratorBase.prototype.processIndexes = function(changes) {};
+  SchemaGeneratorBase.prototype.processIndexes = function(changes) {
+    var change, i, len, results;
+    results = [];
+    for (i = 0, len = changes.length; i < len; i++) {
+      change = changes[i];
+      if (_.contains(['create-table', 'recreate-table'], change.type)) {
+        switch (change.options.newTable.type) {
+          case 'form':
+            changes.push(new SchemaChange('create-index', {
+              newTable: change.options.newTable,
+              columns: ['record_id']
+            }));
+            results.push(changes.push(new SchemaChange('create-index', {
+              newTable: change.options.newTable,
+              columns: ['record_resource_id']
+            })));
+            break;
+          case 'repeatable':
+            changes.push(new SchemaChange('create-index', {
+              newTable: change.options.newTable,
+              columns: ['record_id']
+            }));
+            changes.push(new SchemaChange('create-index', {
+              newTable: change.options.newTable,
+              columns: ['record_resource_id']
+            }));
+            changes.push(new SchemaChange('create-index', {
+              newTable: change.options.newTable,
+              columns: ['resource_id']
+            }));
+            results.push(changes.push(new SchemaChange('create-index', {
+              newTable: change.options.newTable,
+              columns: ['parent_resource_id']
+            })));
+            break;
+          case 'values':
+            changes.push(new SchemaChange('create-index', {
+              newTable: change.options.newTable,
+              columns: ['record_id']
+            }));
+            results.push(changes.push(new SchemaChange('create-index', {
+              newTable: change.options.newTable,
+              columns: ['parent_resource_id']
+            })));
+            break;
+          default:
+            results.push(void 0);
+        }
+      } else {
+        results.push(void 0);
+      }
+    }
+    return results;
+  };
 
   return SchemaGeneratorBase;
 
@@ -897,6 +958,10 @@ SqliteSchemaGenerator = (function(superClass) {
 
   SqliteSchemaGenerator.prototype.transformToDouble = function(columnName) {
     return "(CASE WHEN LENGTH(TRIM(" + columnName + ")) = 0 THEN NULL WHEN CAST(" + columnName + " AS REAL) = 0 AND LENGTH(TRIM(REPLACE(REPLACE(REPLACE(" + columnName + ", '.', ''), '0', ' '), '-', ''))) > 0 THEN NULL ELSE CAST(" + columnName + " AS REAL) END)";
+  };
+
+  SqliteSchemaGenerator.prototype.createIndex = function(change) {
+    return "CREATE INDEX IF NOT EXISTS " + (this.indexName(change.options.newTable, change.options.columns)) + " ON " + (this.tableName(change.options.newTable)) + " (" + (change.options.columns.join(', ')) + ");";
   };
 
   SqliteSchemaGenerator.prototype.escape = function(identifier) {
