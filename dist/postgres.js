@@ -2,12 +2,13 @@
 var Column;
 
 Column = (function() {
-  function Column(id, name, type, dataName, _null) {
+  function Column(id, name, type, dataName, _null, system) {
     this.id = id;
     this.name = name;
     this.type = type;
     this.dataName = dataName;
     this["null"] = _null;
+    this.system = system;
   }
 
   Column.prototype.isEqualTo = function(column) {
@@ -44,7 +45,11 @@ PostgresSchemaGenerator = (function(superClass) {
       string: 'text',
       integer: 'bigint',
       date: 'float',
-      double: 'float'
+      double: 'float',
+      timestamp: 'timestamp without time zone',
+      geometry: 'geometry(Geometry, 4326)',
+      array: 'text[]',
+      fts: 'tsvector'
     });
     return this.types[column.type] || 'text';
   };
@@ -58,7 +63,9 @@ PostgresSchemaGenerator = (function(superClass) {
   };
 
   PostgresSchemaGenerator.prototype.createIndex = function(change) {
-    return "CREATE INDEX " + (this.indexName(change.options.newTable, change.options.columns)) + " ON " + (this.tableName(change.options.newTable)) + " (" + (change.options.columns.join(', ')) + ");";
+    var type;
+    type = change.options.type || 'btree';
+    return "CREATE INDEX " + (this.indexName(change.options.newTable, change.options.columns)) + " ON " + (this.tableName(change.options.newTable)) + " USING " + type + " (" + (change.options.columns.join(', ')) + ");";
   };
 
   PostgresSchemaGenerator.prototype.createView = function(change) {
@@ -368,11 +375,25 @@ SchemaGeneratorBase = (function(superClass) {
   };
 
   SchemaGeneratorBase.prototype.projectionForView = function(table) {
-    return _.map(table.columns, (function(_this) {
-      return function(column) {
-        return (_this.escape(column.name)) + " AS " + (_this.escape(column.dataName));
-      };
-    })(this));
+    var alias, column, columnNames, definitions, i, len, ref;
+    definitions = [];
+    columnNames = {};
+    ref = table.columns;
+    for (i = 0, len = ref.length; i < len; i++) {
+      column = ref[i];
+      alias = column.dataName.substring(0, 63);
+      if (column.system) {
+        alias = this.schemaDiff["new"].systemColumnNameAlias(table, column);
+        if (alias == null) {
+          continue;
+        }
+      }
+      if (!columnNames[alias]) {
+        definitions.push((this.escape(column.name)) + " AS " + (this.escape(alias)));
+        columnNames[alias] = column;
+      }
+    }
+    return definitions;
   };
 
   SchemaGeneratorBase.prototype.mappingForTables = function(oldTable, newTable) {
@@ -506,8 +527,8 @@ SchemaGeneratorBase = (function(superClass) {
         views.push(change.options.newTable.id);
       }
     }
-    if (this.newSchema) {
-      ref = this.newSchema.tables;
+    if (this.schemaDiff["new"]) {
+      ref = this.schemaDiff["new"].tables;
       results = [];
       for (j = 0, len1 = ref.length; j < len1; j++) {
         table = ref[j];
@@ -538,10 +559,24 @@ SchemaGeneratorBase = (function(superClass) {
               newTable: change.options.newTable,
               columns: ['record_id']
             }));
-            results.push(changes.push(new SchemaChange('create-index', {
+            changes.push(new SchemaChange('create-index', {
               newTable: change.options.newTable,
               columns: ['record_resource_id']
-            })));
+            }));
+            if (this.schemaDiff["new"].options.full) {
+              changes.push(new SchemaChange('create-index', {
+                newTable: change.options.newTable,
+                columns: ['geometry'],
+                type: 'gist'
+              }));
+              results.push(changes.push(new SchemaChange('create-index', {
+                newTable: change.options.newTable,
+                columns: ['record_index'],
+                type: 'gin'
+              })));
+            } else {
+              results.push(void 0);
+            }
             break;
           case 'repeatable':
             changes.push(new SchemaChange('create-index', {
@@ -556,10 +591,24 @@ SchemaGeneratorBase = (function(superClass) {
               newTable: change.options.newTable,
               columns: ['resource_id']
             }));
-            results.push(changes.push(new SchemaChange('create-index', {
+            changes.push(new SchemaChange('create-index', {
               newTable: change.options.newTable,
               columns: ['parent_resource_id']
-            })));
+            }));
+            if (this.schemaDiff["new"].options.full) {
+              changes.push(new SchemaChange('create-index', {
+                newTable: change.options.newTable,
+                columns: ['geometry'],
+                type: 'gist'
+              }));
+              results.push(changes.push(new SchemaChange('create-index', {
+                newTable: change.options.newTable,
+                columns: ['record_index'],
+                type: 'gin'
+              })));
+            } else {
+              results.push(void 0);
+            }
             break;
           case 'values':
             changes.push(new SchemaChange('create-index', {
@@ -596,9 +645,9 @@ var SchemaGenerator, _,
 _ = require('underscore');
 
 SchemaGenerator = (function() {
-  function SchemaGenerator(changes, newSchema, options) {
+  function SchemaGenerator(changes, schemaDiff, options) {
     this.changes = changes;
-    this.newSchema = newSchema;
+    this.schemaDiff = schemaDiff;
     this.options = options != null ? options : {};
     this.statementForChange = bind(this.statementForChange, this);
   }
@@ -695,8 +744,9 @@ Schema = (function() {
 
   Schema.prototype.prefix = 'f';
 
-  function Schema(form) {
+  function Schema(form, options1) {
     this.form = form;
+    this.options = options1 != null ? options1 : {};
     this.elements = Utils.flattenElements(this.form.elements, false);
     this.schemaElements = this.elementsForSchema(this.elements);
   }
@@ -734,12 +784,69 @@ Schema = (function() {
       type: 'double'
     }, {
       name: 'created_at',
-      type: 'date',
+      type: 'timestamp',
       "null": false
     }, {
       name: 'updated_at',
-      type: 'date',
+      type: 'timestamp',
       "null": false
+    }
+  ];
+
+  Schema.FORM_SYSTEM_COLUMNS_FULL = [
+    {
+      name: 'version',
+      type: 'integer',
+      "null": false
+    }, {
+      name: 'created_by_id',
+      type: 'integer',
+      "null": false
+    }, {
+      name: 'updated_by_id',
+      type: 'integer',
+      "null": false
+    }, {
+      name: 'server_created_at',
+      type: 'timestamp',
+      "null": false
+    }, {
+      name: 'server_updated_at',
+      type: 'timestamp',
+      "null": false
+    }, {
+      name: 'record_index_text',
+      type: 'string'
+    }, {
+      name: 'record_index',
+      type: 'fts'
+    }, {
+      name: 'geometry',
+      type: 'geometry'
+    }, {
+      name: 'altitude',
+      type: 'double'
+    }, {
+      name: 'speed',
+      type: 'double'
+    }, {
+      name: 'course',
+      type: 'double'
+    }, {
+      name: 'horizontal_accuracy',
+      type: 'double'
+    }, {
+      name: 'vertical_accuracy',
+      type: 'double'
+    }, {
+      name: 'form_values',
+      type: 'text'
+    }, {
+      name: 'changeset_id',
+      type: 'integer'
+    }, {
+      name: 'title',
+      type: 'string'
     }
   ];
 
@@ -767,20 +874,173 @@ Schema = (function() {
     }
   ];
 
+  Schema.FORM_VIEW_SYSTEM_COLUMNS = {
+    record_resource_id: 'id',
+    project_id: 'project_id',
+    assigned_to_id: 'assigned_to_id',
+    status: 'status',
+    latitude: 'latitude',
+    longitude: 'longitude',
+    created_at: 'created_at',
+    updated_at: 'updated_at',
+    version: 'version',
+    created_by_id: 'created_by_id',
+    updated_by_id: 'updated_by_id',
+    server_created_at: 'server_created_at',
+    server_updated_at: 'server_updated_at',
+    record_index_text: 'record_index_text',
+    record_index: 'record_index',
+    geometry: 'geometry',
+    altitude: 'altitude',
+    speed: 'speed',
+    course: 'course',
+    horizontal_accuracy: 'horizontal_accuracy',
+    vertical_accuracy: 'vertical_accuracy',
+    form_values: 'form_values',
+    changeset_id: 'changeset_id',
+    title: 'title'
+  };
+
+  Schema.REPEATABLE_VIEW_SYSTEM_COLUMNS = {
+    resource_id: 'id',
+    record_resource_id: 'record_id',
+    parent_resource_id: 'parent_id',
+    latitude: 'latitude',
+    longitude: 'longitude',
+    created_at: 'created_at',
+    updated_at: 'updated_at',
+    version: 'version',
+    created_by_id: 'created_by_id',
+    updated_by_id: 'updated_by_id',
+    server_created_at: 'server_created_at',
+    server_updated_at: 'server_updated_at',
+    record_index_text: 'record_index_text',
+    record_index: 'record_index',
+    geometry: 'geometry',
+    altitude: 'altitude',
+    speed: 'speed',
+    course: 'course',
+    horizontal_accuracy: 'horizontal_accuracy',
+    vertical_accuracy: 'vertical_accuracy',
+    form_values: 'form_values',
+    changeset_id: 'changeset_id',
+    title: 'title'
+  };
+
+  Schema.REPEATABLE_COLUMNS = [
+    {
+      name: 'id',
+      type: 'pk'
+    }, {
+      name: 'record_id',
+      type: 'integer',
+      "null": false
+    }, {
+      name: 'record_resource_id',
+      type: 'string',
+      "null": false
+    }, {
+      name: 'resource_id',
+      type: 'string',
+      "null": false
+    }, {
+      name: 'parent_resource_id',
+      type: 'string'
+    }, {
+      name: 'latitude',
+      type: 'double'
+    }, {
+      name: 'longitude',
+      type: 'double'
+    }, {
+      name: 'created_at',
+      type: 'timestamp',
+      "null": false
+    }, {
+      name: 'updated_at',
+      type: 'timestamp',
+      "null": false
+    }
+  ];
+
+  Schema.REPEATABLE_COLUMNS_FULL = [
+    {
+      name: 'version',
+      type: 'integer',
+      "null": false
+    }, {
+      name: 'created_by_id',
+      type: 'integer',
+      "null": false
+    }, {
+      name: 'updated_by_id',
+      type: 'integer',
+      "null": false
+    }, {
+      name: 'server_created_at',
+      type: 'timestamp',
+      "null": false
+    }, {
+      name: 'server_updated_at',
+      type: 'timestamp',
+      "null": false
+    }, {
+      name: 'record_index_text',
+      type: 'string'
+    }, {
+      name: 'record_index',
+      type: 'fts'
+    }, {
+      name: 'geometry',
+      type: 'geometry'
+    }, {
+      name: 'altitude',
+      type: 'double'
+    }, {
+      name: 'speed',
+      type: 'double'
+    }, {
+      name: 'course',
+      type: 'double'
+    }, {
+      name: 'horizontal_accuracy',
+      type: 'double'
+    }, {
+      name: 'vertical_accuracy',
+      type: 'double'
+    }, {
+      name: 'form_values',
+      type: 'text'
+    }, {
+      name: 'changeset_id',
+      type: 'integer'
+    }, {
+      name: 'title',
+      type: 'string'
+    }
+  ];
+
   Schema.prototype.buildSchema = function() {
-    var column, i, j, len, len1, ref, ref1;
+    var column, i, j, k, len, len1, len2, ref, ref1, ref2;
     this.tables = [];
     this.formTable = new Table("form_" + this.form.id, "form_" + this.form.id, 'form');
     ref = Schema.FORM_SYSTEM_COLUMNS;
     for (i = 0, len = ref.length; i < len; i++) {
       column = ref[i];
-      this.formTable.addColumn(column);
+      this.formTable.addColumn(column, true);
+    }
+    if (this.options.full) {
+      ref1 = Schema.FORM_SYSTEM_COLUMNS_FULL;
+      for (j = 0, len1 = ref1.length; j < len1; j++) {
+        column = ref1[j];
+        this.formTable.addColumn(column, true);
+      }
     }
     this.valuesTable = new Table("form_" + this.form.id + "_values", "form_" + this.form.id + "_values", 'values');
-    ref1 = Schema.FORM_VALUE_COLUMNS;
-    for (j = 0, len1 = ref1.length; j < len1; j++) {
-      column = ref1[j];
-      this.valuesTable.addColumn(column);
+    ref2 = Schema.FORM_VALUE_COLUMNS;
+    for (k = 0, len2 = ref2.length; k < len2; k++) {
+      column = ref2[k];
+      this.valuesTable.addColumn(column, true);
     }
     this.tables.push(this.formTable);
     this.tables.push(this.valuesTable);
@@ -800,6 +1060,27 @@ Schema = (function() {
     return Schema.DATA_ELEMENTS.indexOf(element.type) >= 0;
   };
 
+  Schema.prototype.systemColumnNameAlias = function(table, column) {
+    var alias;
+    if (!column.system) {
+      return null;
+    }
+    if (table.type === 'form') {
+      alias = Schema.FORM_VIEW_SYSTEM_COLUMNS[column.dataName];
+      if (alias == null) {
+        return null;
+      }
+      return '_' + alias;
+    } else if (table.type === 'repeatable') {
+      alias = Schema.REPEATABLE_VIEW_SYSTEM_COLUMNS[column.dataName];
+      if (alias == null) {
+        return null;
+      }
+      return '_' + alias;
+    }
+    return null;
+  };
+
   Schema.prototype.processElement = function(element, elementTable) {
     switch (element.type) {
       case 'TextField':
@@ -810,9 +1091,14 @@ Schema = (function() {
         }
         break;
       case 'ChoiceField':
-        return this.addStringElement(elementTable, element);
+        if (element.multiple) {
+          return this.addArrayElement(elementTable, element);
+        } else {
+          return this.addStringElement(elementTable, element);
+        }
+        break;
       case 'ClassificationField':
-        return this.addStringElement(elementTable, element);
+        return this.addArrayElement(elementTable, element);
       case 'YesNoField':
         return this.addStringElement(elementTable, element);
       case 'PhotoField':
@@ -844,7 +1130,7 @@ Schema = (function() {
       case 'HyperlinkField':
         return this.addStringElement(elementTable, element);
       case 'RecordLinkField':
-        return this.addStringElement(elementTable, element);
+        return this.addArrayElement(elementTable, element);
       case 'CalculatedField':
         switch (element.display.style) {
           case 'number':
@@ -885,6 +1171,13 @@ Schema = (function() {
     return this.addElement(table, element, 'integer', suffix);
   };
 
+  Schema.prototype.addArrayElement = function(table, element, suffix) {
+    if (suffix == null) {
+      suffix = '';
+    }
+    return this.addElement(table, element, 'array', suffix);
+  };
+
   Schema.prototype.addElement = function(table, element, type, suffix) {
     var column;
     if (suffix == null) {
@@ -903,57 +1196,31 @@ Schema = (function() {
   };
 
   Schema.prototype.addMediaElement = function(table, element) {
-    return this.addStringElement(table, element);
+    this.addArrayElement(table, element);
+    if (this.options.mediaCaptions) {
+      return this.addArrayElement(table, element, 'captions');
+    }
   };
 
   Schema.prototype.addRepeatableElement = function(element) {
-    var childElements, elements, repeatableTable;
+    var attrs, childElements, column, elements, i, j, len, len1, ref, ref1, repeatableTable;
     repeatableTable = new Table(this.formTable.id + '_' + element.key, this.formTable.name + '_' + element.key, 'repeatable');
-    repeatableTable.addColumn({
-      name: 'id',
-      type: 'pk'
-    });
-    repeatableTable.addColumn({
-      id: element.key + '_record_id',
-      name: 'record_id',
-      type: 'integer',
-      "null": false
-    });
-    repeatableTable.addColumn({
-      id: element.key + '_record_resource_id',
-      name: 'record_resource_id',
-      type: 'string',
-      "null": false
-    });
-    repeatableTable.addColumn({
-      id: element.key + '_resource_id',
-      name: 'resource_id',
-      type: 'string',
-      "null": false
-    });
-    repeatableTable.addColumn({
-      id: element.key + '_parent_resource_id',
-      name: 'parent_resource_id',
-      type: 'string'
-    });
-    repeatableTable.addColumn({
-      name: 'latitude',
-      type: 'double'
-    });
-    repeatableTable.addColumn({
-      name: 'longitude',
-      type: 'double'
-    });
-    repeatableTable.addColumn({
-      name: 'created_at',
-      type: 'date',
-      "null": false
-    });
-    repeatableTable.addColumn({
-      name: 'updated_at',
-      type: 'date',
-      "null": false
-    });
+    ref = Schema.REPEATABLE_COLUMNS;
+    for (i = 0, len = ref.length; i < len; i++) {
+      column = ref[i];
+      attrs = _.clone(column);
+      attrs.id = element.key + '_' + column.name;
+      repeatableTable.addColumn(attrs, true);
+    }
+    if (this.options.full) {
+      ref1 = Schema.REPEATABLE_COLUMNS_FULL;
+      for (j = 0, len1 = ref1.length; j < len1; j++) {
+        column = ref1[j];
+        attrs = _.clone(column);
+        attrs.id = element.key + '_' + column.name;
+        repeatableTable.addColumn(attrs, true);
+      }
+    }
     this.tables.push(repeatableTable);
     elements = Utils.flattenElements(element.elements, false);
     childElements = this.elementsForSchema(elements);
@@ -968,8 +1235,11 @@ Schema = (function() {
 
 })();
 
-buildSchema = function(json) {
-  return new Schema(json).buildSchema();
+buildSchema = function(json, options) {
+  if (options == null) {
+    options = {};
+  }
+  return new Schema(json, options).buildSchema();
 };
 
 module.exports = buildSchema;
@@ -989,7 +1259,7 @@ Table = (function() {
     this.columns = [];
   }
 
-  Table.prototype.addColumn = function(opts) {
+  Table.prototype.addColumn = function(opts, system) {
     var column, hasParameters;
     if (opts.id == null) {
       opts.id = opts.name;
@@ -1003,11 +1273,14 @@ Table = (function() {
     if (opts["null"] == null) {
       opts["null"] = true;
     }
+    if (opts.system == null) {
+      opts.system = !!system;
+    }
     hasParameters = opts.id && opts.name && opts.type && opts.dataName;
     if (!hasParameters) {
       throw new Error('must provide id, name, type and dataName parameters');
     }
-    column = new Column(opts.id, opts.name, opts.type, opts.dataName, opts["null"]);
+    column = new Column(opts.id, opts.name, opts.type, opts.dataName, opts["null"], opts.system);
     return this.columns.push(column);
   };
 
@@ -2733,18 +3006,26 @@ instance.compareForms = function() {
   var diff, err, generator, newSchema, oldSchema, schemaDiff;
   try {
     if (instance.oldForm) {
-      oldSchema = Schema(instance.oldForm);
+      oldSchema = Schema(instance.oldForm, {
+        full: true,
+        mediaCaptions: true
+      });
     } else {
       oldSchema = null;
     }
     if (instance.newForm) {
-      newSchema = Schema(instance.newForm);
+      newSchema = Schema(instance.newForm, {
+        full: true,
+        mediaCaptions: true
+      });
     } else {
       newSchema = null;
     }
     schemaDiff = new SchemaDiff(oldSchema, newSchema);
     diff = schemaDiff.diff();
-    generator = new PostgresSchemaGenerator(diff, newSchema);
+    generator = new PostgresSchemaGenerator(diff, schemaDiff, {
+      enableViews: true
+    });
     generator.tableSchema = instance.schema;
     return generator.generate();
   } catch (_error) {
