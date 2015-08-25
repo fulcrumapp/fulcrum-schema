@@ -24,7 +24,7 @@ class Schema
 
   prefix: 'f'
 
-  constructor: (@form) ->
+  constructor: (@form, @options={}) ->
     @elements = Utils.flattenElements(@form.elements, false)
     @schemaElements = @elementsForSchema(@elements)
 
@@ -40,8 +40,27 @@ class Schema
     { name: 'status',             type: 'string' }
     { name: 'latitude',           type: 'double' }
     { name: 'longitude',          type: 'double' }
-    { name: 'created_at',         type: 'date',    null: false }
-    { name: 'updated_at',         type: 'date',    null: false }
+    { name: 'created_at',         type: 'timestamp', null: false }
+    { name: 'updated_at',         type: 'timestamp', null: false }
+  ]
+
+  @FORM_SYSTEM_COLUMNS_FULL: [
+    { name: 'version',             type: 'integer',   null: false }
+    { name: 'created_by_id',       type: 'integer',   null: false }
+    { name: 'updated_by_id',       type: 'integer',   null: false }
+    { name: 'server_created_at',   type: 'timestamp', null: false }
+    { name: 'server_updated_at',   type: 'timestamp', null: false }
+    { name: 'record_index_text',   type: 'string' }
+    { name: 'record_index',        type: 'fts' }
+    { name: 'geometry',            type: 'geometry' }
+    { name: 'altitude',            type: 'double' }
+    { name: 'speed',               type: 'double' }
+    { name: 'course',              type: 'double' }
+    { name: 'horizontal_accuracy', type: 'double' }
+    { name: 'vertical_accuracy',   type: 'double' }
+    { name: 'form_values',         type: 'text' }
+    { name: 'changeset_id',        type: 'integer' }
+    { name: 'title',               type: 'string' }
   ]
 
   @FORM_VALUE_COLUMNS: [
@@ -53,19 +72,106 @@ class Schema
     { name: 'number_value',       type: 'double' }
   ]
 
+  # Mapping for system columns to the output view column names
+  @FORM_VIEW_SYSTEM_COLUMNS:
+    record_resource_id:  'id'
+    project_id:          'project_id'
+    assigned_to_id:      'assigned_to_id'
+    status:              'status'
+    latitude:            'latitude'
+    longitude:           'longitude'
+    created_at:          'created_at'
+    updated_at:          'updated_at'
+    version:             'version'
+    created_by_id:       'created_by_id'
+    updated_by_id:       'updated_by_id'
+    server_created_at:   'server_created_at'
+    server_updated_at:   'server_updated_at'
+    record_index_text:   'record_index_text'
+    record_index:        'record_index'
+    geometry:            'geometry'
+    altitude:            'altitude'
+    speed:               'speed'
+    course:              'course'
+    horizontal_accuracy: 'horizontal_accuracy'
+    vertical_accuracy:   'vertical_accuracy'
+    form_values:         'form_values'
+    changeset_id:        'changeset_id'
+    title:               'title'
+
+  # Mapping for system columns to the output view column names
+  @REPEATABLE_VIEW_SYSTEM_COLUMNS:
+    resource_id:         'id'
+    record_resource_id:  'record_id'
+    parent_resource_id:  'parent_id'
+    latitude:            'latitude'
+    longitude:           'longitude'
+    created_at:          'created_at'
+    updated_at:          'updated_at'
+    version:             'version'
+    created_by_id:       'created_by_id'
+    updated_by_id:       'updated_by_id'
+    server_created_at:   'server_created_at'
+    server_updated_at:   'server_updated_at'
+    record_index_text:   'record_index_text'
+    record_index:        'record_index'
+    geometry:            'geometry'
+    altitude:            'altitude'
+    speed:               'speed'
+    course:              'course'
+    horizontal_accuracy: 'horizontal_accuracy'
+    vertical_accuracy:   'vertical_accuracy'
+    form_values:         'form_values'
+    changeset_id:        'changeset_id'
+    title:               'title'
+
+  @REPEATABLE_COLUMNS: [
+    { name: 'id',                 type: 'pk' }
+    { name: 'record_id',          type: 'integer', null: false }
+    { name: 'record_resource_id', type: 'string',  null: false }
+    { name: 'resource_id',        type: 'string',  null: false }
+    { name: 'parent_resource_id', type: 'string' }
+    { name: 'latitude',           type: 'double' }
+    { name: 'longitude',          type: 'double' }
+    { name: 'created_at',         type: 'timestamp', null: false }
+    { name: 'updated_at',         type: 'timestamp', null: false }
+  ]
+
+  @REPEATABLE_COLUMNS_FULL: [
+    { name: 'version',             type: 'integer',   null: false }
+    { name: 'created_by_id',       type: 'integer',   null: false }
+    { name: 'updated_by_id',       type: 'integer',   null: false }
+    { name: 'server_created_at',   type: 'timestamp', null: false }
+    { name: 'server_updated_at',   type: 'timestamp', null: false }
+    { name: 'record_index_text',   type: 'string' }
+    { name: 'record_index',        type: 'fts' }
+    { name: 'geometry',            type: 'geometry' }
+    { name: 'altitude',            type: 'double' }
+    { name: 'speed',               type: 'double' }
+    { name: 'course',              type: 'double' }
+    { name: 'horizontal_accuracy', type: 'double' }
+    { name: 'vertical_accuracy',   type: 'double' }
+    { name: 'form_values',         type: 'text' }
+    { name: 'changeset_id',        type: 'integer' }
+    { name: 'title',               type: 'string' }
+  ]
+
   buildSchema: ->
     @tables = []
 
     @formTable = new Table("form_#{@form.id}", "form_#{@form.id}", 'form')
 
     for column in Schema.FORM_SYSTEM_COLUMNS
-      @formTable.addColumn(column)
+      @formTable.addColumn(column, true)
+
+    if @options.full
+      for column in Schema.FORM_SYSTEM_COLUMNS_FULL
+        @formTable.addColumn(column, true)
 
     @valuesTable = new Table("form_#{@form.id}_values", "form_#{@form.id}_values", 'values')
 
     for column in Schema.FORM_VALUE_COLUMNS
-      @valuesTable.addColumn(column)
-
+      @valuesTable.addColumn(column, true)
 
     @tables.push(@formTable)
     @tables.push(@valuesTable)
@@ -81,6 +187,24 @@ class Schema
   isDataElement: (element) ->
     Schema.DATA_ELEMENTS.indexOf(element.type) >= 0
 
+  systemColumnNameAlias: (table, column) ->
+    return null unless column.system
+
+    if table.type is 'form'
+      alias = Schema.FORM_VIEW_SYSTEM_COLUMNS[column.dataName]
+
+      return null unless alias?
+
+      return '_' + alias
+    else if table.type is 'repeatable'
+      alias = Schema.REPEATABLE_VIEW_SYSTEM_COLUMNS[column.dataName]
+
+      return null unless alias?
+
+      return '_' + alias
+
+    return null
+
   processElement: (element, elementTable) ->
     switch element.type
       when 'TextField'
@@ -90,10 +214,13 @@ class Schema
           @addStringElement(elementTable, element)
 
       when 'ChoiceField'
-        @addStringElement(elementTable, element)
+        if element.multiple
+          @addArrayElement(elementTable, element)
+        else
+          @addStringElement(elementTable, element)
 
       when 'ClassificationField'
-        @addStringElement(elementTable, element)
+        @addArrayElement(elementTable, element)
 
       when 'YesNoField'
         @addStringElement(elementTable, element)
@@ -132,7 +259,7 @@ class Schema
         @addStringElement(elementTable, element)
 
       when 'RecordLinkField'
-        @addStringElement(elementTable, element)
+        @addArrayElement(elementTable, element)
 
       when 'CalculatedField'
         switch element.display.style
@@ -153,6 +280,9 @@ class Schema
   addIntegerElement: (table, element, suffix='') ->
     @addElement(table, element, 'integer', suffix)
 
+  addArrayElement: (table, element, suffix='') ->
+    @addElement(table, element, 'array', suffix)
+
   addElement: (table, element, type, suffix='') ->
     suffix = '_' + suffix if suffix
 
@@ -165,19 +295,23 @@ class Schema
     table.addColumn(column)
 
   addMediaElement: (table, element) ->
-    @addStringElement(table, element)
+    @addArrayElement(table, element)
+    if @options.mediaCaptions
+      @addArrayElement(table, element, 'captions')
 
   addRepeatableElement: (element) ->
     repeatableTable = new Table(@formTable.id + '_' + element.key, @formTable.name + '_' + element.key, 'repeatable')
-    repeatableTable.addColumn(name: 'id', type: 'pk')
-    repeatableTable.addColumn(id: element.key + '_record_id',          name: 'record_id',          type: 'integer', null: false)
-    repeatableTable.addColumn(id: element.key + '_record_resource_id', name: 'record_resource_id', type: 'string',  null: false)
-    repeatableTable.addColumn(id: element.key + '_resource_id',        name: 'resource_id',        type: 'string',  null: false)
-    repeatableTable.addColumn(id: element.key + '_parent_resource_id', name: 'parent_resource_id', type: 'string')
-    repeatableTable.addColumn(name: 'latitude',   type: 'double')
-    repeatableTable.addColumn(name: 'longitude',  type: 'double')
-    repeatableTable.addColumn(name: 'created_at', type: 'date', null: false)
-    repeatableTable.addColumn(name: 'updated_at', type: 'date', null: false)
+
+    for column in Schema.REPEATABLE_COLUMNS
+      attrs = _.clone(column)
+      attrs.id = element.key + '_' + column.name
+      repeatableTable.addColumn(attrs, true)
+
+    if @options.full
+      for column in Schema.REPEATABLE_COLUMNS_FULL
+        attrs = _.clone(column)
+        attrs.id = element.key + '_' + column.name
+        repeatableTable.addColumn(attrs, true)
 
     @tables.push(repeatableTable)
 
@@ -187,7 +321,7 @@ class Schema
     childElements.forEach (childElement) =>
       @processElement(childElement, repeatableTable)
 
-buildSchema = (json) ->
-  new Schema(json).buildSchema()
+buildSchema = (json, options={}) ->
+  new Schema(json, options).buildSchema()
 
 module.exports = buildSchema

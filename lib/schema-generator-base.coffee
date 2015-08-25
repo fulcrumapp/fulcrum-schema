@@ -57,7 +57,22 @@ class SchemaGeneratorBase extends SchemaGenerator
     _.map table.columns, (column) -> column.name
 
   projectionForView: (table) ->
-    _.map table.columns, (column) => "#{@escape(column.name)} AS #{@escape(column.dataName)}"
+    definitions = []
+    columnNames = {}
+
+    for column in table.columns
+      alias = column.dataName.substring(0, 63)
+
+      if column.system
+        alias = @schemaDiff.new.systemColumnNameAlias(table, column)
+
+        continue unless alias?
+
+      unless columnNames[alias]
+        definitions.push("#{@escape(column.name)} AS #{@escape(alias)}")
+        columnNames[alias] = column
+
+    definitions
 
   mappingForTables: (oldTable, newTable) ->
     mappings = []
@@ -162,8 +177,8 @@ class SchemaGeneratorBase extends SchemaGenerator
       if change.options.newTable and change.options.newTable.type isnt 'values' and not _.contains(views, change.options.newTable.name)
         views.push(change.options.newTable.id)
 
-    if @newSchema
-      for table in @newSchema.tables
+    if @schemaDiff.new
+      for table in @schemaDiff.new.tables
         if _.contains(views, table.id)
           changes.push(new SchemaChange('drop-view', oldTable: table))
           changes.push(new SchemaChange('create-view', newTable: table))
@@ -175,11 +190,21 @@ class SchemaGeneratorBase extends SchemaGenerator
           when 'form'
             changes.push(new SchemaChange('create-index', newTable: change.options.newTable, columns: ['record_id']))
             changes.push(new SchemaChange('create-index', newTable: change.options.newTable, columns: ['record_resource_id']))
+
+            if @schemaDiff.new.options.full
+              changes.push(new SchemaChange('create-index', newTable: change.options.newTable, columns: ['geometry'], type: 'gist'))
+              changes.push(new SchemaChange('create-index', newTable: change.options.newTable, columns: ['record_index'], type: 'gin'))
+
           when 'repeatable'
             changes.push(new SchemaChange('create-index', newTable: change.options.newTable, columns: ['record_id']))
             changes.push(new SchemaChange('create-index', newTable: change.options.newTable, columns: ['record_resource_id']))
             changes.push(new SchemaChange('create-index', newTable: change.options.newTable, columns: ['resource_id']))
             changes.push(new SchemaChange('create-index', newTable: change.options.newTable, columns: ['parent_resource_id']))
+
+            if @schemaDiff.new.options.full
+              changes.push(new SchemaChange('create-index', newTable: change.options.newTable, columns: ['geometry'], type: 'gist'))
+              changes.push(new SchemaChange('create-index', newTable: change.options.newTable, columns: ['record_index'], type: 'gin'))
+
           when 'values'
             changes.push(new SchemaChange('create-index', newTable: change.options.newTable, columns: ['record_id']))
             changes.push(new SchemaChange('create-index', newTable: change.options.newTable, columns: ['parent_resource_id']))

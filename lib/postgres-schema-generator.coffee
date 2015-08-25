@@ -4,11 +4,15 @@ SchemaGeneratorBase = require './schema-generator-base'
 class PostgresSchemaGenerator extends SchemaGeneratorBase
   typeForColumn: (column) ->
     @types ||=
-      pk: 'bigserial NOT NULL'
-      string:  'text'
-      integer: 'bigint'
-      date:    'float'
-      double:  'float'
+      pk:        'bigserial NOT NULL'
+      string:    'text'
+      integer:   'bigint'
+      date:      'float'
+      double:    'float'
+      timestamp: 'timestamp without time zone'
+      geometry:  'geometry(Geometry, 4326)'
+      array:     'text[]'
+      fts:       'tsvector'
 
     @types[column.type] or 'text'
 
@@ -19,7 +23,8 @@ class PostgresSchemaGenerator extends SchemaGeneratorBase
     "convert_to_float(#{columnName})"
 
   createIndex: (change) ->
-    "CREATE INDEX #{@indexName(change.options.newTable, change.options.columns)} ON #{@tableName(change.options.newTable)} (#{change.options.columns.join(', ')});"
+    type = change.options.type or 'btree'
+    "CREATE INDEX #{@indexName(change.options.newTable, change.options.columns)} ON #{@tableName(change.options.newTable)} USING #{type} (#{change.options.columns.join(', ')});"
 
   createView: (change) ->
     """

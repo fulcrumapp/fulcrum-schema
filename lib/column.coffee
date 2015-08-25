@@ -1,6 +1,6 @@
 
 class Column
-  constructor: (@id, @name, @type, @dataName, @null) ->
+  constructor: (@id, @name, @type, @dataName, @null, @system) ->
 
   isEqualTo: (column) ->
     @id is column.id and @name is column.name and @type is column.type and @null is column.null

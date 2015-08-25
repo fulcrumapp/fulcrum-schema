@@ -23,7 +23,7 @@ instance.compareForms = ->
 
   diff = schemaDiff.diff()
 
-  generator = new SqliteSchemaGenerator(diff, newSchema)
+  generator = new SqliteSchemaGenerator(diff, schemaDiff)
   generator.tablePrefix = instance.prefix
 
   generator.generate()

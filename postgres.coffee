@@ -11,12 +11,12 @@ instance.schema = null
 instance.compareForms = ->
   try
     if instance.oldForm
-      oldSchema = Schema(instance.oldForm)
+      oldSchema = Schema(instance.oldForm, full: true, mediaCaptions: true)
     else
       oldSchema = null
 
     if instance.newForm
-      newSchema = Schema(instance.newForm)
+      newSchema = Schema(instance.newForm, full: true, mediaCaptions: true)
     else
       newSchema = null
 
@@ -24,7 +24,7 @@ instance.compareForms = ->
 
     diff = schemaDiff.diff()
 
-    generator = new PostgresSchemaGenerator(diff, newSchema)
+    generator = new PostgresSchemaGenerator(diff, schemaDiff, enableViews: true)
     generator.tableSchema = instance.schema
 
     generator.generate()

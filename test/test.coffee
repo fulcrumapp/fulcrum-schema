@@ -44,8 +44,8 @@ dumpScript = (scripts) ->
 
 describe 'SqliteSchemaGenerator', ->
   it 'builds a schema diff from a form', ->
-    oldSchema = buildSchema(form)
-    newSchema = buildSchema(newForm)
+    oldSchema = buildSchema(form, full: true, mediaCaptions: true)
+    newSchema = buildSchema(newForm, full: true, mediaCaptions: true)
 
     # schemaDiff = new SchemaDiff(null, oldSchema)
     # diff = schemaDiff.diff()
@@ -56,7 +56,7 @@ describe 'SqliteSchemaGenerator', ->
 
     schemaDiff = new SchemaDiff(oldSchema, newSchema)
     diff = schemaDiff.diff()
-    sqlite = new SqliteSchemaGenerator(diff, newSchema)
+    sqlite = new SqliteSchemaGenerator(diff, schemaDiff, enableViews: true)
     sqlite.tableSchema = 'org_1'
     # sqlite.tablePrefix = 'account_1_'
     sql = sqlite.generate()

@@ -4,11 +4,13 @@ SchemaGeneratorBase = require './schema-generator-base'
 class SqliteSchemaGenerator extends SchemaGeneratorBase
   typeForColumn: (column) ->
     @types ||=
-      pk: 'INTEGER PRIMARY KEY AUTOINCREMENT'
-      string:  'TEXT'
-      integer: 'INTEGER'
-      date:    'REAL'
-      double:  'REAL'
+      pk:        'INTEGER PRIMARY KEY AUTOINCREMENT'
+      string:    'TEXT'
+      integer:   'INTEGER'
+      date:      'REAL'
+      double:    'REAL'
+      array:     'TEXT'
+      timestamp: 'REAL'
 
     @types[column.type] or 'TEXT'
 

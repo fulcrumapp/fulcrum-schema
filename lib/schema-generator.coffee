@@ -1,7 +1,7 @@
 _ = require 'underscore'
 
 class SchemaGenerator
-  constructor: (@changes, @newSchema, @options={}) ->
+  constructor: (@changes, @schemaDiff, @options={}) ->
 
   transform: ->
     @changes
