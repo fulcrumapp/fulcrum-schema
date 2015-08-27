@@ -26,6 +26,9 @@ class PostgresSchemaGenerator extends SchemaGeneratorBase
     type = change.options.type or 'btree'
     "CREATE INDEX #{@indexName(change.options.newTable, change.options.columns)} ON #{@tableName(change.options.newTable)} USING #{type} (#{change.options.columns.join(', ')});"
 
+  dropTable: (change) ->
+    "DROP TABLE IF EXISTS #{@escapedSchema()}#{@escape(@tablePrefix + change.options.oldTable.name)} CASCADE;"
+
   createView: (change) ->
     """
     CREATE OR REPLACE VIEW #{@viewName(change.options.newTable)}

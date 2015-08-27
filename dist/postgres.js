@@ -68,6 +68,10 @@ PostgresSchemaGenerator = (function(superClass) {
     return "CREATE INDEX " + (this.indexName(change.options.newTable, change.options.columns)) + " ON " + (this.tableName(change.options.newTable)) + " USING " + type + " (" + (change.options.columns.join(', ')) + ");";
   };
 
+  PostgresSchemaGenerator.prototype.dropTable = function(change) {
+    return "DROP TABLE IF EXISTS " + (this.escapedSchema()) + (this.escape(this.tablePrefix + change.options.oldTable.name)) + " CASCADE;";
+  };
+
   PostgresSchemaGenerator.prototype.createView = function(change) {
     return "CREATE OR REPLACE VIEW " + (this.viewName(change.options.newTable)) + "\nAS SELECT\n  " + (this.projectionForView(change.options.newTable)) + "\nFROM\n  " + (this.tableName(change.options.newTable)) + ";";
   };
