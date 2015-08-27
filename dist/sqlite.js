@@ -292,7 +292,7 @@ SchemaGeneratorBase = (function(superClass) {
     if (!(identifier && identifier.length !== 0)) {
       return '';
     }
-    return "\"" + identifier + "\"";
+    return "\"" + (identifier.replace(/"/g, '""')) + "\"";
   };
 
   SchemaGeneratorBase.prototype.columnDefinition = function(column) {

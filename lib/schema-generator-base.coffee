@@ -39,7 +39,7 @@ class SchemaGeneratorBase extends SchemaGenerator
 
   escape: (identifier) ->
     return '' unless identifier and identifier.length isnt 0
-    "\"#{identifier}\""
+    "\"#{identifier.replace(/"/g, '""')}\""
 
   columnDefinition: (column) =>
     "#{@escape(column.name)} #{@typeForColumn(column)}#{@columnModifiers(column)}"
