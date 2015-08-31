@@ -136,12 +136,15 @@ class SchemaGeneratorBase extends SchemaGenerator
                 SELECT #{oldColumns.join(', ')} FROM #{fullOldTableName};")
     parts.push("ALTER TABLE #{fullOldTableName} RENAME TO #{@escape(@tablePrefix + oldTemporaryTableName)};")
     parts.push("ALTER TABLE #{fullNewTempTableName} RENAME TO #{@escape(@tablePrefix + newTableName)};")
-    parts.push("DROP TABLE #{fullOldTempTableName};")
+    parts.push(@_dropTable(fullOldTempTableName))
 
     parts
 
+  _dropTable: (name) ->
+    "DROP TABLE IF EXISTS #{name};"
+
   dropTable: (change) ->
-    "DROP TABLE IF EXISTS #{@escapedSchema()}#{@escape(@tablePrefix + change.options.oldTable.name)};"
+    @_dropTable(@escapedSchema() + @escape(@tablePrefix + change.options.oldTable.name))
 
   addColumn: (change) ->
     "ALTER TABLE #{@escapedSchema()}#{@escape(@tablePrefix + change.options.newTable.name)} ADD COLUMN #{@columnDefinition(change.options.column)};"

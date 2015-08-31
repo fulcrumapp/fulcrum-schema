@@ -417,12 +417,16 @@ SchemaGeneratorBase = (function(superClass) {
     parts.push("INSERT INTO " + fullNewTempTableName + " (" + (newColumns.join(', ')) + ") SELECT " + (oldColumns.join(', ')) + " FROM " + fullOldTableName + ";");
     parts.push("ALTER TABLE " + fullOldTableName + " RENAME TO " + (this.escape(this.tablePrefix + oldTemporaryTableName)) + ";");
     parts.push("ALTER TABLE " + fullNewTempTableName + " RENAME TO " + (this.escape(this.tablePrefix + newTableName)) + ";");
-    parts.push("DROP TABLE " + fullOldTempTableName + ";");
+    parts.push(this._dropTable(fullOldTempTableName));
     return parts;
   };
 
+  SchemaGeneratorBase.prototype._dropTable = function(name) {
+    return "DROP TABLE IF EXISTS " + name + ";";
+  };
+
   SchemaGeneratorBase.prototype.dropTable = function(change) {
-    return "DROP TABLE IF EXISTS " + (this.escapedSchema()) + (this.escape(this.tablePrefix + change.options.oldTable.name)) + ";";
+    return this._dropTable(this.escapedSchema() + this.escape(this.tablePrefix + change.options.oldTable.name));
   };
 
   SchemaGeneratorBase.prototype.addColumn = function(change) {
