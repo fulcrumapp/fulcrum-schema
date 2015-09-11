@@ -160,7 +160,7 @@ SchemaDiff = (function() {
         for (newIndex = k = 0, len2 = ref4.length; k < len2; newIndex = ++k) {
           newColumn = ref4[newIndex];
           if (oldColumn.id === newColumn.id) {
-            if (oldIndex !== newIndex) {
+            if (oldIndex !== newIndex || !newColumn.isEqualTo(oldColumn)) {
               if (!_.contains(recreatedTableIdentifiers, pair["new"].id)) {
                 this.changes.push(new SchemaChange('recreate-table', {
                   oldTable: pair.old,

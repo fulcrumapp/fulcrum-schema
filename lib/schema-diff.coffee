@@ -63,7 +63,7 @@ class SchemaDiff
         for newColumn, newIndex in (pair.new?.columns or [])
           if oldColumn.id is newColumn.id
             # the column still exists, but something could've changed about it
-            if oldIndex isnt newIndex
+            if oldIndex isnt newIndex or not newColumn.isEqualTo(oldColumn)
               # column reordering requires rebuilding the entire table, 1 per table
               unless _.contains(recreatedTableIdentifiers, pair.new.id)
                 @changes.push(new SchemaChange('recreate-table', oldTable: pair.old, newTable: pair.new))
