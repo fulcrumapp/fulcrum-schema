@@ -68,29 +68,29 @@ function generateSqlite(differ) {
   return gen.generate().join('\n').trim();
 }
 
-// describe('form schema generator', () => {
-//   it('builds a schema diff from a form', () => {
-//     const oldSchema = null;
-//     const newSchema = new Schema(newForm, V2, null);
+describe('form schema generator', () => {
+  it('builds a schema diff from a form', () => {
+    const oldSchema = null;
+    const newSchema = new Schema(newForm, V2, null);
 
-//     const differ = new SchemaDiffer(oldSchema, newSchema);
+    const differ = new SchemaDiffer(oldSchema, newSchema);
 
-//     const pg = generatePostgres(differ);
+    const pg = generatePostgres(differ);
 
-//     dumpScript(pg);
+    dumpScript(pg);
 
-//     // const clean = new SchemaDiffer(newSchema, null);
-//     // const differ = new SchemaDiffer(null, newSchema);
+    // const clean = new SchemaDiffer(newSchema, null);
+    // const differ = new SchemaDiffer(null, newSchema);
 
-//     // const cleanPG = generatePostgres(clean);
-//     // const createPG = generatePostgres(differ);
+    // const cleanPG = generatePostgres(clean);
+    // const createPG = generatePostgres(differ);
 
-//     // dumpScript(cleanPG);
-//     // dumpScript(createPG);
+    // dumpScript(cleanPG);
+    // dumpScript(createPG);
 
-//     'yo'.should.eql('');
-//   });
-// });
+    'yo'.should.eql('');
+  });
+});
 
 describe('organization schema generator', () => {
   it('builds the organization schema', () => {

@@ -14,7 +14,7 @@
     "test": "npm run lint && node_modules/.bin/mocha ./test/setup.js test/test.js",
     "prepublish": "npm run lint && npm run clean && npm run build",
     "lint": "node_modules/.bin/eslint src",
-    "build": "node_modules/.bin/babel src --out-dir dist --source-maps",
+    "build": "node_modules/.bin/babel src --out-dir dist --source-maps && browserify dist/postgres.js > dist/postgres.min.js --mangle",
     "clean": "rm -rf dist"
   },
   "author": "Zac McCormick <zac.mccormick@gmail.com> (http://github.com/zhm)",
@@ -25,6 +25,7 @@
     "underscore": "^1.7.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.3.17",
     "babel-core": "^6.3.26",
     "babel-preset-es2015-node5": "^1.1.1",
     "babel-preset-stage-3": "^6.3.13",
