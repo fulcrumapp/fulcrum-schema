@@ -411,8 +411,7 @@ Schema.systemFormsTable = [{
   allowNull: false
 }, {
   name: 'geometry_types',
-  type: 'array',
-  allowNull: false
+  type: 'array'
 }, {
   name: 'geometry_required',
   type: 'boolean',
