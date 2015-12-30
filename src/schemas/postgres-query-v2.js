@@ -116,6 +116,9 @@ Schema.systemValuesTableColumns = [
     type: 'integer',
     allowNull: false
   }, {
+    name: 'record_resource_id',
+    type: 'string'
+  }, {
     name: 'parent_resource_id',
     type: 'string'
   }, {
@@ -1094,6 +1097,13 @@ Schema.systemRepeatableViewColumns = {
   geometry: 'geometry',
   changeset_resource_id: 'changeset_id',
   title: 'title'
+};
+
+Schema.systemValuesViewColumns = {
+  record_resource_id: 'record_id',
+  parent_resource_id: 'parent_id',
+  key: 'key',
+  text_value: 'text_value'
 };
 
 Schema.organizationViews = {};

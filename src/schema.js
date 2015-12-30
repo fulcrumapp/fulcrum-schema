@@ -97,11 +97,6 @@ export default class Schema {
     this.viewColumns = {};
 
     for (const table of this.tables) {
-      if (table.type === 'values') {
-        // skip value table for now
-        continue;
-      }
-
       const view = new View(table.name + '_view', null, table);
 
       const columnNames = {};
@@ -131,7 +126,15 @@ export default class Schema {
         name = this.columns.systemFormViewColumns[column.name];
       } else if (table.type === 'repeatable') {
         name = this.columns.systemRepeatableViewColumns[column.name];
+      } else if (table.type === 'values') {
+        name = this.columns.systemValuesViewColumns[column.name];
       }
+
+      if (name == null) {
+        return null;
+      }
+
+      name = '_' + name;
     } else if (column.element) {
       name = column.element.data_name + (column.suffix || '');
     }
