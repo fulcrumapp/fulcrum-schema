@@ -18,8 +18,8 @@ if not android and not ios and not web and not site
 
    process.exit(1)
 
-sqlitejs = './dist/sqlite.js'
-postgresjs = './dist/postgres.js'
+sqlitejs = './dist/sqlite.min.js'
+postgresjs = './dist/postgres.min.js'
 
 copyFile = (src, dest) ->
   console.log "Copying #{src} to #{dest}"
@@ -32,5 +32,5 @@ copyFile = (src, dest) ->
 #   copyFile(sqlitejs, path.join(ios, 'Fulcrum', 'Resources', 'sqlite.js'))
 
 if web
-  copyFile(sqlitejs, path.join(web, 'public', 'resources', 'sqlite.js'))
+  # copyFile(sqlitejs, path.join(web, 'public', 'resources', 'sqlite.js'))
   copyFile(postgresjs, path.join(web, 'public', 'resources', 'postgres.js'))
