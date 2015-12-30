@@ -1,105 +1,162 @@
 import _ from 'underscore';
 import Utils from './utils';
-import Table from './table';
-import FulcrumColumns from './fulcrum-columns';
+import sqldiff from 'sqldiff';
+import {format} from 'util';
+import DataElements from './data-elements';
 
-const DATA_ELEMENTS = [
-  'TextField',
-  'ChoiceField',
-  'ClassificationField',
-  'YesNoField',
-  'PhotoField',
-  'VideoField',
-  'AudioField',
-  'SignatureField',
-  'BarcodeField',
-  'DateTimeField',
-  'TimeField',
-  'Repeatable',
-  'AddressField',
-  'HyperlinkField',
-  'CalculatedField',
-  'RecordLinkField'
-];
+const {Table, View} = sqldiff;
 
 export default class Schema {
-  constructor(form, options) {
+  constructor(form, columns, options) {
     this.prefix = 'f';
     this.form = form;
-    this.options = options != null ? options : {};
+    this.columns = columns;
+    this.options = options || {};
     this.elements = Utils.flattenElements(this.form.elements, false);
-    this.schemaElements = this.elementsForSchema(this.elements);
-  }
-
-  generateTableName(object) {
-    return object.name || object.data_name;
+    this.schemaElements = DataElements.find(this.elements);
+    this.buildSchema();
   }
 
   buildSchema() {
     this.tables = [];
+    this.views = [];
 
-    this.formTable = new Table('form_' + this.form.id, 'form_' + this.form.id, 'form');
-
-    for (const column of FulcrumColumns.FORM_SYSTEM_COLUMNS) {
-      this.formTable.addColumn(column, true);
-    }
-
-    if (this.options.full) {
-      for (const column of FulcrumColumns.FORM_SYSTEM_COLUMNS_FULL) {
-        this.formTable.addColumn(column, true);
-      }
-    }
-
-    this.valuesTable = new Table('form_' + this.form.id + '_values', 'form_' + this.form.id + '_values', 'values');
-
-    for (const column of FulcrumColumns.FORM_VALUE_COLUMNS) {
-      this.valuesTable.addColumn(column, true);
-    }
+    this.formTable = this.buildFormTable();
+    this.valuesTable = this.buildValuesTable();
 
     this.tables.push(this.formTable);
     this.tables.push(this.valuesTable);
 
+    this.buildDataColumns();
+    this.buildViews();
+  }
+
+  alias(part) {
+    if (part) {
+      return this.form.name + '/' + part;
+    }
+    return this.form.name;
+  }
+
+  buildFormTable() {
+    const table = new Table(format('form_%s', this.form.row_id),
+                            null,
+                            {type: 'form', alias: this.alias(), form_id: this.form.id});
+
+    for (const column of this.columns.systemFormTableColumns) {
+      const formColumn = _.clone(column);
+
+      formColumn.system = true;
+
+      table.addColumn(formColumn);
+    }
+
+    return table;
+  }
+
+  buildValuesTable() {
+    const table = new Table(format('form_%s_values', this.form.id),
+                            null,
+                            {type: 'values', alias: this.alias('values'), form_id: this.form.id});
+
+    for (const column of this.columns.systemValuesTableColumns) {
+      const valueColumn = _.clone(column);
+
+      valueColumn.system = true;
+
+      table.addColumn(valueColumn);
+    }
+
+    return table;
+  }
+
+  buildRepeatableTable(parentTable, element) {
+    const table = new Table(this.formTable.id + '_' + element.key,
+                            null,
+                            {type: 'repeatable', parent: parentTable, alias: this.alias(element.data_name), form_id: this.form.id});
+
+    for (const column of this.columns.systemRepeatableTableColumns) {
+      const attrs = _.clone(column);
+
+      attrs.id = element.key + '_' + column.name;
+      attrs.system = true;
+
+      table.addColumn(attrs);
+    }
+
+    return table;
+  }
+
+  buildDataColumns() {
     for (const element of this.schemaElements) {
       this.processElement(element, this.formTable);
     }
-
-    return this;
   }
 
-  elementsForSchema(elements) {
-    return _.select(elements, this.isDataElement);
-  }
+  buildViews() {
+    this.viewColumns = {};
 
-  isDataElement(element) {
-    return DATA_ELEMENTS.indexOf(element.type) >= 0;
-  }
+    for (const table of this.tables) {
+      const view = new View(table.name + '_view', null, table);
 
-  systemColumnNameAlias(table, column) {
-    let alias = null;
+      const columnNames = {};
 
-    if (!column.system) {
-      return null;
-    }
+      for (const column of table.columns) {
+        let alias = this.viewColumnName(table, column);
 
-    if (table.type === 'form') {
-      alias = FulcrumColumns.FORM_VIEW_SYSTEM_COLUMNS[column.dataName];
+        if (alias == null) {
+          continue;
+        }
 
-      if (alias == null) {
-        return null;
+        if (!columnNames[alias]) {
+          view.addColumn({column: column, alias: alias});
+          columnNames[alias] = column;
+        }
       }
 
-      return '_' + alias;
-    } else if (table.type === 'repeatable') {
-      alias = FulcrumColumns.REPEATABLE_VIEW_SYSTEM_COLUMNS[column.dataName];
+      this.views.push(view);
+    }
+  }
 
-      if (alias == null) {
-        return null;
+  viewColumnName(table, column) {
+    let name = null;
+
+    if (column.system) {
+      if (table.type === 'form') {
+        name = this.columns.systemFormViewColumns[column.name];
+      } else if (table.type === 'repeatable') {
+        name = this.columns.systemRepeatableViewColumns[column.name];
       }
-
-      return '_' + alias;
+    } else if (column.element) {
+      name = column.element.data_name + (column.suffix || '');
     }
 
-    return null;
+    if (name) {
+      // dedupe any columns
+      name = this.launderViewColumnName(table, column, name);
+    }
+
+    return name;
+  }
+
+  launderViewColumnName(table, column, name) {
+    const views = this.viewColumns;
+
+    views[table.name] = views[table.name] || {};
+
+    let count = 1;
+
+    let rawName = name.substring(0, 63);
+    let newName = rawName;
+
+    while (views[table.name][newName]) {
+      newName = rawName.substring(0, 63 - (count.toString().length)) + count;
+      count++;
+    }
+
+    views[table.name][newName] = column;
+
+    return newName;
   }
 
   processElement(element, elementTable) {
@@ -153,7 +210,7 @@ export default class Schema {
         break;
 
       case 'Repeatable':
-        this.addRepeatableElement(element);
+        this.addRepeatableElement(elementTable, element);
         break;
 
       case 'AddressField':
@@ -243,57 +300,33 @@ export default class Schema {
 
     column = {
       id: this.prefix + element.key + suffix,
-      name: this.prefix + element.key + suffix,
       type: type,
-      dataName: element.data_name + suffix
+      element: element,
+      suffix: suffix
     };
 
-    return table.addColumn(column);
+    table.addColumn(column);
   }
 
   addMediaElement(table, element) {
     this.addArrayElement(table, element);
 
-    if (this.options.mediaCaptions) {
+    if (this.columns.includeMediaCaptions !== false) {
       return this.addArrayElement(table, element, 'captions');
     }
   }
 
-  addRepeatableElement(element) {
-    const repeatableTable = new Table(this.formTable.id + '_' + element.key,
-                                      this.formTable.name + '_' + element.key, 'repeatable');
+  addRepeatableElement(parentTable, element) {
+    const childTable = this.buildRepeatableTable(parentTable, element);
 
-    for (const column of FulcrumColumns.REPEATABLE_COLUMNS) {
-      const attrs = _.clone(column);
-      attrs.id = element.key + '_' + column.name;
-      repeatableTable.addColumn(attrs, true);
-    }
-
-    if (this.options.full) {
-      for (const column of FulcrumColumns.REPEATABLE_COLUMNS_FULL) {
-        const attrs = _.clone(column);
-        attrs.id = element.key + '_' + column.name;
-        repeatableTable.addColumn(attrs, true);
-      }
-    }
-
-    this.tables.push(repeatableTable);
+    this.tables.push(childTable);
 
     const elements = Utils.flattenElements(element.elements, false);
 
-    const childElements = this.elementsForSchema(elements);
+    const childElements = DataElements.find(elements);
 
     for (const childElement of childElements) {
-      this.processElement(childElement, repeatableTable);
+      this.processElement(childElement, childTable);
     }
   }
 }
-
-const buildSchema = function (json, options) {
-  if (options == null) {
-    options = {};
-  }
-  return new Schema(json, options).buildSchema();
-};
-
-export default buildSchema;

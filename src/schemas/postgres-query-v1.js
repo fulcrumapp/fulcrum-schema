@@ -1,4 +1,6 @@
-const FORM_SYSTEM_COLUMNS = [
+const Schema = {};
+
+Schema.systemFormTableColumns = [
   {
     name: 'id',
     type: 'pk'
@@ -33,11 +35,7 @@ const FORM_SYSTEM_COLUMNS = [
     name: 'updated_at',
     type: 'timestamp',
     allowNull: false
-  }
-];
-
-const FORM_SYSTEM_COLUMNS_FULL = [
-  {
+  }, {
     name: 'version',
     type: 'integer',
     allowNull: false
@@ -93,7 +91,7 @@ const FORM_SYSTEM_COLUMNS_FULL = [
   }
 ];
 
-const FORM_VALUE_COLUMNS = [
+Schema.systemValuesTableColumns = [
   {
     name: 'id',
     type: 'pk'
@@ -117,60 +115,7 @@ const FORM_VALUE_COLUMNS = [
   }
 ];
 
-const FORM_VIEW_SYSTEM_COLUMNS = {
-  record_resource_id: 'id',
-  project_id: 'project_id',
-  assigned_to_id: 'assigned_to_id',
-  status: 'status',
-  latitude: 'latitude',
-  longitude: 'longitude',
-  created_at: 'created_at',
-  updated_at: 'updated_at',
-  version: 'version',
-  created_by_id: 'created_by_id',
-  updated_by_id: 'updated_by_id',
-  server_created_at: 'server_created_at',
-  server_updated_at: 'server_updated_at',
-  record_index_text: 'record_index_text',
-  record_index: 'record_index',
-  geometry: 'geometry',
-  altitude: 'altitude',
-  speed: 'speed',
-  course: 'course',
-  horizontal_accuracy: 'horizontal_accuracy',
-  vertical_accuracy: 'vertical_accuracy',
-  form_values: 'form_values',
-  changeset_id: 'changeset_id',
-  title: 'title'
-};
-
-const REPEATABLE_VIEW_SYSTEM_COLUMNS = {
-  resource_id: 'id',
-  record_resource_id: 'record_id',
-  parent_resource_id: 'parent_id',
-  latitude: 'latitude',
-  longitude: 'longitude',
-  created_at: 'created_at',
-  updated_at: 'updated_at',
-  version: 'version',
-  created_by_id: 'created_by_id',
-  updated_by_id: 'updated_by_id',
-  server_created_at: 'server_created_at',
-  server_updated_at: 'server_updated_at',
-  record_index_text: 'record_index_text',
-  record_index: 'record_index',
-  geometry: 'geometry',
-  altitude: 'altitude',
-  speed: 'speed',
-  course: 'course',
-  horizontal_accuracy: 'horizontal_accuracy',
-  vertical_accuracy: 'vertical_accuracy',
-  form_values: 'form_values',
-  changeset_id: 'changeset_id',
-  title: 'title'
-};
-
-const REPEATABLE_COLUMNS = [
+Schema.systemRepeatableTableColumns = [
   {
     name: 'id',
     type: 'pk'
@@ -203,11 +148,7 @@ const REPEATABLE_COLUMNS = [
     name: 'updated_at',
     type: 'timestamp',
     allowNull: false
-  }
-];
-
-const REPEATABLE_COLUMNS_FULL = [
-  {
+  }, {
     name: 'version',
     type: 'integer',
     allowNull: false
@@ -263,14 +204,57 @@ const REPEATABLE_COLUMNS_FULL = [
   }
 ];
 
-const api = {
-  FORM_SYSTEM_COLUMNS: FORM_SYSTEM_COLUMNS,
-  FORM_SYSTEM_COLUMNS_FULL: FORM_SYSTEM_COLUMNS_FULL,
-  FORM_VALUE_COLUMNS: FORM_VALUE_COLUMNS,
-  FORM_VIEW_SYSTEM_COLUMNS: FORM_VIEW_SYSTEM_COLUMNS,
-  REPEATABLE_VIEW_SYSTEM_COLUMNS: REPEATABLE_VIEW_SYSTEM_COLUMNS,
-  REPEATABLE_COLUMNS: REPEATABLE_COLUMNS,
-  REPEATABLE_COLUMNS_FULL: REPEATABLE_COLUMNS_FULL
+Schema.systemFormViewColumns = {
+  record_resource_id: 'id',
+  project_id: 'project_id',
+  assigned_to_id: 'assigned_to_id',
+  status: 'status',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  version: 'version',
+  created_by_id: 'created_by_id',
+  updated_by_id: 'updated_by_id',
+  server_created_at: 'server_created_at',
+  server_updated_at: 'server_updated_at',
+  record_index_text: 'record_index_text',
+  record_index: 'record_index',
+  geometry: 'geometry',
+  altitude: 'altitude',
+  speed: 'speed',
+  course: 'course',
+  horizontal_accuracy: 'horizontal_accuracy',
+  vertical_accuracy: 'vertical_accuracy',
+  form_values: 'form_values',
+  changeset_id: 'changeset_id',
+  title: 'title'
 };
 
-export default api;
+Schema.systemRepeatableViewColumns = {
+  resource_id: 'id',
+  record_resource_id: 'record_id',
+  parent_resource_id: 'parent_id',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  version: 'version',
+  created_by_id: 'created_by_id',
+  updated_by_id: 'updated_by_id',
+  server_created_at: 'server_created_at',
+  server_updated_at: 'server_updated_at',
+  record_index_text: 'record_index_text',
+  record_index: 'record_index',
+  geometry: 'geometry',
+  altitude: 'altitude',
+  speed: 'speed',
+  course: 'course',
+  horizontal_accuracy: 'horizontal_accuracy',
+  vertical_accuracy: 'vertical_accuracy',
+  form_values: 'form_values',
+  changeset_id: 'changeset_id',
+  title: 'title'
+};
+
+export default Schema;

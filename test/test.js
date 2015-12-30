@@ -1,12 +1,21 @@
 import fs from 'fs';
-import buildSchema from '../src/schema';
-import SchemaDiff from '../src/schema-diff';
-import SqliteSchemaGenerator from '../src/postgres-schema-generator';
+import Schema from '../src/schema';
+import OrganizationSchema from '../src/organization-schema';
+import V1 from '../src/schemas/postgres-query-v1';
+import V2 from '../src/schemas/postgres-query-v2';
+// import V1 from '../src/schemas/sqlite-query-v1';
+// import V2 from '../src/schemas/sqlite-query-v2';
+import Metadata from '../src/metadata';
+import sqldiff from 'sqldiff';
 import chai from 'chai';
 
 chai.should();
 
-import _ from 'underscore';
+const SchemaDiffer = sqldiff.SchemaDiffer;
+const Postgres = sqldiff.Postgres;
+const Sqlite = sqldiff.Sqlite;
+
+// import _ from 'underscore';
 
 // const shouldBeNull = function(value) {
 //   return (value === null).should.be["true"];
@@ -26,8 +35,8 @@ let newForm = null;
 beforeEach(function () {
   form = JSON.parse(fs.readFileSync('./test/form.json')).form;
   newForm = JSON.parse(fs.readFileSync('./test/form-new.json')).form;
-  form.id = 67;
-  newForm.id = 67;
+  form.row_id = 67777;
+  newForm.row_id = 67777;
 });
 
 describe('buildSchema', () => {
@@ -42,31 +51,61 @@ describe('SchemaDiff', () => {
 
 const dumpScript = function (scripts) {
   console.log('----------------------------------');
-  console.log(_.flatten(scripts).join('\n\n'));
+  console.log(scripts);
   console.log('----------------------------------');
 };
 
-describe('SqliteSchemaGenerator', () => {
-  it('builds a schema diff from a form', () => {
-    const oldSchema = buildSchema(form, { full: true, mediaCaptions: true });
-    const newSchema = buildSchema(newForm, { full: true, mediaCaptions: true });
+function generatePostgres(differ) {
+  const meta = new Metadata(differ, {quote: '"', schema: 'organization_1'});
+  const gen = new Postgres(differ, {enableViews: true, afterTransform: meta.build.bind(meta)});
+  gen.tableSchema = 'organization_1';
+  return gen.generate().join('\n').trim();
+}
 
-    const schemaDiff = new SchemaDiff(oldSchema, newSchema);
+function generateSqlite(differ) {
+  const gen = new Sqlite(differ, {enableViews: true});
+  gen.tablePrefix = 'account_1_';
+  return gen.generate().join('\n').trim();
+}
 
-    // console.log(schemaDiff);
+// describe('form schema generator', () => {
+//   it('builds a schema diff from a form', () => {
+//     const oldSchema = null;
+//     const newSchema = new Schema(newForm, V2, null);
 
-    const diff = schemaDiff.diff();
+//     const differ = new SchemaDiffer(oldSchema, newSchema);
 
-    console.log('DIFFFFF', diff);
+//     const pg = generatePostgres(differ);
 
-    const sqlite = new SqliteSchemaGenerator(diff, schemaDiff, { enableViews: true });
+//     dumpScript(pg);
 
-    sqlite.tableSchema = 'org_1';
+//     // const clean = new SchemaDiffer(newSchema, null);
+//     // const differ = new SchemaDiffer(null, newSchema);
 
-    const sql = sqlite.generate();
+//     // const cleanPG = generatePostgres(clean);
+//     // const createPG = generatePostgres(differ);
 
-    dumpScript(sql);
+//     // dumpScript(cleanPG);
+//     // dumpScript(createPG);
 
-    sql.should.eql('');
+//     'yo'.should.eql('');
+//   });
+// });
+
+describe('organization schema generator', () => {
+  it('builds the organization schema', () => {
+    const oldSchema = null;
+    const newSchema = new OrganizationSchema(V2);
+
+    const clean = new SchemaDiffer(newSchema, null);
+    const differ = new SchemaDiffer(oldSchema, newSchema);
+
+    const cleanPG = generatePostgres(clean);
+    const createPG = generatePostgres(differ);
+
+    dumpScript(cleanPG);
+    dumpScript(createPG);
+
+    pg.should.eql('');
   });
 });
