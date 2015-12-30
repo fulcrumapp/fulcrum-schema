@@ -21,7 +21,7 @@
   "license": "BSD",
   "dependencies": {
     "pg-format": "^1.0.1",
-    "sqldiff": "0.0.2",
+    "sqldiff": "0.0.3",
     "underscore": "^1.7.0"
   },
   "devDependencies": {
@@ -30,17 +30,9 @@
     "babel-preset-es2015-node5": "^1.1.1",
     "babel-preset-stage-3": "^6.3.13",
     "chai": "^3.4.1",
-    "coffee-script": "^1.8.0",
-    "coffeeify": "^2.0.1",
     "fs-sync": "^1.0.1",
-    "html-entities": "^1.1.2",
-    "intl": "^1.0.1",
-    "jsdoc": "^3.3.0-alpha13",
-    "marked": "^0.3.2",
     "mocha": "^2.1.0",
     "season": "^5.0.3",
-    "should": "^8.0.2",
-    "spawn-sync": "^1.0.1",
-    "uglify-js": "^2.4.16"
+    "should": "^8.0.2"
   }
 }
