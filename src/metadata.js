@@ -1,6 +1,14 @@
-import pgformat from 'pg-format';
+// import pgformat from 'pg-format';
+import {format} from 'util';
 import Utils from './utils';
 import sqldiff from 'sqldiff';
+
+function pgvalue(value) {
+  if (value == null) {
+    return 'NULL';
+  }
+  return "'" + value.toString().replace(/'/g, "''") + "'";
+}
 
 export default class Metadata {
   constructor(diff, options) {
@@ -36,56 +44,56 @@ export default class Metadata {
     const systemTablesName = Utils.tableName(this.options.schema, this.options.prefix, this.options.quote, 'tables');
     const systemColumnsName = Utils.tableName(this.options.schema, this.options.prefix, this.options.quote, 'columns');
 
-    statements.push(pgformat('CREATE TABLE IF NOT EXISTS %s (name text, type text, parent text, form_id text);',
-                             systemTablesName));
+    statements.push(format('CREATE TABLE IF NOT EXISTS %s (name text, type text, parent text, form_id text);',
+                           systemTablesName));
 
-    statements.push(pgformat('CREATE TABLE IF NOT EXISTS %s (table_name text, name text, ordinal bigint, type text, nullable boolean, form_id text);',
-                             systemColumnsName));
+    statements.push(format('CREATE TABLE IF NOT EXISTS %s (table_name text, name text, ordinal bigint, type text, nullable boolean, form_id text);',
+                           systemColumnsName));
 
     // drop old metadata
     for (const view of this.oldViews) {
-      statements.push(pgformat('DELETE FROM %s WHERE name = %L;',
-                               systemTablesName,
-                               view.table.alias));
+      statements.push(format('DELETE FROM %s WHERE name = %s;',
+                             systemTablesName,
+                             pgvalue(view.table.alias)));
 
-      statements.push(pgformat('DELETE FROM %s WHERE table_name = %L;',
-                               systemColumnsName,
-                               view.table.alias));
+      statements.push(format('DELETE FROM %s WHERE table_name = %s;',
+                             systemColumnsName,
+                             pgvalue(view.table.alias)));
     }
 
     // create new metadata
     for (const view of this.newViews) {
-      statements.push(pgformat('DELETE FROM %s WHERE name = %L;',
-                               systemTablesName,
-                               view.table.alias));
+      statements.push(format('DELETE FROM %s WHERE name = %s;',
+                             systemTablesName,
+                             pgvalue(view.table.alias)));
 
-      statements.push(pgformat('DELETE FROM %s WHERE table_name = %L;',
-                               systemColumnsName,
-                               view.table.alias));
+      statements.push(format('DELETE FROM %s WHERE table_name = %s;',
+                             systemColumnsName,
+                             pgvalue(view.table.alias)));
 
-      statements.push(pgformat('INSERT INTO %s (name, type, parent, form_id) SELECT %L, %L, %L, %L;',
-                               systemTablesName,
-                               view.table.alias,
-                               view.table.type,
-                               view.table.parent ? view.table.parent.alias : null,
-                               view.table.form_id));
+      statements.push(format('INSERT INTO %s (name, type, parent, form_id) SELECT %s, %s, %s, %s;',
+                             systemTablesName,
+                             pgvalue(view.table.alias),
+                             pgvalue(view.table.type),
+                             pgvalue(view.table.parent ? view.table.parent.alias : null),
+                             pgvalue(view.table.form_id)));
 
       for (let i = 0; i < view.columns.length; ++i) {
         const column = view.columns[i];
 
-        statements.push(pgformat('DELETE FROM %s WHERE table_name = %L AND name = %L;',
-                                 systemColumnsName,
-                                 view.table.alias,
-                                 column.alias));
+        statements.push(format('DELETE FROM %s WHERE table_name = %s AND name = %s;',
+                               systemColumnsName,
+                               pgvalue(view.table.alias),
+                               pgvalue(column.alias)));
 
-        statements.push(pgformat('INSERT INTO %s (table_name, name, ordinal, type, nullable, form_id) SELECT %L, %L, %L, %L, %L, %L;',
-                                 systemColumnsName,
-                                 view.table.alias,
-                                 column.alias,
-                                 i + 1,
-                                 column.column.type,
-                                 column.column.allowNull ? 1 : 0,
-                                 view.table.form_id));
+        statements.push(format('INSERT INTO %s (table_name, name, ordinal, type, nullable, form_id) SELECT %s, %s, %s, %s, %s, %s;',
+                               systemColumnsName,
+                               pgvalue(view.table.alias),
+                               pgvalue(column.alias),
+                               pgvalue(i + 1),
+                               pgvalue(column.column.type),
+                               pgvalue(column.column.allowNull ? 1 : 0),
+                               pgvalue(view.table.form_id)));
       }
     }
 

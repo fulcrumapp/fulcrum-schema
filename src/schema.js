@@ -55,7 +55,7 @@ export default class Schema {
   }
 
   buildValuesTable() {
-    const table = new Table(format('form_%s_values', this.form.id),
+    const table = new Table(format('form_%s_values', this.form.row_id),
                             null,
                             {type: 'values', alias: this.alias('values'), form_id: this.form.id});
 
@@ -97,6 +97,11 @@ export default class Schema {
     this.viewColumns = {};
 
     for (const table of this.tables) {
+      if (table.type === 'values') {
+        // skip value table for now
+        continue;
+      }
+
       const view = new View(table.name + '_view', null, table);
 
       const columnNames = {};

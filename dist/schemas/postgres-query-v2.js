@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-const Schema = {};
+var Schema = {};
 
 Schema.systemFormTableColumns = [{
   name: 'id', type: 'pk',
@@ -55,16 +55,14 @@ Schema.systemFormTableColumns = [{
   allowNull: false
 }, {
   name: 'created_by_resource_id',
-  type: 'string',
-  allowNull: false
+  type: 'string'
 }, {
   name: 'updated_by_id',
   type: 'integer',
   allowNull: false
 }, {
   name: 'updated_by_resource_id',
-  type: 'string',
-  allowNull: false
+  type: 'string'
 }, {
   name: 'server_created_at',
   type: 'timestamp',

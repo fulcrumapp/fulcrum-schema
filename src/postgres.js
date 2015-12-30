@@ -1,3 +1,5 @@
+require('babel-polyfill');
+
 import OrganizationSchema from './organization-schema';
 import Schema from './schema';
 import V2 from './schemas/postgres-query-v2';

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-const Schema = {};
+var Schema = {};
 
 Schema.systemFormTableColumns = [{
   name: 'id',

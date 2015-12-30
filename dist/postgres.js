@@ -22,19 +22,21 @@ var _sqldiff2 = _interopRequireDefault(_sqldiff);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const Postgres = _sqldiff2.default.Postgres;
-const SchemaDiffer = _sqldiff2.default.SchemaDiffer;
+require('babel-polyfill');
 
-let instance = Function('return this')(); // eslint-disable-line no-new-func
+var Postgres = _sqldiff2.default.Postgres;
+var SchemaDiffer = _sqldiff2.default.SchemaDiffer;
+
+var instance = Function('return this')(); // eslint-disable-line no-new-func
 
 instance.oldForm = null;
 instance.newForm = null;
 instance.schema = null;
 
 function generateSQL(differ) {
-  const meta = new _metadata2.default(differ, { quote: '"', schema: instance.schema });
+  var meta = new _metadata2.default(differ, { quote: '"', schema: instance.schema });
 
-  const gen = new Postgres(differ, { afterTransform: meta.build.bind(meta) });
+  var gen = new Postgres(differ, { afterTransform: meta.build.bind(meta) });
 
   gen.tableSchema = instance.schema;
 
@@ -42,8 +44,8 @@ function generateSQL(differ) {
 }
 
 instance.compareOrganization = function () {
-  let oldSchema = null;
-  let newSchema = null;
+  var oldSchema = null;
+  var newSchema = null;
 
   if (instance.oldOrganization) {
     oldSchema = new _organizationSchema2.default(_postgresQueryV2.default);
@@ -53,15 +55,15 @@ instance.compareOrganization = function () {
     newSchema = new _organizationSchema2.default(_postgresQueryV2.default);
   }
 
-  const differ = new SchemaDiffer(oldSchema, newSchema);
+  var differ = new SchemaDiffer(oldSchema, newSchema);
 
   return generateSQL(differ);
 };
 
 instance.compareForms = function () {
   try {
-    let oldSchema = null;
-    let newSchema = null;
+    var oldSchema = null;
+    var newSchema = null;
 
     if (instance.oldForm) {
       oldSchema = new _schema2.default(instance.oldForm, _postgresQueryV2.default, null);
@@ -71,7 +73,7 @@ instance.compareForms = function () {
       newSchema = new _schema2.default(instance.newForm, _postgresQueryV2.default, null);
     }
 
-    const differ = new SchemaDiffer(oldSchema, newSchema);
+    var differ = new SchemaDiffer(oldSchema, newSchema);
 
     return generateSQL(differ);
   } catch (err) {

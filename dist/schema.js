@@ -1,5 +1,7 @@
 'use strict';
 
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -24,10 +26,15 @@ var _dataElements2 = _interopRequireDefault(_dataElements);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const Table = _sqldiff2.default.Table;
-const View = _sqldiff2.default.View;
-class Schema {
-  constructor(form, columns, options) {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Table = _sqldiff2.default.Table;
+var View = _sqldiff2.default.View;
+
+var Schema = (function () {
+  function Schema(form, columns, options) {
+    _classCallCheck(this, Schema);
+
     this.prefix = 'f';
     this.form = form;
     this.columns = columns;
@@ -37,312 +44,487 @@ class Schema {
     this.buildSchema();
   }
 
-  buildSchema() {
-    this.tables = [];
-    this.views = [];
+  _createClass(Schema, [{
+    key: 'buildSchema',
+    value: function buildSchema() {
+      this.tables = [];
+      this.views = [];
 
-    this.formTable = this.buildFormTable();
-    this.valuesTable = this.buildValuesTable();
+      this.formTable = this.buildFormTable();
+      this.valuesTable = this.buildValuesTable();
 
-    this.tables.push(this.formTable);
-    this.tables.push(this.valuesTable);
+      this.tables.push(this.formTable);
+      this.tables.push(this.valuesTable);
 
-    this.buildDataColumns();
-    this.buildViews();
-  }
-
-  alias(part) {
-    if (part) {
-      return this.form.name + '/' + part;
+      this.buildDataColumns();
+      this.buildViews();
     }
-    return this.form.name;
-  }
-
-  buildFormTable() {
-    const table = new Table((0, _util.format)('form_%s', this.form.row_id), null, { type: 'form', alias: this.alias(), form_id: this.form.id });
-
-    for (const column of this.columns.systemFormTableColumns) {
-      const formColumn = _underscore2.default.clone(column);
-
-      formColumn.system = true;
-
-      table.addColumn(formColumn);
+  }, {
+    key: 'alias',
+    value: function alias(part) {
+      if (part) {
+        return this.form.name + '/' + part;
+      }
+      return this.form.name;
     }
+  }, {
+    key: 'buildFormTable',
+    value: function buildFormTable() {
+      var table = new Table((0, _util.format)('form_%s', this.form.row_id), null, { type: 'form', alias: this.alias(), form_id: this.form.id });
 
-    return table;
-  }
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
 
-  buildValuesTable() {
-    const table = new Table((0, _util.format)('form_%s_values', this.form.id), null, { type: 'values', alias: this.alias('values'), form_id: this.form.id });
+      try {
+        for (var _iterator = this.columns.systemFormTableColumns[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var column = _step.value;
 
-    for (const column of this.columns.systemValuesTableColumns) {
-      const valueColumn = _underscore2.default.clone(column);
+          var formColumn = _underscore2.default.clone(column);
 
-      valueColumn.system = true;
+          formColumn.system = true;
 
-      table.addColumn(valueColumn);
-    }
-
-    return table;
-  }
-
-  buildRepeatableTable(parentTable, element) {
-    const table = new Table(this.formTable.id + '_' + element.key, null, { type: 'repeatable', parent: parentTable, alias: this.alias(element.data_name), form_id: this.form.id });
-
-    for (const column of this.columns.systemRepeatableTableColumns) {
-      const attrs = _underscore2.default.clone(column);
-
-      attrs.id = element.key + '_' + column.name;
-      attrs.system = true;
-
-      table.addColumn(attrs);
-    }
-
-    return table;
-  }
-
-  buildDataColumns() {
-    for (const element of this.schemaElements) {
-      this.processElement(element, this.formTable);
-    }
-  }
-
-  buildViews() {
-    this.viewColumns = {};
-
-    for (const table of this.tables) {
-      const view = new View(table.name + '_view', null, table);
-
-      const columnNames = {};
-
-      for (const column of table.columns) {
-        let alias = this.viewColumnName(table, column);
-
-        if (alias == null) {
-          continue;
+          table.addColumn(formColumn);
         }
-
-        if (!columnNames[alias]) {
-          view.addColumn({ column: column, alias: alias });
-          columnNames[alias] = column;
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
         }
       }
 
-      this.views.push(view);
+      return table;
     }
-  }
+  }, {
+    key: 'buildValuesTable',
+    value: function buildValuesTable() {
+      var table = new Table((0, _util.format)('form_%s_values', this.form.row_id), null, { type: 'values', alias: this.alias('values'), form_id: this.form.id });
 
-  viewColumnName(table, column) {
-    let name = null;
+      var _iteratorNormalCompletion2 = true;
+      var _didIteratorError2 = false;
+      var _iteratorError2 = undefined;
 
-    if (column.system) {
-      if (table.type === 'form') {
-        name = this.columns.systemFormViewColumns[column.name];
-      } else if (table.type === 'repeatable') {
-        name = this.columns.systemRepeatableViewColumns[column.name];
+      try {
+        for (var _iterator2 = this.columns.systemValuesTableColumns[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var column = _step2.value;
+
+          var valueColumn = _underscore2.default.clone(column);
+
+          valueColumn.system = true;
+
+          table.addColumn(valueColumn);
+        }
+      } catch (err) {
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion2 && _iterator2.return) {
+            _iterator2.return();
+          }
+        } finally {
+          if (_didIteratorError2) {
+            throw _iteratorError2;
+          }
+        }
       }
-    } else if (column.element) {
-      name = column.element.data_name + (column.suffix || '');
+
+      return table;
     }
+  }, {
+    key: 'buildRepeatableTable',
+    value: function buildRepeatableTable(parentTable, element) {
+      var table = new Table(this.formTable.id + '_' + element.key, null, { type: 'repeatable', parent: parentTable, alias: this.alias(element.data_name), form_id: this.form.id });
 
-    if (name) {
-      // dedupe any columns
-      name = this.launderViewColumnName(table, column, name);
-    }
+      var _iteratorNormalCompletion3 = true;
+      var _didIteratorError3 = false;
+      var _iteratorError3 = undefined;
 
-    return name;
-  }
+      try {
+        for (var _iterator3 = this.columns.systemRepeatableTableColumns[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+          var column = _step3.value;
 
-  launderViewColumnName(table, column, name) {
-    const views = this.viewColumns;
+          var attrs = _underscore2.default.clone(column);
 
-    views[table.name] = views[table.name] || {};
+          attrs.id = element.key + '_' + column.name;
+          attrs.system = true;
 
-    let count = 1;
-
-    let rawName = name.substring(0, 63);
-    let newName = rawName;
-
-    while (views[table.name][newName]) {
-      newName = rawName.substring(0, 63 - count.toString().length) + count;
-      count++;
-    }
-
-    views[table.name][newName] = column;
-
-    return newName;
-  }
-
-  processElement(element, elementTable) {
-    switch (element.type) {
-      case 'TextField':
-        if (element.numeric) {
-          this.addDoubleElement(elementTable, element);
-        } else {
-          this.addStringElement(elementTable, element);
+          table.addColumn(attrs);
         }
-        break;
-
-      case 'ChoiceField':
-        if (element.multiple) {
-          this.addArrayElement(elementTable, element);
-        } else {
-          this.addStringElement(elementTable, element);
+      } catch (err) {
+        _didIteratorError3 = true;
+        _iteratorError3 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion3 && _iterator3.return) {
+            _iterator3.return();
+          }
+        } finally {
+          if (_didIteratorError3) {
+            throw _iteratorError3;
+          }
         }
-        break;
+      }
 
-      case 'ClassificationField':
-        this.addArrayElement(elementTable, element);
-        break;
+      return table;
+    }
+  }, {
+    key: 'buildDataColumns',
+    value: function buildDataColumns() {
+      var _iteratorNormalCompletion4 = true;
+      var _didIteratorError4 = false;
+      var _iteratorError4 = undefined;
 
-      case 'YesNoField':
-        this.addStringElement(elementTable, element);
-        break;
+      try {
+        for (var _iterator4 = this.schemaElements[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+          var element = _step4.value;
 
-      case 'PhotoField':
-      case 'VideoField':
-      case 'AudioField':
-        this.addMediaElement(elementTable, element);
-        break;
+          this.processElement(element, this.formTable);
+        }
+      } catch (err) {
+        _didIteratorError4 = true;
+        _iteratorError4 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion4 && _iterator4.return) {
+            _iterator4.return();
+          }
+        } finally {
+          if (_didIteratorError4) {
+            throw _iteratorError4;
+          }
+        }
+      }
+    }
+  }, {
+    key: 'buildViews',
+    value: function buildViews() {
+      this.viewColumns = {};
 
-      case 'SignatureField':
-        this.addStringElement(elementTable, element);
-        this.addDateElement(elementTable, element, 'timestamp');
-        break;
+      var _iteratorNormalCompletion5 = true;
+      var _didIteratorError5 = false;
+      var _iteratorError5 = undefined;
 
-      case 'BarcodeField':
-        this.addStringElement(elementTable, element);
-        break;
+      try {
+        for (var _iterator5 = this.tables[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+          var table = _step5.value;
 
-      case 'DateTimeField':
-      case 'DateField':
-        this.addDateElement(elementTable, element);
-        break;
+          if (table.type === 'values') {
+            // skip value table for now
+            continue;
+          }
 
-      case 'TimeField':
-        this.addDoubleElement(elementTable, element);
-        break;
+          var view = new View(table.name + '_view', null, table);
 
-      case 'Repeatable':
-        this.addRepeatableElement(elementTable, element);
-        break;
+          var columnNames = {};
 
-      case 'AddressField':
-        this.addStringElement(elementTable, element);
-        this.addStringElement(elementTable, element, 'sub_thoroughfare');
-        this.addStringElement(elementTable, element, 'thoroughfare');
-        this.addStringElement(elementTable, element, 'suite');
-        this.addStringElement(elementTable, element, 'locality');
-        this.addStringElement(elementTable, element, 'admin_area');
-        this.addStringElement(elementTable, element, 'postal_code');
-        this.addStringElement(elementTable, element, 'sub_admin_area');
-        this.addStringElement(elementTable, element, 'country');
-        break;
+          var _iteratorNormalCompletion6 = true;
+          var _didIteratorError6 = false;
+          var _iteratorError6 = undefined;
 
-      case 'HyperlinkField':
-        this.addStringElement(elementTable, element);
-        break;
+          try {
+            for (var _iterator6 = table.columns[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+              var column = _step6.value;
 
-      case 'RecordLinkField':
-        this.addArrayElement(elementTable, element);
-        break;
+              var alias = this.viewColumnName(table, column);
 
-      case 'CalculatedField':
-        switch (element.display.style) {
-          case 'number':
-          case 'date':
-          case 'currency':
+              if (alias == null) {
+                continue;
+              }
+
+              if (!columnNames[alias]) {
+                view.addColumn({ column: column, alias: alias });
+                columnNames[alias] = column;
+              }
+            }
+          } catch (err) {
+            _didIteratorError6 = true;
+            _iteratorError6 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion6 && _iterator6.return) {
+                _iterator6.return();
+              }
+            } finally {
+              if (_didIteratorError6) {
+                throw _iteratorError6;
+              }
+            }
+          }
+
+          this.views.push(view);
+        }
+      } catch (err) {
+        _didIteratorError5 = true;
+        _iteratorError5 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion5 && _iterator5.return) {
+            _iterator5.return();
+          }
+        } finally {
+          if (_didIteratorError5) {
+            throw _iteratorError5;
+          }
+        }
+      }
+    }
+  }, {
+    key: 'viewColumnName',
+    value: function viewColumnName(table, column) {
+      var name = null;
+
+      if (column.system) {
+        if (table.type === 'form') {
+          name = this.columns.systemFormViewColumns[column.name];
+        } else if (table.type === 'repeatable') {
+          name = this.columns.systemRepeatableViewColumns[column.name];
+        }
+      } else if (column.element) {
+        name = column.element.data_name + (column.suffix || '');
+      }
+
+      if (name) {
+        // dedupe any columns
+        name = this.launderViewColumnName(table, column, name);
+      }
+
+      return name;
+    }
+  }, {
+    key: 'launderViewColumnName',
+    value: function launderViewColumnName(table, column, name) {
+      var views = this.viewColumns;
+
+      views[table.name] = views[table.name] || {};
+
+      var count = 1;
+
+      var rawName = name.substring(0, 63);
+      var newName = rawName;
+
+      while (views[table.name][newName]) {
+        newName = rawName.substring(0, 63 - count.toString().length) + count;
+        count++;
+      }
+
+      views[table.name][newName] = column;
+
+      return newName;
+    }
+  }, {
+    key: 'processElement',
+    value: function processElement(element, elementTable) {
+      switch (element.type) {
+        case 'TextField':
+          if (element.numeric) {
             this.addDoubleElement(elementTable, element);
-            break;
-          default:
+          } else {
             this.addStringElement(elementTable, element);
-            break;
+          }
+          break;
+
+        case 'ChoiceField':
+          if (element.multiple) {
+            this.addArrayElement(elementTable, element);
+          } else {
+            this.addStringElement(elementTable, element);
+          }
+          break;
+
+        case 'ClassificationField':
+          this.addArrayElement(elementTable, element);
+          break;
+
+        case 'YesNoField':
+          this.addStringElement(elementTable, element);
+          break;
+
+        case 'PhotoField':
+        case 'VideoField':
+        case 'AudioField':
+          this.addMediaElement(elementTable, element);
+          break;
+
+        case 'SignatureField':
+          this.addStringElement(elementTable, element);
+          this.addDateElement(elementTable, element, 'timestamp');
+          break;
+
+        case 'BarcodeField':
+          this.addStringElement(elementTable, element);
+          break;
+
+        case 'DateTimeField':
+        case 'DateField':
+          this.addDateElement(elementTable, element);
+          break;
+
+        case 'TimeField':
+          this.addDoubleElement(elementTable, element);
+          break;
+
+        case 'Repeatable':
+          this.addRepeatableElement(elementTable, element);
+          break;
+
+        case 'AddressField':
+          this.addStringElement(elementTable, element);
+          this.addStringElement(elementTable, element, 'sub_thoroughfare');
+          this.addStringElement(elementTable, element, 'thoroughfare');
+          this.addStringElement(elementTable, element, 'suite');
+          this.addStringElement(elementTable, element, 'locality');
+          this.addStringElement(elementTable, element, 'admin_area');
+          this.addStringElement(elementTable, element, 'postal_code');
+          this.addStringElement(elementTable, element, 'sub_admin_area');
+          this.addStringElement(elementTable, element, 'country');
+          break;
+
+        case 'HyperlinkField':
+          this.addStringElement(elementTable, element);
+          break;
+
+        case 'RecordLinkField':
+          this.addArrayElement(elementTable, element);
+          break;
+
+        case 'CalculatedField':
+          switch (element.display.style) {
+            case 'number':
+            case 'date':
+            case 'currency':
+              this.addDoubleElement(elementTable, element);
+              break;
+            default:
+              this.addStringElement(elementTable, element);
+              break;
+          }
+          break;
+
+        default:
+          console.log('Unhandled element type', element.type);
+          break;
+      }
+    }
+  }, {
+    key: 'addStringElement',
+    value: function addStringElement(table, element, suffix) {
+      if (suffix == null) {
+        suffix = '';
+      }
+      return this.addElement(table, element, 'string', suffix);
+    }
+  }, {
+    key: 'addDateElement',
+    value: function addDateElement(table, element, suffix) {
+      if (suffix == null) {
+        suffix = '';
+      }
+      return this.addElement(table, element, 'date', suffix);
+    }
+  }, {
+    key: 'addDoubleElement',
+    value: function addDoubleElement(table, element, suffix) {
+      if (suffix == null) {
+        suffix = '';
+      }
+      return this.addElement(table, element, 'double', suffix);
+    }
+  }, {
+    key: 'addIntegerElement',
+    value: function addIntegerElement(table, element, suffix) {
+      if (suffix == null) {
+        suffix = '';
+      }
+      return this.addElement(table, element, 'integer', suffix);
+    }
+  }, {
+    key: 'addArrayElement',
+    value: function addArrayElement(table, element, suffix) {
+      if (suffix == null) {
+        suffix = '';
+      }
+      return this.addElement(table, element, 'array', suffix);
+    }
+  }, {
+    key: 'addElement',
+    value: function addElement(table, element, type, suffix) {
+      var column = null;
+
+      if (suffix == null) {
+        suffix = '';
+      }
+
+      if (suffix) {
+        suffix = '_' + suffix;
+      }
+
+      column = {
+        id: this.prefix + element.key + suffix,
+        type: type,
+        element: element,
+        suffix: suffix
+      };
+
+      table.addColumn(column);
+    }
+  }, {
+    key: 'addMediaElement',
+    value: function addMediaElement(table, element) {
+      this.addArrayElement(table, element);
+
+      if (this.columns.includeMediaCaptions !== false) {
+        return this.addArrayElement(table, element, 'captions');
+      }
+    }
+  }, {
+    key: 'addRepeatableElement',
+    value: function addRepeatableElement(parentTable, element) {
+      var childTable = this.buildRepeatableTable(parentTable, element);
+
+      this.tables.push(childTable);
+
+      var elements = _utils2.default.flattenElements(element.elements, false);
+
+      var childElements = _dataElements2.default.find(elements);
+
+      var _iteratorNormalCompletion7 = true;
+      var _didIteratorError7 = false;
+      var _iteratorError7 = undefined;
+
+      try {
+        for (var _iterator7 = childElements[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+          var childElement = _step7.value;
+
+          this.processElement(childElement, childTable);
         }
-        break;
-
-      default:
-        console.log('Unhandled element type', element.type);
-        break;
+      } catch (err) {
+        _didIteratorError7 = true;
+        _iteratorError7 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion7 && _iterator7.return) {
+            _iterator7.return();
+          }
+        } finally {
+          if (_didIteratorError7) {
+            throw _iteratorError7;
+          }
+        }
+      }
     }
-  }
+  }]);
 
-  addStringElement(table, element, suffix) {
-    if (suffix == null) {
-      suffix = '';
-    }
-    return this.addElement(table, element, 'string', suffix);
-  }
+  return Schema;
+})();
 
-  addDateElement(table, element, suffix) {
-    if (suffix == null) {
-      suffix = '';
-    }
-    return this.addElement(table, element, 'date', suffix);
-  }
-
-  addDoubleElement(table, element, suffix) {
-    if (suffix == null) {
-      suffix = '';
-    }
-    return this.addElement(table, element, 'double', suffix);
-  }
-
-  addIntegerElement(table, element, suffix) {
-    if (suffix == null) {
-      suffix = '';
-    }
-    return this.addElement(table, element, 'integer', suffix);
-  }
-
-  addArrayElement(table, element, suffix) {
-    if (suffix == null) {
-      suffix = '';
-    }
-    return this.addElement(table, element, 'array', suffix);
-  }
-
-  addElement(table, element, type, suffix) {
-    let column = null;
-
-    if (suffix == null) {
-      suffix = '';
-    }
-
-    if (suffix) {
-      suffix = '_' + suffix;
-    }
-
-    column = {
-      id: this.prefix + element.key + suffix,
-      type: type,
-      element: element,
-      suffix: suffix
-    };
-
-    table.addColumn(column);
-  }
-
-  addMediaElement(table, element) {
-    this.addArrayElement(table, element);
-
-    if (this.columns.includeMediaCaptions !== false) {
-      return this.addArrayElement(table, element, 'captions');
-    }
-  }
-
-  addRepeatableElement(parentTable, element) {
-    const childTable = this.buildRepeatableTable(parentTable, element);
-
-    this.tables.push(childTable);
-
-    const elements = _utils2.default.flattenElements(element.elements, false);
-
-    const childElements = _dataElements2.default.find(elements);
-
-    for (const childElement of childElements) {
-      this.processElement(childElement, childTable);
-    }
-  }
-}
 exports.default = Schema;
 //# sourceMappingURL=schema.js.map
