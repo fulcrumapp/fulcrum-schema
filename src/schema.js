@@ -28,7 +28,10 @@ export default class Schema {
     this.tables.push(this.valuesTable);
 
     this.buildDataColumns();
+
     this.buildViews();
+
+    this.buildIndexes();
   }
 
   alias(part) {
@@ -115,6 +118,26 @@ export default class Schema {
       }
 
       this.views.push(view);
+    }
+  }
+
+  buildIndexes() {
+    for (const table of this.tables) {
+      let indexDefinitions = [];
+
+      if (table.type === 'form') {
+        indexDefinitions = this.columns.systemFormTableIndexes;
+      } else if (table.type === 'repeatable') {
+        indexDefinitions = this.columns.systemRepeatableTableIndexes;
+      } else if (table.type === 'values') {
+        indexDefinitions = this.columns.systemValuesTableIndexes;
+      }
+
+      for (const index of indexDefinitions) {
+        const indexDefinition = _.clone(index);
+
+        table.addIndex(indexDefinition);
+      }
     }
   }
 

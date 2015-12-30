@@ -57,7 +57,10 @@ var Schema = (function () {
       this.tables.push(this.valuesTable);
 
       this.buildDataColumns();
+
       this.buildViews();
+
+      this.buildIndexes();
     }
   }, {
     key: 'alias',
@@ -217,11 +220,6 @@ var Schema = (function () {
         for (var _iterator5 = this.tables[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
           var table = _step5.value;
 
-          if (table.type === 'values') {
-            // skip value table for now
-            continue;
-          }
-
           var view = new View(table.name + '_view', null, table);
 
           var columnNames = {};
@@ -278,6 +276,69 @@ var Schema = (function () {
       }
     }
   }, {
+    key: 'buildIndexes',
+    value: function buildIndexes() {
+      var _iteratorNormalCompletion7 = true;
+      var _didIteratorError7 = false;
+      var _iteratorError7 = undefined;
+
+      try {
+        for (var _iterator7 = this.tables[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+          var table = _step7.value;
+
+          var indexDefinitions = [];
+
+          if (table.type === 'form') {
+            indexDefinitions = this.columns.systemFormTableIndexes;
+          } else if (table.type === 'repeatable') {
+            indexDefinitions = this.columns.systemRepeatableTableIndexes;
+          } else if (table.type === 'values') {
+            indexDefinitions = this.columns.systemValuesTableIndexes;
+          }
+
+          var _iteratorNormalCompletion8 = true;
+          var _didIteratorError8 = false;
+          var _iteratorError8 = undefined;
+
+          try {
+            for (var _iterator8 = indexDefinitions[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
+              var index = _step8.value;
+
+              var indexDefinition = _underscore2.default.clone(index);
+
+              table.addIndex(indexDefinition);
+            }
+          } catch (err) {
+            _didIteratorError8 = true;
+            _iteratorError8 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion8 && _iterator8.return) {
+                _iterator8.return();
+              }
+            } finally {
+              if (_didIteratorError8) {
+                throw _iteratorError8;
+              }
+            }
+          }
+        }
+      } catch (err) {
+        _didIteratorError7 = true;
+        _iteratorError7 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion7 && _iterator7.return) {
+            _iterator7.return();
+          }
+        } finally {
+          if (_didIteratorError7) {
+            throw _iteratorError7;
+          }
+        }
+      }
+    }
+  }, {
     key: 'viewColumnName',
     value: function viewColumnName(table, column) {
       var name = null;
@@ -287,7 +348,15 @@ var Schema = (function () {
           name = this.columns.systemFormViewColumns[column.name];
         } else if (table.type === 'repeatable') {
           name = this.columns.systemRepeatableViewColumns[column.name];
+        } else if (table.type === 'values') {
+          name = this.columns.systemValuesViewColumns[column.name];
         }
+
+        if (name == null) {
+          return null;
+        }
+
+        name = '_' + name;
       } else if (column.element) {
         name = column.element.data_name + (column.suffix || '');
       }
@@ -496,27 +565,27 @@ var Schema = (function () {
 
       var childElements = _dataElements2.default.find(elements);
 
-      var _iteratorNormalCompletion7 = true;
-      var _didIteratorError7 = false;
-      var _iteratorError7 = undefined;
+      var _iteratorNormalCompletion9 = true;
+      var _didIteratorError9 = false;
+      var _iteratorError9 = undefined;
 
       try {
-        for (var _iterator7 = childElements[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
-          var childElement = _step7.value;
+        for (var _iterator9 = childElements[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
+          var childElement = _step9.value;
 
           this.processElement(childElement, childTable);
         }
       } catch (err) {
-        _didIteratorError7 = true;
-        _iteratorError7 = err;
+        _didIteratorError9 = true;
+        _iteratorError9 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion7 && _iterator7.return) {
-            _iterator7.return();
+          if (!_iteratorNormalCompletion9 && _iterator9.return) {
+            _iterator9.return();
           }
         } finally {
-          if (_didIteratorError7) {
-            throw _iteratorError7;
+          if (_didIteratorError9) {
+            throw _iteratorError9;
           }
         }
       }

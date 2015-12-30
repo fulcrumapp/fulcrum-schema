@@ -140,15 +140,15 @@ Schema.systemRepeatableTableColumns = [
     type: 'pk',
     allowNull: false
   }, {
+    name: 'resource_id',
+    type: 'string',
+    allowNull: false
+  }, {
     name: 'record_id',
     type: 'integer',
     allowNull: false
   }, {
     name: 'record_resource_id',
-    type: 'string',
-    allowNull: false
-  }, {
-    name: 'resource_id',
     type: 'string',
     allowNull: false
   }, {
@@ -1300,5 +1300,25 @@ Schema.organizationViews.signatures = {
   stored_at: 'stored_at',
   processed_at: 'processed_at'
 };
+
+Schema.systemFormTableIndexes = [
+  { columns: ['record_resource_id'], method: 'btree', unique: true },
+  { columns: ['geometry'], method: 'gist' },
+  { columns: ['record_index'], method: 'gin' }
+];
+
+Schema.systemRepeatableTableIndexes = [
+  { columns: ['resource_id'], method: 'btree', unique: true },
+  { columns: ['record_resource_id'], method: 'btree' },
+  { columns: ['parent_resource_id'], method: 'btree' },
+  { columns: ['geometry'], method: 'gist' },
+  { columns: ['record_index'], method: 'gin' }
+];
+
+Schema.systemValuesTableIndexes = [
+  { columns: ['record_resource_id'], method: 'btree' },
+  { columns: ['parent_resource_id'], method: 'btree' },
+  { columns: ['text_value'], method: 'btree' }
+];
 
 export default Schema;
