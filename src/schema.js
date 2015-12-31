@@ -76,7 +76,7 @@ export default class Schema {
   buildRepeatableTable(parentTable, element) {
     const table = new Table(this.formTable.id + '_' + element.key,
                             null,
-                            {type: 'repeatable', parent: parentTable, alias: this.alias(element.data_name), form_id: this.form.id});
+                            {type: 'repeatable', parent: parentTable, element: element, alias: this.alias(element.data_name), form_id: this.form.id});
 
     for (const column of this.columns.systemRepeatableTableColumns) {
       const attrs = _.clone(column);
@@ -102,22 +102,41 @@ export default class Schema {
     for (const table of this.tables) {
       const view = new View(table.name + '_view', null, table);
 
-      const columnNames = {};
-
-      for (const column of table.columns) {
-        let alias = this.viewColumnName(table, column);
-
-        if (alias == null) {
-          continue;
-        }
-
-        if (!columnNames[alias]) {
-          view.addColumn({column: column, alias: alias});
-          columnNames[alias] = column;
-        }
-      }
+      this.buildViewForTable(table, view);
 
       this.views.push(view);
+
+      if (table.type === 'form') {
+        const fullView = new View(table.name + '_view_full', null, table, {variant: 'full', alias: this.alias('_full')});
+
+        this.buildViewForTable(table, fullView);
+
+        this.views.push(fullView);
+      } else if (table.type === 'repeatable') {
+        const fullView = new View(table.name + '_view_full', null, table, {variant: 'full',
+                                                                           alias: this.alias(table.element.data_name + '/_full')});
+
+        this.buildViewForTable(table, fullView);
+
+        this.views.push(fullView);
+      }
+    }
+  }
+
+  buildViewForTable(table, view) {
+    const columnNames = {};
+
+    for (const column of table.columns) {
+      let alias = this.viewColumnName(view, table, column);
+
+      if (alias == null) {
+        continue;
+      }
+
+      if (!columnNames[alias]) {
+        view.addColumn({column: column, alias: alias});
+        columnNames[alias] = column;
+      }
     }
   }
 
@@ -141,14 +160,22 @@ export default class Schema {
     }
   }
 
-  viewColumnName(table, column) {
+  viewColumnName(view, table, column) {
     let name = null;
 
     if (column.system) {
       if (table.type === 'form') {
-        name = this.columns.systemFormViewColumns[column.name];
+        if (view.variant === 'full') {
+          name = this.columns.systemFormFullViewColumns[column.name];
+        } else {
+          name = this.columns.systemFormViewColumns[column.name];
+        }
       } else if (table.type === 'repeatable') {
-        name = this.columns.systemRepeatableViewColumns[column.name];
+        if (view.variant === 'full') {
+          name = this.columns.systemRepeatableFullViewColumns[column.name];
+        } else {
+          name = this.columns.systemRepeatableViewColumns[column.name];
+        }
       } else if (table.type === 'values') {
         name = this.columns.systemValuesViewColumns[column.name];
       }
@@ -164,28 +191,28 @@ export default class Schema {
 
     if (name) {
       // dedupe any columns
-      name = this.launderViewColumnName(table, column, name);
+      name = this.launderViewColumnName(view, column, name);
     }
 
     return name;
   }
 
-  launderViewColumnName(table, column, name) {
+  launderViewColumnName(view, column, name) {
     const views = this.viewColumns;
 
-    views[table.name] = views[table.name] || {};
+    views[view.name] = views[view.name] || {};
 
     let count = 1;
 
     let rawName = name.substring(0, 63);
     let newName = rawName;
 
-    while (views[table.name][newName]) {
+    while (views[view.name][newName]) {
       newName = rawName.substring(0, 63 - (count.toString().length)) + count;
       count++;
     }
 
-    views[table.name][newName] = column;
+    views[view.name][newName] = column;
 
     return newName;
   }

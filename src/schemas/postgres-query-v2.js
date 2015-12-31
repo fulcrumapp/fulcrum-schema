@@ -1,3 +1,5 @@
+import _ from 'underscore';
+
 const Schema = {};
 
 Schema.systemFormTableColumns = [
@@ -1080,6 +1082,11 @@ Schema.systemFormViewColumns = {
   title: 'title'
 };
 
+Schema.systemFormFullViewColumns = _.clone(Schema.systemFormViewColumns);
+Schema.systemFormFullViewColumns.form_values = 'form_values';
+Schema.systemFormFullViewColumns.record_index = 'record_index';
+Schema.systemFormFullViewColumns.record_index_text = 'record_index_text';
+
 Schema.systemRepeatableViewColumns = {
   resource_id: 'child_record_id',
   record_resource_id: 'record_id',
@@ -1097,6 +1104,11 @@ Schema.systemRepeatableViewColumns = {
   changeset_resource_id: 'changeset_id',
   title: 'title'
 };
+
+Schema.systemRepeatableFullViewColumns = _.clone(Schema.systemRepeatableViewColumns);
+Schema.systemRepeatableFullViewColumns.form_values = 'form_values';
+Schema.systemRepeatableFullViewColumns.record_index = 'record_index';
+Schema.systemRepeatableFullViewColumns.record_index_text = 'record_index_text';
 
 Schema.systemValuesViewColumns = {
   record_resource_id: 'record_id',
