@@ -97,7 +97,7 @@ var OrganizationSchema = (function () {
         for (var _iterator2 = this.tables[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
           var table = _step2.value;
 
-          var view = new View(table.name, null, table);
+          var view = new View(table.name + '_view', null, table);
 
           var columnNames = {};
 

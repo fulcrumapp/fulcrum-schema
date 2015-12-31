@@ -462,7 +462,7 @@ var Schema = (function () {
           break;
 
         case 'RecordLinkField':
-          this.addArrayElement(elementTable, element);
+          this.addRecordLinkElement(elementTable, element);
           break;
 
         case 'CalculatedField':
@@ -551,8 +551,45 @@ var Schema = (function () {
       this.addArrayElement(table, element);
 
       if (this.columns.includeMediaCaptions !== false) {
-        return this.addArrayElement(table, element, 'captions');
+        this.addArrayElement(table, element, 'captions');
       }
+
+      var value = element.key.replace(/'/g, "''");
+
+      var clause = (0, _util.format)('WHERE key = \'%s\'', value);
+
+      var alias = ({
+        PhotoField: '_photo_id',
+        VideoField: '_video_id',
+        AudioField: '_audio_id'
+      })[element.type];
+
+      if (alias) {
+        var view = new View(this.formTable.id + '_' + element.key + '_view', null, this.valuesTable, { type: 'media', clause: clause, alias: this.alias(element.data_name) });
+
+        view.addColumn({ column: { name: 'record_resource_id', type: 'string' }, alias: '_record_id' });
+        view.addColumn({ column: { name: 'parent_resource_id', type: 'string' }, alias: '_parent_id' });
+        view.addColumn({ column: { name: 'text_value', type: 'string' }, alias: alias });
+
+        this.views.push(view);
+      }
+    }
+  }, {
+    key: 'addRecordLinkElement',
+    value: function addRecordLinkElement(parentTable, element) {
+      this.addArrayElement(parentTable, element);
+
+      var value = element.key.replace(/'/g, "''");
+
+      var clause = (0, _util.format)('WHERE key = \'%s\'', value);
+
+      var view = new View(this.formTable.id + '_' + element.key + '_view', null, this.valuesTable, { type: 'link', clause: clause, alias: this.alias(element.data_name) });
+
+      view.addColumn({ column: { name: 'record_resource_id', type: 'string' }, alias: '_source_record_id' });
+      view.addColumn({ column: { name: 'parent_resource_id', type: 'string' }, alias: '_parent_id' });
+      view.addColumn({ column: { name: 'text_value', type: 'string' }, alias: '_linked_record_id' });
+
+      this.views.push(view);
     }
   }, {
     key: 'addRepeatableElement',

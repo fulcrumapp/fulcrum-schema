@@ -739,12 +739,6 @@ Schema.systemPhotosTable = [{
   type: 'string',
   allowNull: false
 }, {
-  name: 'exif',
-  type: 'string'
-}, {
-  name: 'file_size',
-  type: 'integer'
-}, {
   name: 'record_id',
   type: 'integer'
 }, {
@@ -756,6 +750,12 @@ Schema.systemPhotosTable = [{
 }, {
   name: 'form_resource_id',
   type: 'string'
+}, {
+  name: 'exif',
+  type: 'string'
+}, {
+  name: 'file_size',
+  type: 'integer'
 }, {
   name: 'created_by_id',
   type: 'integer'
@@ -819,12 +819,6 @@ Schema.systemVideosTable = [{
   type: 'string',
   allowNull: false
 }, {
-  name: 'metadata',
-  type: 'string'
-}, {
-  name: 'file_size',
-  type: 'integer'
-}, {
   name: 'record_id',
   type: 'integer'
 }, {
@@ -836,6 +830,12 @@ Schema.systemVideosTable = [{
 }, {
   name: 'form_resource_id',
   type: 'string'
+}, {
+  name: 'metadata',
+  type: 'string'
+}, {
+  name: 'file_size',
+  type: 'integer'
 }, {
   name: 'created_by_id',
   type: 'integer'
@@ -899,12 +899,6 @@ Schema.systemAudioTable = [{
   type: 'string',
   allowNull: false
 }, {
-  name: 'metadata',
-  type: 'string'
-}, {
-  name: 'file_size',
-  type: 'integer'
-}, {
   name: 'record_id',
   type: 'integer'
 }, {
@@ -916,6 +910,12 @@ Schema.systemAudioTable = [{
 }, {
   name: 'form_resource_id',
   type: 'string'
+}, {
+  name: 'metadata',
+  type: 'string'
+}, {
+  name: 'file_size',
+  type: 'integer'
 }, {
   name: 'created_by_id',
   type: 'integer'
@@ -979,12 +979,6 @@ Schema.systemSignaturesTable = [{
   type: 'string',
   allowNull: false
 }, {
-  name: 'exif',
-  type: 'string'
-}, {
-  name: 'file_size',
-  type: 'integer'
-}, {
   name: 'record_id',
   type: 'integer'
 }, {
@@ -996,6 +990,12 @@ Schema.systemSignaturesTable = [{
 }, {
   name: 'form_resource_id',
   type: 'string'
+}, {
+  name: 'exif',
+  type: 'string'
+}, {
+  name: 'file_size',
+  type: 'integer'
 }, {
   name: 'created_by_id',
   type: 'integer'
@@ -1034,7 +1034,7 @@ Schema.systemSignaturesTable = [{
 }];
 
 Schema.systemFormViewColumns = {
-  record_resource_id: 'id',
+  record_resource_id: 'record_id',
   project_resource_id: 'project_id',
   assigned_to_resource_id: 'assigned_to_id',
   status: 'status',
@@ -1058,7 +1058,7 @@ Schema.systemFormViewColumns = {
 };
 
 Schema.systemRepeatableViewColumns = {
-  resource_id: 'id',
+  resource_id: 'child_record_id',
   record_resource_id: 'record_id',
   parent_resource_id: 'parent_id',
   latitude: 'latitude',
@@ -1077,7 +1077,7 @@ Schema.systemRepeatableViewColumns = {
 
 Schema.systemValuesViewColumns = {
   record_resource_id: 'record_id',
-  parent_resource_id: 'parent_id',
+  parent_resource_id: 'child_record_id',
   key: 'key',
   text_value: 'text_value'
 };
@@ -1085,13 +1085,13 @@ Schema.systemValuesViewColumns = {
 Schema.organizationViews = {};
 
 Schema.organizationViews.changesets = {
-  row_resource_id: 'id',
-  form_resource_id: 'form_id',
+  row_resource_id: '_changeset_id',
+  form_resource_id: '_form_id',
   metadata: 'metadata',
   closed_at: 'closed_at',
-  created_by_resource_id: 'created_by_id',
-  updated_by_resource_id: 'updated_by_id',
-  closed_by_resource_id: 'closed_by_id',
+  created_by_resource_id: '_created_by_id',
+  updated_by_resource_id: '_updated_by_id',
+  closed_by_resource_id: '_closed_by_id',
   created_at: 'created_at',
   updated_at: 'updated_at',
   min_lat: 'min_lat',
@@ -1105,7 +1105,7 @@ Schema.organizationViews.changesets = {
 };
 
 Schema.organizationViews.forms = {
-  row_resource_id: 'id',
+  row_resource_id: '_form_id',
   name: 'name',
   description: 'description',
   version: 'version',
@@ -1113,8 +1113,8 @@ Schema.organizationViews.forms = {
   bounding_box: 'bounding_box',
   status: 'status',
   status_field: 'status_field',
-  created_by_resource_id: 'created_by_id',
-  updated_by_resource_id: 'updated_by_id',
+  created_by_resource_id: '_created_by_id',
+  updated_by_resource_id: '_updated_by_id',
   created_at: 'created_at',
   updated_at: 'updated_at',
   auto_assign: 'auto_assign',
@@ -1126,44 +1126,44 @@ Schema.organizationViews.forms = {
 };
 
 Schema.organizationViews.choice_lists = {
-  row_resource_id: 'id',
+  row_resource_id: '_choice_list_id',
   name: 'name',
   description: 'description',
   version: 'version',
   items: 'items',
-  created_by_resource_id: 'created_by_id',
-  updated_by_resource_id: 'updated_by_id',
+  created_by_resource_id: '_created_by_id',
+  updated_by_resource_id: '_updated_by_id',
   created_at: 'created_at',
   updated_at: 'updated_at'
 };
 
 Schema.organizationViews.classification_sets = {
-  row_resource_id: 'id',
+  row_resource_id: '_classification_set_id',
   name: 'name',
   description: 'description',
   version: 'version',
   items: 'items',
-  created_by_resource_id: 'created_by_id',
-  updated_by_resource_id: 'updated_by_id',
+  created_by_resource_id: '_created_by_id',
+  updated_by_resource_id: '_updated_by_id',
   created_at: 'created_at',
   updated_at: 'updated_at'
 };
 
 Schema.organizationViews.projects = {
-  row_resource_id: 'id',
+  row_resource_id: '_project_id',
   name: 'name',
   description: 'description',
-  created_by_resource_id: 'created_by_id',
+  created_by_resource_id: '_created_by_id',
   created_at: 'created_at',
   updated_at: 'updated_at'
 };
 
 Schema.organizationViews.roles = {
-  row_resource_id: 'id',
+  row_resource_id: '_role_id',
   name: 'name',
   description: 'description',
-  created_by_resource_id: 'created_by_id',
-  updated_by_resource_id: 'updated_by_id',
+  created_by_resource_id: '_created_by_id',
+  updated_by_resource_id: '_updated_by_id',
   created_at: 'created_at',
   updated_at: 'updated_at',
   is_system: 'is_system',
@@ -1188,13 +1188,13 @@ Schema.organizationViews.roles = {
 };
 
 Schema.organizationViews.memberships = {
-  row_resource_id: 'id',
-  user_resource_id: 'user_id',
+  row_resource_id: '_membership_id',
+  user_resource_id: '_user_id',
   first_name: 'first_name',
   last_name: 'last_name',
   name: 'name',
   email: 'email',
-  role_resource_id: 'role_id',
+  role_resource_id: '_role_id',
   role_name: 'role_name',
   status: 'status',
   created_at: 'created_at',
@@ -1202,13 +1202,13 @@ Schema.organizationViews.memberships = {
 };
 
 Schema.organizationViews.photos = {
-  access_key: 'id',
+  access_key: '_photo_id',
   exif: 'exif',
   file_size: 'file_size',
-  record_resource_id: 'record_id',
-  form_resource_id: 'form_id',
-  created_by_resource_id: 'created_by_id',
-  updated_by_resource_id: 'updated_by_id',
+  record_resource_id: '_record_id',
+  form_resource_id: '_form_id',
+  created_by_resource_id: '_created_by_id',
+  updated_by_resource_id: '_updated_by_id',
   created_at: 'created_at',
   updated_at: 'updated_at',
   file: 'file',
@@ -1222,13 +1222,13 @@ Schema.organizationViews.photos = {
 };
 
 Schema.organizationViews.videos = {
-  access_key: 'id',
+  access_key: '_video_id',
   metadata: 'metadata',
   file_size: 'file_size',
-  record_resource_id: 'record_id',
-  form_resource_id: 'form_id',
-  created_by_resource_id: 'created_by_id',
-  updated_by_resource_id: 'updated_by_id',
+  record_resource_id: '_record_id',
+  form_resource_id: '_form_id',
+  created_by_resource_id: '_created_by_id',
+  updated_by_resource_id: '_updated_by_id',
   created_at: 'created_at',
   updated_at: 'updated_at',
   file: 'file',
@@ -1242,11 +1242,11 @@ Schema.organizationViews.videos = {
 };
 
 Schema.organizationViews.audio = {
-  access_key: 'id',
+  access_key: '_audio_id',
   metadata: 'metadata',
   file_size: 'file_size',
-  record_resource_id: 'record_id',
-  form_resource_id: 'form_id',
+  record_resource_id: '_record_id',
+  form_resource_id: '_form_id',
   created_by_resource_id: 'created_by_id',
   updated_by_resource_id: 'updated_by_id',
   created_at: 'created_at',
@@ -1262,10 +1262,10 @@ Schema.organizationViews.audio = {
 };
 
 Schema.organizationViews.signatures = {
-  access_key: 'id',
+  access_key: '_signature_id',
   file_size: 'file_size',
-  record_resource_id: 'record_id',
-  form_resource_id: 'form_id',
+  record_resource_id: '_record_id',
+  form_resource_id: '_form_id',
   created_by_resource_id: 'created_by_id',
   updated_by_resource_id: 'updated_by_id',
   created_at: 'created_at',
@@ -1281,7 +1281,7 @@ Schema.systemFormTableIndexes = [{ columns: ['record_resource_id'], method: 'btr
 
 Schema.systemRepeatableTableIndexes = [{ columns: ['resource_id'], method: 'btree', unique: true }, { columns: ['record_resource_id'], method: 'btree' }, { columns: ['parent_resource_id'], method: 'btree' }, { columns: ['geometry'], method: 'gist' }, { columns: ['record_index'], method: 'gin' }];
 
-Schema.systemValuesTableIndexes = [{ columns: ['record_resource_id'], method: 'btree' }, { columns: ['parent_resource_id'], method: 'btree' }, { columns: ['text_value'], method: 'btree' }];
+Schema.systemValuesTableIndexes = [{ columns: ['record_resource_id'], method: 'btree' }, { columns: ['parent_resource_id'], method: 'btree' }, { columns: ['text_value'], method: 'btree' }, { columns: ['key'], method: 'btree' }];
 
 exports.default = Schema;
 //# sourceMappingURL=postgres-query-v2.js.map

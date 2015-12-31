@@ -109,18 +109,25 @@ var Metadata = (function () {
         for (var _iterator2 = this.newViews[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
           var view = _step2.value;
 
-          statements.push((0, _util.format)('DELETE FROM %s WHERE name = %s;', systemTablesName, pgvalue(view.table.alias)));
+          if (!view.table) {
+            continue;
+          }
 
-          statements.push((0, _util.format)('DELETE FROM %s WHERE table_name = %s;', systemColumnsName, pgvalue(view.table.alias)));
+          var viewAlias = view.alias || view.table.alias;
+          var viewType = view.type || view.table.type;
 
-          statements.push((0, _util.format)('INSERT INTO %s (name, type, parent, form_id) SELECT %s, %s, %s, %s;', systemTablesName, pgvalue(view.table.alias), pgvalue(view.table.type), pgvalue(view.table.parent ? view.table.parent.alias : null), pgvalue(view.table.form_id)));
+          statements.push((0, _util.format)('DELETE FROM %s WHERE name = %s;', systemTablesName, pgvalue(viewAlias)));
+
+          statements.push((0, _util.format)('DELETE FROM %s WHERE table_name = %s;', systemColumnsName, pgvalue(viewAlias)));
+
+          statements.push((0, _util.format)('INSERT INTO %s (name, type, parent, form_id) SELECT %s, %s, %s, %s;', systemTablesName, pgvalue(viewAlias), pgvalue(viewType), pgvalue(view.table.parent ? view.table.parent.alias : null), pgvalue(view.table.form_id)));
 
           for (var i = 0; i < view.columns.length; ++i) {
             var column = view.columns[i];
 
-            statements.push((0, _util.format)('DELETE FROM %s WHERE table_name = %s AND name = %s;', systemColumnsName, pgvalue(view.table.alias), pgvalue(column.alias)));
+            statements.push((0, _util.format)('DELETE FROM %s WHERE table_name = %s AND name = %s;', systemColumnsName, pgvalue(viewAlias), pgvalue(column.alias)));
 
-            statements.push((0, _util.format)('INSERT INTO %s (table_name, name, ordinal, type, nullable, form_id) SELECT %s, %s, %s, %s, %s, %s;', systemColumnsName, pgvalue(view.table.alias), pgvalue(column.alias), pgvalue(i + 1), pgvalue(column.column.type), pgvalue(column.column.allowNull ? 1 : 0), pgvalue(view.table.form_id)));
+            statements.push((0, _util.format)('INSERT INTO %s (table_name, name, ordinal, type, nullable, form_id) SELECT %s, %s, %s, %s, %s, %s;', systemColumnsName, pgvalue(viewAlias), pgvalue(column.alias), pgvalue(i + 1), pgvalue(column.column.type), pgvalue(column.column.allowNull ? 1 : 0), pgvalue(view.table.form_id)));
           }
         }
       } catch (err) {
