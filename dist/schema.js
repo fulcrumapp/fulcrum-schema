@@ -145,7 +145,7 @@ var Schema = (function () {
   }, {
     key: 'buildRepeatableTable',
     value: function buildRepeatableTable(parentTable, element) {
-      var table = new Table(this.formTable.id + '_' + element.key, null, { type: 'repeatable', parent: parentTable, alias: this.alias(element.data_name), form_id: this.form.id });
+      var table = new Table(this.formTable.id + '_' + element.key, null, { type: 'repeatable', parent: parentTable, element: element, alias: this.alias(element.data_name), form_id: this.form.id });
 
       var _iteratorNormalCompletion3 = true;
       var _didIteratorError3 = false;
@@ -222,43 +222,24 @@ var Schema = (function () {
 
           var view = new View(table.name + '_view', null, table);
 
-          var columnNames = {};
-
-          var _iteratorNormalCompletion6 = true;
-          var _didIteratorError6 = false;
-          var _iteratorError6 = undefined;
-
-          try {
-            for (var _iterator6 = table.columns[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-              var column = _step6.value;
-
-              var alias = this.viewColumnName(table, column);
-
-              if (alias == null) {
-                continue;
-              }
-
-              if (!columnNames[alias]) {
-                view.addColumn({ column: column, alias: alias });
-                columnNames[alias] = column;
-              }
-            }
-          } catch (err) {
-            _didIteratorError6 = true;
-            _iteratorError6 = err;
-          } finally {
-            try {
-              if (!_iteratorNormalCompletion6 && _iterator6.return) {
-                _iterator6.return();
-              }
-            } finally {
-              if (_didIteratorError6) {
-                throw _iteratorError6;
-              }
-            }
-          }
+          this.buildViewForTable(table, view);
 
           this.views.push(view);
+
+          if (table.type === 'form') {
+            var fullView = new View(table.name + '_view_full', null, table, { variant: 'full', alias: this.alias('_full') });
+
+            this.buildViewForTable(table, fullView);
+
+            this.views.push(fullView);
+          } else if (table.type === 'repeatable') {
+            var fullView = new View(table.name + '_view_full', null, table, { variant: 'full',
+              alias: this.alias(table.element.data_name + '/_full') });
+
+            this.buildViewForTable(table, fullView);
+
+            this.views.push(fullView);
+          }
         }
       } catch (err) {
         _didIteratorError5 = true;
@@ -271,6 +252,45 @@ var Schema = (function () {
         } finally {
           if (_didIteratorError5) {
             throw _iteratorError5;
+          }
+        }
+      }
+    }
+  }, {
+    key: 'buildViewForTable',
+    value: function buildViewForTable(table, view) {
+      var columnNames = {};
+
+      var _iteratorNormalCompletion6 = true;
+      var _didIteratorError6 = false;
+      var _iteratorError6 = undefined;
+
+      try {
+        for (var _iterator6 = table.columns[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+          var column = _step6.value;
+
+          var alias = this.viewColumnName(view, table, column);
+
+          if (alias == null) {
+            continue;
+          }
+
+          if (!columnNames[alias]) {
+            view.addColumn({ column: column, alias: alias });
+            columnNames[alias] = column;
+          }
+        }
+      } catch (err) {
+        _didIteratorError6 = true;
+        _iteratorError6 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion6 && _iterator6.return) {
+            _iterator6.return();
+          }
+        } finally {
+          if (_didIteratorError6) {
+            throw _iteratorError6;
           }
         }
       }
@@ -340,14 +360,22 @@ var Schema = (function () {
     }
   }, {
     key: 'viewColumnName',
-    value: function viewColumnName(table, column) {
+    value: function viewColumnName(view, table, column) {
       var name = null;
 
       if (column.system) {
         if (table.type === 'form') {
-          name = this.columns.systemFormViewColumns[column.name];
+          if (view.variant === 'full') {
+            name = this.columns.systemFormFullViewColumns[column.name];
+          } else {
+            name = this.columns.systemFormViewColumns[column.name];
+          }
         } else if (table.type === 'repeatable') {
-          name = this.columns.systemRepeatableViewColumns[column.name];
+          if (view.variant === 'full') {
+            name = this.columns.systemRepeatableFullViewColumns[column.name];
+          } else {
+            name = this.columns.systemRepeatableViewColumns[column.name];
+          }
         } else if (table.type === 'values') {
           name = this.columns.systemValuesViewColumns[column.name];
         }
@@ -363,29 +391,29 @@ var Schema = (function () {
 
       if (name) {
         // dedupe any columns
-        name = this.launderViewColumnName(table, column, name);
+        name = this.launderViewColumnName(view, column, name);
       }
 
       return name;
     }
   }, {
     key: 'launderViewColumnName',
-    value: function launderViewColumnName(table, column, name) {
+    value: function launderViewColumnName(view, column, name) {
       var views = this.viewColumns;
 
-      views[table.name] = views[table.name] || {};
+      views[view.name] = views[view.name] || {};
 
       var count = 1;
 
       var rawName = name.substring(0, 63);
       var newName = rawName;
 
-      while (views[table.name][newName]) {
+      while (views[view.name][newName]) {
         newName = rawName.substring(0, 63 - count.toString().length) + count;
         count++;
       }
 
-      views[table.name][newName] = column;
+      views[view.name][newName] = column;
 
       return newName;
     }
