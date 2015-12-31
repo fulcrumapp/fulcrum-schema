@@ -261,7 +261,7 @@ export default class Schema {
         break;
 
       case 'RecordLinkField':
-        this.addArrayElement(elementTable, element);
+        this.addRecordLinkElement(elementTable, element);
         break;
 
       case 'CalculatedField':
@@ -343,8 +343,46 @@ export default class Schema {
     this.addArrayElement(table, element);
 
     if (this.columns.includeMediaCaptions !== false) {
-      return this.addArrayElement(table, element, 'captions');
+      this.addArrayElement(table, element, 'captions');
     }
+
+    const value = element.key.replace(/'/g, "''");
+
+    const clause = format('WHERE key = \'%s\'', value);
+
+    let alias = {
+      PhotoField: '_photo_id',
+      VideoField: '_video_id',
+      AudioField: '_audio_id'
+    }[element.type];
+
+    if (alias) {
+      const view = new View(this.formTable.id + '_' + element.key + '_view',
+                            null, this.valuesTable, {type: 'media', clause: clause, alias: this.alias(element.data_name)});
+
+      view.addColumn({column: {name: 'record_resource_id', type: 'string'}, alias: '_record_id'});
+      view.addColumn({column: {name: 'parent_resource_id', type: 'string'}, alias: '_parent_id'});
+      view.addColumn({column: {name: 'text_value', type: 'string'}, alias: alias});
+
+      this.views.push(view);
+    }
+  }
+
+  addRecordLinkElement(parentTable, element) {
+    this.addArrayElement(parentTable, element);
+
+    const value = element.key.replace(/'/g, "''");
+
+    const clause = format('WHERE key = \'%s\'', value);
+
+    const view = new View(this.formTable.id + '_' + element.key + '_view',
+                          null, this.valuesTable, {type: 'link', clause: clause, alias: this.alias(element.data_name)});
+
+    view.addColumn({column: {name: 'record_resource_id', type: 'string'}, alias: '_source_record_id'});
+    view.addColumn({column: {name: 'parent_resource_id', type: 'string'}, alias: '_parent_id'});
+    view.addColumn({column: {name: 'text_value', type: 'string'}, alias: '_linked_record_id'});
+
+    this.views.push(view);
   }
 
   addRepeatableElement(parentTable, element) {

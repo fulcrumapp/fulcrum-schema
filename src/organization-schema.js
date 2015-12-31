@@ -45,7 +45,7 @@ export default class OrganizationSchema {
 
   buildViews() {
     for (const table of this.tables) {
-      const view = new View(table.name, null, table);
+      const view = new View(table.name + '_view', null, table);
 
       const columnNames = {};
 

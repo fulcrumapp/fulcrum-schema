@@ -63,18 +63,25 @@ export default class Metadata {
 
     // create new metadata
     for (const view of this.newViews) {
+      if (!view.table) {
+        continue;
+      }
+
+      const viewAlias = view.alias || view.table.alias;
+      const viewType = view.type || view.table.type;
+
       statements.push(format('DELETE FROM %s WHERE name = %s;',
                              systemTablesName,
-                             pgvalue(view.table.alias)));
+                             pgvalue(viewAlias)));
 
       statements.push(format('DELETE FROM %s WHERE table_name = %s;',
                              systemColumnsName,
-                             pgvalue(view.table.alias)));
+                             pgvalue(viewAlias)));
 
       statements.push(format('INSERT INTO %s (name, type, parent, form_id) SELECT %s, %s, %s, %s;',
                              systemTablesName,
-                             pgvalue(view.table.alias),
-                             pgvalue(view.table.type),
+                             pgvalue(viewAlias),
+                             pgvalue(viewType),
                              pgvalue(view.table.parent ? view.table.parent.alias : null),
                              pgvalue(view.table.form_id)));
 
@@ -83,12 +90,12 @@ export default class Metadata {
 
         statements.push(format('DELETE FROM %s WHERE table_name = %s AND name = %s;',
                                systemColumnsName,
-                               pgvalue(view.table.alias),
+                               pgvalue(viewAlias),
                                pgvalue(column.alias)));
 
         statements.push(format('INSERT INTO %s (table_name, name, ordinal, type, nullable, form_id) SELECT %s, %s, %s, %s, %s, %s;',
                                systemColumnsName,
-                               pgvalue(view.table.alias),
+                               pgvalue(viewAlias),
                                pgvalue(column.alias),
                                pgvalue(i + 1),
                                pgvalue(column.column.type),
