@@ -63,7 +63,7 @@ export default class Metadata {
 
     // create new metadata
     for (const view of this.newViews) {
-      if (!view.table) {
+      if (view.type === 'values' || view.variant != null) {
         continue;
       }
 
