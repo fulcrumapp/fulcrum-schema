@@ -63,12 +63,13 @@ export default class Metadata {
 
     // create new metadata
     for (const view of this.newViews) {
-      if (view.type === 'values' || view.variant != null) {
-        continue;
-      }
-
       const viewAlias = view.alias || view.table.alias;
       const viewType = view.type || view.table.type;
+
+      // skip the _full and 'values' tables
+      if (viewType === 'values' || view.variant != null) {
+        continue;
+      }
 
       statements.push(format('DELETE FROM %s WHERE name = %s;',
                              systemTablesName,
