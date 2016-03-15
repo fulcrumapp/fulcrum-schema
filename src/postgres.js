@@ -24,7 +24,7 @@ function generateSQL(differ) {
   return gen.generate();
 }
 
-instance.compareOrganization = function () {
+instance.compareOrganization = function() {
   let oldSchema = null;
   let newSchema = null;
 
@@ -41,7 +41,7 @@ instance.compareOrganization = function () {
   return generateSQL(differ);
 };
 
-instance.compareForms = function () {
+instance.compareForms = function() {
   try {
     let oldSchema = null;
     let newSchema = null;
