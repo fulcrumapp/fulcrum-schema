@@ -1317,24 +1317,24 @@ Schema.organizationViews.signatures = {
 };
 
 Schema.systemFormTableIndexes = [
-  { columns: ['record_resource_id'], method: 'btree', unique: true },
-  { columns: ['geometry'], method: 'gist' },
-  { columns: ['record_index'], method: 'gin' }
+  { columns: [ 'record_resource_id' ], method: 'btree', unique: true },
+  { columns: [ 'geometry' ], method: 'gist' },
+  { columns: [ 'record_index' ], method: 'gin' }
 ];
 
 Schema.systemRepeatableTableIndexes = [
-  { columns: ['resource_id'], method: 'btree', unique: true },
-  { columns: ['record_resource_id'], method: 'btree' },
-  { columns: ['parent_resource_id'], method: 'btree' },
-  { columns: ['geometry'], method: 'gist' },
-  { columns: ['record_index'], method: 'gin' }
+  { columns: [ 'resource_id' ], method: 'btree', unique: true },
+  { columns: [ 'record_resource_id' ], method: 'btree' },
+  { columns: [ 'parent_resource_id' ], method: 'btree' },
+  { columns: [ 'geometry' ], method: 'gist' },
+  { columns: [ 'record_index' ], method: 'gin' }
 ];
 
 Schema.systemValuesTableIndexes = [
-  { columns: ['record_resource_id'], method: 'btree' },
-  { columns: ['parent_resource_id'], method: 'btree' },
-  { columns: ['text_value'], method: 'btree' },
-  { columns: ['key'], method: 'btree' }
+  { columns: [ 'record_resource_id' ], method: 'btree' },
+  { columns: [ 'parent_resource_id' ], method: 'btree' },
+  { columns: [ 'text_value' ], method: 'btree' },
+  { columns: [ 'key' ], method: 'btree' }
 ];
 
 export default Schema;

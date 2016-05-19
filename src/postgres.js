@@ -8,7 +8,7 @@ import sqldiff from 'sqldiff';
 
 const {Postgres, SchemaDiffer} = sqldiff;
 
-let instance = Function('return this')(); // eslint-disable-line no-new-func
+const instance = Function('return this')(); // eslint-disable-line no-new-func
 
 instance.oldForm = null;
 instance.newForm = null;
@@ -24,7 +24,7 @@ function generateSQL(differ) {
   return gen.generate();
 }
 
-instance.compareOrganization = function() {
+instance.compareOrganization = () => {
   let oldSchema = null;
   let newSchema = null;
 
@@ -41,7 +41,7 @@ instance.compareOrganization = function() {
   return generateSQL(differ);
 };
 
-instance.compareForms = function() {
+instance.compareForms = () => {
   try {
     let oldSchema = null;
     let newSchema = null;

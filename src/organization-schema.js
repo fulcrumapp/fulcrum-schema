@@ -50,7 +50,7 @@ export default class OrganizationSchema {
       const columnNames = {};
 
       for (const column of table.columns) {
-        let alias = this.viewColumnName(table, column);
+        const alias = this.viewColumnName(table, column);
 
         if (alias == null) {
           continue;

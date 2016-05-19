@@ -127,7 +127,7 @@ export default class Schema {
     const columnNames = {};
 
     for (const column of table.columns) {
-      let alias = this.viewColumnName(view, table, column);
+      const alias = this.viewColumnName(view, table, column);
 
       if (alias == null) {
         continue;
@@ -204,7 +204,7 @@ export default class Schema {
 
     let count = 1;
 
-    let rawName = name.substring(0, 63);
+    const rawName = name.substring(0, 63);
     let newName = rawName;
 
     while (views[view.name][newName]) {
@@ -377,7 +377,7 @@ export default class Schema {
 
     const clause = format('WHERE key = \'%s\'', value);
 
-    let alias = {
+    const alias = {
       PhotoField: '_photo_id',
       VideoField: '_video_id',
       AudioField: '_audio_id'
