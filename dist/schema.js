@@ -1,10 +1,10 @@
 'use strict';
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _underscore = require('underscore');
 
@@ -31,7 +31,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var Table = _sqldiff2.default.Table;
 var View = _sqldiff2.default.View;
 
-var Schema = (function () {
+var Schema = function () {
   function Schema(form, columns, options) {
     _classCallCheck(this, Schema);
 
@@ -233,12 +233,12 @@ var Schema = (function () {
 
             this.views.push(fullView);
           } else if (table.type === 'repeatable') {
-            var fullView = new View(table.name + '_view_full', null, table, { variant: 'full',
+            var _fullView = new View(table.name + '_view_full', null, table, { variant: 'full',
               alias: this.alias(table.element.data_name + '/_full') });
 
-            this.buildViewForTable(table, fullView);
+            this.buildViewForTable(table, _fullView);
 
-            this.views.push(fullView);
+            this.views.push(_fullView);
           }
         }
       } catch (err) {
@@ -586,11 +586,11 @@ var Schema = (function () {
 
       var clause = (0, _util.format)('WHERE key = \'%s\'', value);
 
-      var alias = ({
+      var alias = {
         PhotoField: '_photo_id',
         VideoField: '_video_id',
         AudioField: '_audio_id'
-      })[element.type];
+      }[element.type];
 
       if (alias) {
         var view = new View(this.formTable.id + '_' + element.key + '_view', null, this.valuesTable, { type: 'media', clause: clause, alias: this.alias(element.data_name) });
@@ -658,7 +658,7 @@ var Schema = (function () {
   }]);
 
   return Schema;
-})();
+}();
 
 exports.default = Schema;
 //# sourceMappingURL=schema.js.map

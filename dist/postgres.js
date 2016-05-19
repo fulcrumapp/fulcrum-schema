@@ -27,6 +27,7 @@ require('babel-polyfill');
 var Postgres = _sqldiff2.default.Postgres;
 var SchemaDiffer = _sqldiff2.default.SchemaDiffer;
 
+
 var instance = Function('return this')(); // eslint-disable-line no-new-func
 
 instance.oldForm = null;

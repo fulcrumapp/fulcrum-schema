@@ -1,10 +1,11 @@
 'use strict';
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })(); // import pgformat from 'pg-format';
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); // import pgformat from 'pg-format';
+
 
 var _util = require('util');
 
@@ -27,7 +28,7 @@ function pgvalue(value) {
   return "'" + value.toString().replace(/'/g, "''") + "'";
 }
 
-var Metadata = (function () {
+var Metadata = function () {
   function Metadata(diff, options) {
     _classCallCheck(this, Metadata);
 
@@ -107,13 +108,13 @@ var Metadata = (function () {
 
       try {
         for (var _iterator2 = this.newViews[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-          var view = _step2.value;
+          var _view = _step2.value;
 
-          var viewAlias = view.alias || view.table.alias;
-          var viewType = view.type || view.table.type;
+          var viewAlias = _view.alias || _view.table.alias;
+          var viewType = _view.type || _view.table.type;
 
           // skip the _full and 'values' tables
-          if (viewType === 'values' || view.variant != null) {
+          if (viewType === 'values' || _view.variant != null) {
             continue;
           }
 
@@ -121,14 +122,14 @@ var Metadata = (function () {
 
           statements.push((0, _util.format)('DELETE FROM %s WHERE table_name = %s;', systemColumnsName, pgvalue(viewAlias)));
 
-          statements.push((0, _util.format)('INSERT INTO %s (name, type, parent, form_id) SELECT %s, %s, %s, %s;', systemTablesName, pgvalue(viewAlias), pgvalue(viewType), pgvalue(view.table.parent ? view.table.parent.alias : null), pgvalue(view.table.form_id)));
+          statements.push((0, _util.format)('INSERT INTO %s (name, type, parent, form_id) SELECT %s, %s, %s, %s;', systemTablesName, pgvalue(viewAlias), pgvalue(viewType), pgvalue(_view.table.parent ? _view.table.parent.alias : null), pgvalue(_view.table.form_id)));
 
-          for (var i = 0; i < view.columns.length; ++i) {
-            var column = view.columns[i];
+          for (var i = 0; i < _view.columns.length; ++i) {
+            var column = _view.columns[i];
 
             statements.push((0, _util.format)('DELETE FROM %s WHERE table_name = %s AND name = %s;', systemColumnsName, pgvalue(viewAlias), pgvalue(column.alias)));
 
-            statements.push((0, _util.format)('INSERT INTO %s (table_name, name, ordinal, type, nullable, form_id) SELECT %s, %s, %s, %s, %s, %s;', systemColumnsName, pgvalue(viewAlias), pgvalue(column.alias), pgvalue(i + 1), pgvalue(column.column.type), pgvalue(column.column.allowNull ? 1 : 0), pgvalue(view.table.form_id)));
+            statements.push((0, _util.format)('INSERT INTO %s (table_name, name, ordinal, type, nullable, form_id) SELECT %s, %s, %s, %s, %s, %s;', systemColumnsName, pgvalue(viewAlias), pgvalue(column.alias), pgvalue(i + 1), pgvalue(column.column.type), pgvalue(column.column.allowNull ? 1 : 0), pgvalue(_view.table.form_id)));
           }
         }
       } catch (err) {
@@ -153,7 +154,7 @@ var Metadata = (function () {
   }]);
 
   return Metadata;
-})();
+}();
 
 exports.default = Metadata;
 //# sourceMappingURL=metadata.js.map
