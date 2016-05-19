@@ -1,0 +1,11 @@
+#!/usr/bin/env node
+
+require('babel-core/register')();
+
+const postgres = require('./src/postgres');
+
+postgres.newOrganization = 1;
+
+const diff = postgres.compareOrganization();
+
+console.log(diff.join('\n\n'));
