@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS "changesets" (
-  "id" bigserial NOT NULL NOT NULL,
+  "id" bigserial NOT NULL,
   "row_id" bigint NOT NULL,
   "row_resource_id" text NOT NULL,
   "form_id" bigint NOT NULL,
@@ -23,11 +23,12 @@ CREATE TABLE IF NOT EXISTS "changesets" (
   "number_of_updates" bigint,
   "number_of_deletes" bigint,
   "metadata_index_text" text,
-  "metadata_index" tsvector
+  "metadata_index" tsvector,
+  CONSTRAINT "changesets_pkey" PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS "forms" (
-  "id" bigserial NOT NULL NOT NULL,
+  "id" bigserial NOT NULL,
   "row_id" bigint NOT NULL,
   "row_resource_id" text NOT NULL,
   "name" text,
@@ -48,11 +49,12 @@ CREATE TABLE IF NOT EXISTS "forms" (
   "hidden_on_dashboard" boolean NOT NULL,
   "geometry_types" text[],
   "geometry_required" boolean NOT NULL,
-  "script" text
+  "script" text,
+  CONSTRAINT "forms_pkey" PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS "choice_lists" (
-  "id" bigserial NOT NULL NOT NULL,
+  "id" bigserial NOT NULL,
   "row_id" bigint NOT NULL,
   "row_resource_id" text NOT NULL,
   "name" text,
@@ -64,11 +66,12 @@ CREATE TABLE IF NOT EXISTS "choice_lists" (
   "updated_by_id" bigint,
   "updated_by_resource_id" text,
   "created_at" timestamp without time zone NOT NULL,
-  "updated_at" timestamp without time zone NOT NULL
+  "updated_at" timestamp without time zone NOT NULL,
+  CONSTRAINT "choice_lists_pkey" PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS "classification_sets" (
-  "id" bigserial NOT NULL NOT NULL,
+  "id" bigserial NOT NULL,
   "row_id" bigint NOT NULL,
   "row_resource_id" text NOT NULL,
   "name" text,
@@ -80,11 +83,12 @@ CREATE TABLE IF NOT EXISTS "classification_sets" (
   "updated_by_id" bigint,
   "updated_by_resource_id" text,
   "created_at" timestamp without time zone NOT NULL,
-  "updated_at" timestamp without time zone NOT NULL
+  "updated_at" timestamp without time zone NOT NULL,
+  CONSTRAINT "classification_sets_pkey" PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS "projects" (
-  "id" bigserial NOT NULL NOT NULL,
+  "id" bigserial NOT NULL,
   "row_id" bigint NOT NULL,
   "row_resource_id" text NOT NULL,
   "name" text,
@@ -92,11 +96,12 @@ CREATE TABLE IF NOT EXISTS "projects" (
   "created_by_id" bigint,
   "created_by_resource_id" text,
   "created_at" timestamp without time zone NOT NULL,
-  "updated_at" timestamp without time zone NOT NULL
+  "updated_at" timestamp without time zone NOT NULL,
+  CONSTRAINT "projects_pkey" PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS "roles" (
-  "id" bigserial NOT NULL NOT NULL,
+  "id" bigserial NOT NULL,
   "row_id" bigint NOT NULL,
   "row_resource_id" text NOT NULL,
   "name" text,
@@ -125,11 +130,12 @@ CREATE TABLE IF NOT EXISTS "roles" (
   "can_assign_records" boolean NOT NULL,
   "can_import_records" boolean NOT NULL,
   "can_export_records" boolean NOT NULL,
-  "can_run_reports" boolean NOT NULL
+  "can_run_reports" boolean NOT NULL,
+  CONSTRAINT "roles_pkey" PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS "memberships" (
-  "id" bigserial NOT NULL NOT NULL,
+  "id" bigserial NOT NULL,
   "row_id" bigint NOT NULL,
   "row_resource_id" text NOT NULL,
   "user_id" bigint NOT NULL,
@@ -143,11 +149,12 @@ CREATE TABLE IF NOT EXISTS "memberships" (
   "role_name" text NOT NULL,
   "status" text,
   "created_at" timestamp without time zone NOT NULL,
-  "updated_at" timestamp without time zone NOT NULL
+  "updated_at" timestamp without time zone NOT NULL,
+  CONSTRAINT "memberships_pkey" PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS "photos" (
-  "id" bigserial NOT NULL NOT NULL,
+  "id" bigserial NOT NULL,
   "row_id" bigint NOT NULL,
   "row_resource_id" text NOT NULL,
   "access_key" text NOT NULL,
@@ -170,11 +177,12 @@ CREATE TABLE IF NOT EXISTS "photos" (
   "processed_at" timestamp without time zone,
   "geometry" geometry(Geometry, 4326),
   "latitude" float,
-  "longitude" float
+  "longitude" float,
+  CONSTRAINT "photos_pkey" PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS "videos" (
-  "id" bigserial NOT NULL NOT NULL,
+  "id" bigserial NOT NULL,
   "row_id" bigint NOT NULL,
   "row_resource_id" text NOT NULL,
   "access_key" text NOT NULL,
@@ -197,11 +205,12 @@ CREATE TABLE IF NOT EXISTS "videos" (
   "processed_at" timestamp without time zone,
   "has_track" boolean,
   "track" text,
-  "geometry" geometry(Geometry, 4326)
+  "geometry" geometry(Geometry, 4326),
+  CONSTRAINT "videos_pkey" PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS "audio" (
-  "id" bigserial NOT NULL NOT NULL,
+  "id" bigserial NOT NULL,
   "row_id" bigint NOT NULL,
   "row_resource_id" text NOT NULL,
   "access_key" text NOT NULL,
@@ -224,11 +233,12 @@ CREATE TABLE IF NOT EXISTS "audio" (
   "processed_at" timestamp without time zone,
   "has_track" boolean,
   "track" text,
-  "geometry" geometry(Geometry, 4326)
+  "geometry" geometry(Geometry, 4326),
+  CONSTRAINT "audio_pkey" PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS "signatures" (
-  "id" bigserial NOT NULL NOT NULL,
+  "id" bigserial NOT NULL,
   "row_id" bigint NOT NULL,
   "row_resource_id" text NOT NULL,
   "access_key" text NOT NULL,
@@ -248,7 +258,8 @@ CREATE TABLE IF NOT EXISTS "signatures" (
   "content_type" text,
   "uploaded_at" timestamp without time zone,
   "stored_at" timestamp without time zone,
-  "processed_at" timestamp without time zone
+  "processed_at" timestamp without time zone,
+  CONSTRAINT "signatures_pkey" PRIMARY KEY (id)
 );
 
 DROP VIEW IF EXISTS "changesets_view";
