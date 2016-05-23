@@ -11,8 +11,13 @@ export default class Memberships extends TableDefinition {
     this.string('row_resource_id', {"allowNull":false});
     this.integer('user_id', {"allowNull":false});
     this.string('user_resource_id', {});
+    this.string('first_name', {});
+    this.string('last_name', {});
+    this.string('name', {});
+    this.string('email', {});
     this.integer('role_id', {"allowNull":false});
     this.string('role_resource_id', {"allowNull":false});
+    this.string('role_name', {"allowNull":false});
     this.string('status', {});
     this.timestamp('created_at', {"allowNull":false});
     this.timestamp('updated_at', {"allowNull":false});

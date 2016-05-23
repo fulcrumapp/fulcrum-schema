@@ -752,11 +752,27 @@ Schema.systemMembershipsTable = [
     name: 'user_resource_id',
     type: 'string'
   }, {
+    name: 'first_name',
+    type: 'string'
+  }, {
+    name: 'last_name',
+    type: 'string'
+  }, {
+    name: 'name',
+    type: 'string'
+  }, {
+    name: 'email',
+    type: 'string'
+  }, {
     name: 'role_id',
     type: 'integer',
     allowNull: false
   }, {
     name: 'role_resource_id',
+    type: 'string',
+    allowNull: false
+  }, {
+    name: 'role_name',
     type: 'string',
     allowNull: false
   }, {
