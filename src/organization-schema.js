@@ -54,7 +54,6 @@ export default class OrganizationSchema {
       const definition = this.tableDefinitions[table.name];
 
       for (const column of table.columns) {
-        console.log(definition.viewColumns);
         const alias = definition.viewColumns[column.name];
 
         if (alias == null) {
