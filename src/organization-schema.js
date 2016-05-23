@@ -12,27 +12,29 @@ export default class OrganizationSchema {
 
   buildSchema() {
     this.tables = [];
+    this.tableDefinitions = {};
     this.views = [];
 
-    this.buildTable('changesets', this.schema.systemChangesetsTable);
-    this.buildTable('forms', this.schema.systemFormsTable);
-    this.buildTable('choice_lists', this.schema.systemChoiceListsTable);
-    this.buildTable('classification_sets', this.schema.systemClassificationSetsTable);
-    this.buildTable('projects', this.schema.systemProjectsTable);
-    this.buildTable('roles', this.schema.systemRolesTable);
-    this.buildTable('memberships', this.schema.systemMembershipsTable);
-    this.buildTable('photos', this.schema.systemPhotosTable);
-    this.buildTable('videos', this.schema.systemVideosTable);
-    this.buildTable('audio', this.schema.systemAudioTable);
-    this.buildTable('signatures', this.schema.systemSignaturesTable);
+    for (const table of this.schema) {
+      const ModelClass = table;
+
+      const definition = new ModelClass();
+
+      definition.define();
+      definition.view();
+
+      this.tableDefinitions[definition.name] = definition;
+
+      this.buildTable(definition);
+    }
 
     this.buildViews();
   }
 
-  buildTable(name, definition) {
-    const table = new Table(name, null, {type: 'system', alias: name});
+  buildTable(tableDefinition) {
+    const table = new Table(tableDefinition.name, null, {type: 'system', alias: tableDefinition.name});
 
-    for (const column of definition) {
+    for (const column of tableDefinition.columns) {
       const systemColumn = _.clone(column);
 
       systemColumn.system = true;
@@ -49,8 +51,11 @@ export default class OrganizationSchema {
 
       const columnNames = {};
 
+      const definition = this.tableDefinitions[table.name];
+
       for (const column of table.columns) {
-        const alias = this.viewColumnName(table, column);
+        console.log(definition.viewColumns);
+        const alias = definition.viewColumns[column.name];
 
         if (alias == null) {
           continue;
@@ -64,9 +69,5 @@ export default class OrganizationSchema {
 
       this.views.push(view);
     }
-  }
-
-  viewColumnName(table, column) {
-    return this.schema.organizationViews[table.name][column.name];
   }
 }

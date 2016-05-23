@@ -2,7 +2,7 @@ require('babel-polyfill');
 
 import OrganizationSchema from './organization-schema';
 import Schema from './schema';
-import V2 from './schemas/postgres-query-v2';
+import V2 from './schemas/postgres-schema';
 import Metadata from './metadata';
 import sqldiff from 'sqldiff';
 
@@ -14,10 +14,10 @@ instance.oldForm = null;
 instance.newForm = null;
 instance.schema = null;
 
-function generateSQL(differ) {
+function generateSQL(differ, includeMetadata) {
   const meta = new Metadata(differ, {quote: '"', schema: instance.schema});
 
-  const gen = new Postgres(differ, {afterTransform: meta.build.bind(meta)});
+  const gen = new Postgres(differ, {afterTransform: includeMetadata ? meta.build.bind(meta) : null});
 
   gen.tableSchema = instance.schema;
 
@@ -38,7 +38,7 @@ instance.compareOrganization = () => {
 
   const differ = new SchemaDiffer(oldSchema, newSchema);
 
-  return generateSQL(differ);
+  return generateSQL(differ, false);
 };
 
 instance.compareForms = () => {
