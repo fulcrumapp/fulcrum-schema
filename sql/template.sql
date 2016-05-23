@@ -100,6 +100,7 @@ CREATE TABLE IF NOT EXISTS forms (
   version bigint NOT NULL,
   elements text,
   bounding_box geometry(Geometry, 4326),
+  record_count bigint NOT NULL DEFAULT 0,
   status text,
   status_field text,
   created_by_id bigint,
@@ -114,6 +115,8 @@ CREATE TABLE IF NOT EXISTS forms (
   geometry_types text[],
   geometry_required boolean NOT NULL,
   script text,
+  projects_enabled boolean NOT NULL,
+  assignment_enabled boolean NOT NULL,
   CONSTRAINT forms_pkey PRIMARY KEY (id)
 );
 

@@ -14,8 +14,15 @@ function convertTable(className, columns, tableName, file, view) {
 
   output.push('  define() {');
   for (const column of columns) {
-    const allowNull = column.allowNull != null ? ', {allowNull: ' + column.allowNull.toString() + '}' : '';
-    output.push(`    this.${column.type}('${column.name}'${allowNull});`);
+    const params = {};
+    if (column.allowNull != null) {
+      params.allowNull = column.allowNull;
+    }
+    if (column.defaultValue != null) {
+      params.defaultValue = column.defaultValue;
+    }
+    const jsonParams = ', ' + JSON.stringify(params);
+    output.push(`    this.${column.type}('${column.name}'${jsonParams});`);
   }
   output.push('  }');
 
