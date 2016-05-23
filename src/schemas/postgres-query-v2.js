@@ -384,6 +384,9 @@ Schema.systemFormsTable = [
     name: 'record_changed_at',
     type: 'timestamp'
   }, {
+    name: 'recent_lat_longs',
+    type: 'json'
+  }, {
     name: 'status',
     type: 'string'
   }, {
@@ -410,9 +413,40 @@ Schema.systemFormsTable = [
     type: 'timestamp',
     allowNull: false
   }, {
+    name: 'photo_usage',
+    type: 'integer'
+  }, {
+    name: 'photo_count',
+    type: 'integer'
+  }, {
+    name: 'video_usage',
+    type: 'integer'
+  }, {
+    name: 'video_count',
+    type: 'integer'
+  }, {
+    name: 'audio_usage',
+    type: 'integer'
+  }, {
+    name: 'audio_count',
+    type: 'integer'
+  }, {
+    name: 'signature_usage',
+    type: 'integer'
+  }, {
+    name: 'signature_count',
+    type: 'integer'
+  }, {
+    name: 'total_data_usage',
+    type: 'integer'
+  }, {
+    name: 'total_data_count',
+    type: 'integer'
+  }, {
     name: 'auto_assign',
     type: 'boolean',
-    allowNull: false
+    allowNull: false,
+    defaultValues: 0
   }, {
     name: 'title_field_keys',
     type: 'array'
@@ -429,6 +463,9 @@ Schema.systemFormsTable = [
     allowNull: false
   }, {
     name: 'script',
+    type: 'text'
+  }, {
+    name: 'image',
     type: 'text'
   }, {
     name: 'projects_enabled',

@@ -16,6 +16,7 @@ export default class Forms extends TableDefinition {
     this.geometry('bounding_box', {});
     this.integer('record_count', {"allowNull":false,"defaultValue":0});
     this.timestamp('record_changed_at', {});
+    this.json('recent_lat_longs', {});
     this.string('status', {});
     this.string('status_field', {});
     this.integer('created_by_id', {});
@@ -24,12 +25,23 @@ export default class Forms extends TableDefinition {
     this.string('updated_by_resource_id', {});
     this.timestamp('created_at', {"allowNull":false});
     this.timestamp('updated_at', {"allowNull":false});
+    this.integer('photo_usage', {});
+    this.integer('photo_count', {});
+    this.integer('video_usage', {});
+    this.integer('video_count', {});
+    this.integer('audio_usage', {});
+    this.integer('audio_count', {});
+    this.integer('signature_usage', {});
+    this.integer('signature_count', {});
+    this.integer('total_data_usage', {});
+    this.integer('total_data_count', {});
     this.boolean('auto_assign', {"allowNull":false});
     this.array('title_field_keys', {});
     this.boolean('hidden_on_dashboard', {"allowNull":false});
     this.array('geometry_types', {});
     this.boolean('geometry_required', {"allowNull":false});
     this.text('script', {});
+    this.text('image', {});
     this.boolean('projects_enabled', {"allowNull":false});
     this.boolean('assignment_enabled', {"allowNull":false});
   }

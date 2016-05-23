@@ -48,6 +48,10 @@ export default class TableDefinition {
     this.column(name, 'geometry', options);
   }
 
+  json(name, options) {
+    this.column(name, 'json', options);
+  }
+
   alias(source, to) {
     this.viewColumns[source] = to;
   }
