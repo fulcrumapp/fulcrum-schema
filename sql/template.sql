@@ -42,10 +42,10 @@ CREATE TABLE IF NOT EXISTS changesets (
   closed_by_resource_id text,
   created_at timestamp without time zone NOT NULL,
   updated_at timestamp without time zone NOT NULL,
-  min_lat float,
-  max_lat float,
-  min_lon float,
-  max_lon float,
+  min_lat double precision,
+  max_lat double precision,
+  min_lon double precision,
+  max_lon double precision,
   number_of_changes bigint,
   number_of_creates bigint,
   number_of_updates bigint,
@@ -157,8 +157,8 @@ CREATE TABLE IF NOT EXISTS photos (
   stored_at timestamp without time zone,
   processed_at timestamp without time zone,
   geometry geometry(Geometry, 4326),
-  latitude float,
-  longitude float,
+  latitude double precision,
+  longitude double precision,
   CONSTRAINT photos_pkey PRIMARY KEY (id)
 );
 
