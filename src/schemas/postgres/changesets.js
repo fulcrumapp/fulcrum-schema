@@ -6,31 +6,31 @@ export default class Changesets extends TableDefinition {
   }
 
   define() {
-    this.pk('id');
-    this.integer('row_id', {allowNull: false});
-    this.string('row_resource_id', {allowNull: false});
-    this.integer('form_id', {allowNull: false});
-    this.string('form_resource_id');
-    this.string('metadata');
-    this.timestamp('closed_at');
-    this.integer('created_by_id');
-    this.string('created_by_resource_id');
-    this.integer('updated_by_id');
-    this.string('updated_by_resource_id');
-    this.integer('closed_by_id');
-    this.string('closed_by_resource_id');
-    this.timestamp('created_at', {allowNull: false});
-    this.timestamp('updated_at', {allowNull: false});
-    this.double('min_lat');
-    this.double('max_lat');
-    this.double('min_lon');
-    this.double('max_lon');
-    this.integer('number_of_changes');
-    this.integer('number_of_creates');
-    this.integer('number_of_updates');
-    this.integer('number_of_deletes');
-    this.string('metadata_index_text');
-    this.fts('metadata_index');
+    this.pk('id', {});
+    this.integer('row_id', {"allowNull":false});
+    this.string('row_resource_id', {"allowNull":false});
+    this.integer('form_id', {"allowNull":false});
+    this.string('form_resource_id', {});
+    this.string('metadata', {});
+    this.timestamp('closed_at', {});
+    this.integer('created_by_id', {});
+    this.string('created_by_resource_id', {});
+    this.integer('updated_by_id', {});
+    this.string('updated_by_resource_id', {});
+    this.integer('closed_by_id', {});
+    this.string('closed_by_resource_id', {});
+    this.timestamp('created_at', {"allowNull":false});
+    this.timestamp('updated_at', {"allowNull":false});
+    this.double('min_lat', {});
+    this.double('max_lat', {});
+    this.double('min_lon', {});
+    this.double('max_lon', {});
+    this.integer('number_of_changes', {});
+    this.integer('number_of_creates', {});
+    this.integer('number_of_updates', {});
+    this.integer('number_of_deletes', {});
+    this.string('metadata_index_text', {});
+    this.fts('metadata_index', {});
   }
 
   view() {

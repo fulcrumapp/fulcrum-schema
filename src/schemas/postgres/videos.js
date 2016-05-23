@@ -6,30 +6,32 @@ export default class Videos extends TableDefinition {
   }
 
   define() {
-    this.pk('id');
-    this.integer('row_id', {allowNull: false});
-    this.string('row_resource_id', {allowNull: false});
-    this.string('access_key', {allowNull: false});
-    this.integer('record_id');
-    this.string('record_resource_id');
-    this.integer('form_id');
-    this.string('form_resource_id');
-    this.string('metadata');
-    this.integer('file_size');
-    this.integer('created_by_id');
-    this.string('created_by_resource_id');
-    this.integer('updated_by_id');
-    this.string('updated_by_resource_id');
-    this.timestamp('created_at', {allowNull: false});
-    this.timestamp('updated_at', {allowNull: false});
-    this.string('file');
-    this.string('content_type');
-    this.timestamp('uploaded_at');
-    this.timestamp('stored_at');
-    this.timestamp('processed_at');
-    this.boolean('has_track');
-    this.string('track');
-    this.geometry('geometry');
+    this.pk('id', {});
+    this.integer('row_id', {"allowNull":false});
+    this.string('row_resource_id', {"allowNull":false});
+    this.string('access_key', {"allowNull":false});
+    this.integer('record_id', {});
+    this.string('record_resource_id', {});
+    this.integer('form_id', {});
+    this.string('form_resource_id', {});
+    this.string('metadata', {});
+    this.integer('file_size', {});
+    this.integer('created_by_id', {});
+    this.string('created_by_resource_id', {});
+    this.integer('updated_by_id', {});
+    this.string('updated_by_resource_id', {});
+    this.timestamp('created_at', {"allowNull":false});
+    this.timestamp('updated_at', {"allowNull":false});
+    this.string('file', {});
+    this.string('content_type', {});
+    this.timestamp('uploaded_at', {});
+    this.timestamp('stored_at', {});
+    this.timestamp('processed_at', {});
+    this.timestamp('small_processed_at', {});
+    this.timestamp('medium_processed_at', {});
+    this.boolean('has_track', {});
+    this.string('track', {});
+    this.geometry('geometry', {});
   }
 
   view() {

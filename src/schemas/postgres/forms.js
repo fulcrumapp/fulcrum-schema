@@ -6,28 +6,31 @@ export default class Forms extends TableDefinition {
   }
 
   define() {
-    this.pk('id');
-    this.integer('row_id', {allowNull: false});
-    this.string('row_resource_id', {allowNull: false});
-    this.string('name');
-    this.string('description');
-    this.integer('version', {allowNull: false});
-    this.string('elements');
-    this.geometry('bounding_box');
-    this.string('status');
-    this.string('status_field');
-    this.integer('created_by_id');
-    this.string('created_by_resource_id');
-    this.integer('updated_by_id');
-    this.string('updated_by_resource_id');
-    this.timestamp('created_at', {allowNull: false});
-    this.timestamp('updated_at', {allowNull: false});
-    this.boolean('auto_assign', {allowNull: false});
-    this.array('title_field_keys');
-    this.boolean('hidden_on_dashboard', {allowNull: false});
-    this.array('geometry_types');
-    this.boolean('geometry_required', {allowNull: false});
-    this.text('script');
+    this.pk('id', {});
+    this.integer('row_id', {"allowNull":false});
+    this.string('row_resource_id', {"allowNull":false});
+    this.string('name', {"allowNull":false});
+    this.string('description', {});
+    this.integer('version', {"allowNull":false});
+    this.string('elements', {});
+    this.geometry('bounding_box', {});
+    this.integer('record_count', {"allowNull":false,"defaultValue":0});
+    this.string('status', {});
+    this.string('status_field', {});
+    this.integer('created_by_id', {});
+    this.string('created_by_resource_id', {});
+    this.integer('updated_by_id', {});
+    this.string('updated_by_resource_id', {});
+    this.timestamp('created_at', {"allowNull":false});
+    this.timestamp('updated_at', {"allowNull":false});
+    this.boolean('auto_assign', {"allowNull":false});
+    this.array('title_field_keys', {});
+    this.boolean('hidden_on_dashboard', {"allowNull":false});
+    this.array('geometry_types', {});
+    this.boolean('geometry_required', {"allowNull":false});
+    this.text('script', {});
+    this.boolean('projects_enabled', {"allowNull":false});
+    this.boolean('assignment_enabled', {"allowNull":false});
   }
 
   view() {

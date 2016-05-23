@@ -376,6 +376,11 @@ Schema.systemFormsTable = [
     name: 'bounding_box',
     type: 'geometry'
   }, {
+    name: 'record_count',
+    type: 'integer',
+    allowNull: false,
+    defaultValue: 0
+  }, {
     name: 'status',
     type: 'string'
   }, {
@@ -422,6 +427,14 @@ Schema.systemFormsTable = [
   }, {
     name: 'script',
     type: 'text'
+  }, {
+    name: 'projects_enabled',
+    type: 'boolean',
+    allowNull: false
+  }, {
+    name: 'assignment_enabled',
+    type: 'boolean',
+    allowNull: false
   }
 ];
 
