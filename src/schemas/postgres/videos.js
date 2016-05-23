@@ -32,6 +32,8 @@ export default class Videos extends TableDefinition {
     this.boolean('has_track', {});
     this.string('track', {});
     this.geometry('geometry', {});
+    this.integer('width', {});
+    this.integer('height', {});
   }
 
   view() {

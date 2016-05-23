@@ -664,71 +664,88 @@ Schema.systemRolesTable = [
   }, {
     name: 'can_manage_subscription',
     type: 'boolean',
-    allowNull: false
+    allowNull: false,
+    defaultValue: 0
   }, {
     name: 'can_update_organization',
     type: 'boolean',
-    allowNull: false
+    allowNull: false,
+    defaultValue: 0
   }, {
     name: 'can_manage_members',
     type: 'boolean',
-    allowNull: false
+    allowNull: false,
+    defaultValue: 0
   }, {
     name: 'can_manage_roles',
     type: 'boolean',
-    allowNull: false
+    allowNull: false,
+    defaultValue: 0
   }, {
     name: 'can_manage_apps',
     type: 'boolean',
-    allowNull: false
+    allowNull: false,
+    defaultValue: 0
   }, {
     name: 'can_manage_projects',
     type: 'boolean',
-    allowNull: false
+    allowNull: false,
+    defaultValue: 0
   }, {
     name: 'can_manage_choice_lists',
     type: 'boolean',
-    allowNull: false
+    allowNull: false,
+    defaultValue: 0
   }, {
     name: 'can_manage_classification_sets',
     type: 'boolean',
-    allowNull: false
+    allowNull: false,
+    defaultValue: 0
   }, {
     name: 'can_create_records',
     type: 'boolean',
-    allowNull: false
+    allowNull: false,
+    defaultValue: 0
   }, {
     name: 'can_update_records',
     type: 'boolean',
-    allowNull: false
+    allowNull: false,
+    defaultValue: 0
   }, {
     name: 'can_delete_records',
     type: 'boolean',
-    allowNull: false
+    allowNull: false,
+    defaultValue: 0
   }, {
     name: 'can_change_status',
     type: 'boolean',
-    allowNull: false
+    allowNull: false,
+    defaultValue: 0
   }, {
     name: 'can_change_project',
     type: 'boolean',
-    allowNull: false
+    allowNull: false,
+    defaultValue: 0
   }, {
     name: 'can_assign_records',
     type: 'boolean',
-    allowNull: false
+    allowNull: false,
+    defaultValue: 0
   }, {
     name: 'can_import_records',
     type: 'boolean',
-    allowNull: false
+    allowNull: false,
+    defaultValue: 0
   }, {
     name: 'can_export_records',
     type: 'boolean',
-    allowNull: false
+    allowNull: false,
+    defaultValue: 0
   }, {
     name: 'can_run_reports',
     type: 'boolean',
-    allowNull: false
+    allowNull: false,
+    defaultValue: 0
   }
 ];
 
@@ -867,6 +884,15 @@ Schema.systemPhotosTable = [
   }, {
     name: 'longitude',
     type: 'double'
+  }, {
+    name: 'accuracy',
+    type: 'double'
+  }, {
+    name: 'width',
+    type: 'integer'
+  }, {
+    name: 'height',
+    type: 'integer'
   }
 ];
 
@@ -954,6 +980,12 @@ Schema.systemVideosTable = [
   }, {
     name: 'geometry',
     type: 'geometry'
+  }, {
+    name: 'width',
+    type: 'integer'
+  }, {
+    name: 'height',
+    type: 'integer'
   }
 ];
 
