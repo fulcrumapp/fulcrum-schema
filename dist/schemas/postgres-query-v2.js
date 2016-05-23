@@ -13,8 +13,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var Schema = {};
 
 Schema.systemFormTableColumns = [{
-  name: 'id', type: 'pk',
-  allowNull: false
+  name: 'id',
+  type: 'pk'
 }, {
   name: 'record_id',
   type: 'integer',
@@ -118,8 +118,7 @@ Schema.systemFormTableColumns = [{
 
 Schema.systemValuesTableColumns = [{
   name: 'id',
-  type: 'pk',
-  allowNull: false
+  type: 'pk'
 }, {
   name: 'record_id',
   type: 'integer',
@@ -144,8 +143,7 @@ Schema.systemValuesTableColumns = [{
 
 Schema.systemRepeatableTableColumns = [{
   name: 'id',
-  type: 'pk',
-  allowNull: false
+  type: 'pk'
 }, {
   name: 'resource_id',
   type: 'string',
@@ -270,8 +268,7 @@ Schema.systemRepeatableTableColumns = [{
 
 Schema.systemChangesetsTable = [{
   name: 'id',
-  type: 'pk',
-  allowNull: false
+  type: 'pk'
 }, {
   name: 'row_id',
   type: 'integer',
@@ -353,8 +350,7 @@ Schema.systemChangesetsTable = [{
 
 Schema.systemFormsTable = [{
   name: 'id',
-  type: 'pk',
-  allowNull: false
+  type: 'pk'
 }, {
   name: 'row_id',
   type: 'integer',
@@ -430,8 +426,7 @@ Schema.systemFormsTable = [{
 
 Schema.systemChoiceListsTable = [{
   name: 'id',
-  type: 'pk',
-  allowNull: false
+  type: 'pk'
 }, {
   name: 'row_id',
   type: 'integer',
@@ -478,8 +473,7 @@ Schema.systemChoiceListsTable = [{
 
 Schema.systemClassificationSetsTable = [{
   name: 'id',
-  type: 'pk',
-  allowNull: false
+  type: 'pk'
 }, {
   name: 'row_id',
   type: 'integer',
@@ -525,8 +519,7 @@ Schema.systemClassificationSetsTable = [{
 
 Schema.systemProjectsTable = [{
   name: 'id',
-  type: 'pk',
-  allowNull: false
+  type: 'pk'
 }, {
   name: 'row_id',
   type: 'integer',
@@ -559,8 +552,7 @@ Schema.systemProjectsTable = [{
 
 Schema.systemRolesTable = [{
   name: 'id',
-  type: 'pk',
-  allowNull: false
+  type: 'pk'
 }, {
   name: 'row_id',
   type: 'integer',
@@ -675,8 +667,7 @@ Schema.systemRolesTable = [{
 
 Schema.systemMembershipsTable = [{
   name: 'id',
-  type: 'pk',
-  allowNull: false
+  type: 'pk'
 }, {
   name: 'row_id',
   type: 'integer',
@@ -731,8 +722,7 @@ Schema.systemMembershipsTable = [{
 
 Schema.systemPhotosTable = [{
   name: 'id',
-  type: 'pk',
-  allowNull: false
+  type: 'pk'
 }, {
   name: 'row_id',
   type: 'integer',
@@ -811,8 +801,7 @@ Schema.systemPhotosTable = [{
 
 Schema.systemVideosTable = [{
   name: 'id',
-  type: 'pk',
-  allowNull: false
+  type: 'pk'
 }, {
   name: 'row_id',
   type: 'integer',
@@ -891,8 +880,7 @@ Schema.systemVideosTable = [{
 
 Schema.systemAudioTable = [{
   name: 'id',
-  type: 'pk',
-  allowNull: false
+  type: 'pk'
 }, {
   name: 'row_id',
   type: 'integer',
@@ -971,8 +959,7 @@ Schema.systemAudioTable = [{
 
 Schema.systemSignaturesTable = [{
   name: 'id',
-  type: 'pk',
-  allowNull: false
+  type: 'pk'
 }, {
   name: 'row_id',
   type: 'integer',

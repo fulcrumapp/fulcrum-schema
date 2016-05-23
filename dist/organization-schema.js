@@ -34,40 +34,27 @@ var OrganizationSchema = function () {
     key: 'buildSchema',
     value: function buildSchema() {
       this.tables = [];
+      this.tableDefinitions = {};
       this.views = [];
-
-      this.buildTable('changesets', this.schema.systemChangesetsTable);
-      this.buildTable('forms', this.schema.systemFormsTable);
-      this.buildTable('choice_lists', this.schema.systemChoiceListsTable);
-      this.buildTable('classification_sets', this.schema.systemClassificationSetsTable);
-      this.buildTable('projects', this.schema.systemProjectsTable);
-      this.buildTable('roles', this.schema.systemRolesTable);
-      this.buildTable('memberships', this.schema.systemMembershipsTable);
-      this.buildTable('photos', this.schema.systemPhotosTable);
-      this.buildTable('videos', this.schema.systemVideosTable);
-      this.buildTable('audio', this.schema.systemAudioTable);
-      this.buildTable('signatures', this.schema.systemSignaturesTable);
-
-      this.buildViews();
-    }
-  }, {
-    key: 'buildTable',
-    value: function buildTable(name, definition) {
-      var table = new Table(name, null, { type: 'system', alias: name });
 
       var _iteratorNormalCompletion = true;
       var _didIteratorError = false;
       var _iteratorError = undefined;
 
       try {
-        for (var _iterator = definition[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var column = _step.value;
+        for (var _iterator = this.schema[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var table = _step.value;
 
-          var systemColumn = _underscore2.default.clone(column);
+          var ModelClass = table;
 
-          systemColumn.system = true;
+          var definition = new ModelClass();
 
-          table.addColumn(systemColumn);
+          definition.define();
+          definition.view();
+
+          this.tableDefinitions[definition.name] = definition;
+
+          this.buildTable(definition);
         }
       } catch (err) {
         _didIteratorError = true;
@@ -84,58 +71,26 @@ var OrganizationSchema = function () {
         }
       }
 
-      this.tables.push(table);
+      this.buildViews();
     }
   }, {
-    key: 'buildViews',
-    value: function buildViews() {
+    key: 'buildTable',
+    value: function buildTable(tableDefinition) {
+      var table = new Table(tableDefinition.name, null, { type: 'system', alias: tableDefinition.name });
+
       var _iteratorNormalCompletion2 = true;
       var _didIteratorError2 = false;
       var _iteratorError2 = undefined;
 
       try {
-        for (var _iterator2 = this.tables[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-          var table = _step2.value;
+        for (var _iterator2 = tableDefinition.columns[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var column = _step2.value;
 
-          var view = new View(table.name + '_view', null, table);
+          var systemColumn = _underscore2.default.clone(column);
 
-          var columnNames = {};
+          systemColumn.system = true;
 
-          var _iteratorNormalCompletion3 = true;
-          var _didIteratorError3 = false;
-          var _iteratorError3 = undefined;
-
-          try {
-            for (var _iterator3 = table.columns[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-              var column = _step3.value;
-
-              var alias = this.viewColumnName(table, column);
-
-              if (alias == null) {
-                continue;
-              }
-
-              if (!columnNames[alias]) {
-                view.addColumn({ column: column, alias: alias });
-                columnNames[alias] = column;
-              }
-            }
-          } catch (err) {
-            _didIteratorError3 = true;
-            _iteratorError3 = err;
-          } finally {
-            try {
-              if (!_iteratorNormalCompletion3 && _iterator3.return) {
-                _iterator3.return();
-              }
-            } finally {
-              if (_didIteratorError3) {
-                throw _iteratorError3;
-              }
-            }
-          }
-
-          this.views.push(view);
+          table.addColumn(systemColumn);
         }
       } catch (err) {
         _didIteratorError2 = true;
@@ -151,11 +106,76 @@ var OrganizationSchema = function () {
           }
         }
       }
+
+      this.tables.push(table);
     }
   }, {
-    key: 'viewColumnName',
-    value: function viewColumnName(table, column) {
-      return this.schema.organizationViews[table.name][column.name];
+    key: 'buildViews',
+    value: function buildViews() {
+      var _iteratorNormalCompletion3 = true;
+      var _didIteratorError3 = false;
+      var _iteratorError3 = undefined;
+
+      try {
+        for (var _iterator3 = this.tables[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+          var table = _step3.value;
+
+          var view = new View(table.name + '_view', null, table);
+
+          var columnNames = {};
+
+          var definition = this.tableDefinitions[table.name];
+
+          var _iteratorNormalCompletion4 = true;
+          var _didIteratorError4 = false;
+          var _iteratorError4 = undefined;
+
+          try {
+            for (var _iterator4 = table.columns[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+              var column = _step4.value;
+
+              var alias = definition.viewColumns[column.name];
+
+              if (alias == null) {
+                continue;
+              }
+
+              if (!columnNames[alias]) {
+                view.addColumn({ column: column, alias: alias });
+                columnNames[alias] = column;
+              }
+            }
+          } catch (err) {
+            _didIteratorError4 = true;
+            _iteratorError4 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion4 && _iterator4.return) {
+                _iterator4.return();
+              }
+            } finally {
+              if (_didIteratorError4) {
+                throw _iteratorError4;
+              }
+            }
+          }
+
+          this.views.push(view);
+        }
+      } catch (err) {
+        _didIteratorError3 = true;
+        _iteratorError3 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion3 && _iterator3.return) {
+            _iterator3.return();
+          }
+        } finally {
+          if (_didIteratorError3) {
+            throw _iteratorError3;
+          }
+        }
+      }
     }
   }]);
 

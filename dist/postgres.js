@@ -8,9 +8,9 @@ var _schema = require('./schema');
 
 var _schema2 = _interopRequireDefault(_schema);
 
-var _postgresQueryV = require('./schemas/postgres-query-v2');
+var _postgresSchema = require('./schemas/postgres-schema');
 
-var _postgresQueryV2 = _interopRequireDefault(_postgresQueryV);
+var _postgresSchema2 = _interopRequireDefault(_postgresSchema);
 
 var _metadata = require('./metadata');
 
@@ -34,10 +34,10 @@ instance.oldForm = null;
 instance.newForm = null;
 instance.schema = null;
 
-function generateSQL(differ) {
+function generateSQL(differ, includeMetadata) {
   var meta = new _metadata2.default(differ, { quote: '"', schema: instance.schema });
 
-  var gen = new Postgres(differ, { afterTransform: meta.build.bind(meta) });
+  var gen = new Postgres(differ, { afterTransform: includeMetadata ? meta.build.bind(meta) : null });
 
   gen.tableSchema = instance.schema;
 
@@ -49,16 +49,16 @@ instance.compareOrganization = function () {
   var newSchema = null;
 
   if (instance.oldOrganization) {
-    oldSchema = new _organizationSchema2.default(_postgresQueryV2.default);
+    oldSchema = new _organizationSchema2.default(_postgresSchema2.default);
   }
 
   if (instance.newOrganization) {
-    newSchema = new _organizationSchema2.default(_postgresQueryV2.default);
+    newSchema = new _organizationSchema2.default(_postgresSchema2.default);
   }
 
   var differ = new SchemaDiffer(oldSchema, newSchema);
 
-  return generateSQL(differ);
+  return generateSQL(differ, false);
 };
 
 instance.compareForms = function () {
@@ -67,11 +67,11 @@ instance.compareForms = function () {
     var newSchema = null;
 
     if (instance.oldForm) {
-      oldSchema = new _schema2.default(instance.oldForm, _postgresQueryV2.default, null);
+      oldSchema = new _schema2.default(instance.oldForm, _postgresSchema2.default, null);
     }
 
     if (instance.newForm) {
-      newSchema = new _schema2.default(instance.newForm, _postgresQueryV2.default, null);
+      newSchema = new _schema2.default(instance.newForm, _postgresSchema2.default, null);
     }
 
     var differ = new SchemaDiffer(oldSchema, newSchema);
