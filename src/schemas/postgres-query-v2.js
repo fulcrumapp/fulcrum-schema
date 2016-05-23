@@ -360,7 +360,8 @@ Schema.systemFormsTable = [
     allowNull: false
   }, {
     name: 'name',
-    type: 'string'
+    type: 'string',
+    allowNull: false
   }, {
     name: 'description',
     type: 'string'
@@ -438,7 +439,8 @@ Schema.systemChoiceListsTable = [
     allowNull: false
   }, {
     name: 'name',
-    type: 'string'
+    type: 'string',
+    allowNull: false
   }, {
     name: 'description',
     type: 'string'
@@ -487,7 +489,8 @@ Schema.systemClassificationSetsTable = [
     allowNull: false
   }, {
     name: 'name',
-    type: 'string'
+    type: 'string',
+    allowNull: false
   }, {
     name: 'description',
     type: 'string'
@@ -497,7 +500,8 @@ Schema.systemClassificationSetsTable = [
     allowNull: false
   }, {
     name: 'items',
-    type: 'string'
+    type: 'string',
+    allowNull: false
   }, {
     name: 'created_by_id',
     type: 'integer'
@@ -535,7 +539,8 @@ Schema.systemProjectsTable = [
     allowNull: false
   }, {
     name: 'name',
-    type: 'string'
+    type: 'string',
+    allowNull: false
   }, {
     name: 'description',
     type: 'string'
@@ -570,7 +575,8 @@ Schema.systemRolesTable = [
     allowNull: false
   }, {
     name: 'name',
-    type: 'string'
+    type: 'string',
+    allowNull: false
   }, {
     name: 'description',
     type: 'string'
@@ -881,6 +887,12 @@ Schema.systemVideosTable = [
     name: 'processed_at',
     type: 'timestamp'
   }, {
+    name: 'small_processed_at',
+    type: 'timestamp'
+  }, {
+    name: 'medium_processed_at',
+    type: 'timestamp'
+  }, {
     name: 'has_track',
     type: 'boolean'
   }, {
@@ -960,6 +972,12 @@ Schema.systemAudioTable = [
     type: 'timestamp'
   }, {
     name: 'processed_at',
+    type: 'timestamp'
+  }, {
+    name: 'small_processed_at',
+    type: 'timestamp'
+  }, {
+    name: 'medium_processed_at',
     type: 'timestamp'
   }, {
     name: 'has_track',
