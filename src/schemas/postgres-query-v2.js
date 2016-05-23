@@ -381,6 +381,9 @@ Schema.systemFormsTable = [
     allowNull: false,
     defaultValue: 0
   }, {
+    name: 'record_changed_at',
+    type: 'timestamp'
+  }, {
     name: 'status',
     type: 'string'
   }, {

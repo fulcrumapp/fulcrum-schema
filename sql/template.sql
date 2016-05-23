@@ -101,6 +101,7 @@ CREATE TABLE IF NOT EXISTS forms (
   elements text,
   bounding_box geometry(Geometry, 4326),
   record_count bigint NOT NULL DEFAULT 0,
+  record_changed_at timestamp without time zone,
   status text,
   status_field text,
   created_by_id bigint,

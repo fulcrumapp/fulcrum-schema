@@ -15,6 +15,7 @@ export default class Forms extends TableDefinition {
     this.string('elements', {});
     this.geometry('bounding_box', {});
     this.integer('record_count', {"allowNull":false,"defaultValue":0});
+    this.timestamp('record_changed_at', {});
     this.string('status', {});
     this.string('status_field', {});
     this.integer('created_by_id', {});
