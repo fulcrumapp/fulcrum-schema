@@ -1309,6 +1309,12 @@ Schema.organizationViews.classification_sets = {
   updated_at: 'updated_at'
 };
 
+Schema.organizationIndexes.classification_sets = [
+  { columns: [ 'row_resource_id' ] },
+  { columns: [ 'name' ] },
+  { columns: [ 'updated_at' ] }
+];
+
 Schema.organizationViews.projects = {
   row_resource_id: '_project_id',
   name: 'name',

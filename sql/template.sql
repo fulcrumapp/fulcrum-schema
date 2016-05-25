@@ -542,6 +542,12 @@ CREATE INDEX idx_choice_lists_name ON choice_lists USING btree (name);
 
 CREATE INDEX idx_choice_lists_updated_at ON choice_lists USING btree (updated_at);
 
+CREATE INDEX idx_classification_sets_row_resource_id ON classification_sets USING btree (row_resource_id);
+
+CREATE INDEX idx_classification_sets_name ON classification_sets USING btree (name);
+
+CREATE INDEX idx_classification_sets_updated_at ON classification_sets USING btree (updated_at);
+
 CREATE INDEX idx_forms_row_resource_id ON forms USING btree (row_resource_id);
 
 CREATE INDEX idx_forms_name ON forms USING btree (name);
