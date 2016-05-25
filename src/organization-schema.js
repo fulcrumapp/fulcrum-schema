@@ -72,7 +72,9 @@ export default class OrganizationSchema {
         }
       }
 
-      this.views.push(view);
+      if (view.columns.length) {
+        this.views.push(view);
+      }
     }
   }
 }

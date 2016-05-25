@@ -26,13 +26,13 @@ function convertTable(className, columns, tableName, file, view) {
   }
   output.push('  }');
 
+  output.push('\n  defineView() {');
   if (view) {
-    output.push('\n  defineView() {');
     for (const column of Object.keys(view)) {
       output.push(`    this.alias('${column}', '${view[column]}');`);
     }
-    output.push('  }');
   }
+  output.push('  }');
 
   output.push('\n  defineIndexes() {');
   if (schema.organizationIndexes[tableName]) {
@@ -49,6 +49,7 @@ function convertTable(className, columns, tableName, file, view) {
 
 convertTable('Changesets', schema.systemChangesetsTable, 'changesets', 'changesets', schema.organizationViews.changesets);
 convertTable('Forms', schema.systemFormsTable, 'forms', 'forms', schema.organizationViews.forms);
+// convertTable('Records', schema.systemRecordsTable, 'records', 'records', schema.organizationViews.records);
 convertTable('ChoiceLists', schema.systemChoiceListsTable, 'choice_lists', 'choice-lists', schema.organizationViews.choice_lists);
 convertTable('ClassificationSets', schema.systemClassificationSetsTable, 'classification_sets', 'classification-sets', schema.organizationViews.classification_sets);
 convertTable('Projects', schema.systemProjectsTable, 'projects', 'projects', schema.organizationViews.projects);
