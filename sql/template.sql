@@ -553,3 +553,9 @@ CREATE INDEX idx_forms_row_resource_id ON forms USING btree (row_resource_id);
 CREATE INDEX idx_forms_name ON forms USING btree (name);
 
 CREATE INDEX idx_forms_updated_at ON forms USING btree (updated_at);
+
+CREATE INDEX idx_projects_row_resource_id ON projects USING btree (row_resource_id);
+
+CREATE INDEX idx_projects_name ON projects USING btree (name);
+
+CREATE INDEX idx_projects_updated_at ON projects USING btree (updated_at);

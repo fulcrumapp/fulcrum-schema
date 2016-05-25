@@ -1324,6 +1324,12 @@ Schema.organizationViews.projects = {
   updated_at: 'updated_at'
 };
 
+Schema.organizationIndexes.projects = [
+  { columns: [ 'row_resource_id' ] },
+  { columns: [ 'name' ] },
+  { columns: [ 'updated_at' ] }
+];
+
 Schema.organizationViews.roles = {
   row_resource_id: '_role_id',
   name: 'name',
