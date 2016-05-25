@@ -5,7 +5,7 @@ export default class Forms extends TableDefinition {
     return 'forms'
   }
 
-  define() {
+  defineTable() {
     this.pk('id', {});
     this.integer('row_id', {"allowNull":false});
     this.string('row_resource_id', {"allowNull":false});
@@ -46,7 +46,7 @@ export default class Forms extends TableDefinition {
     this.boolean('assignment_enabled', {"allowNull":false});
   }
 
-  view() {
+  defineView() {
     this.alias('row_resource_id', '_form_id');
     this.alias('name', 'name');
     this.alias('description', 'description');
@@ -68,5 +68,8 @@ export default class Forms extends TableDefinition {
     this.alias('projects_enabled', 'projects_enabled');
     this.alias('assignment_enabled', 'assignment_enabled');
     this.alias('image', 'image');
+  }
+
+  defineIndexes() {
   }
 }

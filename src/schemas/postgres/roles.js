@@ -5,7 +5,7 @@ export default class Roles extends TableDefinition {
     return 'roles'
   }
 
-  define() {
+  defineTable() {
     this.pk('id', {});
     this.integer('row_id', {"allowNull":false});
     this.string('row_resource_id', {"allowNull":false});
@@ -38,7 +38,7 @@ export default class Roles extends TableDefinition {
     this.boolean('can_run_reports', {"allowNull":false,"defaultValue":0});
   }
 
-  view() {
+  defineView() {
     this.alias('row_resource_id', '_role_id');
     this.alias('name', 'name');
     this.alias('description', 'description');
@@ -65,5 +65,8 @@ export default class Roles extends TableDefinition {
     this.alias('can_import_records', 'can_import_records');
     this.alias('can_export_records', 'can_export_records');
     this.alias('can_run_reports', 'can_run_reports');
+  }
+
+  defineIndexes() {
   }
 }

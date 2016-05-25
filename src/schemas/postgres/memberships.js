@@ -5,7 +5,7 @@ export default class Memberships extends TableDefinition {
     return 'memberships'
   }
 
-  define() {
+  defineTable() {
     this.pk('id', {});
     this.integer('row_id', {"allowNull":false});
     this.string('row_resource_id', {"allowNull":false});
@@ -23,7 +23,7 @@ export default class Memberships extends TableDefinition {
     this.timestamp('updated_at', {"allowNull":false});
   }
 
-  view() {
+  defineView() {
     this.alias('row_resource_id', '_membership_id');
     this.alias('user_resource_id', '_user_id');
     this.alias('first_name', 'first_name');
@@ -35,5 +35,8 @@ export default class Memberships extends TableDefinition {
     this.alias('status', 'status');
     this.alias('created_at', 'created_at');
     this.alias('updated_at', 'updated_at');
+  }
+
+  defineIndexes() {
   }
 }

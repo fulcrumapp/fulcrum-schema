@@ -12,7 +12,7 @@ function convertTable(className, columns, tableName, file, view) {
   output.push(`    return '${tableName}'`);
   output.push('  }\n');
 
-  output.push('  define() {');
+  output.push('  defineTable() {');
   for (const column of columns) {
     const params = {};
     if (column.allowNull != null) {
@@ -27,12 +27,20 @@ function convertTable(className, columns, tableName, file, view) {
   output.push('  }');
 
   if (view) {
-    output.push('\n  view() {');
+    output.push('\n  defineView() {');
     for (const column of Object.keys(view)) {
       output.push(`    this.alias('${column}', '${view[column]}');`);
     }
     output.push('  }');
   }
+
+  output.push('\n  defineIndexes() {');
+  if (schema.organizationIndexes[tableName]) {
+    for (const definition of schema.organizationIndexes[tableName]) {
+      output.push(`    this.index(${JSON.stringify(definition)});`);
+    }
+  }
+  output.push('  }');
 
   output.push('}');
 

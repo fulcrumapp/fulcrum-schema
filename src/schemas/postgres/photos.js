@@ -5,7 +5,7 @@ export default class Photos extends TableDefinition {
     return 'photos'
   }
 
-  define() {
+  defineTable() {
     this.pk('id', {});
     this.integer('row_id', {"allowNull":false});
     this.string('row_resource_id', {"allowNull":false});
@@ -35,7 +35,7 @@ export default class Photos extends TableDefinition {
     this.integer('height', {});
   }
 
-  view() {
+  defineView() {
     this.alias('access_key', '_photo_id');
     this.alias('exif', 'exif');
     this.alias('file_size', 'file_size');
@@ -56,5 +56,8 @@ export default class Photos extends TableDefinition {
     this.alias('accuracy', 'accuracy');
     this.alias('width', 'width');
     this.alias('height', 'height');
+  }
+
+  defineIndexes() {
   }
 }

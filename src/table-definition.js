@@ -2,6 +2,7 @@ export default class TableDefinition {
   constructor() {
     this.columns = [];
     this.viewColumns = {};
+    this.indexes = [];
   }
 
   column(name, type, options) {
@@ -54,6 +55,10 @@ export default class TableDefinition {
 
   alias(source, to) {
     this.viewColumns[source] = to;
+  }
+
+  index(options) {
+    this.indexes.push(options);
   }
 
   define() {

@@ -5,7 +5,7 @@ export default class Changesets extends TableDefinition {
     return 'changesets'
   }
 
-  define() {
+  defineTable() {
     this.pk('id', {});
     this.integer('row_id', {"allowNull":false});
     this.string('row_resource_id', {"allowNull":false});
@@ -33,7 +33,7 @@ export default class Changesets extends TableDefinition {
     this.fts('metadata_index', {});
   }
 
-  view() {
+  defineView() {
     this.alias('row_resource_id', '_changeset_id');
     this.alias('form_resource_id', '_form_id');
     this.alias('metadata', 'metadata');
@@ -52,5 +52,13 @@ export default class Changesets extends TableDefinition {
     this.alias('number_of_creates', 'number_of_creates');
     this.alias('number_of_updates', 'number_of_updates');
     this.alias('number_of_deletes', 'number_of_deletes');
+  }
+
+  defineIndexes() {
+    this.index({"columns":["row_resource_id"]});
+    this.index({"columns":["form_id"]});
+    this.index({"columns":["metadata_index"],"method":"gin"});
+    this.index({"columns":["form_id","updated_at"]});
+    this.index({"columns":["updated_at"]});
   }
 }

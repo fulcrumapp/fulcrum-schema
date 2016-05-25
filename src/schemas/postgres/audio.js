@@ -5,7 +5,7 @@ export default class Audio extends TableDefinition {
     return 'audio'
   }
 
-  define() {
+  defineTable() {
     this.pk('id', {});
     this.integer('row_id', {"allowNull":false});
     this.string('row_resource_id', {"allowNull":false});
@@ -35,7 +35,7 @@ export default class Audio extends TableDefinition {
     this.double('duration', {});
   }
 
-  view() {
+  defineView() {
     this.alias('access_key', '_audio_id');
     this.alias('metadata', 'metadata');
     this.alias('file_size', 'file_size');
@@ -54,5 +54,8 @@ export default class Audio extends TableDefinition {
     this.alias('track', 'track');
     this.alias('geometry', 'geometry');
     this.alias('duration', 'duration');
+  }
+
+  defineIndexes() {
   }
 }

@@ -5,7 +5,7 @@ export default class Signatures extends TableDefinition {
     return 'signatures'
   }
 
-  define() {
+  defineTable() {
     this.pk('id', {});
     this.integer('row_id', {"allowNull":false});
     this.string('row_resource_id', {"allowNull":false});
@@ -29,7 +29,7 @@ export default class Signatures extends TableDefinition {
     this.timestamp('processed_at', {});
   }
 
-  view() {
+  defineView() {
     this.alias('access_key', '_signature_id');
     this.alias('file_size', 'file_size');
     this.alias('record_resource_id', '_record_id');
@@ -43,5 +43,8 @@ export default class Signatures extends TableDefinition {
     this.alias('uploaded_at', 'uploaded_at');
     this.alias('stored_at', 'stored_at');
     this.alias('processed_at', 'processed_at');
+  }
+
+  defineIndexes() {
   }
 }

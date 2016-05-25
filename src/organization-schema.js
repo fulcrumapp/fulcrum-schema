@@ -20,8 +20,9 @@ export default class OrganizationSchema {
 
       const definition = new ModelClass();
 
-      definition.define();
-      definition.view();
+      definition.defineTable();
+      definition.defineView();
+      definition.defineIndexes();
 
       this.tableDefinitions[definition.name] = definition;
 
@@ -40,6 +41,10 @@ export default class OrganizationSchema {
       systemColumn.system = true;
 
       table.addColumn(systemColumn);
+    }
+
+    for (const indexDefinition of tableDefinition.indexes) {
+      table.addIndex(indexDefinition);
     }
 
     this.tables.push(table);

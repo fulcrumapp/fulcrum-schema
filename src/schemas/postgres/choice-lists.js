@@ -5,7 +5,7 @@ export default class ChoiceLists extends TableDefinition {
     return 'choice_lists'
   }
 
-  define() {
+  defineTable() {
     this.pk('id', {});
     this.integer('row_id', {"allowNull":false});
     this.string('row_resource_id', {"allowNull":false});
@@ -21,7 +21,7 @@ export default class ChoiceLists extends TableDefinition {
     this.timestamp('updated_at', {"allowNull":false});
   }
 
-  view() {
+  defineView() {
     this.alias('row_resource_id', '_choice_list_id');
     this.alias('name', 'name');
     this.alias('description', 'description');
@@ -31,5 +31,8 @@ export default class ChoiceLists extends TableDefinition {
     this.alias('updated_by_resource_id', '_updated_by_id');
     this.alias('created_at', 'created_at');
     this.alias('updated_at', 'updated_at');
+  }
+
+  defineIndexes() {
   }
 }

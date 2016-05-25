@@ -5,7 +5,7 @@ export default class Videos extends TableDefinition {
     return 'videos'
   }
 
-  define() {
+  defineTable() {
     this.pk('id', {});
     this.integer('row_id', {"allowNull":false});
     this.string('row_resource_id', {"allowNull":false});
@@ -37,7 +37,7 @@ export default class Videos extends TableDefinition {
     this.double('duration', {});
   }
 
-  view() {
+  defineView() {
     this.alias('access_key', '_video_id');
     this.alias('metadata', 'metadata');
     this.alias('file_size', 'file_size');
@@ -58,5 +58,8 @@ export default class Videos extends TableDefinition {
     this.alias('width', 'width');
     this.alias('height', 'height');
     this.alias('duration', 'duration');
+  }
+
+  defineIndexes() {
   }
 }

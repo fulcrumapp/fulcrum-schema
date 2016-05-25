@@ -1218,6 +1218,7 @@ Schema.systemValuesViewColumns = {
 };
 
 Schema.organizationViews = {};
+Schema.organizationIndexes = {};
 
 Schema.organizationViews.changesets = {
   row_resource_id: '_changeset_id',
@@ -1239,6 +1240,14 @@ Schema.organizationViews.changesets = {
   number_of_updates: 'number_of_updates',
   number_of_deletes: 'number_of_deletes'
 };
+
+Schema.organizationIndexes.changesets = [
+  { columns: [ 'row_resource_id' ] },
+  { columns: [ 'form_id' ] },
+  { columns: [ 'metadata_index' ], method: 'gin' },
+  { columns: [ 'form_id', 'updated_at' ] },
+  { columns: [ 'updated_at' ] }
+];
 
 Schema.organizationViews.forms = {
   row_resource_id: '_form_id',
