@@ -59,5 +59,11 @@ export default class Photos extends TableDefinition {
   }
 
   defineIndexes() {
+    this.index({"columns":["access_key"]});
+    this.index({"columns":["record_resource_id"]});
+    this.index({"columns":["form_resource_id"]});
+    this.index({"columns":["created_by_resource_id"]});
+    this.index({"columns":["geometry"],"method":"gist"});
+    this.index({"columns":["updated_at"]});
   }
 }

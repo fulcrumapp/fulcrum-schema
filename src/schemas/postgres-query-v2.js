@@ -1410,6 +1410,15 @@ Schema.organizationViews.photos = {
   height: 'height'
 };
 
+Schema.organizationIndexes.photos = [
+  { columns: [ 'access_key' ] },
+  { columns: [ 'record_resource_id' ] },
+  { columns: [ 'form_resource_id' ] },
+  { columns: [ 'created_by_resource_id' ] },
+  { columns: [ 'geometry' ], method: 'gist' },
+  { columns: [ 'updated_at' ] }
+];
+
 Schema.organizationViews.videos = {
   access_key: '_video_id',
   metadata: 'metadata',

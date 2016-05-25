@@ -564,6 +564,18 @@ CREATE INDEX idx_memberships_name ON memberships USING btree (name);
 
 CREATE INDEX idx_memberships_updated_at ON memberships USING btree (updated_at);
 
+CREATE INDEX idx_photos_access_key ON photos USING btree (access_key);
+
+CREATE INDEX idx_photos_record_resource_id ON photos USING btree (record_resource_id);
+
+CREATE INDEX idx_photos_form_resource_id ON photos USING btree (form_resource_id);
+
+CREATE INDEX idx_photos_created_by_resource_id ON photos USING btree (created_by_resource_id);
+
+CREATE INDEX idx_photos_geometry ON photos USING gist (geometry);
+
+CREATE INDEX idx_photos_updated_at ON photos USING btree (updated_at);
+
 CREATE INDEX idx_projects_row_resource_id ON projects USING btree (row_resource_id);
 
 CREATE INDEX idx_projects_name ON projects USING btree (name);
