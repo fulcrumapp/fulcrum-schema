@@ -1472,6 +1472,15 @@ Schema.organizationViews.audio = {
   duration: 'duration'
 };
 
+Schema.organizationIndexes.audio = [
+  { columns: [ 'access_key' ] },
+  { columns: [ 'record_resource_id' ] },
+  { columns: [ 'form_resource_id' ] },
+  { columns: [ 'created_by_resource_id' ] },
+  { columns: [ 'geometry' ], method: 'gist' },
+  { columns: [ 'updated_at' ] }
+];
+
 Schema.organizationViews.signatures = {
   access_key: '_signature_id',
   file_size: 'file_size',

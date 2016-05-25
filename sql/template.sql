@@ -526,6 +526,18 @@ SELECT
   duration AS duration
 FROM videos;
 
+CREATE INDEX idx_audio_access_key ON audio USING btree (access_key);
+
+CREATE INDEX idx_audio_record_resource_id ON audio USING btree (record_resource_id);
+
+CREATE INDEX idx_audio_form_resource_id ON audio USING btree (form_resource_id);
+
+CREATE INDEX idx_audio_created_by_resource_id ON audio USING btree (created_by_resource_id);
+
+CREATE INDEX idx_audio_geometry ON audio USING gist (geometry);
+
+CREATE INDEX idx_audio_updated_at ON audio USING btree (updated_at);
+
 CREATE INDEX idx_changesets_row_resource_id ON changesets USING btree (row_resource_id);
 
 CREATE INDEX idx_changesets_form_id ON changesets USING btree (form_id);
