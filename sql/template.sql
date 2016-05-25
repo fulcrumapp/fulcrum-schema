@@ -600,6 +600,16 @@ CREATE INDEX idx_roles_name ON roles USING btree (name);
 
 CREATE INDEX idx_roles_updated_at ON roles USING btree (updated_at);
 
+CREATE INDEX idx_signatures_access_key ON signatures USING btree (access_key);
+
+CREATE INDEX idx_signatures_record_resource_id ON signatures USING btree (record_resource_id);
+
+CREATE INDEX idx_signatures_form_resource_id ON signatures USING btree (form_resource_id);
+
+CREATE INDEX idx_signatures_created_by_resource_id ON signatures USING btree (created_by_resource_id);
+
+CREATE INDEX idx_signatures_updated_at ON signatures USING btree (updated_at);
+
 CREATE INDEX idx_videos_access_key ON videos USING btree (access_key);
 
 CREATE INDEX idx_videos_record_resource_id ON videos USING btree (record_resource_id);

@@ -46,5 +46,10 @@ export default class Signatures extends TableDefinition {
   }
 
   defineIndexes() {
+    this.index({"columns":["access_key"]});
+    this.index({"columns":["record_resource_id"]});
+    this.index({"columns":["form_resource_id"]});
+    this.index({"columns":["created_by_resource_id"]});
+    this.index({"columns":["updated_at"]});
   }
 }

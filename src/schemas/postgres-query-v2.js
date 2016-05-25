@@ -1497,6 +1497,14 @@ Schema.organizationViews.signatures = {
   processed_at: 'processed_at'
 };
 
+Schema.organizationIndexes.signatures = [
+  { columns: [ 'access_key' ] },
+  { columns: [ 'record_resource_id' ] },
+  { columns: [ 'form_resource_id' ] },
+  { columns: [ 'created_by_resource_id' ] },
+  { columns: [ 'updated_at' ] }
+];
+
 Schema.systemFormTableIndexes = [
   { columns: [ 'record_resource_id' ], method: 'btree', unique: true },
   { columns: [ 'geometry' ], method: 'gist' },
