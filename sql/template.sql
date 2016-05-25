@@ -536,8 +536,14 @@ CREATE INDEX idx_changesets_form_id_updated_at ON changesets USING btree (form_i
 
 CREATE INDEX idx_changesets_updated_at ON changesets USING btree (updated_at);
 
-CREATE INDEX idx_forms_name ON forms USING btree (name);
+CREATE INDEX idx_choice_lists_row_resource_id ON choice_lists USING btree (row_resource_id);
+
+CREATE INDEX idx_choice_lists_name ON choice_lists USING btree (name);
+
+CREATE INDEX idx_choice_lists_updated_at ON choice_lists USING btree (updated_at);
 
 CREATE INDEX idx_forms_row_resource_id ON forms USING btree (row_resource_id);
+
+CREATE INDEX idx_forms_name ON forms USING btree (name);
 
 CREATE INDEX idx_forms_updated_at ON forms USING btree (updated_at);

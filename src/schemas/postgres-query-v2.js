@@ -1274,8 +1274,8 @@ Schema.organizationViews.forms = {
 };
 
 Schema.organizationIndexes.forms = [
-  { columns: [ 'name' ] },
   { columns: [ 'row_resource_id' ] },
+  { columns: [ 'name' ] },
   { columns: [ 'updated_at' ] }
 ];
 
@@ -1290,6 +1290,12 @@ Schema.organizationViews.choice_lists = {
   created_at: 'created_at',
   updated_at: 'updated_at'
 };
+
+Schema.organizationIndexes.choice_lists = [
+  { columns: [ 'row_resource_id' ] },
+  { columns: [ 'name' ] },
+  { columns: [ 'updated_at' ] }
+];
 
 Schema.organizationViews.classification_sets = {
   row_resource_id: '_classification_set_id',
