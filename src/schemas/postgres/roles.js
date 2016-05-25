@@ -19,23 +19,23 @@ export default class Roles extends TableDefinition {
     this.timestamp('updated_at', {"allowNull":false});
     this.boolean('is_system', {"allowNull":false});
     this.boolean('is_default', {"allowNull":false});
-    this.boolean('can_manage_subscription', {"allowNull":false,"defaultValue":0});
-    this.boolean('can_update_organization', {"allowNull":false,"defaultValue":0});
-    this.boolean('can_manage_members', {"allowNull":false,"defaultValue":0});
-    this.boolean('can_manage_roles', {"allowNull":false,"defaultValue":0});
-    this.boolean('can_manage_apps', {"allowNull":false,"defaultValue":0});
-    this.boolean('can_manage_projects', {"allowNull":false,"defaultValue":0});
-    this.boolean('can_manage_choice_lists', {"allowNull":false,"defaultValue":0});
-    this.boolean('can_manage_classification_sets', {"allowNull":false,"defaultValue":0});
-    this.boolean('can_create_records', {"allowNull":false,"defaultValue":0});
-    this.boolean('can_update_records', {"allowNull":false,"defaultValue":0});
-    this.boolean('can_delete_records', {"allowNull":false,"defaultValue":0});
-    this.boolean('can_change_status', {"allowNull":false,"defaultValue":0});
-    this.boolean('can_change_project', {"allowNull":false,"defaultValue":0});
-    this.boolean('can_assign_records', {"allowNull":false,"defaultValue":0});
-    this.boolean('can_import_records', {"allowNull":false,"defaultValue":0});
-    this.boolean('can_export_records', {"allowNull":false,"defaultValue":0});
-    this.boolean('can_run_reports', {"allowNull":false,"defaultValue":0});
+    this.boolean('can_manage_subscription', {"allowNull":false,"defaultValue":false});
+    this.boolean('can_update_organization', {"allowNull":false,"defaultValue":false});
+    this.boolean('can_manage_members', {"allowNull":false,"defaultValue":false});
+    this.boolean('can_manage_roles', {"allowNull":false,"defaultValue":false});
+    this.boolean('can_manage_apps', {"allowNull":false,"defaultValue":false});
+    this.boolean('can_manage_projects', {"allowNull":false,"defaultValue":false});
+    this.boolean('can_manage_choice_lists', {"allowNull":false,"defaultValue":false});
+    this.boolean('can_manage_classification_sets', {"allowNull":false,"defaultValue":false});
+    this.boolean('can_create_records', {"allowNull":false,"defaultValue":false});
+    this.boolean('can_update_records', {"allowNull":false,"defaultValue":false});
+    this.boolean('can_delete_records', {"allowNull":false,"defaultValue":false});
+    this.boolean('can_change_status', {"allowNull":false,"defaultValue":false});
+    this.boolean('can_change_project', {"allowNull":false,"defaultValue":false});
+    this.boolean('can_assign_records', {"allowNull":false,"defaultValue":false});
+    this.boolean('can_import_records', {"allowNull":false,"defaultValue":false});
+    this.boolean('can_export_records', {"allowNull":false,"defaultValue":false});
+    this.boolean('can_run_reports', {"allowNull":false,"defaultValue":false});
   }
 
   defineView() {

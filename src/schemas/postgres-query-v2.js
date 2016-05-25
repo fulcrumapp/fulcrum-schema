@@ -446,7 +446,7 @@ Schema.systemFormsTable = [
     name: 'auto_assign',
     type: 'boolean',
     allowNull: false,
-    defaultValues: 0
+    defaultValues: false
   }, {
     name: 'title_field_keys',
     type: 'array'
@@ -767,87 +767,87 @@ Schema.systemRolesTable = [
     name: 'can_manage_subscription',
     type: 'boolean',
     allowNull: false,
-    defaultValue: 0
+    defaultValue: false
   }, {
     name: 'can_update_organization',
     type: 'boolean',
     allowNull: false,
-    defaultValue: 0
+    defaultValue: false
   }, {
     name: 'can_manage_members',
     type: 'boolean',
     allowNull: false,
-    defaultValue: 0
+    defaultValue: false
   }, {
     name: 'can_manage_roles',
     type: 'boolean',
     allowNull: false,
-    defaultValue: 0
+    defaultValue: false
   }, {
     name: 'can_manage_apps',
     type: 'boolean',
     allowNull: false,
-    defaultValue: 0
+    defaultValue: false
   }, {
     name: 'can_manage_projects',
     type: 'boolean',
     allowNull: false,
-    defaultValue: 0
+    defaultValue: false
   }, {
     name: 'can_manage_choice_lists',
     type: 'boolean',
     allowNull: false,
-    defaultValue: 0
+    defaultValue: false
   }, {
     name: 'can_manage_classification_sets',
     type: 'boolean',
     allowNull: false,
-    defaultValue: 0
+    defaultValue: false
   }, {
     name: 'can_create_records',
     type: 'boolean',
     allowNull: false,
-    defaultValue: 0
+    defaultValue: false
   }, {
     name: 'can_update_records',
     type: 'boolean',
     allowNull: false,
-    defaultValue: 0
+    defaultValue: false
   }, {
     name: 'can_delete_records',
     type: 'boolean',
     allowNull: false,
-    defaultValue: 0
+    defaultValue: false
   }, {
     name: 'can_change_status',
     type: 'boolean',
     allowNull: false,
-    defaultValue: 0
+    defaultValue: false
   }, {
     name: 'can_change_project',
     type: 'boolean',
     allowNull: false,
-    defaultValue: 0
+    defaultValue: false
   }, {
     name: 'can_assign_records',
     type: 'boolean',
     allowNull: false,
-    defaultValue: 0
+    defaultValue: false
   }, {
     name: 'can_import_records',
     type: 'boolean',
     allowNull: false,
-    defaultValue: 0
+    defaultValue: false
   }, {
     name: 'can_export_records',
     type: 'boolean',
     allowNull: false,
-    defaultValue: 0
+    defaultValue: false
   }, {
     name: 'can_run_reports',
     type: 'boolean',
     allowNull: false,
-    defaultValue: 0
+    defaultValue: false
   }
 ];
 
