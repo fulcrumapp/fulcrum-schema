@@ -57,6 +57,7 @@ export default class OrganizationSchema {
         const alias = definition.viewColumns[column.name];
 
         if (alias == null) {
+          // console.log('Skipping ' + table.name + '.' + column.name + ' in view.');
           continue;
         }
 

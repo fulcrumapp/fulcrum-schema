@@ -437,10 +437,10 @@ Schema.systemFormsTable = [
     name: 'signature_count',
     type: 'integer'
   }, {
-    name: 'total_data_usage',
+    name: 'media_usage',
     type: 'integer'
   }, {
-    name: 'total_data_count',
+    name: 'media_count',
     type: 'integer'
   }, {
     name: 'auto_assign',
@@ -986,6 +986,9 @@ Schema.systemVideosTable = [
   }, {
     name: 'height',
     type: 'integer'
+  }, {
+    name: 'duration',
+    type: 'double'
   }
 ];
 
@@ -1073,6 +1076,9 @@ Schema.systemAudioTable = [
   }, {
     name: 'geometry',
     type: 'geometry'
+  }, {
+    name: 'duration',
+    type: 'double'
   }
 ];
 
@@ -1217,6 +1223,7 @@ Schema.organizationViews.changesets = {
   row_resource_id: '_changeset_id',
   form_resource_id: '_form_id',
   metadata: 'metadata',
+  metadata_index: '_metadata_index',
   closed_at: 'closed_at',
   created_by_resource_id: '_created_by_id',
   updated_by_resource_id: '_updated_by_id',
@@ -1251,7 +1258,10 @@ Schema.organizationViews.forms = {
   hidden_on_dashboard: 'hidden_on_dashboard',
   geometry_types: 'geometry_types',
   geometry_required: 'geometry_required',
-  script: 'script'
+  script: 'script',
+  projects_enabled: 'projects_enabled',
+  assignment_enabled: 'assignment_enabled',
+  image: 'image'
 };
 
 Schema.organizationViews.choice_lists = {
@@ -1347,7 +1357,10 @@ Schema.organizationViews.photos = {
   processed_at: 'processed_at',
   geometry: 'geometry',
   latitude: 'latitude',
-  longitude: 'longitude'
+  longitude: 'longitude',
+  accuracy: 'accuracy',
+  width: 'width',
+  height: 'height'
 };
 
 Schema.organizationViews.videos = {
@@ -1367,7 +1380,10 @@ Schema.organizationViews.videos = {
   processed_at: 'processed_at',
   has_track: 'has_track',
   track: 'track',
-  geometry: 'geometry'
+  geometry: 'geometry',
+  width: 'width',
+  height: 'height',
+  duration: 'duration'
 };
 
 Schema.organizationViews.audio = {
@@ -1387,7 +1403,8 @@ Schema.organizationViews.audio = {
   processed_at: 'processed_at',
   has_track: 'has_track',
   track: 'track',
-  geometry: 'geometry'
+  geometry: 'geometry',
+  duration: 'duration'
 };
 
 Schema.organizationViews.signatures = {

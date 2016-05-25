@@ -53,5 +53,8 @@ export default class Photos extends TableDefinition {
     this.alias('geometry', 'geometry');
     this.alias('latitude', 'latitude');
     this.alias('longitude', 'longitude');
+    this.alias('accuracy', 'accuracy');
+    this.alias('width', 'width');
+    this.alias('height', 'height');
   }
 }

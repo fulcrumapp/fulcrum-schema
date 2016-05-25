@@ -32,6 +32,7 @@ export default class Audio extends TableDefinition {
     this.boolean('has_track', {});
     this.string('track', {});
     this.geometry('geometry', {});
+    this.double('duration', {});
   }
 
   view() {
@@ -52,5 +53,6 @@ export default class Audio extends TableDefinition {
     this.alias('has_track', 'has_track');
     this.alias('track', 'track');
     this.alias('geometry', 'geometry');
+    this.alias('duration', 'duration');
   }
 }

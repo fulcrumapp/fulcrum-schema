@@ -34,6 +34,7 @@ export default class Videos extends TableDefinition {
     this.geometry('geometry', {});
     this.integer('width', {});
     this.integer('height', {});
+    this.double('duration', {});
   }
 
   view() {
@@ -54,5 +55,8 @@ export default class Videos extends TableDefinition {
     this.alias('has_track', 'has_track');
     this.alias('track', 'track');
     this.alias('geometry', 'geometry');
+    this.alias('width', 'width');
+    this.alias('height', 'height');
+    this.alias('duration', 'duration');
   }
 }

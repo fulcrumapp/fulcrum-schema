@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS audio (
   has_track boolean,
   track text,
   geometry geometry(Geometry, 4326),
+  duration double precision,
   CONSTRAINT audio_pkey PRIMARY KEY (id)
 );
 
@@ -119,8 +120,8 @@ CREATE TABLE IF NOT EXISTS forms (
   audio_count bigint,
   signature_usage bigint,
   signature_count bigint,
-  total_data_usage bigint,
-  total_data_count bigint,
+  media_usage bigint,
+  media_count bigint,
   auto_assign boolean NOT NULL,
   title_field_keys text[],
   hidden_on_dashboard boolean NOT NULL,
@@ -284,6 +285,7 @@ CREATE TABLE IF NOT EXISTS videos (
   geometry geometry(Geometry, 4326),
   width bigint,
   height bigint,
+  duration double precision,
   CONSTRAINT videos_pkey PRIMARY KEY (id)
 );
 
@@ -307,7 +309,8 @@ SELECT
   processed_at AS processed_at,
   has_track AS has_track,
   track AS track,
-  geometry AS geometry
+  geometry AS geometry,
+  duration AS duration
 FROM audio;
 
 DROP VIEW IF EXISTS changesets_view;
@@ -330,7 +333,8 @@ SELECT
   number_of_changes AS number_of_changes,
   number_of_creates AS number_of_creates,
   number_of_updates AS number_of_updates,
-  number_of_deletes AS number_of_deletes
+  number_of_deletes AS number_of_deletes,
+  metadata_index AS _metadata_index
 FROM changesets;
 
 DROP VIEW IF EXISTS choice_lists_view;
@@ -384,7 +388,10 @@ SELECT
   hidden_on_dashboard AS hidden_on_dashboard,
   geometry_types AS geometry_types,
   geometry_required AS geometry_required,
-  script AS script
+  script AS script,
+  image AS image,
+  projects_enabled AS projects_enabled,
+  assignment_enabled AS assignment_enabled
 FROM forms;
 
 DROP VIEW IF EXISTS memberships_view;
@@ -424,7 +431,10 @@ SELECT
   processed_at AS processed_at,
   geometry AS geometry,
   latitude AS latitude,
-  longitude AS longitude
+  longitude AS longitude,
+  accuracy AS accuracy,
+  width AS width,
+  height AS height
 FROM photos;
 
 DROP VIEW IF EXISTS projects_view;
@@ -510,5 +520,8 @@ SELECT
   processed_at AS processed_at,
   has_track AS has_track,
   track AS track,
-  geometry AS geometry
+  geometry AS geometry,
+  width AS width,
+  height AS height,
+  duration AS duration
 FROM videos;

@@ -33,8 +33,8 @@ export default class Forms extends TableDefinition {
     this.integer('audio_count', {});
     this.integer('signature_usage', {});
     this.integer('signature_count', {});
-    this.integer('total_data_usage', {});
-    this.integer('total_data_count', {});
+    this.integer('media_usage', {});
+    this.integer('media_count', {});
     this.boolean('auto_assign', {"allowNull":false});
     this.array('title_field_keys', {});
     this.boolean('hidden_on_dashboard', {"allowNull":false});
@@ -65,5 +65,8 @@ export default class Forms extends TableDefinition {
     this.alias('geometry_types', 'geometry_types');
     this.alias('geometry_required', 'geometry_required');
     this.alias('script', 'script');
+    this.alias('projects_enabled', 'projects_enabled');
+    this.alias('assignment_enabled', 'assignment_enabled');
+    this.alias('image', 'image');
   }
 }

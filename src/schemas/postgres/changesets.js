@@ -37,6 +37,7 @@ export default class Changesets extends TableDefinition {
     this.alias('row_resource_id', '_changeset_id');
     this.alias('form_resource_id', '_form_id');
     this.alias('metadata', 'metadata');
+    this.alias('metadata_index', '_metadata_index');
     this.alias('closed_at', 'closed_at');
     this.alias('created_by_resource_id', '_created_by_id');
     this.alias('updated_by_resource_id', '_updated_by_id');
