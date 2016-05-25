@@ -554,6 +554,16 @@ CREATE INDEX idx_forms_name ON forms USING btree (name);
 
 CREATE INDEX idx_forms_updated_at ON forms USING btree (updated_at);
 
+CREATE INDEX idx_memberships_row_resource_id ON memberships USING btree (row_resource_id);
+
+CREATE INDEX idx_memberships_user_resource_id ON memberships USING btree (user_resource_id);
+
+CREATE INDEX idx_memberships_role_resource_id ON memberships USING btree (role_resource_id);
+
+CREATE INDEX idx_memberships_name ON memberships USING btree (name);
+
+CREATE INDEX idx_memberships_updated_at ON memberships USING btree (updated_at);
+
 CREATE INDEX idx_projects_row_resource_id ON projects USING btree (row_resource_id);
 
 CREATE INDEX idx_projects_name ON projects USING btree (name);

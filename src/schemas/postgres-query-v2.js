@@ -1379,6 +1379,14 @@ Schema.organizationViews.memberships = {
   updated_at: 'updated_at'
 };
 
+Schema.organizationIndexes.memberships = [
+  { columns: [ 'row_resource_id' ] },
+  { columns: [ 'user_resource_id' ] },
+  { columns: [ 'role_resource_id' ] },
+  { columns: [ 'name' ] },
+  { columns: [ 'updated_at' ] }
+];
+
 Schema.organizationViews.photos = {
   access_key: '_photo_id',
   exif: 'exif',
