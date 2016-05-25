@@ -542,7 +542,7 @@ CREATE INDEX idx_changesets_row_resource_id ON changesets USING btree (row_resou
 
 CREATE INDEX idx_changesets_form_id ON changesets USING btree (form_id);
 
-CREATE INDEX idx_changesets_metadata_index ON changesets USING gin (metadata_index);
+CREATE INDEX idx_changesets_metadata_index ON changesets USING gin (metadata_index) WITH (fastupdate = off);
 
 CREATE INDEX idx_changesets_form_id_updated_at ON changesets USING btree (form_id, updated_at);
 

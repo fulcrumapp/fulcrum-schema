@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.9.0",
-    "sqldiff": "fulcrumapp/sqldiff#master",
+    "sqldiff": "github:fulcrumapp/sqldiff#master",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
