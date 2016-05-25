@@ -1359,6 +1359,12 @@ Schema.organizationViews.roles = {
   can_run_reports: 'can_run_reports'
 };
 
+Schema.organizationIndexes.roles = [
+  { columns: [ 'row_resource_id' ] },
+  { columns: [ 'name' ] },
+  { columns: [ 'updated_at' ] }
+];
+
 Schema.organizationViews.memberships = {
   row_resource_id: '_membership_id',
   user_resource_id: '_user_id',

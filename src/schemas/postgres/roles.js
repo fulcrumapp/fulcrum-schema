@@ -68,5 +68,8 @@ export default class Roles extends TableDefinition {
   }
 
   defineIndexes() {
+    this.index({"columns":["row_resource_id"]});
+    this.index({"columns":["name"]});
+    this.index({"columns":["updated_at"]});
   }
 }

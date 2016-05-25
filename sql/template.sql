@@ -559,3 +559,9 @@ CREATE INDEX idx_projects_row_resource_id ON projects USING btree (row_resource_
 CREATE INDEX idx_projects_name ON projects USING btree (name);
 
 CREATE INDEX idx_projects_updated_at ON projects USING btree (updated_at);
+
+CREATE INDEX idx_roles_row_resource_id ON roles USING btree (row_resource_id);
+
+CREATE INDEX idx_roles_name ON roles USING btree (name);
+
+CREATE INDEX idx_roles_updated_at ON roles USING btree (updated_at);
