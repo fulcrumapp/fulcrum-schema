@@ -1442,6 +1442,15 @@ Schema.organizationViews.videos = {
   duration: 'duration'
 };
 
+Schema.organizationIndexes.videos = [
+  { columns: [ 'access_key' ] },
+  { columns: [ 'record_resource_id' ] },
+  { columns: [ 'form_resource_id' ] },
+  { columns: [ 'created_by_resource_id' ] },
+  { columns: [ 'geometry' ], method: 'gist' },
+  { columns: [ 'updated_at' ] }
+];
+
 Schema.organizationViews.audio = {
   access_key: '_audio_id',
   metadata: 'metadata',

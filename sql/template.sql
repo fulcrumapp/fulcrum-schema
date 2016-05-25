@@ -587,3 +587,15 @@ CREATE INDEX idx_roles_row_resource_id ON roles USING btree (row_resource_id);
 CREATE INDEX idx_roles_name ON roles USING btree (name);
 
 CREATE INDEX idx_roles_updated_at ON roles USING btree (updated_at);
+
+CREATE INDEX idx_videos_access_key ON videos USING btree (access_key);
+
+CREATE INDEX idx_videos_record_resource_id ON videos USING btree (record_resource_id);
+
+CREATE INDEX idx_videos_form_resource_id ON videos USING btree (form_resource_id);
+
+CREATE INDEX idx_videos_created_by_resource_id ON videos USING btree (created_by_resource_id);
+
+CREATE INDEX idx_videos_geometry ON videos USING gist (geometry);
+
+CREATE INDEX idx_videos_updated_at ON videos USING btree (updated_at);
