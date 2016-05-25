@@ -1273,6 +1273,12 @@ Schema.organizationViews.forms = {
   image: 'image'
 };
 
+Schema.organizationIndexes.forms = [
+  { columns: [ 'name' ] },
+  { columns: [ 'row_resource_id' ] },
+  { columns: [ 'updated_at' ] }
+];
+
 Schema.organizationViews.choice_lists = {
   row_resource_id: '_choice_list_id',
   name: 'name',

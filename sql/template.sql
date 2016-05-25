@@ -525,3 +525,19 @@ SELECT
   height AS height,
   duration AS duration
 FROM videos;
+
+CREATE INDEX idx_changesets_row_resource_id ON changesets USING btree (row_resource_id);
+
+CREATE INDEX idx_changesets_form_id ON changesets USING btree (form_id);
+
+CREATE INDEX idx_changesets_metadata_index ON changesets USING gin (metadata_index);
+
+CREATE INDEX idx_changesets_form_id_updated_at ON changesets USING btree (form_id, updated_at);
+
+CREATE INDEX idx_changesets_updated_at ON changesets USING btree (updated_at);
+
+CREATE INDEX idx_forms_name ON forms USING btree (name);
+
+CREATE INDEX idx_forms_row_resource_id ON forms USING btree (row_resource_id);
+
+CREATE INDEX idx_forms_updated_at ON forms USING btree (updated_at);
