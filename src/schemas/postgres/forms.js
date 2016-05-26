@@ -36,9 +36,9 @@ export default class Forms extends TableDefinition {
     this.integer('media_usage', {});
     this.integer('media_count', {});
     this.boolean('auto_assign', {"allowNull":false});
-    this.array('title_field_keys', {});
+    this.json('title_field_keys', {});
     this.boolean('hidden_on_dashboard', {"allowNull":false});
-    this.array('geometry_types', {});
+    this.json('geometry_types', {});
     this.boolean('geometry_required', {"allowNull":false});
     this.text('script', {});
     this.text('image', {});

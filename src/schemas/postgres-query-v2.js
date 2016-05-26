@@ -449,14 +449,14 @@ Schema.systemFormsTable = [
     defaultValues: false
   }, {
     name: 'title_field_keys',
-    type: 'array'
+    type: 'json'
   }, {
     name: 'hidden_on_dashboard',
     type: 'boolean',
     allowNull: false
   }, {
     name: 'geometry_types',
-    type: 'array'
+    type: 'json'
   }, {
     name: 'geometry_required',
     type: 'boolean',
