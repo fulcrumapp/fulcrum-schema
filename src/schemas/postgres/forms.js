@@ -71,7 +71,8 @@ export default class Forms extends TableDefinition {
   }
 
   defineIndexes() {
-    this.index({"columns":["row_resource_id"]});
+    this.index({"columns":["row_resource_id"],"unique":true});
+    this.index({"columns":["row_id"],"unique":true});
     this.index({"columns":["name"]});
     this.index({"columns":["updated_at"]});
   }

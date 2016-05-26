@@ -1344,7 +1344,8 @@ Schema.organizationViews.changesets = {
 };
 
 Schema.organizationIndexes.changesets = [
-  { columns: [ 'row_resource_id' ] },
+  { columns: [ 'row_resource_id' ], unique: true },
+  { columns: [ 'row_id' ], unique: true },
   { columns: [ 'form_id' ] },
   { columns: [ 'metadata_index' ], method: 'gin' },
   { columns: [ 'form_id', 'updated_at' ] },
@@ -1376,7 +1377,8 @@ Schema.organizationViews.forms = {
 };
 
 Schema.organizationIndexes.forms = [
-  { columns: [ 'row_resource_id' ] },
+  { columns: [ 'row_resource_id' ], unique: true },
+  { columns: [ 'row_id' ], unique: true },
   { columns: [ 'name' ] },
   { columns: [ 'updated_at' ] }
 ];
@@ -1394,7 +1396,8 @@ Schema.organizationViews.choice_lists = {
 };
 
 Schema.organizationIndexes.choice_lists = [
-  { columns: [ 'row_resource_id' ] },
+  { columns: [ 'row_resource_id' ], unique: true },
+  { columns: [ 'row_id' ], unique: true },
   { columns: [ 'name' ] },
   { columns: [ 'updated_at' ] }
 ];
@@ -1412,7 +1415,8 @@ Schema.organizationViews.classification_sets = {
 };
 
 Schema.organizationIndexes.classification_sets = [
-  { columns: [ 'row_resource_id' ] },
+  { columns: [ 'row_resource_id' ], unique: true },
+  { columns: [ 'row_id' ], unique: true },
   { columns: [ 'name' ] },
   { columns: [ 'updated_at' ] }
 ];
@@ -1427,7 +1431,8 @@ Schema.organizationViews.projects = {
 };
 
 Schema.organizationIndexes.projects = [
-  { columns: [ 'row_resource_id' ] },
+  { columns: [ 'row_resource_id' ], unique: true },
+  { columns: [ 'row_id' ], unique: true },
   { columns: [ 'name' ] },
   { columns: [ 'updated_at' ] }
 ];
@@ -1462,7 +1467,8 @@ Schema.organizationViews.roles = {
 };
 
 Schema.organizationIndexes.roles = [
-  { columns: [ 'row_resource_id' ] },
+  { columns: [ 'row_resource_id' ], unique: true },
+  { columns: [ 'row_id' ], unique: true },
   { columns: [ 'name' ] },
   { columns: [ 'updated_at' ] }
 ];
@@ -1482,7 +1488,8 @@ Schema.organizationViews.memberships = {
 };
 
 Schema.organizationIndexes.memberships = [
-  { columns: [ 'row_resource_id' ] },
+  { columns: [ 'row_resource_id' ], unique: true },
+  { columns: [ 'row_id' ], unique: true },
   { columns: [ 'user_resource_id' ] },
   { columns: [ 'role_resource_id' ] },
   { columns: [ 'name' ] },
@@ -1513,6 +1520,8 @@ Schema.organizationViews.photos = {
 };
 
 Schema.organizationIndexes.photos = [
+  { columns: [ 'row_resource_id' ], unique: true },
+  { columns: [ 'row_id' ], unique: true },
   { columns: [ 'access_key' ] },
   { columns: [ 'record_resource_id' ] },
   { columns: [ 'form_resource_id' ] },
@@ -1545,6 +1554,8 @@ Schema.organizationViews.videos = {
 };
 
 Schema.organizationIndexes.videos = [
+  { columns: [ 'row_resource_id' ], unique: true },
+  { columns: [ 'row_id' ], unique: true },
   { columns: [ 'access_key' ] },
   { columns: [ 'record_resource_id' ] },
   { columns: [ 'form_resource_id' ] },
@@ -1575,6 +1586,8 @@ Schema.organizationViews.audio = {
 };
 
 Schema.organizationIndexes.audio = [
+  { columns: [ 'row_resource_id' ], unique: true },
+  { columns: [ 'row_id' ], unique: true },
   { columns: [ 'access_key' ] },
   { columns: [ 'record_resource_id' ] },
   { columns: [ 'form_resource_id' ] },
@@ -1600,6 +1613,8 @@ Schema.organizationViews.signatures = {
 };
 
 Schema.organizationIndexes.signatures = [
+  { columns: [ 'row_resource_id' ], unique: true },
+  { columns: [ 'row_id' ], unique: true },
   { columns: [ 'access_key' ] },
   { columns: [ 'record_resource_id' ] },
   { columns: [ 'form_resource_id' ] },

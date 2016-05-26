@@ -526,6 +526,10 @@ SELECT
   duration AS duration
 FROM videos;
 
+CREATE UNIQUE INDEX idx_audio_row_resource_id ON audio USING btree (row_resource_id);
+
+CREATE UNIQUE INDEX idx_audio_row_id ON audio USING btree (row_id);
+
 CREATE INDEX idx_audio_access_key ON audio USING btree (access_key);
 
 CREATE INDEX idx_audio_record_resource_id ON audio USING btree (record_resource_id);
@@ -538,7 +542,9 @@ CREATE INDEX idx_audio_geometry ON audio USING gist (geometry);
 
 CREATE INDEX idx_audio_updated_at ON audio USING btree (updated_at);
 
-CREATE INDEX idx_changesets_row_resource_id ON changesets USING btree (row_resource_id);
+CREATE UNIQUE INDEX idx_changesets_row_resource_id ON changesets USING btree (row_resource_id);
+
+CREATE UNIQUE INDEX idx_changesets_row_id ON changesets USING btree (row_id);
 
 CREATE INDEX idx_changesets_form_id ON changesets USING btree (form_id);
 
@@ -548,25 +554,33 @@ CREATE INDEX idx_changesets_form_id_updated_at ON changesets USING btree (form_i
 
 CREATE INDEX idx_changesets_updated_at ON changesets USING btree (updated_at);
 
-CREATE INDEX idx_choice_lists_row_resource_id ON choice_lists USING btree (row_resource_id);
+CREATE UNIQUE INDEX idx_choice_lists_row_resource_id ON choice_lists USING btree (row_resource_id);
+
+CREATE UNIQUE INDEX idx_choice_lists_row_id ON choice_lists USING btree (row_id);
 
 CREATE INDEX idx_choice_lists_name ON choice_lists USING btree (name);
 
 CREATE INDEX idx_choice_lists_updated_at ON choice_lists USING btree (updated_at);
 
-CREATE INDEX idx_classification_sets_row_resource_id ON classification_sets USING btree (row_resource_id);
+CREATE UNIQUE INDEX idx_classification_sets_row_resource_id ON classification_sets USING btree (row_resource_id);
+
+CREATE UNIQUE INDEX idx_classification_sets_row_id ON classification_sets USING btree (row_id);
 
 CREATE INDEX idx_classification_sets_name ON classification_sets USING btree (name);
 
 CREATE INDEX idx_classification_sets_updated_at ON classification_sets USING btree (updated_at);
 
-CREATE INDEX idx_forms_row_resource_id ON forms USING btree (row_resource_id);
+CREATE UNIQUE INDEX idx_forms_row_resource_id ON forms USING btree (row_resource_id);
+
+CREATE UNIQUE INDEX idx_forms_row_id ON forms USING btree (row_id);
 
 CREATE INDEX idx_forms_name ON forms USING btree (name);
 
 CREATE INDEX idx_forms_updated_at ON forms USING btree (updated_at);
 
-CREATE INDEX idx_memberships_row_resource_id ON memberships USING btree (row_resource_id);
+CREATE UNIQUE INDEX idx_memberships_row_resource_id ON memberships USING btree (row_resource_id);
+
+CREATE UNIQUE INDEX idx_memberships_row_id ON memberships USING btree (row_id);
 
 CREATE INDEX idx_memberships_user_resource_id ON memberships USING btree (user_resource_id);
 
@@ -575,6 +589,10 @@ CREATE INDEX idx_memberships_role_resource_id ON memberships USING btree (role_r
 CREATE INDEX idx_memberships_name ON memberships USING btree (name);
 
 CREATE INDEX idx_memberships_updated_at ON memberships USING btree (updated_at);
+
+CREATE UNIQUE INDEX idx_photos_row_resource_id ON photos USING btree (row_resource_id);
+
+CREATE UNIQUE INDEX idx_photos_row_id ON photos USING btree (row_id);
 
 CREATE INDEX idx_photos_access_key ON photos USING btree (access_key);
 
@@ -588,17 +606,25 @@ CREATE INDEX idx_photos_geometry ON photos USING gist (geometry);
 
 CREATE INDEX idx_photos_updated_at ON photos USING btree (updated_at);
 
-CREATE INDEX idx_projects_row_resource_id ON projects USING btree (row_resource_id);
+CREATE UNIQUE INDEX idx_projects_row_resource_id ON projects USING btree (row_resource_id);
+
+CREATE UNIQUE INDEX idx_projects_row_id ON projects USING btree (row_id);
 
 CREATE INDEX idx_projects_name ON projects USING btree (name);
 
 CREATE INDEX idx_projects_updated_at ON projects USING btree (updated_at);
 
-CREATE INDEX idx_roles_row_resource_id ON roles USING btree (row_resource_id);
+CREATE UNIQUE INDEX idx_roles_row_resource_id ON roles USING btree (row_resource_id);
+
+CREATE UNIQUE INDEX idx_roles_row_id ON roles USING btree (row_id);
 
 CREATE INDEX idx_roles_name ON roles USING btree (name);
 
 CREATE INDEX idx_roles_updated_at ON roles USING btree (updated_at);
+
+CREATE UNIQUE INDEX idx_signatures_row_resource_id ON signatures USING btree (row_resource_id);
+
+CREATE UNIQUE INDEX idx_signatures_row_id ON signatures USING btree (row_id);
 
 CREATE INDEX idx_signatures_access_key ON signatures USING btree (access_key);
 
@@ -609,6 +635,10 @@ CREATE INDEX idx_signatures_form_resource_id ON signatures USING btree (form_res
 CREATE INDEX idx_signatures_created_by_resource_id ON signatures USING btree (created_by_resource_id);
 
 CREATE INDEX idx_signatures_updated_at ON signatures USING btree (updated_at);
+
+CREATE UNIQUE INDEX idx_videos_row_resource_id ON videos USING btree (row_resource_id);
+
+CREATE UNIQUE INDEX idx_videos_row_id ON videos USING btree (row_id);
 
 CREATE INDEX idx_videos_access_key ON videos USING btree (access_key);
 

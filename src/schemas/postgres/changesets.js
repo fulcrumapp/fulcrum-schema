@@ -55,7 +55,8 @@ export default class Changesets extends TableDefinition {
   }
 
   defineIndexes() {
-    this.index({"columns":["row_resource_id"]});
+    this.index({"columns":["row_resource_id"],"unique":true});
+    this.index({"columns":["row_id"],"unique":true});
     this.index({"columns":["form_id"]});
     this.index({"columns":["metadata_index"],"method":"gin"});
     this.index({"columns":["form_id","updated_at"]});

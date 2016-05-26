@@ -61,6 +61,8 @@ export default class Videos extends TableDefinition {
   }
 
   defineIndexes() {
+    this.index({"columns":["row_resource_id"],"unique":true});
+    this.index({"columns":["row_id"],"unique":true});
     this.index({"columns":["access_key"]});
     this.index({"columns":["record_resource_id"]});
     this.index({"columns":["form_resource_id"]});
