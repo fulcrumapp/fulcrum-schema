@@ -5,6 +5,7 @@ require('babel-core/register')();
 const postgres = require('./src/postgres');
 
 postgres.newOrganization = 1;
+postgres.schema = 'organization';
 
 const diff = postgres.compareOrganization();
 
