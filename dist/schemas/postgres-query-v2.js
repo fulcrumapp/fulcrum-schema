@@ -361,7 +361,8 @@ Schema.systemFormsTable = [{
   allowNull: false
 }, {
   name: 'name',
-  type: 'string'
+  type: 'string',
+  allowNull: false
 }, {
   name: 'description',
   type: 'string'
@@ -375,6 +376,17 @@ Schema.systemFormsTable = [{
 }, {
   name: 'bounding_box',
   type: 'geometry'
+}, {
+  name: 'record_count',
+  type: 'integer',
+  allowNull: false,
+  defaultValue: 0
+}, {
+  name: 'record_changed_at',
+  type: 'timestamp'
+}, {
+  name: 'recent_lat_longs',
+  type: 'json'
 }, {
   name: 'status',
   type: 'string'
@@ -402,19 +414,50 @@ Schema.systemFormsTable = [{
   type: 'timestamp',
   allowNull: false
 }, {
+  name: 'photo_usage',
+  type: 'integer'
+}, {
+  name: 'photo_count',
+  type: 'integer'
+}, {
+  name: 'video_usage',
+  type: 'integer'
+}, {
+  name: 'video_count',
+  type: 'integer'
+}, {
+  name: 'audio_usage',
+  type: 'integer'
+}, {
+  name: 'audio_count',
+  type: 'integer'
+}, {
+  name: 'signature_usage',
+  type: 'integer'
+}, {
+  name: 'signature_count',
+  type: 'integer'
+}, {
+  name: 'media_usage',
+  type: 'integer'
+}, {
+  name: 'media_count',
+  type: 'integer'
+}, {
   name: 'auto_assign',
   type: 'boolean',
-  allowNull: false
+  allowNull: false,
+  defaultValues: false
 }, {
   name: 'title_field_keys',
-  type: 'array'
+  type: 'json'
 }, {
   name: 'hidden_on_dashboard',
   type: 'boolean',
   allowNull: false
 }, {
   name: 'geometry_types',
-  type: 'array'
+  type: 'json'
 }, {
   name: 'geometry_required',
   type: 'boolean',
@@ -422,7 +465,120 @@ Schema.systemFormsTable = [{
 }, {
   name: 'script',
   type: 'text'
+}, {
+  name: 'image',
+  type: 'text'
+}, {
+  name: 'projects_enabled',
+  type: 'boolean',
+  allowNull: false
+}, {
+  name: 'assignment_enabled',
+  type: 'boolean',
+  allowNull: false
 }];
+
+// Schema.systemRecordsTable = [
+//   {
+//     name: 'id',
+//     type: 'pk'
+//   }, {
+//     name: 'row_id',
+//     type: 'integer',
+//     allowNull: false
+//   }, {
+//     name: 'row_resource_id',
+//     type: 'string',
+//     allowNull: false
+//   }, {
+//     name: 'version',
+//     type: 'integer',
+//     allowNull: false
+//   }, {
+//     name: 'form_id',
+//     type: 'integer'
+//   }, {
+//     name: 'form_resource_id',
+//     type: 'string'
+//   }, {
+//     name: 'assigned_to_id',
+//     type: 'integer'
+//   }, {
+//     name: 'assigned_to_resource_id',
+//     type: 'string'
+//   }, {
+//     name: 'project_id',
+//     type: 'integer'
+//   }, {
+//     name: 'project_resource_id',
+//     type: 'string'
+//   }, {
+//     name: 'status',
+//     type: 'string'
+//   }, {
+//     name: 'form_values',
+//     type: 'json'
+//   }, {
+//     name: 'latitude',
+//     type: 'double'
+//   }, {
+//     name: 'longitude',
+//     type: 'double'
+//   }, {
+//     name: 'altitude',
+//     type: 'double'
+//   }, {
+//     name: 'speed',
+//     type: 'double'
+//   }, {
+//     name: 'course',
+//     type: 'double'
+//   }, {
+//     name: 'horizontal_accuracy',
+//     type: 'double'
+//   }, {
+//     name: 'vertical_accuracy',
+//     type: 'double'
+//   }, {
+//     name: 'client_created_at',
+//     type: 'timestamp'
+//   }, {
+//     name: 'client_updated_at',
+//     type: 'timestamp'
+//   }, {
+//     name: 'updated_by_id',
+//     type: 'integer'
+//   }, {
+//     name: 'updated_by_resource_id',
+//     type: 'string'
+//   }, {
+//     name: 'created_by_id',
+//     type: 'integer'
+//   }, {
+//     name: 'created_by_resource_id',
+//     type: 'string'
+//   }, {
+//     name: 'changeset_id',
+//     type: 'integer'
+//   }, {
+//     name: 'changeset_resource_id',
+//     type: 'string'
+//   }, {
+//     name: 'record_index_text',
+//     type: 'string'
+//   }, {
+//     name: 'record_index',
+//     type: 'fts'
+//   }, {
+//     name: 'created_at',
+//     type: 'timestamp',
+//     allowNull: false
+//   }, {
+//     name: 'updated_at',
+//     type: 'timestamp',
+//     allowNull: false
+//   }
+// ];
 
 Schema.systemChoiceListsTable = [{
   name: 'id',
@@ -437,7 +593,8 @@ Schema.systemChoiceListsTable = [{
   allowNull: false
 }, {
   name: 'name',
-  type: 'string'
+  type: 'string',
+  allowNull: false
 }, {
   name: 'description',
   type: 'string'
@@ -484,7 +641,8 @@ Schema.systemClassificationSetsTable = [{
   allowNull: false
 }, {
   name: 'name',
-  type: 'string'
+  type: 'string',
+  allowNull: false
 }, {
   name: 'description',
   type: 'string'
@@ -494,7 +652,8 @@ Schema.systemClassificationSetsTable = [{
   allowNull: false
 }, {
   name: 'items',
-  type: 'string'
+  type: 'string',
+  allowNull: false
 }, {
   name: 'created_by_id',
   type: 'integer'
@@ -530,7 +689,8 @@ Schema.systemProjectsTable = [{
   allowNull: false
 }, {
   name: 'name',
-  type: 'string'
+  type: 'string',
+  allowNull: false
 }, {
   name: 'description',
   type: 'string'
@@ -563,7 +723,8 @@ Schema.systemRolesTable = [{
   allowNull: false
 }, {
   name: 'name',
-  type: 'string'
+  type: 'string',
+  allowNull: false
 }, {
   name: 'description',
   type: 'string'
@@ -598,71 +759,88 @@ Schema.systemRolesTable = [{
 }, {
   name: 'can_manage_subscription',
   type: 'boolean',
-  allowNull: false
+  allowNull: false,
+  defaultValue: false
 }, {
   name: 'can_update_organization',
   type: 'boolean',
-  allowNull: false
+  allowNull: false,
+  defaultValue: false
 }, {
   name: 'can_manage_members',
   type: 'boolean',
-  allowNull: false
+  allowNull: false,
+  defaultValue: false
 }, {
   name: 'can_manage_roles',
   type: 'boolean',
-  allowNull: false
+  allowNull: false,
+  defaultValue: false
 }, {
   name: 'can_manage_apps',
   type: 'boolean',
-  allowNull: false
+  allowNull: false,
+  defaultValue: false
 }, {
   name: 'can_manage_projects',
   type: 'boolean',
-  allowNull: false
+  allowNull: false,
+  defaultValue: false
 }, {
   name: 'can_manage_choice_lists',
   type: 'boolean',
-  allowNull: false
+  allowNull: false,
+  defaultValue: false
 }, {
   name: 'can_manage_classification_sets',
   type: 'boolean',
-  allowNull: false
+  allowNull: false,
+  defaultValue: false
 }, {
   name: 'can_create_records',
   type: 'boolean',
-  allowNull: false
+  allowNull: false,
+  defaultValue: false
 }, {
   name: 'can_update_records',
   type: 'boolean',
-  allowNull: false
+  allowNull: false,
+  defaultValue: false
 }, {
   name: 'can_delete_records',
   type: 'boolean',
-  allowNull: false
+  allowNull: false,
+  defaultValue: false
 }, {
   name: 'can_change_status',
   type: 'boolean',
-  allowNull: false
+  allowNull: false,
+  defaultValue: false
 }, {
   name: 'can_change_project',
   type: 'boolean',
-  allowNull: false
+  allowNull: false,
+  defaultValue: false
 }, {
   name: 'can_assign_records',
   type: 'boolean',
-  allowNull: false
+  allowNull: false,
+  defaultValue: false
 }, {
   name: 'can_import_records',
   type: 'boolean',
-  allowNull: false
+  allowNull: false,
+  defaultValue: false
 }, {
   name: 'can_export_records',
   type: 'boolean',
-  allowNull: false
+  allowNull: false,
+  defaultValue: false
 }, {
   name: 'can_run_reports',
   type: 'boolean',
-  allowNull: false
+  allowNull: false,
+  defaultValue: false
 }];
 
 Schema.systemMembershipsTable = [{
@@ -797,6 +975,15 @@ Schema.systemPhotosTable = [{
 }, {
   name: 'longitude',
   type: 'double'
+}, {
+  name: 'accuracy',
+  type: 'double'
+}, {
+  name: 'width',
+  type: 'integer'
+}, {
+  name: 'height',
+  type: 'integer'
 }];
 
 Schema.systemVideosTable = [{
@@ -868,6 +1055,12 @@ Schema.systemVideosTable = [{
   name: 'processed_at',
   type: 'timestamp'
 }, {
+  name: 'small_processed_at',
+  type: 'timestamp'
+}, {
+  name: 'medium_processed_at',
+  type: 'timestamp'
+}, {
   name: 'has_track',
   type: 'boolean'
 }, {
@@ -876,6 +1069,15 @@ Schema.systemVideosTable = [{
 }, {
   name: 'geometry',
   type: 'geometry'
+}, {
+  name: 'width',
+  type: 'integer'
+}, {
+  name: 'height',
+  type: 'integer'
+}, {
+  name: 'duration',
+  type: 'double'
 }];
 
 Schema.systemAudioTable = [{
@@ -947,6 +1149,12 @@ Schema.systemAudioTable = [{
   name: 'processed_at',
   type: 'timestamp'
 }, {
+  name: 'small_processed_at',
+  type: 'timestamp'
+}, {
+  name: 'medium_processed_at',
+  type: 'timestamp'
+}, {
   name: 'has_track',
   type: 'boolean'
 }, {
@@ -955,6 +1163,9 @@ Schema.systemAudioTable = [{
 }, {
   name: 'geometry',
   type: 'geometry'
+}, {
+  name: 'duration',
+  type: 'double'
 }];
 
 Schema.systemSignaturesTable = [{
@@ -1091,11 +1302,13 @@ Schema.systemValuesViewColumns = {
 };
 
 Schema.organizationViews = {};
+Schema.organizationIndexes = {};
 
 Schema.organizationViews.changesets = {
   row_resource_id: '_changeset_id',
   form_resource_id: '_form_id',
   metadata: 'metadata',
+  metadata_index: '_metadata_index',
   closed_at: 'closed_at',
   created_by_resource_id: '_created_by_id',
   updated_by_resource_id: '_updated_by_id',
@@ -1111,6 +1324,8 @@ Schema.organizationViews.changesets = {
   number_of_updates: 'number_of_updates',
   number_of_deletes: 'number_of_deletes'
 };
+
+Schema.organizationIndexes.changesets = [{ columns: ['row_resource_id'], unique: true }, { columns: ['row_id'], unique: true }, { columns: ['form_id'] }, { columns: ['metadata_index'], method: 'gin' }, { columns: ['form_id', 'updated_at'] }, { columns: ['updated_at'] }];
 
 Schema.organizationViews.forms = {
   row_resource_id: '_form_id',
@@ -1130,8 +1345,13 @@ Schema.organizationViews.forms = {
   hidden_on_dashboard: 'hidden_on_dashboard',
   geometry_types: 'geometry_types',
   geometry_required: 'geometry_required',
-  script: 'script'
+  script: 'script',
+  projects_enabled: 'projects_enabled',
+  assignment_enabled: 'assignment_enabled',
+  image: 'image'
 };
+
+Schema.organizationIndexes.forms = [{ columns: ['row_resource_id'], unique: true }, { columns: ['row_id'], unique: true }, { columns: ['name'] }, { columns: ['updated_at'] }];
 
 Schema.organizationViews.choice_lists = {
   row_resource_id: '_choice_list_id',
@@ -1145,6 +1365,8 @@ Schema.organizationViews.choice_lists = {
   updated_at: 'updated_at'
 };
 
+Schema.organizationIndexes.choice_lists = [{ columns: ['row_resource_id'], unique: true }, { columns: ['row_id'], unique: true }, { columns: ['name'] }, { columns: ['updated_at'] }];
+
 Schema.organizationViews.classification_sets = {
   row_resource_id: '_classification_set_id',
   name: 'name',
@@ -1157,6 +1379,8 @@ Schema.organizationViews.classification_sets = {
   updated_at: 'updated_at'
 };
 
+Schema.organizationIndexes.classification_sets = [{ columns: ['row_resource_id'], unique: true }, { columns: ['row_id'], unique: true }, { columns: ['name'] }, { columns: ['updated_at'] }];
+
 Schema.organizationViews.projects = {
   row_resource_id: '_project_id',
   name: 'name',
@@ -1165,6 +1389,8 @@ Schema.organizationViews.projects = {
   created_at: 'created_at',
   updated_at: 'updated_at'
 };
+
+Schema.organizationIndexes.projects = [{ columns: ['row_resource_id'], unique: true }, { columns: ['row_id'], unique: true }, { columns: ['name'] }, { columns: ['updated_at'] }];
 
 Schema.organizationViews.roles = {
   row_resource_id: '_role_id',
@@ -1195,6 +1421,8 @@ Schema.organizationViews.roles = {
   can_run_reports: 'can_run_reports'
 };
 
+Schema.organizationIndexes.roles = [{ columns: ['row_resource_id'], unique: true }, { columns: ['row_id'], unique: true }, { columns: ['name'] }, { columns: ['updated_at'] }];
+
 Schema.organizationViews.memberships = {
   row_resource_id: '_membership_id',
   user_resource_id: '_user_id',
@@ -1208,6 +1436,8 @@ Schema.organizationViews.memberships = {
   created_at: 'created_at',
   updated_at: 'updated_at'
 };
+
+Schema.organizationIndexes.memberships = [{ columns: ['row_resource_id'], unique: true }, { columns: ['row_id'], unique: true }, { columns: ['user_resource_id'] }, { columns: ['role_resource_id'] }, { columns: ['name'] }, { columns: ['updated_at'] }];
 
 Schema.organizationViews.photos = {
   access_key: '_photo_id',
@@ -1226,8 +1456,13 @@ Schema.organizationViews.photos = {
   processed_at: 'processed_at',
   geometry: 'geometry',
   latitude: 'latitude',
-  longitude: 'longitude'
+  longitude: 'longitude',
+  accuracy: 'accuracy',
+  width: 'width',
+  height: 'height'
 };
+
+Schema.organizationIndexes.photos = [{ columns: ['row_resource_id'], unique: true }, { columns: ['row_id'], unique: true }, { columns: ['access_key'] }, { columns: ['record_resource_id'] }, { columns: ['form_resource_id'] }, { columns: ['created_by_resource_id'] }, { columns: ['geometry'], method: 'gist' }, { columns: ['updated_at'] }];
 
 Schema.organizationViews.videos = {
   access_key: '_video_id',
@@ -1246,8 +1481,13 @@ Schema.organizationViews.videos = {
   processed_at: 'processed_at',
   has_track: 'has_track',
   track: 'track',
-  geometry: 'geometry'
+  geometry: 'geometry',
+  width: 'width',
+  height: 'height',
+  duration: 'duration'
 };
+
+Schema.organizationIndexes.videos = [{ columns: ['row_resource_id'], unique: true }, { columns: ['row_id'], unique: true }, { columns: ['access_key'] }, { columns: ['record_resource_id'] }, { columns: ['form_resource_id'] }, { columns: ['created_by_resource_id'] }, { columns: ['geometry'], method: 'gist' }, { columns: ['updated_at'] }];
 
 Schema.organizationViews.audio = {
   access_key: '_audio_id',
@@ -1266,8 +1506,11 @@ Schema.organizationViews.audio = {
   processed_at: 'processed_at',
   has_track: 'has_track',
   track: 'track',
-  geometry: 'geometry'
+  geometry: 'geometry',
+  duration: 'duration'
 };
+
+Schema.organizationIndexes.audio = [{ columns: ['row_resource_id'], unique: true }, { columns: ['row_id'], unique: true }, { columns: ['access_key'] }, { columns: ['record_resource_id'] }, { columns: ['form_resource_id'] }, { columns: ['created_by_resource_id'] }, { columns: ['geometry'], method: 'gist' }, { columns: ['updated_at'] }];
 
 Schema.organizationViews.signatures = {
   access_key: '_signature_id',
@@ -1284,6 +1527,8 @@ Schema.organizationViews.signatures = {
   stored_at: 'stored_at',
   processed_at: 'processed_at'
 };
+
+Schema.organizationIndexes.signatures = [{ columns: ['row_resource_id'], unique: true }, { columns: ['row_id'], unique: true }, { columns: ['access_key'] }, { columns: ['record_resource_id'] }, { columns: ['form_resource_id'] }, { columns: ['created_by_resource_id'] }, { columns: ['updated_at'] }];
 
 Schema.systemFormTableIndexes = [{ columns: ['record_resource_id'], method: 'btree', unique: true }, { columns: ['geometry'], method: 'gist' }, { columns: ['record_index'], method: 'gin' }];
 

@@ -16,6 +16,7 @@ var TableDefinition = function () {
 
     this.columns = [];
     this.viewColumns = {};
+    this.indexes = [];
   }
 
   _createClass(TableDefinition, [{
@@ -74,9 +75,19 @@ var TableDefinition = function () {
       this.column(name, 'geometry', options);
     }
   }, {
+    key: 'json',
+    value: function json(name, options) {
+      this.column(name, 'json', options);
+    }
+  }, {
     key: 'alias',
     value: function alias(source, to) {
       this.viewColumns[source] = to;
+    }
+  }, {
+    key: 'index',
+    value: function index(options) {
+      this.indexes.push(options);
     }
   }, {
     key: 'define',

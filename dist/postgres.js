@@ -12,6 +12,10 @@ var _postgresSchema = require('./schemas/postgres-schema');
 
 var _postgresSchema2 = _interopRequireDefault(_postgresSchema);
 
+var _postgresQueryV = require('./schemas/postgres-query-v2');
+
+var _postgresQueryV2 = _interopRequireDefault(_postgresQueryV);
+
 var _metadata = require('./metadata');
 
 var _metadata2 = _interopRequireDefault(_metadata);
@@ -33,6 +37,7 @@ var instance = Function('return this')(); // eslint-disable-line no-new-func
 instance.oldForm = null;
 instance.newForm = null;
 instance.schema = null;
+instance.tablePrefix = null;
 
 function generateSQL(differ, includeMetadata) {
   var meta = new _metadata2.default(differ, { quote: '"', schema: instance.schema });
@@ -40,6 +45,7 @@ function generateSQL(differ, includeMetadata) {
   var gen = new Postgres(differ, { afterTransform: includeMetadata ? meta.build.bind(meta) : null });
 
   gen.tableSchema = instance.schema;
+  gen.tablePrefix = instance.tablePrefix;
 
   return gen.generate();
 }
@@ -67,11 +73,11 @@ instance.compareForms = function () {
     var newSchema = null;
 
     if (instance.oldForm) {
-      oldSchema = new _schema2.default(instance.oldForm, _postgresSchema2.default, null);
+      oldSchema = new _schema2.default(instance.oldForm, _postgresQueryV2.default, null);
     }
 
     if (instance.newForm) {
-      newSchema = new _schema2.default(instance.newForm, _postgresSchema2.default, null);
+      newSchema = new _schema2.default(instance.newForm, _postgresQueryV2.default, null);
     }
 
     var differ = new SchemaDiffer(oldSchema, newSchema);
