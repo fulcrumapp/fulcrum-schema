@@ -453,7 +453,7 @@ var Schema = function () {
 
         case 'SignatureField':
           this.addStringElement(elementTable, element);
-          this.addDateElement(elementTable, element, 'timestamp');
+          this.addTimestampElement(elementTable, element, 'timestamp');
           break;
 
         case 'BarcodeField':
@@ -534,6 +534,14 @@ var Schema = function () {
         suffix = '';
       }
       return this.addElement(table, element, 'time', suffix);
+    }
+  }, {
+    key: 'addTimestampElement',
+    value: function addTimestampElement(table, element, suffix) {
+      if (suffix == null) {
+        suffix = '';
+      }
+      return this.addElement(table, element, 'timestamp', suffix);
     }
   }, {
     key: 'addDoubleElement',

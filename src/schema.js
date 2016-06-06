@@ -251,7 +251,7 @@ export default class Schema {
 
       case 'SignatureField':
         this.addStringElement(elementTable, element);
-        this.addDateElement(elementTable, element, 'timestamp');
+        this.addTimestampElement(elementTable, element, 'timestamp');
         break;
 
       case 'BarcodeField':
@@ -329,6 +329,13 @@ export default class Schema {
       suffix = '';
     }
     return this.addElement(table, element, 'time', suffix);
+  }
+
+  addTimestampElement(table, element, suffix) {
+    if (suffix == null) {
+      suffix = '';
+    }
+    return this.addElement(table, element, 'timestamp', suffix);
   }
 
   addDoubleElement(table, element, suffix) {
