@@ -466,7 +466,7 @@ var Schema = function () {
           break;
 
         case 'TimeField':
-          this.addDoubleElement(elementTable, element);
+          this.addTimeElement(elementTable, element);
           break;
 
         case 'Repeatable':
@@ -526,6 +526,14 @@ var Schema = function () {
         suffix = '';
       }
       return this.addElement(table, element, 'date', suffix);
+    }
+  }, {
+    key: 'addTimeElement',
+    value: function addTimeElement(table, element, suffix) {
+      if (suffix == null) {
+        suffix = '';
+      }
+      return this.addElement(table, element, 'time', suffix);
     }
   }, {
     key: 'addDoubleElement',
