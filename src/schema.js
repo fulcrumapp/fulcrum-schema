@@ -264,7 +264,7 @@ export default class Schema {
         break;
 
       case 'TimeField':
-        this.addDoubleElement(elementTable, element);
+        this.addTimeElement(elementTable, element);
         break;
 
       case 'Repeatable':
@@ -322,6 +322,13 @@ export default class Schema {
       suffix = '';
     }
     return this.addElement(table, element, 'date', suffix);
+  }
+
+  addTimeElement(table, element, suffix) {
+    if (suffix == null) {
+      suffix = '';
+    }
+    return this.addElement(table, element, 'time', suffix);
   }
 
   addDoubleElement(table, element, suffix) {
