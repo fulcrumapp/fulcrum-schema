@@ -990,6 +990,15 @@ Schema.systemPhotosTable = [{
 }, {
   name: 'height',
   type: 'integer'
+}, {
+  name: 'make',
+  type: 'string'
+}, {
+  name: 'model',
+  type: 'string'
+}, {
+  name: 'software',
+  type: 'string'
 }];
 
 Schema.systemVideosTable = [{

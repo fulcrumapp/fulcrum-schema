@@ -59,6 +59,9 @@ var Photos = function (_TableDefinition) {
       this.double('direction', {});
       this.integer('width', {});
       this.integer('height', {});
+      this.string('make', {});
+      this.string('model', {});
+      this.string('software', {});
     }
   }, {
     key: 'defineView',

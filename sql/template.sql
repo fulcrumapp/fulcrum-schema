@@ -183,6 +183,9 @@ CREATE TABLE IF NOT EXISTS organization.photos (
   direction double precision,
   width bigint,
   height bigint,
+  make text,
+  model text,
+  software text,
   CONSTRAINT photos_pkey PRIMARY KEY (id)
 );
 

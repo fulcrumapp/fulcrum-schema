@@ -35,6 +35,9 @@ export default class Photos extends TableDefinition {
     this.double('direction', {});
     this.integer('width', {});
     this.integer('height', {});
+    this.string('make', {});
+    this.string('model', {});
+    this.string('software', {});
   }
 
   defineView() {
