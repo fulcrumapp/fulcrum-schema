@@ -985,9 +985,6 @@ Schema.systemPhotosTable = [{
   name: 'direction',
   type: 'double'
 }, {
-  name: 'orientation',
-  type: 'integer'
-}, {
   name: 'width',
   type: 'integer'
 }, {

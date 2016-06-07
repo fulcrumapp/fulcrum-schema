@@ -57,7 +57,6 @@ var Photos = function (_TableDefinition) {
       this.double('altitude', {});
       this.double('accuracy', {});
       this.double('direction', {});
-      this.integer('orientation', {});
       this.integer('width', {});
       this.integer('height', {});
     }

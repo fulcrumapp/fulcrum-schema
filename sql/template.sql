@@ -181,7 +181,6 @@ CREATE TABLE IF NOT EXISTS organization.photos (
   altitude double precision,
   accuracy double precision,
   direction double precision,
-  orientation bigint,
   width bigint,
   height bigint,
   CONSTRAINT photos_pkey PRIMARY KEY (id)
