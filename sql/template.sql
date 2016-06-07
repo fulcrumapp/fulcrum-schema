@@ -178,7 +178,10 @@ CREATE TABLE IF NOT EXISTS organization.photos (
   geometry geometry(Geometry, 4326),
   latitude double precision,
   longitude double precision,
+  altitude double precision,
   accuracy double precision,
+  direction double precision,
+  orientation bigint,
   width bigint,
   height bigint,
   CONSTRAINT photos_pkey PRIMARY KEY (id)

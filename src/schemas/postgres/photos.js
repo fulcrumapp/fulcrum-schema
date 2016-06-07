@@ -30,7 +30,10 @@ export default class Photos extends TableDefinition {
     this.geometry('geometry', {});
     this.double('latitude', {});
     this.double('longitude', {});
+    this.double('altitude', {});
     this.double('accuracy', {});
+    this.double('direction', {});
+    this.integer('orientation', {});
     this.integer('width', {});
     this.integer('height', {});
   }

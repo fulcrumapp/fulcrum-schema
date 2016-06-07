@@ -21,8 +21,8 @@ function generateSQL(differ, includeMetadata) {
 
   const gen = new Postgres(differ, {afterTransform: includeMetadata ? meta.build.bind(meta) : null});
 
-  gen.tableSchema = instance.schema;
-  gen.tablePrefix = instance.tablePrefix;
+  gen.tableSchema = instance.schema || '';
+  gen.tablePrefix = instance.tablePrefix || '';
 
   return gen.generate();
 }
