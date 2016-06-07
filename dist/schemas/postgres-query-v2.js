@@ -976,8 +976,17 @@ Schema.systemPhotosTable = [{
   name: 'longitude',
   type: 'double'
 }, {
+  name: 'altitude',
+  type: 'double'
+}, {
   name: 'accuracy',
   type: 'double'
+}, {
+  name: 'direction',
+  type: 'double'
+}, {
+  name: 'orientation',
+  type: 'integer'
 }, {
   name: 'width',
   type: 'integer'
