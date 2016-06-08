@@ -84,8 +84,13 @@ var Photos = function (_TableDefinition) {
       this.alias('latitude', 'latitude');
       this.alias('longitude', 'longitude');
       this.alias('accuracy', 'accuracy');
+      this.alias('altitude', 'altitude');
+      this.alias('direction', 'direction');
       this.alias('width', 'width');
       this.alias('height', 'height');
+      this.alias('make', 'make');
+      this.alias('model', 'model');
+      this.alias('software', 'software');
     }
   }, {
     key: 'defineIndexes',

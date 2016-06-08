@@ -1473,8 +1473,13 @@ Schema.organizationViews.photos = {
   latitude: 'latitude',
   longitude: 'longitude',
   accuracy: 'accuracy',
+  altitude: 'altitude',
+  direction: 'direction',
   width: 'width',
-  height: 'height'
+  height: 'height',
+  make: 'make',
+  model: 'model',
+  software: 'software'
 };
 
 Schema.organizationIndexes.photos = [{ columns: ['row_resource_id'], unique: true }, { columns: ['row_id'], unique: true }, { columns: ['access_key'] }, { columns: ['record_resource_id'] }, { columns: ['form_resource_id'] }, { columns: ['created_by_resource_id'] }, { columns: ['geometry'], method: 'gist' }, { columns: ['updated_at'] }];
