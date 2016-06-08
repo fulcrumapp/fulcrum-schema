@@ -437,9 +437,14 @@ SELECT
   geometry AS geometry,
   latitude AS latitude,
   longitude AS longitude,
+  altitude AS altitude,
   accuracy AS accuracy,
+  direction AS direction,
   width AS width,
-  height AS height
+  height AS height,
+  make AS make,
+  model AS model,
+  software AS software
 FROM organization.photos;
 
 DROP VIEW IF EXISTS organization.projects_view;

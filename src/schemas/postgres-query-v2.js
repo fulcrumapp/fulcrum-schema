@@ -1530,8 +1530,13 @@ Schema.organizationViews.photos = {
   latitude: 'latitude',
   longitude: 'longitude',
   accuracy: 'accuracy',
+  altitude: 'altitude',
+  direction: 'direction',
   width: 'width',
-  height: 'height'
+  height: 'height',
+  make: 'make',
+  model: 'model',
+  software: 'software'
 };
 
 Schema.organizationIndexes.photos = [
