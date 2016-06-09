@@ -13,6 +13,7 @@ function pgvalue(value) {
 export default class Metadata {
   constructor(diff, options) {
     this.options = options || {};
+    this.includeColumns = options.columns;
   }
 
   build(generator, changes) {
@@ -47,8 +48,10 @@ export default class Metadata {
     statements.push(format('CREATE TABLE IF NOT EXISTS %s (name text, type text, parent text, form_id text);',
                            systemTablesName));
 
-    statements.push(format('CREATE TABLE IF NOT EXISTS %s (table_name text, name text, ordinal bigint, type text, nullable boolean, form_id text);',
-                           systemColumnsName));
+    if (this.includeColumns) {
+      statements.push(format('CREATE TABLE IF NOT EXISTS %s (table_name text, name text, ordinal bigint, type text, nullable boolean, form_id text);',
+                             systemColumnsName));
+    }
 
     // drop old metadata
     for (const view of this.oldViews) {
@@ -56,9 +59,11 @@ export default class Metadata {
                              systemTablesName,
                              pgvalue(view.table.alias)));
 
-      statements.push(format('DELETE FROM %s WHERE table_name = %s;',
-                             systemColumnsName,
-                             pgvalue(view.table.alias)));
+      if (this.includeColumns) {
+        statements.push(format('DELETE FROM %s WHERE table_name = %s;',
+                               systemColumnsName,
+                               pgvalue(view.table.alias)));
+      }
     }
 
     // create new metadata
@@ -75,9 +80,11 @@ export default class Metadata {
                              systemTablesName,
                              pgvalue(viewAlias)));
 
-      statements.push(format('DELETE FROM %s WHERE table_name = %s;',
-                             systemColumnsName,
-                             pgvalue(viewAlias)));
+      if (this.includeColumns) {
+        statements.push(format('DELETE FROM %s WHERE table_name = %s;',
+                               systemColumnsName,
+                               pgvalue(viewAlias)));
+      }
 
       statements.push(format('INSERT INTO %s (name, type, parent, form_id) SELECT %s, %s, %s, %s;',
                              systemTablesName,
@@ -86,22 +93,24 @@ export default class Metadata {
                              pgvalue(view.table.parent ? view.table.parent.alias : null),
                              pgvalue(view.table.form_id)));
 
-      for (let i = 0; i < view.columns.length; ++i) {
-        const column = view.columns[i];
+      if (this.includeColumns) {
+        for (let i = 0; i < view.columns.length; ++i) {
+          const column = view.columns[i];
 
-        statements.push(format('DELETE FROM %s WHERE table_name = %s AND name = %s;',
-                               systemColumnsName,
-                               pgvalue(viewAlias),
-                               pgvalue(column.alias)));
+          statements.push(format('DELETE FROM %s WHERE table_name = %s AND name = %s;',
+                                 systemColumnsName,
+                                 pgvalue(viewAlias),
+                                 pgvalue(column.alias)));
 
-        statements.push(format('INSERT INTO %s (table_name, name, ordinal, type, nullable, form_id) SELECT %s, %s, %s, %s, %s, %s;',
-                               systemColumnsName,
-                               pgvalue(viewAlias),
-                               pgvalue(column.alias),
-                               pgvalue(i + 1),
-                               pgvalue(column.column.type),
-                               pgvalue(column.column.allowNull ? 1 : 0),
-                               pgvalue(view.table.form_id)));
+          statements.push(format('INSERT INTO %s (table_name, name, ordinal, type, nullable, form_id) SELECT %s, %s, %s, %s, %s, %s;',
+                                 systemColumnsName,
+                                 pgvalue(viewAlias),
+                                 pgvalue(column.alias),
+                                 pgvalue(i + 1),
+                                 pgvalue(column.column.type),
+                                 pgvalue(column.column.allowNull ? 1 : 0),
+                                 pgvalue(view.table.form_id)));
+        }
       }
     }
 

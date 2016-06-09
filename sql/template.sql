@@ -661,3 +661,49 @@ CREATE INDEX idx_videos_created_by_resource_id ON organization.videos USING btre
 CREATE INDEX idx_videos_geometry ON organization.videos USING gist (geometry);
 
 CREATE INDEX idx_videos_updated_at ON organization.videos USING btree (updated_at);
+
+CREATE TABLE IF NOT EXISTS "organization"."tables" (name text, type text, parent text, form_id text);
+
+DELETE FROM "organization"."tables" WHERE name = 'audio';
+
+INSERT INTO "organization"."tables" (name, type, parent, form_id) SELECT 'audio', 'system', NULL, NULL;
+
+DELETE FROM "organization"."tables" WHERE name = 'changesets';
+
+INSERT INTO "organization"."tables" (name, type, parent, form_id) SELECT 'changesets', 'system', NULL, NULL;
+
+DELETE FROM "organization"."tables" WHERE name = 'choice_lists';
+
+INSERT INTO "organization"."tables" (name, type, parent, form_id) SELECT 'choice_lists', 'system', NULL, NULL;
+
+DELETE FROM "organization"."tables" WHERE name = 'classification_sets';
+
+INSERT INTO "organization"."tables" (name, type, parent, form_id) SELECT 'classification_sets', 'system', NULL, NULL;
+
+DELETE FROM "organization"."tables" WHERE name = 'forms';
+
+INSERT INTO "organization"."tables" (name, type, parent, form_id) SELECT 'forms', 'system', NULL, NULL;
+
+DELETE FROM "organization"."tables" WHERE name = 'memberships';
+
+INSERT INTO "organization"."tables" (name, type, parent, form_id) SELECT 'memberships', 'system', NULL, NULL;
+
+DELETE FROM "organization"."tables" WHERE name = 'photos';
+
+INSERT INTO "organization"."tables" (name, type, parent, form_id) SELECT 'photos', 'system', NULL, NULL;
+
+DELETE FROM "organization"."tables" WHERE name = 'projects';
+
+INSERT INTO "organization"."tables" (name, type, parent, form_id) SELECT 'projects', 'system', NULL, NULL;
+
+DELETE FROM "organization"."tables" WHERE name = 'roles';
+
+INSERT INTO "organization"."tables" (name, type, parent, form_id) SELECT 'roles', 'system', NULL, NULL;
+
+DELETE FROM "organization"."tables" WHERE name = 'signatures';
+
+INSERT INTO "organization"."tables" (name, type, parent, form_id) SELECT 'signatures', 'system', NULL, NULL;
+
+DELETE FROM "organization"."tables" WHERE name = 'videos';
+
+INSERT INTO "organization"."tables" (name, type, parent, form_id) SELECT 'videos', 'system', NULL, NULL;
