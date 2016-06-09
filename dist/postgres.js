@@ -40,7 +40,7 @@ instance.schema = null;
 instance.tablePrefix = null;
 
 function generateSQL(differ, includeMetadata) {
-  var meta = new _metadata2.default(differ, { quote: '"', schema: instance.schema });
+  var meta = new _metadata2.default(differ, { quote: '"', schema: instance.schema, columns: false });
 
   var gen = new Postgres(differ, { afterTransform: includeMetadata ? meta.build.bind(meta) : null });
 
@@ -64,7 +64,7 @@ instance.compareOrganization = function () {
 
   var differ = new SchemaDiffer(oldSchema, newSchema);
 
-  return generateSQL(differ, false);
+  return generateSQL(differ, true);
 };
 
 instance.compareForms = function () {

@@ -33,6 +33,7 @@ var Metadata = function () {
     _classCallCheck(this, Metadata);
 
     this.options = options || {};
+    this.includeColumns = options.columns;
   }
 
   _createClass(Metadata, [{
@@ -70,7 +71,9 @@ var Metadata = function () {
 
       statements.push((0, _util.format)('CREATE TABLE IF NOT EXISTS %s (name text, type text, parent text, form_id text);', systemTablesName));
 
-      statements.push((0, _util.format)('CREATE TABLE IF NOT EXISTS %s (table_name text, name text, ordinal bigint, type text, nullable boolean, form_id text);', systemColumnsName));
+      if (this.includeColumns) {
+        statements.push((0, _util.format)('CREATE TABLE IF NOT EXISTS %s (table_name text, name text, ordinal bigint, type text, nullable boolean, form_id text);', systemColumnsName));
+      }
 
       // drop old metadata
       var _iteratorNormalCompletion = true;
@@ -83,7 +86,9 @@ var Metadata = function () {
 
           statements.push((0, _util.format)('DELETE FROM %s WHERE name = %s;', systemTablesName, pgvalue(view.table.alias)));
 
-          statements.push((0, _util.format)('DELETE FROM %s WHERE table_name = %s;', systemColumnsName, pgvalue(view.table.alias)));
+          if (this.includeColumns) {
+            statements.push((0, _util.format)('DELETE FROM %s WHERE table_name = %s;', systemColumnsName, pgvalue(view.table.alias)));
+          }
         }
 
         // create new metadata
@@ -120,16 +125,20 @@ var Metadata = function () {
 
           statements.push((0, _util.format)('DELETE FROM %s WHERE name = %s;', systemTablesName, pgvalue(viewAlias)));
 
-          statements.push((0, _util.format)('DELETE FROM %s WHERE table_name = %s;', systemColumnsName, pgvalue(viewAlias)));
+          if (this.includeColumns) {
+            statements.push((0, _util.format)('DELETE FROM %s WHERE table_name = %s;', systemColumnsName, pgvalue(viewAlias)));
+          }
 
           statements.push((0, _util.format)('INSERT INTO %s (name, type, parent, form_id) SELECT %s, %s, %s, %s;', systemTablesName, pgvalue(viewAlias), pgvalue(viewType), pgvalue(_view.table.parent ? _view.table.parent.alias : null), pgvalue(_view.table.form_id)));
 
-          for (var i = 0; i < _view.columns.length; ++i) {
-            var column = _view.columns[i];
+          if (this.includeColumns) {
+            for (var i = 0; i < _view.columns.length; ++i) {
+              var column = _view.columns[i];
 
-            statements.push((0, _util.format)('DELETE FROM %s WHERE table_name = %s AND name = %s;', systemColumnsName, pgvalue(viewAlias), pgvalue(column.alias)));
+              statements.push((0, _util.format)('DELETE FROM %s WHERE table_name = %s AND name = %s;', systemColumnsName, pgvalue(viewAlias), pgvalue(column.alias)));
 
-            statements.push((0, _util.format)('INSERT INTO %s (table_name, name, ordinal, type, nullable, form_id) SELECT %s, %s, %s, %s, %s, %s;', systemColumnsName, pgvalue(viewAlias), pgvalue(column.alias), pgvalue(i + 1), pgvalue(column.column.type), pgvalue(column.column.allowNull ? 1 : 0), pgvalue(_view.table.form_id)));
+              statements.push((0, _util.format)('INSERT INTO %s (table_name, name, ordinal, type, nullable, form_id) SELECT %s, %s, %s, %s, %s, %s;', systemColumnsName, pgvalue(viewAlias), pgvalue(column.alias), pgvalue(i + 1), pgvalue(column.column.type), pgvalue(column.column.allowNull ? 1 : 0), pgvalue(_view.table.form_id)));
+            }
           }
         }
       } catch (err) {
