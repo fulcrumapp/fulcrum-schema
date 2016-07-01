@@ -121,6 +121,9 @@ Schema.systemFormTableColumns = [{
   name: 'created_longitude',
   type: 'double'
 }, {
+  name: 'created_geometry',
+  type: 'geometry'
+}, {
   name: 'created_altitude',
   type: 'double'
 }, {
@@ -132,6 +135,9 @@ Schema.systemFormTableColumns = [{
 }, {
   name: 'updated_longitude',
   type: 'double'
+}, {
+  name: 'updated_geometry',
+  type: 'geometry'
 }, {
   name: 'updated_altitude',
   type: 'double'
@@ -293,6 +299,9 @@ Schema.systemRepeatableTableColumns = [{
   name: 'created_longitude',
   type: 'double'
 }, {
+  name: 'created_geometry',
+  type: 'geometry'
+}, {
   name: 'created_altitude',
   type: 'double'
 }, {
@@ -304,6 +313,9 @@ Schema.systemRepeatableTableColumns = [{
 }, {
   name: 'updated_longitude',
   type: 'double'
+}, {
+  name: 'updated_geometry',
+  type: 'geometry'
 }, {
   name: 'updated_altitude',
   type: 'double'
@@ -1340,12 +1352,15 @@ Schema.systemFormViewColumns = {
   horizontal_accuracy: 'horizontal_accuracy',
   vertical_accuracy: 'vertical_accuracy',
   changeset_resource_id: 'changeset_id',
+  title: 'title',
   created_latitude: 'created_latitude',
   created_longitude: 'created_longitude',
+  created_geometry: 'created_geometry',
   created_altitude: 'created_altitude',
   created_horizontal_accuracy: 'created_horizontal_accuracy',
   updated_latitude: 'updated_latitude',
   updated_longitude: 'updated_longitude',
+  updated_geometry: 'updated_geometry',
   updated_altitude: 'updated_altitude',
   updated_horizontal_accuracy: 'updated_horizontal_accuracy',
   created_duration: 'created_duration',
@@ -1380,10 +1395,12 @@ Schema.systemRepeatableViewColumns = {
   title: 'title',
   created_latitude: 'created_latitude',
   created_longitude: 'created_longitude',
+  created_geometry: 'created_geometry',
   created_altitude: 'created_altitude',
   created_horizontal_accuracy: 'created_horizontal_accuracy',
   updated_latitude: 'updated_latitude',
   updated_longitude: 'updated_longitude',
+  updated_geometry: 'updated_geometry',
   updated_altitude: 'updated_altitude',
   updated_horizontal_accuracy: 'updated_horizontal_accuracy',
   created_duration: 'created_duration',
