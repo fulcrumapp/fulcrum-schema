@@ -1358,7 +1358,17 @@ Schema.systemFormViewColumns = {
   horizontal_accuracy: 'horizontal_accuracy',
   vertical_accuracy: 'vertical_accuracy',
   changeset_resource_id: 'changeset_id',
-  title: 'title'
+  created_latitude: 'created_latitude',
+  created_longitude: 'created_longitude',
+  created_altitude: 'created_altitude',
+  created_horizontal_accuracy: 'created_horizontal_accuracy',
+  updated_latitude: 'updated_latitude',
+  updated_longitude: 'updated_longitude',
+  updated_altitude: 'updated_altitude',
+  updated_horizontal_accuracy: 'updated_horizontal_accuracy',
+  created_duration: 'created_duration',
+  updated_duration: 'updated_duration',
+  edited_duration: 'edited_duration'
 };
 
 Schema.systemFormFullViewColumns = _.clone(Schema.systemFormViewColumns);
@@ -1385,7 +1395,18 @@ Schema.systemRepeatableViewColumns = {
   server_updated_at: 'server_updated_at',
   geometry: 'geometry',
   changeset_resource_id: 'changeset_id',
-  title: 'title'
+  title: 'title',
+  created_latitude: 'created_latitude',
+  created_longitude: 'created_longitude',
+  created_altitude: 'created_altitude',
+  created_horizontal_accuracy: 'created_horizontal_accuracy',
+  updated_latitude: 'updated_latitude',
+  updated_longitude: 'updated_longitude',
+  updated_altitude: 'updated_altitude',
+  updated_horizontal_accuracy: 'updated_horizontal_accuracy',
+  created_duration: 'created_duration',
+  updated_duration: 'updated_duration',
+  edited_duration: 'edited_duration'
 };
 
 Schema.systemRepeatableFullViewColumns = _.clone(Schema.systemRepeatableViewColumns);
