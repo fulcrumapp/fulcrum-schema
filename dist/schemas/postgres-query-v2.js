@@ -114,6 +114,39 @@ Schema.systemFormTableColumns = [{
 }, {
   name: 'title',
   type: 'string'
+}, {
+  name: 'created_latitude',
+  type: 'double'
+}, {
+  name: 'created_longitude',
+  type: 'double'
+}, {
+  name: 'created_altitude',
+  type: 'double'
+}, {
+  name: 'created_horizontal_accuracy',
+  type: 'double'
+}, {
+  name: 'updated_latitude',
+  type: 'double'
+}, {
+  name: 'updated_longitude',
+  type: 'double'
+}, {
+  name: 'updated_altitude',
+  type: 'double'
+}, {
+  name: 'updated_horizontal_accuracy',
+  type: 'double'
+}, {
+  name: 'created_duration',
+  type: 'integer'
+}, {
+  name: 'updated_duration',
+  type: 'integer'
+}, {
+  name: 'edited_duration',
+  type: 'integer'
 }];
 
 Schema.systemValuesTableColumns = [{
@@ -253,6 +286,39 @@ Schema.systemRepeatableTableColumns = [{
 }, {
   name: 'title',
   type: 'string'
+}, {
+  name: 'created_latitude',
+  type: 'double'
+}, {
+  name: 'created_longitude',
+  type: 'double'
+}, {
+  name: 'created_altitude',
+  type: 'double'
+}, {
+  name: 'created_horizontal_accuracy',
+  type: 'double'
+}, {
+  name: 'updated_latitude',
+  type: 'double'
+}, {
+  name: 'updated_longitude',
+  type: 'double'
+}, {
+  name: 'updated_altitude',
+  type: 'double'
+}, {
+  name: 'updated_horizontal_accuracy',
+  type: 'double'
+}, {
+  name: 'created_duration',
+  type: 'integer'
+}, {
+  name: 'updated_duration',
+  type: 'integer'
+}, {
+  name: 'edited_duration',
+  type: 'integer'
 }];
 
 // - changesets
