@@ -1442,14 +1442,14 @@ Schema.organizationViews = {};
 Schema.organizationIndexes = {};
 
 Schema.organizationViews.changesets = {
-  row_resource_id: '_changeset_id',
-  form_resource_id: '_form_id',
+  row_resource_id: 'changeset_id',
+  form_resource_id: 'form_id',
   metadata: 'metadata',
-  metadata_index: '_metadata_index',
+  metadata_index: 'metadata_index',
   closed_at: 'closed_at',
-  created_by_resource_id: '_created_by_id',
-  updated_by_resource_id: '_updated_by_id',
-  closed_by_resource_id: '_closed_by_id',
+  created_by_resource_id: 'created_by_id',
+  updated_by_resource_id: 'updated_by_id',
+  closed_by_resource_id: 'closed_by_id',
   created_at: 'created_at',
   updated_at: 'updated_at',
   min_lat: 'min_lat',
@@ -1472,7 +1472,7 @@ Schema.organizationIndexes.changesets = [
 ];
 
 Schema.organizationViews.forms = {
-  row_resource_id: '_form_id',
+  row_resource_id: 'form_id',
   name: 'name',
   description: 'description',
   version: 'version',
@@ -1480,8 +1480,8 @@ Schema.organizationViews.forms = {
   bounding_box: 'bounding_box',
   status: 'status',
   status_field: 'status_field',
-  created_by_resource_id: '_created_by_id',
-  updated_by_resource_id: '_updated_by_id',
+  created_by_resource_id: 'created_by_id',
+  updated_by_resource_id: 'updated_by_id',
   created_at: 'created_at',
   updated_at: 'updated_at',
   auto_assign: 'auto_assign',
@@ -1503,13 +1503,13 @@ Schema.organizationIndexes.forms = [
 ];
 
 Schema.organizationViews.choice_lists = {
-  row_resource_id: '_choice_list_id',
+  row_resource_id: 'choice_list_id',
   name: 'name',
   description: 'description',
   version: 'version',
   items: 'items',
-  created_by_resource_id: '_created_by_id',
-  updated_by_resource_id: '_updated_by_id',
+  created_by_resource_id: 'created_by_id',
+  updated_by_resource_id: 'updated_by_id',
   created_at: 'created_at',
   updated_at: 'updated_at'
 };
@@ -1522,13 +1522,13 @@ Schema.organizationIndexes.choice_lists = [
 ];
 
 Schema.organizationViews.classification_sets = {
-  row_resource_id: '_classification_set_id',
+  row_resource_id: 'classification_set_id',
   name: 'name',
   description: 'description',
   version: 'version',
   items: 'items',
-  created_by_resource_id: '_created_by_id',
-  updated_by_resource_id: '_updated_by_id',
+  created_by_resource_id: 'created_by_id',
+  updated_by_resource_id: 'updated_by_id',
   created_at: 'created_at',
   updated_at: 'updated_at'
 };
@@ -1541,10 +1541,10 @@ Schema.organizationIndexes.classification_sets = [
 ];
 
 Schema.organizationViews.projects = {
-  row_resource_id: '_project_id',
+  row_resource_id: 'project_id',
   name: 'name',
   description: 'description',
-  created_by_resource_id: '_created_by_id',
+  created_by_resource_id: 'created_by_id',
   created_at: 'created_at',
   updated_at: 'updated_at'
 };
@@ -1557,11 +1557,11 @@ Schema.organizationIndexes.projects = [
 ];
 
 Schema.organizationViews.roles = {
-  row_resource_id: '_role_id',
+  row_resource_id: 'role_id',
   name: 'name',
   description: 'description',
-  created_by_resource_id: '_created_by_id',
-  updated_by_resource_id: '_updated_by_id',
+  created_by_resource_id: 'created_by_id',
+  updated_by_resource_id: 'updated_by_id',
   created_at: 'created_at',
   updated_at: 'updated_at',
   is_system: 'is_system',
@@ -1593,13 +1593,13 @@ Schema.organizationIndexes.roles = [
 ];
 
 Schema.organizationViews.memberships = {
-  row_resource_id: '_membership_id',
-  user_resource_id: '_user_id',
+  row_resource_id: 'membership_id',
+  user_resource_id: 'user_id',
   first_name: 'first_name',
   last_name: 'last_name',
   name: 'name',
   email: 'email',
-  role_resource_id: '_role_id',
+  role_resource_id: 'role_id',
   role_name: 'role_name',
   status: 'status',
   created_at: 'created_at',
@@ -1616,13 +1616,13 @@ Schema.organizationIndexes.memberships = [
 ];
 
 Schema.organizationViews.photos = {
-  access_key: '_photo_id',
+  access_key: 'photo_id',
   exif: 'exif',
   file_size: 'file_size',
-  record_resource_id: '_record_id',
-  form_resource_id: '_form_id',
-  created_by_resource_id: '_created_by_id',
-  updated_by_resource_id: '_updated_by_id',
+  record_resource_id: 'record_id',
+  form_resource_id: 'form_id',
+  created_by_resource_id: 'created_by_id',
+  updated_by_resource_id: 'updated_by_id',
   created_at: 'created_at',
   updated_at: 'updated_at',
   file: 'file',
@@ -1655,13 +1655,13 @@ Schema.organizationIndexes.photos = [
 ];
 
 Schema.organizationViews.videos = {
-  access_key: '_video_id',
+  access_key: 'video_id',
   metadata: 'metadata',
   file_size: 'file_size',
-  record_resource_id: '_record_id',
-  form_resource_id: '_form_id',
-  created_by_resource_id: '_created_by_id',
-  updated_by_resource_id: '_updated_by_id',
+  record_resource_id: 'record_id',
+  form_resource_id: 'form_id',
+  created_by_resource_id: 'created_by_id',
+  updated_by_resource_id: 'updated_by_id',
   created_at: 'created_at',
   updated_at: 'updated_at',
   file: 'file',
@@ -1689,11 +1689,11 @@ Schema.organizationIndexes.videos = [
 ];
 
 Schema.organizationViews.audio = {
-  access_key: '_audio_id',
+  access_key: 'audio_id',
   metadata: 'metadata',
   file_size: 'file_size',
-  record_resource_id: '_record_id',
-  form_resource_id: '_form_id',
+  record_resource_id: 'record_id',
+  form_resource_id: 'form_id',
   created_by_resource_id: 'created_by_id',
   updated_by_resource_id: 'updated_by_id',
   created_at: 'created_at',
@@ -1721,10 +1721,10 @@ Schema.organizationIndexes.audio = [
 ];
 
 Schema.organizationViews.signatures = {
-  access_key: '_signature_id',
+  access_key: 'signature_id',
   file_size: 'file_size',
-  record_resource_id: '_record_id',
-  form_resource_id: '_form_id',
+  record_resource_id: 'record_id',
+  form_resource_id: 'form_id',
   created_by_resource_id: 'created_by_id',
   updated_by_resource_id: 'updated_by_id',
   created_at: 'created_at',
