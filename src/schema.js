@@ -34,11 +34,25 @@ export default class Schema {
     this.buildIndexes();
   }
 
-  alias(part) {
+  alias(part, escapePart = true) {
     if (part) {
-      return this.escapeSlashes(this.form.name) + '/' + this.escapeSlashes(part);
+      const partName = escapePart ? this.escapeDataName(part) : part;
+
+      return this.escapeSlashes(this.form.name) + '/' + this.escapeSlashes(partName);
     }
     return this.escapeSlashes(this.form.name);
+  }
+
+  escapeDataName(dataName) {
+    // if a data name starts with an underscore, add an additional underscore to prevent
+    // collisions with future system-defined columns. e.g. `_symbol` becomes `__symbol`
+    // because at some point we might add a system column named `symbol` which needs the
+    // `_symbol` name.
+    if (dataName[0] === '_') {
+      return '_' + dataName;
+    }
+
+    return dataName;
   }
 
   escapeSlashes(name) {
@@ -111,14 +125,14 @@ export default class Schema {
       this.views.push(view);
 
       if (table.type === 'form') {
-        const fullView = new View(table.name + '_view_full', null, table, {variant: 'full', alias: this.alias('_full')});
+        const fullView = new View(table.name + '_view_full', null, table, {variant: 'full', alias: this.alias('_full', false)});
 
         this.buildViewForTable(table, fullView);
 
         this.views.push(fullView);
       } else if (table.type === 'repeatable') {
         const fullView = new View(table.name + '_view_full', null, table, {variant: 'full',
-                                                                           alias: this.alias(table.element.data_name + '/_full')});
+                                                                           alias: this.alias(table.element.data_name) + '/_full'});
 
         this.buildViewForTable(table, fullView);
 
@@ -190,17 +204,7 @@ export default class Schema {
 
       name = '_' + name;
     } else if (column.element) {
-      // if a data name starts with an underscore, add an additional underscore to prevent
-      // collisions with future system-defined columns. e.g. `_symbol` becomes `__symbol`
-      // because at some point we might add a system column named `symbol` which needs the
-      // `_symbol` name.
-      let prefix = '';
-
-      if (column.element.data_name[0] === '_') {
-        prefix = '_';
-      }
-
-      name = prefix + column.element.data_name + (column.suffix || '');
+      name = this.escapeDataName(column.element.data_name) + (column.suffix || '');
     }
 
     if (name) {
