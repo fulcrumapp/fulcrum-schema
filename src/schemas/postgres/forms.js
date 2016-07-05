@@ -47,7 +47,7 @@ export default class Forms extends TableDefinition {
   }
 
   defineView() {
-    this.alias('row_resource_id', '_form_id');
+    this.alias('row_resource_id', 'form_id');
     this.alias('name', 'name');
     this.alias('description', 'description');
     this.alias('version', 'version');
@@ -55,8 +55,8 @@ export default class Forms extends TableDefinition {
     this.alias('bounding_box', 'bounding_box');
     this.alias('status', 'status');
     this.alias('status_field', 'status_field');
-    this.alias('created_by_resource_id', '_created_by_id');
-    this.alias('updated_by_resource_id', '_updated_by_id');
+    this.alias('created_by_resource_id', 'created_by_id');
+    this.alias('updated_by_resource_id', 'updated_by_id');
     this.alias('created_at', 'created_at');
     this.alias('updated_at', 'updated_at');
     this.alias('auto_assign', 'auto_assign');

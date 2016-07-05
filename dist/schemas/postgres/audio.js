@@ -61,11 +61,11 @@ var Audio = function (_TableDefinition) {
   }, {
     key: 'defineView',
     value: function defineView() {
-      this.alias('access_key', '_audio_id');
+      this.alias('access_key', 'audio_id');
       this.alias('metadata', 'metadata');
       this.alias('file_size', 'file_size');
-      this.alias('record_resource_id', '_record_id');
-      this.alias('form_resource_id', '_form_id');
+      this.alias('record_resource_id', 'record_id');
+      this.alias('form_resource_id', 'form_id');
       this.alias('created_by_resource_id', 'created_by_id');
       this.alias('updated_by_resource_id', 'updated_by_id');
       this.alias('created_at', 'created_at');

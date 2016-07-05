@@ -298,9 +298,9 @@ DROP VIEW IF EXISTS organization.audio_view;
 
 CREATE OR REPLACE VIEW organization.audio_view AS
 SELECT
-  access_key AS _audio_id,
-  record_resource_id AS _record_id,
-  form_resource_id AS _form_id,
+  access_key AS audio_id,
+  record_resource_id AS record_id,
+  form_resource_id AS form_id,
   metadata AS metadata,
   file_size AS file_size,
   created_by_resource_id AS created_by_id,
@@ -322,13 +322,13 @@ DROP VIEW IF EXISTS organization.changesets_view;
 
 CREATE OR REPLACE VIEW organization.changesets_view AS
 SELECT
-  row_resource_id AS _changeset_id,
-  form_resource_id AS _form_id,
+  row_resource_id AS changeset_id,
+  form_resource_id AS form_id,
   metadata AS metadata,
   closed_at AS closed_at,
-  created_by_resource_id AS _created_by_id,
-  updated_by_resource_id AS _updated_by_id,
-  closed_by_resource_id AS _closed_by_id,
+  created_by_resource_id AS created_by_id,
+  updated_by_resource_id AS updated_by_id,
+  closed_by_resource_id AS closed_by_id,
   created_at AS created_at,
   updated_at AS updated_at,
   min_lat AS min_lat,
@@ -339,20 +339,20 @@ SELECT
   number_of_creates AS number_of_creates,
   number_of_updates AS number_of_updates,
   number_of_deletes AS number_of_deletes,
-  metadata_index AS _metadata_index
+  metadata_index AS metadata_index
 FROM organization.changesets;
 
 DROP VIEW IF EXISTS organization.choice_lists_view;
 
 CREATE OR REPLACE VIEW organization.choice_lists_view AS
 SELECT
-  row_resource_id AS _choice_list_id,
+  row_resource_id AS choice_list_id,
   name AS name,
   description AS description,
   version AS version,
   items AS items,
-  created_by_resource_id AS _created_by_id,
-  updated_by_resource_id AS _updated_by_id,
+  created_by_resource_id AS created_by_id,
+  updated_by_resource_id AS updated_by_id,
   created_at AS created_at,
   updated_at AS updated_at
 FROM organization.choice_lists;
@@ -361,13 +361,13 @@ DROP VIEW IF EXISTS organization.classification_sets_view;
 
 CREATE OR REPLACE VIEW organization.classification_sets_view AS
 SELECT
-  row_resource_id AS _classification_set_id,
+  row_resource_id AS classification_set_id,
   name AS name,
   description AS description,
   version AS version,
   items AS items,
-  created_by_resource_id AS _created_by_id,
-  updated_by_resource_id AS _updated_by_id,
+  created_by_resource_id AS created_by_id,
+  updated_by_resource_id AS updated_by_id,
   created_at AS created_at,
   updated_at AS updated_at
 FROM organization.classification_sets;
@@ -376,7 +376,7 @@ DROP VIEW IF EXISTS organization.forms_view;
 
 CREATE OR REPLACE VIEW organization.forms_view AS
 SELECT
-  row_resource_id AS _form_id,
+  row_resource_id AS form_id,
   name AS name,
   description AS description,
   version AS version,
@@ -384,8 +384,8 @@ SELECT
   bounding_box AS bounding_box,
   status AS status,
   status_field AS status_field,
-  created_by_resource_id AS _created_by_id,
-  updated_by_resource_id AS _updated_by_id,
+  created_by_resource_id AS created_by_id,
+  updated_by_resource_id AS updated_by_id,
   created_at AS created_at,
   updated_at AS updated_at,
   auto_assign AS auto_assign,
@@ -403,13 +403,13 @@ DROP VIEW IF EXISTS organization.memberships_view;
 
 CREATE OR REPLACE VIEW organization.memberships_view AS
 SELECT
-  row_resource_id AS _membership_id,
-  user_resource_id AS _user_id,
+  row_resource_id AS membership_id,
+  user_resource_id AS user_id,
   first_name AS first_name,
   last_name AS last_name,
   name AS name,
   email AS email,
-  role_resource_id AS _role_id,
+  role_resource_id AS role_id,
   role_name AS role_name,
   status AS status,
   created_at AS created_at,
@@ -420,13 +420,13 @@ DROP VIEW IF EXISTS organization.photos_view;
 
 CREATE OR REPLACE VIEW organization.photos_view AS
 SELECT
-  access_key AS _photo_id,
-  record_resource_id AS _record_id,
-  form_resource_id AS _form_id,
+  access_key AS photo_id,
+  record_resource_id AS record_id,
+  form_resource_id AS form_id,
   exif AS exif,
   file_size AS file_size,
-  created_by_resource_id AS _created_by_id,
-  updated_by_resource_id AS _updated_by_id,
+  created_by_resource_id AS created_by_id,
+  updated_by_resource_id AS updated_by_id,
   created_at AS created_at,
   updated_at AS updated_at,
   file AS file,
@@ -451,10 +451,10 @@ DROP VIEW IF EXISTS organization.projects_view;
 
 CREATE OR REPLACE VIEW organization.projects_view AS
 SELECT
-  row_resource_id AS _project_id,
+  row_resource_id AS project_id,
   name AS name,
   description AS description,
-  created_by_resource_id AS _created_by_id,
+  created_by_resource_id AS created_by_id,
   created_at AS created_at,
   updated_at AS updated_at
 FROM organization.projects;
@@ -463,11 +463,11 @@ DROP VIEW IF EXISTS organization.roles_view;
 
 CREATE OR REPLACE VIEW organization.roles_view AS
 SELECT
-  row_resource_id AS _role_id,
+  row_resource_id AS role_id,
   name AS name,
   description AS description,
-  created_by_resource_id AS _created_by_id,
-  updated_by_resource_id AS _updated_by_id,
+  created_by_resource_id AS created_by_id,
+  updated_by_resource_id AS updated_by_id,
   created_at AS created_at,
   updated_at AS updated_at,
   is_system AS is_system,
@@ -495,9 +495,9 @@ DROP VIEW IF EXISTS organization.signatures_view;
 
 CREATE OR REPLACE VIEW organization.signatures_view AS
 SELECT
-  access_key AS _signature_id,
-  record_resource_id AS _record_id,
-  form_resource_id AS _form_id,
+  access_key AS signature_id,
+  record_resource_id AS record_id,
+  form_resource_id AS form_id,
   file_size AS file_size,
   created_by_resource_id AS created_by_id,
   updated_by_resource_id AS updated_by_id,
@@ -514,13 +514,13 @@ DROP VIEW IF EXISTS organization.videos_view;
 
 CREATE OR REPLACE VIEW organization.videos_view AS
 SELECT
-  access_key AS _video_id,
-  record_resource_id AS _record_id,
-  form_resource_id AS _form_id,
+  access_key AS video_id,
+  record_resource_id AS record_id,
+  form_resource_id AS form_id,
   metadata AS metadata,
   file_size AS file_size,
-  created_by_resource_id AS _created_by_id,
-  updated_by_resource_id AS _updated_by_id,
+  created_by_resource_id AS created_by_id,
+  updated_by_resource_id AS updated_by_id,
   created_at AS created_at,
   updated_at AS updated_at,
   file AS file,
@@ -662,48 +662,612 @@ CREATE INDEX idx_videos_geometry ON organization.videos USING gist (geometry);
 
 CREATE INDEX idx_videos_updated_at ON organization.videos USING btree (updated_at);
 
-CREATE TABLE IF NOT EXISTS "organization"."tables" (name text, type text, parent text, form_id text);
+CREATE TABLE IF NOT EXISTS "organization"."tables" (name text, alias text, type text, parent text, form_id text);
 
-DELETE FROM "organization"."tables" WHERE name = 'audio';
+CREATE OR REPLACE VIEW "organization"."tables_view" AS SELECT alias AS name, type, parent, form_id FROM "organization"."tables";
 
-INSERT INTO "organization"."tables" (name, type, parent, form_id) SELECT 'audio', 'system', NULL, NULL;
+CREATE INDEX idx_tables_name ON "organization"."tables" (name);
 
-DELETE FROM "organization"."tables" WHERE name = 'changesets';
+CREATE INDEX idx_tables_alias ON "organization"."tables" (alias);
 
-INSERT INTO "organization"."tables" (name, type, parent, form_id) SELECT 'changesets', 'system', NULL, NULL;
+CREATE TABLE IF NOT EXISTS "organization"."columns" (table_name text, table_alias text, name text, ordinal bigint, type text, nullable boolean, form_id text, field text, field_type text, data_name text, part text, data text);
 
-DELETE FROM "organization"."tables" WHERE name = 'choice_lists';
+CREATE OR REPLACE VIEW "organization"."columns_view" AS SELECT table_alias AS table_name, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data FROM "organization"."columns";
 
-INSERT INTO "organization"."tables" (name, type, parent, form_id) SELECT 'choice_lists', 'system', NULL, NULL;
+CREATE INDEX idx_columns_table_name ON "organization"."columns" (table_name);
 
-DELETE FROM "organization"."tables" WHERE name = 'classification_sets';
+CREATE INDEX idx_columns_table_alias ON "organization"."columns" (table_alias);
 
-INSERT INTO "organization"."tables" (name, type, parent, form_id) SELECT 'classification_sets', 'system', NULL, NULL;
+DELETE FROM "organization"."tables" WHERE name = 'audio_view';
 
-DELETE FROM "organization"."tables" WHERE name = 'forms';
+DELETE FROM "organization"."columns" WHERE table_name = 'audio_view';
 
-INSERT INTO "organization"."tables" (name, type, parent, form_id) SELECT 'forms', 'system', NULL, NULL;
+INSERT INTO "organization"."tables" (name, alias, type, parent, form_id) SELECT 'audio_view', 'audio', 'system', NULL, NULL;
 
-DELETE FROM "organization"."tables" WHERE name = 'memberships';
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'audio_view', 'audio', 'audio_id', '1', 'string', '0', NULL, NULL, NULL, NULL, NULL, NULL;
 
-INSERT INTO "organization"."tables" (name, type, parent, form_id) SELECT 'memberships', 'system', NULL, NULL;
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'audio_view', 'audio', 'record_id', '2', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
 
-DELETE FROM "organization"."tables" WHERE name = 'photos';
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'audio_view', 'audio', 'form_id', '3', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
 
-INSERT INTO "organization"."tables" (name, type, parent, form_id) SELECT 'photos', 'system', NULL, NULL;
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'audio_view', 'audio', 'metadata', '4', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
 
-DELETE FROM "organization"."tables" WHERE name = 'projects';
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'audio_view', 'audio', 'file_size', '5', 'integer', '1', NULL, NULL, NULL, NULL, NULL, NULL;
 
-INSERT INTO "organization"."tables" (name, type, parent, form_id) SELECT 'projects', 'system', NULL, NULL;
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'audio_view', 'audio', 'created_by_id', '6', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
 
-DELETE FROM "organization"."tables" WHERE name = 'roles';
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'audio_view', 'audio', 'updated_by_id', '7', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
 
-INSERT INTO "organization"."tables" (name, type, parent, form_id) SELECT 'roles', 'system', NULL, NULL;
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'audio_view', 'audio', 'created_at', '8', 'timestamp', '0', NULL, NULL, NULL, NULL, NULL, NULL;
 
-DELETE FROM "organization"."tables" WHERE name = 'signatures';
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'audio_view', 'audio', 'updated_at', '9', 'timestamp', '0', NULL, NULL, NULL, NULL, NULL, NULL;
 
-INSERT INTO "organization"."tables" (name, type, parent, form_id) SELECT 'signatures', 'system', NULL, NULL;
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'audio_view', 'audio', 'file', '10', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
 
-DELETE FROM "organization"."tables" WHERE name = 'videos';
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'audio_view', 'audio', 'content_type', '11', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
 
-INSERT INTO "organization"."tables" (name, type, parent, form_id) SELECT 'videos', 'system', NULL, NULL;
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'audio_view', 'audio', 'uploaded_at', '12', 'timestamp', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'audio_view', 'audio', 'stored_at', '13', 'timestamp', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'audio_view', 'audio', 'processed_at', '14', 'timestamp', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'audio_view', 'audio', 'has_track', '15', 'boolean', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'audio_view', 'audio', 'track', '16', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'audio_view', 'audio', 'geometry', '17', 'geometry', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'audio_view', 'audio', 'duration', '18', 'double', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+DELETE FROM "organization"."tables" WHERE name = 'changesets_view';
+
+DELETE FROM "organization"."columns" WHERE table_name = 'changesets_view';
+
+INSERT INTO "organization"."tables" (name, alias, type, parent, form_id) SELECT 'changesets_view', 'changesets', 'system', NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'changesets_view', 'changesets', 'changeset_id', '1', 'string', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'changesets_view', 'changesets', 'form_id', '2', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'changesets_view', 'changesets', 'metadata', '3', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'changesets_view', 'changesets', 'closed_at', '4', 'timestamp', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'changesets_view', 'changesets', 'created_by_id', '5', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'changesets_view', 'changesets', 'updated_by_id', '6', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'changesets_view', 'changesets', 'closed_by_id', '7', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'changesets_view', 'changesets', 'created_at', '8', 'timestamp', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'changesets_view', 'changesets', 'updated_at', '9', 'timestamp', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'changesets_view', 'changesets', 'min_lat', '10', 'double', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'changesets_view', 'changesets', 'max_lat', '11', 'double', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'changesets_view', 'changesets', 'min_lon', '12', 'double', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'changesets_view', 'changesets', 'max_lon', '13', 'double', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'changesets_view', 'changesets', 'number_of_changes', '14', 'integer', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'changesets_view', 'changesets', 'number_of_creates', '15', 'integer', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'changesets_view', 'changesets', 'number_of_updates', '16', 'integer', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'changesets_view', 'changesets', 'number_of_deletes', '17', 'integer', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'changesets_view', 'changesets', 'metadata_index', '18', 'fts', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+DELETE FROM "organization"."tables" WHERE name = 'choice_lists_view';
+
+DELETE FROM "organization"."columns" WHERE table_name = 'choice_lists_view';
+
+INSERT INTO "organization"."tables" (name, alias, type, parent, form_id) SELECT 'choice_lists_view', 'choice_lists', 'system', NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'choice_lists_view', 'choice_lists', 'choice_list_id', '1', 'string', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'choice_lists_view', 'choice_lists', 'name', '2', 'string', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'choice_lists_view', 'choice_lists', 'description', '3', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'choice_lists_view', 'choice_lists', 'version', '4', 'integer', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'choice_lists_view', 'choice_lists', 'items', '5', 'string', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'choice_lists_view', 'choice_lists', 'created_by_id', '6', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'choice_lists_view', 'choice_lists', 'updated_by_id', '7', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'choice_lists_view', 'choice_lists', 'created_at', '8', 'timestamp', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'choice_lists_view', 'choice_lists', 'updated_at', '9', 'timestamp', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+DELETE FROM "organization"."tables" WHERE name = 'classification_sets_view';
+
+DELETE FROM "organization"."columns" WHERE table_name = 'classification_sets_view';
+
+INSERT INTO "organization"."tables" (name, alias, type, parent, form_id) SELECT 'classification_sets_view', 'classification_sets', 'system', NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'classification_sets_view', 'classification_sets', 'classification_set_id', '1', 'string', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'classification_sets_view', 'classification_sets', 'name', '2', 'string', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'classification_sets_view', 'classification_sets', 'description', '3', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'classification_sets_view', 'classification_sets', 'version', '4', 'integer', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'classification_sets_view', 'classification_sets', 'items', '5', 'string', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'classification_sets_view', 'classification_sets', 'created_by_id', '6', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'classification_sets_view', 'classification_sets', 'updated_by_id', '7', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'classification_sets_view', 'classification_sets', 'created_at', '8', 'timestamp', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'classification_sets_view', 'classification_sets', 'updated_at', '9', 'timestamp', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+DELETE FROM "organization"."tables" WHERE name = 'forms_view';
+
+DELETE FROM "organization"."columns" WHERE table_name = 'forms_view';
+
+INSERT INTO "organization"."tables" (name, alias, type, parent, form_id) SELECT 'forms_view', 'forms', 'system', NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'forms_view', 'forms', 'form_id', '1', 'string', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'forms_view', 'forms', 'name', '2', 'string', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'forms_view', 'forms', 'description', '3', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'forms_view', 'forms', 'version', '4', 'integer', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'forms_view', 'forms', 'elements', '5', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'forms_view', 'forms', 'bounding_box', '6', 'geometry', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'forms_view', 'forms', 'status', '7', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'forms_view', 'forms', 'status_field', '8', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'forms_view', 'forms', 'created_by_id', '9', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'forms_view', 'forms', 'updated_by_id', '10', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'forms_view', 'forms', 'created_at', '11', 'timestamp', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'forms_view', 'forms', 'updated_at', '12', 'timestamp', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'forms_view', 'forms', 'auto_assign', '13', 'boolean', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'forms_view', 'forms', 'title_field_keys', '14', 'json', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'forms_view', 'forms', 'hidden_on_dashboard', '15', 'boolean', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'forms_view', 'forms', 'geometry_types', '16', 'json', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'forms_view', 'forms', 'geometry_required', '17', 'boolean', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'forms_view', 'forms', 'script', '18', 'text', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'forms_view', 'forms', 'image', '19', 'text', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'forms_view', 'forms', 'projects_enabled', '20', 'boolean', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'forms_view', 'forms', 'assignment_enabled', '21', 'boolean', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+DELETE FROM "organization"."tables" WHERE name = 'memberships_view';
+
+DELETE FROM "organization"."columns" WHERE table_name = 'memberships_view';
+
+INSERT INTO "organization"."tables" (name, alias, type, parent, form_id) SELECT 'memberships_view', 'memberships', 'system', NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'memberships_view', 'memberships', 'membership_id', '1', 'string', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'memberships_view', 'memberships', 'user_id', '2', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'memberships_view', 'memberships', 'first_name', '3', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'memberships_view', 'memberships', 'last_name', '4', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'memberships_view', 'memberships', 'name', '5', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'memberships_view', 'memberships', 'email', '6', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'memberships_view', 'memberships', 'role_id', '7', 'string', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'memberships_view', 'memberships', 'role_name', '8', 'string', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'memberships_view', 'memberships', 'status', '9', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'memberships_view', 'memberships', 'created_at', '10', 'timestamp', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'memberships_view', 'memberships', 'updated_at', '11', 'timestamp', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+DELETE FROM "organization"."tables" WHERE name = 'photos_view';
+
+DELETE FROM "organization"."columns" WHERE table_name = 'photos_view';
+
+INSERT INTO "organization"."tables" (name, alias, type, parent, form_id) SELECT 'photos_view', 'photos', 'system', NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'photos_view', 'photos', 'photo_id', '1', 'string', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'photos_view', 'photos', 'record_id', '2', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'photos_view', 'photos', 'form_id', '3', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'photos_view', 'photos', 'exif', '4', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'photos_view', 'photos', 'file_size', '5', 'integer', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'photos_view', 'photos', 'created_by_id', '6', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'photos_view', 'photos', 'updated_by_id', '7', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'photos_view', 'photos', 'created_at', '8', 'timestamp', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'photos_view', 'photos', 'updated_at', '9', 'timestamp', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'photos_view', 'photos', 'file', '10', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'photos_view', 'photos', 'content_type', '11', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'photos_view', 'photos', 'uploaded_at', '12', 'timestamp', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'photos_view', 'photos', 'stored_at', '13', 'timestamp', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'photos_view', 'photos', 'processed_at', '14', 'timestamp', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'photos_view', 'photos', 'geometry', '15', 'geometry', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'photos_view', 'photos', 'latitude', '16', 'double', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'photos_view', 'photos', 'longitude', '17', 'double', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'photos_view', 'photos', 'altitude', '18', 'double', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'photos_view', 'photos', 'accuracy', '19', 'double', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'photos_view', 'photos', 'direction', '20', 'double', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'photos_view', 'photos', 'width', '21', 'integer', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'photos_view', 'photos', 'height', '22', 'integer', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'photos_view', 'photos', 'make', '23', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'photos_view', 'photos', 'model', '24', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'photos_view', 'photos', 'software', '25', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+DELETE FROM "organization"."tables" WHERE name = 'projects_view';
+
+DELETE FROM "organization"."columns" WHERE table_name = 'projects_view';
+
+INSERT INTO "organization"."tables" (name, alias, type, parent, form_id) SELECT 'projects_view', 'projects', 'system', NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'projects_view', 'projects', 'project_id', '1', 'string', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'projects_view', 'projects', 'name', '2', 'string', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'projects_view', 'projects', 'description', '3', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'projects_view', 'projects', 'created_by_id', '4', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'projects_view', 'projects', 'created_at', '5', 'timestamp', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'projects_view', 'projects', 'updated_at', '6', 'timestamp', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+DELETE FROM "organization"."tables" WHERE name = 'roles_view';
+
+DELETE FROM "organization"."columns" WHERE table_name = 'roles_view';
+
+INSERT INTO "organization"."tables" (name, alias, type, parent, form_id) SELECT 'roles_view', 'roles', 'system', NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'roles_view', 'roles', 'role_id', '1', 'string', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'roles_view', 'roles', 'name', '2', 'string', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'roles_view', 'roles', 'description', '3', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'roles_view', 'roles', 'created_by_id', '4', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'roles_view', 'roles', 'updated_by_id', '5', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'roles_view', 'roles', 'created_at', '6', 'timestamp', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'roles_view', 'roles', 'updated_at', '7', 'timestamp', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'roles_view', 'roles', 'is_system', '8', 'boolean', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'roles_view', 'roles', 'is_default', '9', 'boolean', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'roles_view', 'roles', 'can_manage_subscription', '10', 'boolean', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'roles_view', 'roles', 'can_update_organization', '11', 'boolean', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'roles_view', 'roles', 'can_manage_members', '12', 'boolean', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'roles_view', 'roles', 'can_manage_roles', '13', 'boolean', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'roles_view', 'roles', 'can_manage_apps', '14', 'boolean', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'roles_view', 'roles', 'can_manage_projects', '15', 'boolean', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'roles_view', 'roles', 'can_manage_choice_lists', '16', 'boolean', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'roles_view', 'roles', 'can_manage_classification_sets', '17', 'boolean', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'roles_view', 'roles', 'can_create_records', '18', 'boolean', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'roles_view', 'roles', 'can_update_records', '19', 'boolean', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'roles_view', 'roles', 'can_delete_records', '20', 'boolean', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'roles_view', 'roles', 'can_change_status', '21', 'boolean', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'roles_view', 'roles', 'can_change_project', '22', 'boolean', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'roles_view', 'roles', 'can_assign_records', '23', 'boolean', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'roles_view', 'roles', 'can_import_records', '24', 'boolean', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'roles_view', 'roles', 'can_export_records', '25', 'boolean', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'roles_view', 'roles', 'can_run_reports', '26', 'boolean', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+DELETE FROM "organization"."tables" WHERE name = 'signatures_view';
+
+DELETE FROM "organization"."columns" WHERE table_name = 'signatures_view';
+
+INSERT INTO "organization"."tables" (name, alias, type, parent, form_id) SELECT 'signatures_view', 'signatures', 'system', NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'signatures_view', 'signatures', 'signature_id', '1', 'string', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'signatures_view', 'signatures', 'record_id', '2', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'signatures_view', 'signatures', 'form_id', '3', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'signatures_view', 'signatures', 'file_size', '4', 'integer', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'signatures_view', 'signatures', 'created_by_id', '5', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'signatures_view', 'signatures', 'updated_by_id', '6', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'signatures_view', 'signatures', 'created_at', '7', 'timestamp', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'signatures_view', 'signatures', 'updated_at', '8', 'timestamp', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'signatures_view', 'signatures', 'file', '9', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'signatures_view', 'signatures', 'content_type', '10', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'signatures_view', 'signatures', 'uploaded_at', '11', 'timestamp', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'signatures_view', 'signatures', 'stored_at', '12', 'timestamp', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'signatures_view', 'signatures', 'processed_at', '13', 'timestamp', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+DELETE FROM "organization"."tables" WHERE name = 'videos_view';
+
+DELETE FROM "organization"."columns" WHERE table_name = 'videos_view';
+
+INSERT INTO "organization"."tables" (name, alias, type, parent, form_id) SELECT 'videos_view', 'videos', 'system', NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'videos_view', 'videos', 'video_id', '1', 'string', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'videos_view', 'videos', 'record_id', '2', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'videos_view', 'videos', 'form_id', '3', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'videos_view', 'videos', 'metadata', '4', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'videos_view', 'videos', 'file_size', '5', 'integer', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'videos_view', 'videos', 'created_by_id', '6', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'videos_view', 'videos', 'updated_by_id', '7', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'videos_view', 'videos', 'created_at', '8', 'timestamp', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'videos_view', 'videos', 'updated_at', '9', 'timestamp', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'videos_view', 'videos', 'file', '10', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'videos_view', 'videos', 'content_type', '11', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'videos_view', 'videos', 'uploaded_at', '12', 'timestamp', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'videos_view', 'videos', 'stored_at', '13', 'timestamp', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'videos_view', 'videos', 'processed_at', '14', 'timestamp', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'videos_view', 'videos', 'has_track', '15', 'boolean', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'videos_view', 'videos', 'track', '16', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'videos_view', 'videos', 'geometry', '17', 'geometry', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'videos_view', 'videos', 'width', '18', 'integer', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'videos_view', 'videos', 'height', '19', 'integer', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'videos_view', 'videos', 'duration', '20', 'double', '1', NULL, NULL, NULL, NULL, NULL, NULL;

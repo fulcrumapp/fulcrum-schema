@@ -18,10 +18,10 @@ export default class Projects extends TableDefinition {
   }
 
   defineView() {
-    this.alias('row_resource_id', '_project_id');
+    this.alias('row_resource_id', 'project_id');
     this.alias('name', 'name');
     this.alias('description', 'description');
-    this.alias('created_by_resource_id', '_created_by_id');
+    this.alias('created_by_resource_id', 'created_by_id');
     this.alias('created_at', 'created_at');
     this.alias('updated_at', 'updated_at');
   }

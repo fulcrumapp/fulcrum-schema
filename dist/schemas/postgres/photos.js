@@ -66,13 +66,13 @@ var Photos = function (_TableDefinition) {
   }, {
     key: 'defineView',
     value: function defineView() {
-      this.alias('access_key', '_photo_id');
+      this.alias('access_key', 'photo_id');
       this.alias('exif', 'exif');
       this.alias('file_size', 'file_size');
-      this.alias('record_resource_id', '_record_id');
-      this.alias('form_resource_id', '_form_id');
-      this.alias('created_by_resource_id', '_created_by_id');
-      this.alias('updated_by_resource_id', '_updated_by_id');
+      this.alias('record_resource_id', 'record_id');
+      this.alias('form_resource_id', 'form_id');
+      this.alias('created_by_resource_id', 'created_by_id');
+      this.alias('updated_by_resource_id', 'updated_by_id');
       this.alias('created_at', 'created_at');
       this.alias('updated_at', 'updated_at');
       this.alias('file', 'file');

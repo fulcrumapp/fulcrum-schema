@@ -49,13 +49,13 @@ var Memberships = function (_TableDefinition) {
   }, {
     key: 'defineView',
     value: function defineView() {
-      this.alias('row_resource_id', '_membership_id');
-      this.alias('user_resource_id', '_user_id');
+      this.alias('row_resource_id', 'membership_id');
+      this.alias('user_resource_id', 'user_id');
       this.alias('first_name', 'first_name');
       this.alias('last_name', 'last_name');
       this.alias('name', 'name');
       this.alias('email', 'email');
-      this.alias('role_resource_id', '_role_id');
+      this.alias('role_resource_id', 'role_id');
       this.alias('role_name', 'role_name');
       this.alias('status', 'status');
       this.alias('created_at', 'created_at');

@@ -66,9 +66,14 @@ var Schema = function () {
     key: 'alias',
     value: function alias(part) {
       if (part) {
-        return this.form.name + '/' + part;
+        return this.escapeSlashes(this.form.name) + '/' + this.escapeSlashes(part);
       }
-      return this.form.name;
+      return this.escapeSlashes(this.form.name);
+    }
+  }, {
+    key: 'escapeSlashes',
+    value: function escapeSlashes(name) {
+      return name.replace(/\//g, '\\/');
     }
   }, {
     key: 'buildFormTable',
@@ -386,7 +391,17 @@ var Schema = function () {
 
         name = '_' + name;
       } else if (column.element) {
-        name = column.element.data_name + (column.suffix || '');
+        // if a data name starts with an underscore, add an additional underscore to prevent
+        // collisions with future system-defined columns. e.g. `_symbol` becomes `__symbol`
+        // because at some point we might add a system column named `symbol` which needs the
+        // `_symbol` name.
+        var prefix = '';
+
+        if (column.element.data_name[0] === '_') {
+          prefix = '_';
+        }
+
+        name = prefix + column.element.data_name + (column.suffix || '');
       }
 
       if (name) {
@@ -611,8 +626,8 @@ var Schema = function () {
       if (alias) {
         var view = new View(this.formTable.id + '_' + element.key + '_view', null, this.valuesTable, { type: 'media', clause: clause, alias: this.alias(element.data_name) });
 
-        view.addColumn({ column: { name: 'record_resource_id', type: 'string' }, alias: '_record_id' });
-        view.addColumn({ column: { name: 'parent_resource_id', type: 'string' }, alias: '_parent_id' });
+        view.addColumn({ column: { name: 'record_resource_id', type: 'string' }, alias: 'record_id' });
+        view.addColumn({ column: { name: 'parent_resource_id', type: 'string' }, alias: 'parent_id' });
         view.addColumn({ column: { name: 'text_value', type: 'string' }, alias: alias });
 
         this.views.push(view);
@@ -629,9 +644,9 @@ var Schema = function () {
 
       var view = new View(this.formTable.id + '_' + element.key + '_view', null, this.valuesTable, { type: 'link', clause: clause, alias: this.alias(element.data_name) });
 
-      view.addColumn({ column: { name: 'record_resource_id', type: 'string' }, alias: '_source_record_id' });
-      view.addColumn({ column: { name: 'parent_resource_id', type: 'string' }, alias: '_parent_id' });
-      view.addColumn({ column: { name: 'text_value', type: 'string' }, alias: '_linked_record_id' });
+      view.addColumn({ column: { name: 'record_resource_id', type: 'string' }, alias: 'source_record_id' });
+      view.addColumn({ column: { name: 'parent_resource_id', type: 'string' }, alias: 'parent_id' });
+      view.addColumn({ column: { name: 'text_value', type: 'string' }, alias: 'linked_record_id' });
 
       this.views.push(view);
     }

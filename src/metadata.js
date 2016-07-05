@@ -13,7 +13,7 @@ function pgvalue(value) {
 export default class Metadata {
   constructor(diff, options) {
     this.options = options || {};
-    this.includeColumns = options.columns;
+    this.includeColumns = this.options.includeColumns == null ? true : this.options.includeColumns;
   }
 
   build(generator, changes) {
@@ -43,15 +43,36 @@ export default class Metadata {
     const statements = [];
 
     const systemTablesName = Utils.tableName(this.options.schema, this.options.prefix, this.options.quote, 'tables');
+    // const systemTablesViewName = Utils.tableName(this.options.schema, this.options.prefix, this.options.quote, 'tables_view');
     const systemColumnsName = Utils.tableName(this.options.schema, this.options.prefix, this.options.quote, 'columns');
+    // const systemColumnsViewName = Utils.tableName(this.options.schema, this.options.prefix, this.options.quote, 'columns_view');
 
-    statements.push(format('CREATE TABLE IF NOT EXISTS %s (name text, type text, parent text, form_id text);',
-                           systemTablesName));
+    // statements.push(format('CREATE TABLE IF NOT EXISTS %s (name text, alias text, type text, parent text, form_id text);',
+    //                        systemTablesName));
 
-    if (this.includeColumns) {
-      statements.push(format('CREATE TABLE IF NOT EXISTS %s (table_name text, name text, ordinal bigint, type text, nullable boolean, form_id text);',
-                             systemColumnsName));
-    }
+    // statements.push(format('CREATE OR REPLACE VIEW %s AS SELECT alias AS name, type, parent, form_id FROM %s;',
+    //                        systemTablesViewName, systemTablesName));
+
+    // statements.push(format('CREATE INDEX idx_tables_name ON %s (name);',
+    //                        systemTablesName));
+
+    // statements.push(format('CREATE INDEX idx_tables_alias ON %s (alias);',
+    //                        systemTablesName));
+
+    // if (this.includeColumns) {
+    //   // field type
+    //   statements.push(format('CREATE TABLE IF NOT EXISTS %s (table_name text, table_alias text, name text, ordinal bigint, type text, nullable boolean, form_id text, field text, field_type text, data_name text, part text, data text);',
+    //                          systemColumnsName));
+
+    //   statements.push(format('CREATE OR REPLACE VIEW %s AS SELECT table_alias AS table_name, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data FROM %s;',
+    //                          systemColumnsViewName, systemColumnsName));
+
+    //   statements.push(format('CREATE INDEX idx_columns_table_name ON %s (table_name);',
+    //                          systemColumnsName));
+
+    //   statements.push(format('CREATE INDEX idx_columns_table_alias ON %s (table_alias);',
+    //                          systemColumnsName));
+    // }
 
     // drop old metadata
     for (const view of this.oldViews) {
@@ -68,6 +89,7 @@ export default class Metadata {
 
     // create new metadata
     for (const view of this.newViews) {
+      const viewName = view.name;
       const viewAlias = view.alias || view.table.alias;
       const viewType = view.type || view.table.type;
 
@@ -78,16 +100,19 @@ export default class Metadata {
 
       statements.push(format('DELETE FROM %s WHERE name = %s;',
                              systemTablesName,
-                             pgvalue(viewAlias)));
+                             pgvalue(viewName)));
 
       if (this.includeColumns) {
         statements.push(format('DELETE FROM %s WHERE table_name = %s;',
                                systemColumnsName,
-                               pgvalue(viewAlias)));
+                               pgvalue(viewName)));
       }
 
-      statements.push(format('INSERT INTO %s (name, type, parent, form_id) SELECT %s, %s, %s, %s;',
+      // console.log(view);
+
+      statements.push(format('INSERT INTO %s (name, alias, type, parent, form_id) SELECT %s, %s, %s, %s, %s;',
                              systemTablesName,
+                             pgvalue(viewName),
                              pgvalue(viewAlias),
                              pgvalue(viewType),
                              pgvalue(view.table.parent ? view.table.parent.alias : null),
@@ -97,19 +122,42 @@ export default class Metadata {
         for (let i = 0; i < view.columns.length; ++i) {
           const column = view.columns[i];
 
-          statements.push(format('DELETE FROM %s WHERE table_name = %s AND name = %s;',
-                                 systemColumnsName,
-                                 pgvalue(viewAlias),
-                                 pgvalue(column.alias)));
+          // statements.push(format('DELETE FROM %s WHERE table_name = %s AND name = %s;',
+          //                        systemColumnsName,
+          //                        pgvalue(viewName),
+          //                        pgvalue(column.alias)));
 
-          statements.push(format('INSERT INTO %s (table_name, name, ordinal, type, nullable, form_id) SELECT %s, %s, %s, %s, %s, %s;',
+          let field = null;
+          let fieldType = null;
+          let dataName = null;
+          let part = null;
+          let data = null;
+
+          const element = column.column.element;
+
+          if (element) {
+            field = element.key;
+            fieldType = element.type;
+            dataName = element.data_name;
+            part = column.column.suffix;
+            data = JSON.stringify(element);
+          }
+
+          statements.push(format('INSERT INTO %s (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)\n' +
+                                 'SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s;',
                                  systemColumnsName,
+                                 pgvalue(viewName),
                                  pgvalue(viewAlias),
                                  pgvalue(column.alias),
                                  pgvalue(i + 1),
                                  pgvalue(column.column.type),
                                  pgvalue(column.column.allowNull ? 1 : 0),
-                                 pgvalue(view.table.form_id)));
+                                 pgvalue(view.table.form_id),
+                                 pgvalue(field),
+                                 pgvalue(fieldType),
+                                 pgvalue(dataName),
+                                 pgvalue(part),
+                                 pgvalue(data)));
         }
       }
     }
