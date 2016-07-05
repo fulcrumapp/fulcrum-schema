@@ -672,7 +672,7 @@ CREATE INDEX idx_tables_alias ON "organization"."tables" (alias);
 
 CREATE TABLE IF NOT EXISTS "organization"."columns" (table_name text, table_alias text, name text, ordinal bigint, type text, nullable boolean, form_id text, field text, field_type text, data_name text, part text, data text);
 
-CREATE OR REPLACE VIEW "organization"."columns_view" AS SELECT table_alias AS table_name, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data FROM "organization"."columns";
+CREATE OR REPLACE VIEW "organization"."columns_view" AS SELECT table_alias AS table_name, name, ordinal, type, nullable, form_id, field, field_type, data_name, part FROM "organization"."columns";
 
 CREATE INDEX idx_columns_table_name ON "organization"."columns" (table_name);
 
