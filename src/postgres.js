@@ -17,7 +17,7 @@ instance.schema = null;
 instance.tablePrefix = null;
 
 function generateSQL(differ, includeMetadata) {
-  const meta = new Metadata(differ, {quote: '"', schema: instance.schema, columns: false});
+  const meta = new Metadata(differ, {quote: '"', schema: instance.schema, columns: true});
 
   const gen = new Postgres(differ, {afterTransform: includeMetadata ? meta.build.bind(meta) : null});
 

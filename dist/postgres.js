@@ -40,7 +40,7 @@ instance.schema = null;
 instance.tablePrefix = null;
 
 function generateSQL(differ, includeMetadata) {
-  var meta = new _metadata2.default(differ, { quote: '"', schema: instance.schema, columns: false });
+  var meta = new _metadata2.default(differ, { quote: '"', schema: instance.schema, columns: true });
 
   var gen = new Postgres(differ, { afterTransform: includeMetadata ? meta.build.bind(meta) : null });
 
