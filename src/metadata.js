@@ -108,8 +108,6 @@ export default class Metadata {
                                pgvalue(viewName)));
       }
 
-      // console.log(view);
-
       statements.push(format('INSERT INTO %s (name, alias, type, parent, form_id) SELECT %s, %s, %s, %s, %s;',
                              systemTablesName,
                              pgvalue(viewName),
