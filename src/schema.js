@@ -48,11 +48,11 @@ export default class Schema {
     // collisions with future system-defined columns. e.g. `_symbol` becomes `__symbol`
     // because at some point we might add a system column named `symbol` which needs the
     // `_symbol` name.
-    if (dataName[0] === '_') {
+    if (dataName && dataName[0] === '_') {
       return '_' + dataName;
     }
 
-    return dataName;
+    return dataName || 'no_data_name';
   }
 
   escapeSlashes(name) {
