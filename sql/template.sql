@@ -662,9 +662,9 @@ CREATE INDEX idx_videos_geometry ON organization.videos USING gist (geometry);
 
 CREATE INDEX idx_videos_updated_at ON organization.videos USING btree (updated_at);
 
-CREATE TABLE IF NOT EXISTS "organization"."tables" (name text, alias text, type text, parent text, form_id text);
+CREATE TABLE IF NOT EXISTS "organization"."tables" (name text, alias text, type text, parent text, form_id text, field text, field_type text, data_name text);
 
-CREATE OR REPLACE VIEW "organization"."tables_view" AS SELECT alias AS name, type, parent, form_id FROM "organization"."tables";
+CREATE OR REPLACE VIEW "organization"."tables_view" AS SELECT alias AS name, type, parent, form_id, field, field_type, data_name FROM "organization"."tables";
 
 CREATE INDEX idx_tables_name ON "organization"."tables" (name);
 
@@ -682,7 +682,7 @@ DELETE FROM "organization"."tables" WHERE name = 'audio_view';
 
 DELETE FROM "organization"."columns" WHERE table_name = 'audio_view';
 
-INSERT INTO "organization"."tables" (name, alias, type, parent, form_id) SELECT 'audio_view', 'audio', 'system', NULL, NULL;
+INSERT INTO "organization"."tables" (name, alias, type, parent, form_id, field, field_type, data_name) SELECT 'audio_view', 'audio', 'system', NULL, NULL, NULL, NULL, NULL;
 
 INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'audio_view', 'audio', 'audio_id', '1', 'string', '0', NULL, NULL, NULL, NULL, NULL, NULL;
@@ -742,7 +742,7 @@ DELETE FROM "organization"."tables" WHERE name = 'changesets_view';
 
 DELETE FROM "organization"."columns" WHERE table_name = 'changesets_view';
 
-INSERT INTO "organization"."tables" (name, alias, type, parent, form_id) SELECT 'changesets_view', 'changesets', 'system', NULL, NULL;
+INSERT INTO "organization"."tables" (name, alias, type, parent, form_id, field, field_type, data_name) SELECT 'changesets_view', 'changesets', 'system', NULL, NULL, NULL, NULL, NULL;
 
 INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'changesets_view', 'changesets', 'changeset_id', '1', 'string', '0', NULL, NULL, NULL, NULL, NULL, NULL;
@@ -802,7 +802,7 @@ DELETE FROM "organization"."tables" WHERE name = 'choice_lists_view';
 
 DELETE FROM "organization"."columns" WHERE table_name = 'choice_lists_view';
 
-INSERT INTO "organization"."tables" (name, alias, type, parent, form_id) SELECT 'choice_lists_view', 'choice_lists', 'system', NULL, NULL;
+INSERT INTO "organization"."tables" (name, alias, type, parent, form_id, field, field_type, data_name) SELECT 'choice_lists_view', 'choice_lists', 'system', NULL, NULL, NULL, NULL, NULL;
 
 INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'choice_lists_view', 'choice_lists', 'choice_list_id', '1', 'string', '0', NULL, NULL, NULL, NULL, NULL, NULL;
@@ -835,7 +835,7 @@ DELETE FROM "organization"."tables" WHERE name = 'classification_sets_view';
 
 DELETE FROM "organization"."columns" WHERE table_name = 'classification_sets_view';
 
-INSERT INTO "organization"."tables" (name, alias, type, parent, form_id) SELECT 'classification_sets_view', 'classification_sets', 'system', NULL, NULL;
+INSERT INTO "organization"."tables" (name, alias, type, parent, form_id, field, field_type, data_name) SELECT 'classification_sets_view', 'classification_sets', 'system', NULL, NULL, NULL, NULL, NULL;
 
 INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'classification_sets_view', 'classification_sets', 'classification_set_id', '1', 'string', '0', NULL, NULL, NULL, NULL, NULL, NULL;
@@ -868,7 +868,7 @@ DELETE FROM "organization"."tables" WHERE name = 'forms_view';
 
 DELETE FROM "organization"."columns" WHERE table_name = 'forms_view';
 
-INSERT INTO "organization"."tables" (name, alias, type, parent, form_id) SELECT 'forms_view', 'forms', 'system', NULL, NULL;
+INSERT INTO "organization"."tables" (name, alias, type, parent, form_id, field, field_type, data_name) SELECT 'forms_view', 'forms', 'system', NULL, NULL, NULL, NULL, NULL;
 
 INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'forms_view', 'forms', 'form_id', '1', 'string', '0', NULL, NULL, NULL, NULL, NULL, NULL;
@@ -937,7 +937,7 @@ DELETE FROM "organization"."tables" WHERE name = 'memberships_view';
 
 DELETE FROM "organization"."columns" WHERE table_name = 'memberships_view';
 
-INSERT INTO "organization"."tables" (name, alias, type, parent, form_id) SELECT 'memberships_view', 'memberships', 'system', NULL, NULL;
+INSERT INTO "organization"."tables" (name, alias, type, parent, form_id, field, field_type, data_name) SELECT 'memberships_view', 'memberships', 'system', NULL, NULL, NULL, NULL, NULL;
 
 INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'memberships_view', 'memberships', 'membership_id', '1', 'string', '0', NULL, NULL, NULL, NULL, NULL, NULL;
@@ -976,7 +976,7 @@ DELETE FROM "organization"."tables" WHERE name = 'photos_view';
 
 DELETE FROM "organization"."columns" WHERE table_name = 'photos_view';
 
-INSERT INTO "organization"."tables" (name, alias, type, parent, form_id) SELECT 'photos_view', 'photos', 'system', NULL, NULL;
+INSERT INTO "organization"."tables" (name, alias, type, parent, form_id, field, field_type, data_name) SELECT 'photos_view', 'photos', 'system', NULL, NULL, NULL, NULL, NULL;
 
 INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'photos_view', 'photos', 'photo_id', '1', 'string', '0', NULL, NULL, NULL, NULL, NULL, NULL;
@@ -1057,7 +1057,7 @@ DELETE FROM "organization"."tables" WHERE name = 'projects_view';
 
 DELETE FROM "organization"."columns" WHERE table_name = 'projects_view';
 
-INSERT INTO "organization"."tables" (name, alias, type, parent, form_id) SELECT 'projects_view', 'projects', 'system', NULL, NULL;
+INSERT INTO "organization"."tables" (name, alias, type, parent, form_id, field, field_type, data_name) SELECT 'projects_view', 'projects', 'system', NULL, NULL, NULL, NULL, NULL;
 
 INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'projects_view', 'projects', 'project_id', '1', 'string', '0', NULL, NULL, NULL, NULL, NULL, NULL;
@@ -1081,7 +1081,7 @@ DELETE FROM "organization"."tables" WHERE name = 'roles_view';
 
 DELETE FROM "organization"."columns" WHERE table_name = 'roles_view';
 
-INSERT INTO "organization"."tables" (name, alias, type, parent, form_id) SELECT 'roles_view', 'roles', 'system', NULL, NULL;
+INSERT INTO "organization"."tables" (name, alias, type, parent, form_id, field, field_type, data_name) SELECT 'roles_view', 'roles', 'system', NULL, NULL, NULL, NULL, NULL;
 
 INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'roles_view', 'roles', 'role_id', '1', 'string', '0', NULL, NULL, NULL, NULL, NULL, NULL;
@@ -1165,7 +1165,7 @@ DELETE FROM "organization"."tables" WHERE name = 'signatures_view';
 
 DELETE FROM "organization"."columns" WHERE table_name = 'signatures_view';
 
-INSERT INTO "organization"."tables" (name, alias, type, parent, form_id) SELECT 'signatures_view', 'signatures', 'system', NULL, NULL;
+INSERT INTO "organization"."tables" (name, alias, type, parent, form_id, field, field_type, data_name) SELECT 'signatures_view', 'signatures', 'system', NULL, NULL, NULL, NULL, NULL;
 
 INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'signatures_view', 'signatures', 'signature_id', '1', 'string', '0', NULL, NULL, NULL, NULL, NULL, NULL;
@@ -1210,7 +1210,7 @@ DELETE FROM "organization"."tables" WHERE name = 'videos_view';
 
 DELETE FROM "organization"."columns" WHERE table_name = 'videos_view';
 
-INSERT INTO "organization"."tables" (name, alias, type, parent, form_id) SELECT 'videos_view', 'videos', 'system', NULL, NULL;
+INSERT INTO "organization"."tables" (name, alias, type, parent, form_id, field, field_type, data_name) SELECT 'videos_view', 'videos', 'system', NULL, NULL, NULL, NULL, NULL;
 
 INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'videos_view', 'videos', 'video_id', '1', 'string', '0', NULL, NULL, NULL, NULL, NULL, NULL;

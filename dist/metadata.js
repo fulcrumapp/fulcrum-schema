@@ -71,10 +71,10 @@ var Metadata = function () {
       var systemColumnsName = _utils2.default.tableName(this.options.schema, this.options.prefix, this.options.quote, 'columns');
       // const systemColumnsViewName = Utils.tableName(this.options.schema, this.options.prefix, this.options.quote, 'columns_view');
 
-      // statements.push(format('CREATE TABLE IF NOT EXISTS %s (name text, alias text, type text, parent text, form_id text);',
+      // statements.push(format('CREATE TABLE IF NOT EXISTS %s (name text, alias text, type text, parent text, form_id text, field text, field_type text, data_name text);',
       //                        systemTablesName));
 
-      // statements.push(format('CREATE OR REPLACE VIEW %s AS SELECT alias AS name, type, parent, form_id FROM %s;',
+      // statements.push(format('CREATE OR REPLACE VIEW %s AS SELECT alias AS name, type, parent, form_id, field, field_type, data_name FROM %s;',
       //                        systemTablesViewName, systemTablesName));
 
       // statements.push(format('CREATE INDEX idx_tables_name ON %s (name);',
@@ -153,9 +153,9 @@ var Metadata = function () {
             statements.push((0, _util.format)('DELETE FROM %s WHERE table_name = %s;', systemColumnsName, pgvalue(viewName)));
           }
 
-          // console.log(view);
+          var element = _view.table.element;
 
-          statements.push((0, _util.format)('INSERT INTO %s (name, alias, type, parent, form_id) SELECT %s, %s, %s, %s, %s;', systemTablesName, pgvalue(viewName), pgvalue(viewAlias), pgvalue(viewType), pgvalue(_view.table.parent ? _view.table.parent.alias : null), pgvalue(_view.table.form_id)));
+          statements.push((0, _util.format)('INSERT INTO %s (name, alias, type, parent, form_id, field, field_type, data_name) SELECT %s, %s, %s, %s, %s, %s, %s, %s;', systemTablesName, pgvalue(viewName), pgvalue(viewAlias), pgvalue(viewType), pgvalue(_view.table.parent ? _view.table.parent.alias : null), pgvalue(_view.table.form_id), pgvalue(element ? element.key : null), pgvalue(element ? element.type : null), pgvalue(element ? element.data_name : null)));
 
           if (this.includeColumns) {
             for (var i = 0; i < _view.columns.length; ++i) {
@@ -172,7 +172,7 @@ var Metadata = function () {
               var part = null;
               var data = null;
 
-              var element = column.column.element;
+              element = column.column.element;
 
               if (element) {
                 field = element.key;

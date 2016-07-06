@@ -47,10 +47,10 @@ export default class Metadata {
     const systemColumnsName = Utils.tableName(this.options.schema, this.options.prefix, this.options.quote, 'columns');
     // const systemColumnsViewName = Utils.tableName(this.options.schema, this.options.prefix, this.options.quote, 'columns_view');
 
-    // statements.push(format('CREATE TABLE IF NOT EXISTS %s (name text, alias text, type text, parent text, form_id text);',
+    // statements.push(format('CREATE TABLE IF NOT EXISTS %s (name text, alias text, type text, parent text, form_id text, field text, field_type text, data_name text);',
     //                        systemTablesName));
 
-    // statements.push(format('CREATE OR REPLACE VIEW %s AS SELECT alias AS name, type, parent, form_id FROM %s;',
+    // statements.push(format('CREATE OR REPLACE VIEW %s AS SELECT alias AS name, type, parent, form_id, field, field_type, data_name FROM %s;',
     //                        systemTablesViewName, systemTablesName));
 
     // statements.push(format('CREATE INDEX idx_tables_name ON %s (name);',
@@ -108,13 +108,18 @@ export default class Metadata {
                                pgvalue(viewName)));
       }
 
-      statements.push(format('INSERT INTO %s (name, alias, type, parent, form_id) SELECT %s, %s, %s, %s, %s;',
+      let element = view.table.element;
+
+      statements.push(format('INSERT INTO %s (name, alias, type, parent, form_id, field, field_type, data_name) SELECT %s, %s, %s, %s, %s, %s, %s, %s;',
                              systemTablesName,
                              pgvalue(viewName),
                              pgvalue(viewAlias),
                              pgvalue(viewType),
                              pgvalue(view.table.parent ? view.table.parent.alias : null),
-                             pgvalue(view.table.form_id)));
+                             pgvalue(view.table.form_id),
+                             pgvalue(element ? element.key : null),
+                             pgvalue(element ? element.type : null),
+                             pgvalue(element ? element.data_name : null)));
 
       if (this.includeColumns) {
         for (let i = 0; i < view.columns.length; ++i) {
@@ -131,7 +136,7 @@ export default class Metadata {
           let part = null;
           const data = null;
 
-          const element = column.column.element;
+          element = column.column.element;
 
           if (element) {
             field = element.key;
