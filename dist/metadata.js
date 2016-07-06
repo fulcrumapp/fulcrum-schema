@@ -153,7 +153,7 @@ var Metadata = function () {
             statements.push((0, _util.format)('DELETE FROM %s WHERE table_name = %s;', systemColumnsName, pgvalue(viewName)));
           }
 
-          var element = _view.table.element;
+          var element = _view.element || _view.table.element;
 
           statements.push((0, _util.format)('INSERT INTO %s (name, alias, type, parent, form_id, field, field_type, data_name) SELECT %s, %s, %s, %s, %s, %s, %s, %s;', systemTablesName, pgvalue(viewName), pgvalue(viewAlias), pgvalue(viewType), pgvalue(_view.table.parent ? _view.table.parent.alias : null), pgvalue(_view.table.form_id), pgvalue(element ? element.key : null), pgvalue(element ? element.type : null), pgvalue(element ? element.data_name : null)));
 

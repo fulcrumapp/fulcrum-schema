@@ -108,7 +108,7 @@ export default class Metadata {
                                pgvalue(viewName)));
       }
 
-      let element = view.table.element;
+      let element = view.element || view.table.element;
 
       statements.push(format('INSERT INTO %s (name, alias, type, parent, form_id, field, field_type, data_name) SELECT %s, %s, %s, %s, %s, %s, %s, %s;',
                              systemTablesName,
