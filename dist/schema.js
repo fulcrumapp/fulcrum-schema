@@ -427,7 +427,7 @@ var Schema = function () {
 
       var count = 1;
 
-      var rawName = name.substring(0, 63);
+      var rawName = name.substring(0, 63).toLowerCase();
       var newName = rawName;
 
       while (views[view.name][newName]) {

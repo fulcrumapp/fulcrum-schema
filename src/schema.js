@@ -222,7 +222,7 @@ export default class Schema {
 
     let count = 1;
 
-    const rawName = name.substring(0, 63);
+    const rawName = name.substring(0, 63).toLowerCase();
     let newName = rawName;
 
     while (views[view.name][newName]) {
