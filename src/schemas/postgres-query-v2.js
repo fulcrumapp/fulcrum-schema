@@ -1749,7 +1749,12 @@ Schema.organizationIndexes.signatures = [
 Schema.systemFormTableIndexes = [
   { columns: [ 'record_resource_id' ], method: 'btree', unique: true },
   { columns: [ 'geometry' ], method: 'gist' },
-  { columns: [ 'record_index' ], method: 'gin' }
+  { columns: [ 'record_index' ], method: 'gin' },
+  { columns: [ 'status' ], method: 'btree' },
+  { columns: [ 'server_updated_at' ], method: 'btree' },
+  { columns: [ 'project_resource_id' ], method: 'btree' },
+  { columns: [ 'assigned_to_resource_id' ], method: 'btree' },
+  { columns: [ 'changeset_resource_id' ], method: 'btree' }
 ];
 
 Schema.systemRepeatableTableIndexes = [
@@ -1757,7 +1762,12 @@ Schema.systemRepeatableTableIndexes = [
   { columns: [ 'record_resource_id' ], method: 'btree' },
   { columns: [ 'parent_resource_id' ], method: 'btree' },
   { columns: [ 'geometry' ], method: 'gist' },
-  { columns: [ 'record_index' ], method: 'gin' }
+  { columns: [ 'record_index' ], method: 'gin' },
+  { columns: [ 'record_status' ], method: 'btree' },
+  { columns: [ 'updated_at' ], method: 'btree' },
+  { columns: [ 'record_project_resource_id' ], method: 'btree' },
+  { columns: [ 'record_assigned_to_resource_id' ], method: 'btree' },
+  { columns: [ 'changeset_resource_id' ], method: 'btree' }
 ];
 
 Schema.systemValuesTableIndexes = [
