@@ -919,6 +919,11 @@ Schema.systemRolesTable = [{
   type: 'boolean',
   allowNull: false,
   defaultValue: false
+}, {
+  name: 'can_manage_authorizations',
+  type: 'boolean',
+  allowNull: false,
+  defaultValue: false
 }];
 
 Schema.systemMembershipsTable = [{
@@ -1537,7 +1542,8 @@ Schema.organizationViews.roles = {
   can_assign_records: 'can_assign_records',
   can_import_records: 'can_import_records',
   can_export_records: 'can_export_records',
-  can_run_reports: 'can_run_reports'
+  can_run_reports: 'can_run_reports',
+  can_manage_authorizations: 'can_manage_authorizations'
 };
 
 Schema.organizationIndexes.roles = [{ columns: ['row_resource_id'], unique: true }, { columns: ['row_id'], unique: true }, { columns: ['name'] }, { columns: ['updated_at'] }];

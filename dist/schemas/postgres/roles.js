@@ -60,6 +60,7 @@ var Roles = function (_TableDefinition) {
       this.boolean('can_import_records', { "allowNull": false, "defaultValue": false });
       this.boolean('can_export_records', { "allowNull": false, "defaultValue": false });
       this.boolean('can_run_reports', { "allowNull": false, "defaultValue": false });
+      this.boolean('can_manage_authorizations', { "allowNull": false, "defaultValue": false });
     }
   }, {
     key: 'defineView',
@@ -90,6 +91,7 @@ var Roles = function (_TableDefinition) {
       this.alias('can_import_records', 'can_import_records');
       this.alias('can_export_records', 'can_export_records');
       this.alias('can_run_reports', 'can_run_reports');
+      this.alias('can_manage_authorizations', 'can_manage_authorizations');
     }
   }, {
     key: 'defineIndexes',
