@@ -36,6 +36,7 @@ export default class Roles extends TableDefinition {
     this.boolean('can_import_records', {"allowNull":false,"defaultValue":false});
     this.boolean('can_export_records', {"allowNull":false,"defaultValue":false});
     this.boolean('can_run_reports', {"allowNull":false,"defaultValue":false});
+    this.boolean('can_manage_authorizations', {"allowNull":false,"defaultValue":false});
   }
 
   defineView() {
@@ -65,6 +66,7 @@ export default class Roles extends TableDefinition {
     this.alias('can_import_records', 'can_import_records');
     this.alias('can_export_records', 'can_export_records');
     this.alias('can_run_reports', 'can_run_reports');
+    this.alias('can_manage_authorizations', 'can_manage_authorizations');
   }
 
   defineIndexes() {

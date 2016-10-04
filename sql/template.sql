@@ -233,6 +233,7 @@ CREATE TABLE IF NOT EXISTS organization.roles (
   can_import_records boolean NOT NULL DEFAULT false,
   can_export_records boolean NOT NULL DEFAULT false,
   can_run_reports boolean NOT NULL DEFAULT false,
+  can_manage_authorizations boolean NOT NULL DEFAULT false,
   CONSTRAINT roles_pkey PRIMARY KEY (id)
 );
 
@@ -488,7 +489,8 @@ SELECT
   can_assign_records AS can_assign_records,
   can_import_records AS can_import_records,
   can_export_records AS can_export_records,
-  can_run_reports AS can_run_reports
+  can_run_reports AS can_run_reports,
+  can_manage_authorizations AS can_manage_authorizations
 FROM organization.roles;
 
 DROP VIEW IF EXISTS organization.signatures_view;
@@ -1160,6 +1162,9 @@ SELECT 'roles_view', 'roles', 'can_export_records', '25', 'boolean', '0', NULL, 
 
 INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'roles_view', 'roles', 'can_run_reports', '26', 'boolean', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'roles_view', 'roles', 'can_manage_authorizations', '27', 'boolean', '0', NULL, NULL, NULL, NULL, NULL, NULL;
 
 DELETE FROM "organization"."tables" WHERE name = 'signatures_view';
 

@@ -926,6 +926,11 @@ Schema.systemRolesTable = [
     type: 'boolean',
     allowNull: false,
     defaultValue: false
+  }, {
+    name: 'can_manage_authorizations',
+    type: 'boolean',
+    allowNull: false,
+    defaultValue: false
   }
 ];
 
@@ -1582,7 +1587,8 @@ Schema.organizationViews.roles = {
   can_assign_records: 'can_assign_records',
   can_import_records: 'can_import_records',
   can_export_records: 'can_export_records',
-  can_run_reports: 'can_run_reports'
+  can_run_reports: 'can_run_reports',
+  can_manage_authorizations: 'can_manage_authorizations'
 };
 
 Schema.organizationIndexes.roles = [
