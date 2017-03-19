@@ -78,12 +78,12 @@ export default class Metadata {
     for (const view of this.oldViews) {
       statements.push(format('DELETE FROM %s WHERE name = %s;',
                              systemTablesName,
-                             pgvalue(view.table.alias)));
+                             pgvalue(view.name)));
 
       if (this.includeColumns) {
         statements.push(format('DELETE FROM %s WHERE table_name = %s;',
                                systemColumnsName,
-                               pgvalue(view.table.alias)));
+                               pgvalue(view.name)));
       }
     }
 

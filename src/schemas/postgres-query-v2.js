@@ -1753,6 +1753,7 @@ Schema.organizationIndexes.signatures = [
 ];
 
 Schema.systemFormTableIndexes = [
+  // { columns: [ 'record_id' ], method: 'btree', unique: true },
   { columns: [ 'record_resource_id' ], method: 'btree', unique: true },
   { columns: [ 'geometry' ], method: 'gist' },
   { columns: [ 'record_index' ], method: 'gin' },
@@ -1765,6 +1766,7 @@ Schema.systemFormTableIndexes = [
 
 Schema.systemRepeatableTableIndexes = [
   { columns: [ 'resource_id' ], method: 'btree', unique: true },
+  // { columns: [ 'record_id' ], method: 'btree' },
   { columns: [ 'record_resource_id' ], method: 'btree' },
   { columns: [ 'parent_resource_id' ], method: 'btree' },
   { columns: [ 'geometry' ], method: 'gist' },
@@ -1777,6 +1779,7 @@ Schema.systemRepeatableTableIndexes = [
 ];
 
 Schema.systemValuesTableIndexes = [
+  // { columns: [ 'record_id' ], method: 'btree' },
   { columns: [ 'record_resource_id' ], method: 'btree' },
   { columns: [ 'parent_resource_id' ], method: 'btree' },
   { columns: [ 'text_value' ], method: 'btree' },
