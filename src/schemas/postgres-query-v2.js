@@ -157,17 +157,21 @@ Schema.systemValuesTableColumns = [
     allowNull: false
   }, {
     name: 'record_resource_id',
-    type: 'string'
+    type: 'string',
+    length: 100
   }, {
     name: 'parent_resource_id',
-    type: 'string'
+    type: 'string',
+    length: 100
   }, {
     name: 'key',
     type: 'string',
-    allowNull: false
+    allowNull: false,
+    length: 100
   }, {
     name: 'text_value',
-    type: 'string'
+    type: 'string',
+    length: 500
   }, {
     name: 'number_value',
     type: 'double'
