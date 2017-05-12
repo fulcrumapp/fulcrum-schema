@@ -409,6 +409,10 @@ export default class Schema {
 
     const clause = format('WHERE key = \'%s\'', value);
 
+    const filter = {
+      key: value
+    };
+
     const alias = {
       PhotoField: '_photo_id',
       VideoField: '_video_id',
@@ -417,11 +421,11 @@ export default class Schema {
 
     if (alias) {
       const view = new View(this.formTable.id + '_' + element.key + '_view',
-                            null, this.valuesTable, {type: 'media', element: element, clause: clause, alias: this.alias(element.data_name)});
+                            null, this.valuesTable, {type: 'media', element: element, clause: clause, filter, alias: this.alias(element.data_name)});
 
-      view.addColumn({column: {name: 'record_resource_id', type: 'string'}, alias: 'record_id'});
-      view.addColumn({column: {name: 'parent_resource_id', type: 'string'}, alias: 'parent_id'});
-      view.addColumn({column: {name: 'text_value', type: 'string'}, alias: alias});
+      view.addColumn({column: {name: 'record_resource_id', type: 'string', length: 100}, alias: 'record_id'});
+      view.addColumn({column: {name: 'parent_resource_id', type: 'string', length: 100}, alias: 'parent_id'});
+      view.addColumn({column: {name: 'text_value', type: 'string', length: 500}, alias: alias});
 
       this.views.push(view);
     }
@@ -437,9 +441,9 @@ export default class Schema {
     const view = new View(this.formTable.id + '_' + element.key + '_view',
                           null, this.valuesTable, {type: 'link', element: element, clause: clause, alias: this.alias(element.data_name)});
 
-    view.addColumn({column: {name: 'record_resource_id', type: 'string'}, alias: 'source_record_id'});
-    view.addColumn({column: {name: 'parent_resource_id', type: 'string'}, alias: 'parent_id'});
-    view.addColumn({column: {name: 'text_value', type: 'string'}, alias: 'linked_record_id'});
+    view.addColumn({column: {name: 'record_resource_id', type: 'string', length: 100}, alias: 'source_record_id'});
+    view.addColumn({column: {name: 'parent_resource_id', type: 'string', length: 100}, alias: 'parent_id'});
+    view.addColumn({column: {name: 'text_value', type: 'string', length: 500}, alias: 'linked_record_id'});
 
     this.views.push(view);
   }
