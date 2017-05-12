@@ -1660,11 +1660,17 @@ Schema.organizationViews.signatures = {
 
 Schema.organizationIndexes.signatures = [{ columns: ['row_resource_id'], unique: true }, { columns: ['row_id'], unique: true }, { columns: ['access_key'] }, { columns: ['record_resource_id'] }, { columns: ['form_resource_id'] }, { columns: ['created_by_resource_id'] }, { columns: ['updated_at'] }];
 
-Schema.systemFormTableIndexes = [{ columns: ['record_resource_id'], method: 'btree', unique: true }, { columns: ['geometry'], method: 'gist' }, { columns: ['record_index'], method: 'gin' }, { columns: ['status'], method: 'btree' }, { columns: ['server_updated_at'], method: 'btree' }, { columns: ['project_resource_id'], method: 'btree' }, { columns: ['assigned_to_resource_id'], method: 'btree' }, { columns: ['changeset_resource_id'], method: 'btree' }];
+Schema.systemFormTableIndexes = [
+// { columns: [ 'record_id' ], method: 'btree', unique: true },
+{ columns: ['record_resource_id'], method: 'btree', unique: true }, { columns: ['geometry'], method: 'gist' }, { columns: ['record_index'], method: 'gin' }, { columns: ['status'], method: 'btree' }, { columns: ['server_updated_at'], method: 'btree' }, { columns: ['project_resource_id'], method: 'btree' }, { columns: ['assigned_to_resource_id'], method: 'btree' }, { columns: ['changeset_resource_id'], method: 'btree' }];
 
-Schema.systemRepeatableTableIndexes = [{ columns: ['resource_id'], method: 'btree', unique: true }, { columns: ['record_resource_id'], method: 'btree' }, { columns: ['parent_resource_id'], method: 'btree' }, { columns: ['geometry'], method: 'gist' }, { columns: ['record_index'], method: 'gin' }, { columns: ['record_status'], method: 'btree' }, { columns: ['updated_at'], method: 'btree' }, { columns: ['record_project_resource_id'], method: 'btree' }, { columns: ['record_assigned_to_resource_id'], method: 'btree' }, { columns: ['changeset_resource_id'], method: 'btree' }];
+Schema.systemRepeatableTableIndexes = [{ columns: ['resource_id'], method: 'btree', unique: true },
+// { columns: [ 'record_id' ], method: 'btree' },
+{ columns: ['record_resource_id'], method: 'btree' }, { columns: ['parent_resource_id'], method: 'btree' }, { columns: ['geometry'], method: 'gist' }, { columns: ['record_index'], method: 'gin' }, { columns: ['record_status'], method: 'btree' }, { columns: ['updated_at'], method: 'btree' }, { columns: ['record_project_resource_id'], method: 'btree' }, { columns: ['record_assigned_to_resource_id'], method: 'btree' }, { columns: ['changeset_resource_id'], method: 'btree' }];
 
-Schema.systemValuesTableIndexes = [{ columns: ['record_resource_id'], method: 'btree' }, { columns: ['parent_resource_id'], method: 'btree' }, { columns: ['text_value'], method: 'btree' }, { columns: ['key'], method: 'btree' }];
+Schema.systemValuesTableIndexes = [
+// { columns: [ 'record_id' ], method: 'btree' },
+{ columns: ['record_resource_id'], method: 'btree' }, { columns: ['parent_resource_id'], method: 'btree' }, { columns: ['text_value'], method: 'btree' }, { columns: ['key'], method: 'btree' }];
 
 exports.default = Schema;
 //# sourceMappingURL=postgres-query-v2.js.map
