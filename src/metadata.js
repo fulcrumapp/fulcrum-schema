@@ -39,6 +39,10 @@ export default class Metadata {
     return (this.changes.length > 0 || oldName !== newName);
   }
 
+  viewName(name) {
+    return (this.options.tablePrefix || '') + name;
+  }
+
   buildStatements() {
     const statements = [];
 
@@ -89,7 +93,7 @@ export default class Metadata {
 
     // create new metadata
     for (const view of this.newViews) {
-      const viewName = view.name;
+      const viewName = this.viewName(view.name);
       const viewAlias = view.alias || view.table.alias;
       const viewType = view.type || view.table.type;
 

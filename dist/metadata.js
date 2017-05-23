@@ -62,6 +62,11 @@ var Metadata = function () {
       return this.changes.length > 0 || oldName !== newName;
     }
   }, {
+    key: 'viewName',
+    value: function viewName(name) {
+      return (this.options.tablePrefix || '') + name;
+    }
+  }, {
     key: 'buildStatements',
     value: function buildStatements() {
       var statements = [];
@@ -138,7 +143,7 @@ var Metadata = function () {
         for (var _iterator2 = this.newViews[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
           var _view = _step2.value;
 
-          var viewName = _view.name;
+          var viewName = this.viewName(_view.name);
           var viewAlias = _view.alias || _view.table.alias;
           var viewType = _view.type || _view.table.type;
 
