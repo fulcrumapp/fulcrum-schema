@@ -439,6 +439,10 @@ export default class Schema {
       this.addArrayElement(table, element, 'urls');
     }
 
+    if (this.columns.includeMediaViewURLs !== false) {
+      this.addStringElement(table, element, 'view_url');
+    }
+
     const value = element.key.replace(/'/g, "''");
 
     const clause = format('WHERE key = \'%s\'', value);

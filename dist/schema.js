@@ -656,6 +656,10 @@ var Schema = function () {
         this.addArrayElement(table, element, 'urls');
       }
 
+      if (this.columns.includeMediaViewURLs !== false) {
+        this.addStringElement(table, element, 'view_url');
+      }
+
       var value = element.key.replace(/'/g, "''");
 
       var clause = (0, _util.format)('WHERE key = \'%s\'', value);
