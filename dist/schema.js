@@ -204,6 +204,10 @@ var Schema = function () {
   }, {
     key: 'buildDataColumns',
     value: function buildDataColumns() {
+      if (this.columns.includeReportURL) {
+        this.addStringColumn(this.formTable, '_report_url', null);
+      }
+
       var _iteratorNormalCompletion4 = true;
       var _didIteratorError4 = false;
       var _iteratorError4 = undefined;
@@ -227,10 +231,6 @@ var Schema = function () {
             throw _iteratorError4;
           }
         }
-      }
-
-      if (this.columns.includeReportURL) {
-        this.addStringColumn(this.formTable, 'report_url', null);
       }
     }
   }, {
@@ -413,6 +413,8 @@ var Schema = function () {
         name = '_' + name;
       } else if (column.element) {
         name = this.escapeDataName(column.element.data_name) + (column.suffix || '');
+      } else {
+        name = column.name + (column.suffix || '');
       }
 
       if (name) {
@@ -615,7 +617,7 @@ var Schema = function () {
       }
 
       column = {
-        id: this.prefix + name + suffix,
+        id: name + suffix,
         type: type,
         element: null,
         suffix: suffix
@@ -706,6 +708,10 @@ var Schema = function () {
 
       this.tables.push(childTable);
 
+      if (this.columns.includeReportURL) {
+        this.addStringColumn(childTable, '_report_url', null);
+      }
+
       var elements = _utils2.default.flattenElements(element.elements, false);
 
       var childElements = _dataElements2.default.find(elements);
@@ -733,10 +739,6 @@ var Schema = function () {
             throw _iteratorError9;
           }
         }
-      }
-
-      if (this.columns.includeReportURL) {
-        this.addStringColumn(childTable, 'report_url', null);
       }
     }
   }]);

@@ -109,12 +109,12 @@ export default class Schema {
   }
 
   buildDataColumns() {
-    for (const element of this.schemaElements) {
-      this.processElement(element, this.formTable);
+    if (this.columns.includeReportURL) {
+      this.addStringColumn(this.formTable, '_report_url', null);
     }
 
-    if (this.columns.includeReportURL) {
-      this.addStringColumn(this.formTable, 'report_url', null);
+    for (const element of this.schemaElements) {
+      this.processElement(element, this.formTable);
     }
   }
 
@@ -209,6 +209,8 @@ export default class Schema {
       name = '_' + name;
     } else if (column.element) {
       name = this.escapeDataName(column.element.data_name) + (column.suffix || '');
+    } else {
+      name = column.name + (column.suffix || '');
     }
 
     if (name) {
@@ -400,7 +402,7 @@ export default class Schema {
     }
 
     column = {
-      id: this.prefix + name + suffix,
+      id: name + suffix,
       type: type,
       element: null,
       suffix: suffix
@@ -489,16 +491,16 @@ export default class Schema {
 
     this.tables.push(childTable);
 
+    if (this.columns.includeReportURL) {
+      this.addStringColumn(childTable, '_report_url', null);
+    }
+
     const elements = Utils.flattenElements(element.elements, false);
 
     const childElements = DataElements.find(elements);
 
     for (const childElement of childElements) {
       this.processElement(childElement, childTable);
-    }
-
-    if (this.columns.includeReportURL) {
-      this.addStringColumn(childTable, 'report_url', null);
     }
   }
 }
