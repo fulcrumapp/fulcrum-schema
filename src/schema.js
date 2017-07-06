@@ -435,11 +435,11 @@ export default class Schema {
       this.addArrayElement(table, element, 'captions');
     }
 
-    if (this.columns.includeMediaURLs !== false) {
+    if (this.columns.includeMediaURLs) {
       this.addArrayElement(table, element, 'urls');
     }
 
-    if (this.columns.includeMediaViewURLs !== false) {
+    if (this.columns.includeMediaViewURLs) {
       this.addStringElement(table, element, 'view_url');
     }
 
