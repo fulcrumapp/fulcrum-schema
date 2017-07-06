@@ -110,7 +110,7 @@ export default class Schema {
 
   buildDataColumns() {
     if (this.columns.includeReportURL) {
-      this.addStringColumn(this.formTable, '_report_url', null);
+      this.addStringColumn(this.formTable, 'report_url', null);
     }
 
     for (const element of this.schemaElements) {
@@ -492,7 +492,7 @@ export default class Schema {
     this.tables.push(childTable);
 
     if (this.columns.includeReportURL) {
-      this.addStringColumn(childTable, '_report_url', null);
+      this.addStringColumn(childTable, 'report_url', null);
     }
 
     const elements = Utils.flattenElements(element.elements, false);
