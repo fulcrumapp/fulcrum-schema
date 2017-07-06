@@ -112,6 +112,10 @@ export default class Schema {
     for (const element of this.schemaElements) {
       this.processElement(element, this.formTable);
     }
+
+    if (this.columns.includeReportURL) {
+      this.addStringColumn(this.formTable, 'report_url', null);
+    }
   }
 
   buildViews() {
@@ -328,6 +332,13 @@ export default class Schema {
     }
   }
 
+  addStringColumn(table, name, suffix) {
+    if (suffix == null) {
+      suffix = '';
+    }
+    return this.addColumn(table, name, 'string', suffix);
+  }
+
   addStringElement(table, element, suffix) {
     if (suffix == null) {
       suffix = '';
@@ -377,6 +388,27 @@ export default class Schema {
     return this.addElement(table, element, 'array', suffix);
   }
 
+  addColumn(table, name, type, suffix) {
+    let column = null;
+
+    if (suffix == null) {
+      suffix = '';
+    }
+
+    if (suffix) {
+      suffix = '_' + suffix;
+    }
+
+    column = {
+      id: this.prefix + name + suffix,
+      type: type,
+      element: null,
+      suffix: suffix
+    };
+
+    table.addColumn(column);
+  }
+
   addElement(table, element, type, suffix) {
     let column = null;
 
@@ -403,6 +435,10 @@ export default class Schema {
 
     if (this.columns.includeMediaCaptions !== false) {
       this.addArrayElement(table, element, 'captions');
+    }
+
+    if (this.columns.includeMediaURLs !== false) {
+      this.addArrayElement(table, element, 'urls');
     }
 
     const value = element.key.replace(/'/g, "''");
@@ -459,6 +495,10 @@ export default class Schema {
 
     for (const childElement of childElements) {
       this.processElement(childElement, childTable);
+    }
+
+    if (this.columns.includeReportURL) {
+      this.addStringColumn(this.childTable, 'report_url', null);
     }
   }
 }

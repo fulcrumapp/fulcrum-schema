@@ -228,6 +228,10 @@ var Schema = function () {
           }
         }
       }
+
+      if (this.columns.includeReportURL) {
+        this.addStringColumn(this.formTable, 'report_url', null);
+      }
     }
   }, {
     key: 'buildViews',
@@ -534,6 +538,14 @@ var Schema = function () {
       }
     }
   }, {
+    key: 'addStringColumn',
+    value: function addStringColumn(table, name, suffix) {
+      if (suffix == null) {
+        suffix = '';
+      }
+      return this.addColumn(table, name, 'string', suffix);
+    }
+  }, {
     key: 'addStringElement',
     value: function addStringElement(table, element, suffix) {
       if (suffix == null) {
@@ -590,6 +602,28 @@ var Schema = function () {
       return this.addElement(table, element, 'array', suffix);
     }
   }, {
+    key: 'addColumn',
+    value: function addColumn(table, name, type, suffix) {
+      var column = null;
+
+      if (suffix == null) {
+        suffix = '';
+      }
+
+      if (suffix) {
+        suffix = '_' + suffix;
+      }
+
+      column = {
+        id: this.prefix + name + suffix,
+        type: type,
+        element: null,
+        suffix: suffix
+      };
+
+      table.addColumn(column);
+    }
+  }, {
     key: 'addElement',
     value: function addElement(table, element, type, suffix) {
       var column = null;
@@ -618,6 +652,10 @@ var Schema = function () {
 
       if (this.columns.includeMediaCaptions !== false) {
         this.addArrayElement(table, element, 'captions');
+      }
+
+      if (this.columns.includeMediaURLs !== false) {
+        this.addArrayElement(table, element, 'urls');
       }
 
       var value = element.key.replace(/'/g, "''");
@@ -695,6 +733,10 @@ var Schema = function () {
             throw _iteratorError9;
           }
         }
+      }
+
+      if (this.columns.includeReportURL) {
+        this.addStringColumn(this.childTable, 'report_url', null);
       }
     }
   }]);
