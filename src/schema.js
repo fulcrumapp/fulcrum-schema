@@ -498,7 +498,7 @@ export default class Schema {
     }
 
     if (this.columns.includeReportURL) {
-      this.addStringColumn(this.childTable, 'report_url', null);
+      this.addStringColumn(childTable, 'report_url', null);
     }
   }
 }
