@@ -204,10 +204,6 @@ var Schema = function () {
   }, {
     key: 'buildDataColumns',
     value: function buildDataColumns() {
-      if (this.columns.includeReportURL) {
-        this.addStringColumn(this.formTable, 'report_url', null);
-      }
-
       var _iteratorNormalCompletion4 = true;
       var _didIteratorError4 = false;
       var _iteratorError4 = undefined;
@@ -707,10 +703,6 @@ var Schema = function () {
       var childTable = this.buildRepeatableTable(parentTable, element);
 
       this.tables.push(childTable);
-
-      if (this.columns.includeReportURL) {
-        this.addStringColumn(childTable, 'report_url', null);
-      }
 
       var elements = _utils2.default.flattenElements(element.elements, false);
 
