@@ -383,7 +383,10 @@ export default class Schema {
     if (suffix == null) {
       suffix = '';
     }
-    return this.addElement(table, element, 'array', suffix);
+
+    const dataType = this.columns.disableArrays === true ? 'string' : 'array';
+
+    return this.addElement(table, element, dataType, suffix);
   }
 
   addColumn(table, name, type, suffix) {
