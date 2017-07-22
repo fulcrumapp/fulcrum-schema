@@ -126,6 +126,10 @@ var Schema = function () {
         }
       }
 
+      if (this.options.onAddFormTable) {
+        this.options.onAddFormTable({ table: table, form: this.form, schema: this });
+      }
+
       return table;
     }
   }, {
@@ -197,6 +201,10 @@ var Schema = function () {
             throw _iteratorError3;
           }
         }
+      }
+
+      if (this.options.onAddRepeatableTable) {
+        this.options.onAddRepeatableTable({ table: table, parentTable: parentTable, element: element, form: this.form, schema: this });
       }
 
       return table;
