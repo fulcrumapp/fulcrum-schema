@@ -72,6 +72,10 @@ export default class Schema {
       table.addColumn(formColumn);
     }
 
+    if (this.options.onAddFormTable) {
+      this.options.onAddFormTable({table, form: this.form, schema: this});
+    }
+
     return table;
   }
 
@@ -103,6 +107,10 @@ export default class Schema {
       attrs.system = true;
 
       table.addColumn(attrs);
+    }
+
+    if (this.options.onAddRepeatableTable) {
+      this.options.onAddRepeatableTable({table, parentTable, element, form: this.form, schema: this});
     }
 
     return table;
