@@ -38,6 +38,7 @@ export default class Photos extends TableDefinition {
     this.string('make', {});
     this.string('model', {});
     this.string('software', {});
+    this.timestamp('deleted_at', {});
   }
 
   defineView() {
@@ -66,6 +67,7 @@ export default class Photos extends TableDefinition {
     this.alias('make', 'make');
     this.alias('model', 'model');
     this.alias('software', 'software');
+    this.alias('deleted_at', 'deleted_at');
   }
 
   defineIndexes() {

@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS organization.audio (
   track text,
   geometry geometry(Geometry, 4326),
   duration double precision,
+  deleted_at timestamp with time zone,
   CONSTRAINT audio_pkey PRIMARY KEY (id)
 );
 
@@ -186,6 +187,7 @@ CREATE TABLE IF NOT EXISTS organization.photos (
   make text,
   model text,
   software text,
+  deleted_at timestamp with time zone,
   CONSTRAINT photos_pkey PRIMARY KEY (id)
 );
 
@@ -259,6 +261,7 @@ CREATE TABLE IF NOT EXISTS organization.signatures (
   uploaded_at timestamp with time zone,
   stored_at timestamp with time zone,
   processed_at timestamp with time zone,
+  deleted_at timestamp with time zone,
   CONSTRAINT signatures_pkey PRIMARY KEY (id)
 );
 
@@ -292,6 +295,7 @@ CREATE TABLE IF NOT EXISTS organization.videos (
   width bigint,
   height bigint,
   duration double precision,
+  deleted_at timestamp with time zone,
   CONSTRAINT videos_pkey PRIMARY KEY (id)
 );
 
@@ -316,7 +320,8 @@ SELECT
   has_track AS has_track,
   track AS track,
   geometry AS geometry,
-  duration AS duration
+  duration AS duration,
+  deleted_at AS deleted_at
 FROM organization.audio;
 
 DROP VIEW IF EXISTS organization.changesets_view;
@@ -445,7 +450,8 @@ SELECT
   height AS height,
   make AS make,
   model AS model,
-  software AS software
+  software AS software,
+  deleted_at AS deleted_at
 FROM organization.photos;
 
 DROP VIEW IF EXISTS organization.projects_view;
@@ -509,7 +515,8 @@ SELECT
   content_type AS content_type,
   uploaded_at AS uploaded_at,
   stored_at AS stored_at,
-  processed_at AS processed_at
+  processed_at AS processed_at,
+  deleted_at AS deleted_at
 FROM organization.signatures;
 
 DROP VIEW IF EXISTS organization.videos_view;
@@ -535,7 +542,8 @@ SELECT
   geometry AS geometry,
   width AS width,
   height AS height,
-  duration AS duration
+  duration AS duration,
+  deleted_at AS deleted_at
 FROM organization.videos;
 
 CREATE UNIQUE INDEX idx_audio_row_resource_id ON organization.audio USING btree (row_resource_id);
@@ -739,6 +747,9 @@ SELECT 'audio_view', 'audio', 'geometry', '17', 'geometry', '1', NULL, NULL, NUL
 
 INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'audio_view', 'audio', 'duration', '18', 'double', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'audio_view', 'audio', 'deleted_at', '19', 'timestamp', '1', NULL, NULL, NULL, NULL, NULL, NULL;
 
 DELETE FROM "organization"."tables" WHERE name = 'changesets_view';
 
@@ -1055,6 +1066,9 @@ SELECT 'photos_view', 'photos', 'model', '24', 'string', '1', NULL, NULL, NULL, 
 INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'photos_view', 'photos', 'software', '25', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
 
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'photos_view', 'photos', 'deleted_at', '26', 'timestamp', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
 DELETE FROM "organization"."tables" WHERE name = 'projects_view';
 
 DELETE FROM "organization"."columns" WHERE table_name = 'projects_view';
@@ -1211,6 +1225,9 @@ SELECT 'signatures_view', 'signatures', 'stored_at', '12', 'timestamp', '1', NUL
 INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'signatures_view', 'signatures', 'processed_at', '13', 'timestamp', '1', NULL, NULL, NULL, NULL, NULL, NULL;
 
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'signatures_view', 'signatures', 'deleted_at', '14', 'timestamp', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
 DELETE FROM "organization"."tables" WHERE name = 'videos_view';
 
 DELETE FROM "organization"."columns" WHERE table_name = 'videos_view';
@@ -1276,3 +1293,6 @@ SELECT 'videos_view', 'videos', 'height', '19', 'integer', '1', NULL, NULL, NULL
 
 INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'videos_view', 'videos', 'duration', '20', 'double', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'videos_view', 'videos', 'deleted_at', '21', 'timestamp', '1', NULL, NULL, NULL, NULL, NULL, NULL;

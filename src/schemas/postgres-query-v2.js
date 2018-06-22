@@ -1097,6 +1097,9 @@ Schema.systemPhotosTable = [
   }, {
     name: 'software',
     type: 'string'
+  }, {
+    name: 'deleted_at',
+    type: 'timestamp'
   }
 ];
 
@@ -1193,6 +1196,9 @@ Schema.systemVideosTable = [
   }, {
     name: 'duration',
     type: 'double'
+  }, {
+    name: 'deleted_at',
+    type: 'timestamp'
   }
 ];
 
@@ -1283,6 +1289,9 @@ Schema.systemAudioTable = [
   }, {
     name: 'duration',
     type: 'double'
+  }, {
+    name: 'deleted_at',
+    type: 'timestamp'
   }
 ];
 
@@ -1354,6 +1363,9 @@ Schema.systemSignaturesTable = [
     type: 'timestamp'
   }, {
     name: 'processed_at',
+    type: 'timestamp'
+  }, {
+    name: 'deleted_at',
     type: 'timestamp'
   }
 ];
@@ -1650,7 +1662,8 @@ Schema.organizationViews.photos = {
   height: 'height',
   make: 'make',
   model: 'model',
-  software: 'software'
+  software: 'software',
+  deleted_at: 'deleted_at'
 };
 
 Schema.organizationIndexes.photos = [
@@ -1684,7 +1697,8 @@ Schema.organizationViews.videos = {
   geometry: 'geometry',
   width: 'width',
   height: 'height',
-  duration: 'duration'
+  duration: 'duration',
+  deleted_at: 'deleted_at'
 };
 
 Schema.organizationIndexes.videos = [
@@ -1716,7 +1730,8 @@ Schema.organizationViews.audio = {
   has_track: 'has_track',
   track: 'track',
   geometry: 'geometry',
-  duration: 'duration'
+  duration: 'duration',
+  deleted_at: 'deleted_at'
 };
 
 Schema.organizationIndexes.audio = [
@@ -1743,7 +1758,8 @@ Schema.organizationViews.signatures = {
   content_type: 'content_type',
   uploaded_at: 'uploaded_at',
   stored_at: 'stored_at',
-  processed_at: 'processed_at'
+  processed_at: 'processed_at',
+  deleted_at: 'deleted_at'
 };
 
 Schema.organizationIndexes.signatures = [

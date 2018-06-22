@@ -27,6 +27,7 @@ export default class Signatures extends TableDefinition {
     this.timestamp('uploaded_at', {});
     this.timestamp('stored_at', {});
     this.timestamp('processed_at', {});
+    this.timestamp('deleted_at', {});
   }
 
   defineView() {
@@ -43,6 +44,7 @@ export default class Signatures extends TableDefinition {
     this.alias('uploaded_at', 'uploaded_at');
     this.alias('stored_at', 'stored_at');
     this.alias('processed_at', 'processed_at');
+    this.alias('deleted_at', 'deleted_at');
   }
 
   defineIndexes() {

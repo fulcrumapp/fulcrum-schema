@@ -33,6 +33,7 @@ export default class Audio extends TableDefinition {
     this.string('track', {});
     this.geometry('geometry', {});
     this.double('duration', {});
+    this.timestamp('deleted_at', {});
   }
 
   defineView() {
@@ -54,6 +55,7 @@ export default class Audio extends TableDefinition {
     this.alias('track', 'track');
     this.alias('geometry', 'geometry');
     this.alias('duration', 'duration');
+    this.alias('deleted_at', 'deleted_at');
   }
 
   defineIndexes() {
