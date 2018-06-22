@@ -32,5 +32,3 @@ export default class DataElements {
     return _.select(elements, DataElements.isDataElement);
   }
 }
-
-export default DataElements;
