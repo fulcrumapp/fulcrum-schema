@@ -24,7 +24,7 @@ var Memberships = function (_TableDefinition) {
   function Memberships() {
     _classCallCheck(this, Memberships);
 
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(Memberships).apply(this, arguments));
+    return _possibleConstructorReturn(this, (Memberships.__proto__ || Object.getPrototypeOf(Memberships)).apply(this, arguments));
   }
 
   _createClass(Memberships, [{

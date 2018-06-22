@@ -42,5 +42,4 @@ var DataElements = function () {
 }();
 
 exports.default = DataElements;
-exports.default = DataElements;
 //# sourceMappingURL=data-elements.js.map

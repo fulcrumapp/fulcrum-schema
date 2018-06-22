@@ -24,7 +24,7 @@ var Roles = function (_TableDefinition) {
   function Roles() {
     _classCallCheck(this, Roles);
 
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(Roles).apply(this, arguments));
+    return _possibleConstructorReturn(this, (Roles.__proto__ || Object.getPrototypeOf(Roles)).apply(this, arguments));
   }
 
   _createClass(Roles, [{

@@ -24,7 +24,7 @@ var Videos = function (_TableDefinition) {
   function Videos() {
     _classCallCheck(this, Videos);
 
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(Videos).apply(this, arguments));
+    return _possibleConstructorReturn(this, (Videos.__proto__ || Object.getPrototypeOf(Videos)).apply(this, arguments));
   }
 
   _createClass(Videos, [{
@@ -59,6 +59,7 @@ var Videos = function (_TableDefinition) {
       this.integer('width', {});
       this.integer('height', {});
       this.double('duration', {});
+      this.timestamp('deleted_at', {});
     }
   }, {
     key: 'defineView',
@@ -83,6 +84,7 @@ var Videos = function (_TableDefinition) {
       this.alias('width', 'width');
       this.alias('height', 'height');
       this.alias('duration', 'duration');
+      this.alias('deleted_at', 'deleted_at');
     }
   }, {
     key: 'defineIndexes',

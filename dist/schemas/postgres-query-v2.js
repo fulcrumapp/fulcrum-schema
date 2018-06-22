@@ -1086,6 +1086,9 @@ Schema.systemPhotosTable = [{
 }, {
   name: 'software',
   type: 'string'
+}, {
+  name: 'deleted_at',
+  type: 'timestamp'
 }];
 
 Schema.systemVideosTable = [{
@@ -1180,6 +1183,9 @@ Schema.systemVideosTable = [{
 }, {
   name: 'duration',
   type: 'double'
+}, {
+  name: 'deleted_at',
+  type: 'timestamp'
 }];
 
 Schema.systemAudioTable = [{
@@ -1268,6 +1274,9 @@ Schema.systemAudioTable = [{
 }, {
   name: 'duration',
   type: 'double'
+}, {
+  name: 'deleted_at',
+  type: 'timestamp'
 }];
 
 Schema.systemSignaturesTable = [{
@@ -1337,6 +1346,9 @@ Schema.systemSignaturesTable = [{
   type: 'timestamp'
 }, {
   name: 'processed_at',
+  type: 'timestamp'
+}, {
+  name: 'deleted_at',
   type: 'timestamp'
 }];
 
@@ -1593,7 +1605,8 @@ Schema.organizationViews.photos = {
   height: 'height',
   make: 'make',
   model: 'model',
-  software: 'software'
+  software: 'software',
+  deleted_at: 'deleted_at'
 };
 
 Schema.organizationIndexes.photos = [{ columns: ['row_resource_id'], unique: true }, { columns: ['row_id'], unique: true }, { columns: ['access_key'] }, { columns: ['record_resource_id'] }, { columns: ['form_resource_id'] }, { columns: ['created_by_resource_id'] }, { columns: ['geometry'], method: 'gist' }, { columns: ['updated_at'] }];
@@ -1618,7 +1631,8 @@ Schema.organizationViews.videos = {
   geometry: 'geometry',
   width: 'width',
   height: 'height',
-  duration: 'duration'
+  duration: 'duration',
+  deleted_at: 'deleted_at'
 };
 
 Schema.organizationIndexes.videos = [{ columns: ['row_resource_id'], unique: true }, { columns: ['row_id'], unique: true }, { columns: ['access_key'] }, { columns: ['record_resource_id'] }, { columns: ['form_resource_id'] }, { columns: ['created_by_resource_id'] }, { columns: ['geometry'], method: 'gist' }, { columns: ['updated_at'] }];
@@ -1641,7 +1655,8 @@ Schema.organizationViews.audio = {
   has_track: 'has_track',
   track: 'track',
   geometry: 'geometry',
-  duration: 'duration'
+  duration: 'duration',
+  deleted_at: 'deleted_at'
 };
 
 Schema.organizationIndexes.audio = [{ columns: ['row_resource_id'], unique: true }, { columns: ['row_id'], unique: true }, { columns: ['access_key'] }, { columns: ['record_resource_id'] }, { columns: ['form_resource_id'] }, { columns: ['created_by_resource_id'] }, { columns: ['geometry'], method: 'gist' }, { columns: ['updated_at'] }];
@@ -1659,7 +1674,8 @@ Schema.organizationViews.signatures = {
   content_type: 'content_type',
   uploaded_at: 'uploaded_at',
   stored_at: 'stored_at',
-  processed_at: 'processed_at'
+  processed_at: 'processed_at',
+  deleted_at: 'deleted_at'
 };
 
 Schema.organizationIndexes.signatures = [{ columns: ['row_resource_id'], unique: true }, { columns: ['row_id'], unique: true }, { columns: ['access_key'] }, { columns: ['record_resource_id'] }, { columns: ['form_resource_id'] }, { columns: ['created_by_resource_id'] }, { columns: ['updated_at'] }];

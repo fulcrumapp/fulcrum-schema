@@ -24,7 +24,7 @@ var ClassificationSets = function (_TableDefinition) {
   function ClassificationSets() {
     _classCallCheck(this, ClassificationSets);
 
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(ClassificationSets).apply(this, arguments));
+    return _possibleConstructorReturn(this, (ClassificationSets.__proto__ || Object.getPrototypeOf(ClassificationSets)).apply(this, arguments));
   }
 
   _createClass(ClassificationSets, [{

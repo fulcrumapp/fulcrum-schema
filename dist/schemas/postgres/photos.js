@@ -24,7 +24,7 @@ var Photos = function (_TableDefinition) {
   function Photos() {
     _classCallCheck(this, Photos);
 
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(Photos).apply(this, arguments));
+    return _possibleConstructorReturn(this, (Photos.__proto__ || Object.getPrototypeOf(Photos)).apply(this, arguments));
   }
 
   _createClass(Photos, [{
@@ -62,6 +62,7 @@ var Photos = function (_TableDefinition) {
       this.string('make', {});
       this.string('model', {});
       this.string('software', {});
+      this.timestamp('deleted_at', {});
     }
   }, {
     key: 'defineView',
@@ -91,6 +92,7 @@ var Photos = function (_TableDefinition) {
       this.alias('make', 'make');
       this.alias('model', 'model');
       this.alias('software', 'software');
+      this.alias('deleted_at', 'deleted_at');
     }
   }, {
     key: 'defineIndexes',

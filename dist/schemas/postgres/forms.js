@@ -24,7 +24,7 @@ var Forms = function (_TableDefinition) {
   function Forms() {
     _classCallCheck(this, Forms);
 
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(Forms).apply(this, arguments));
+    return _possibleConstructorReturn(this, (Forms.__proto__ || Object.getPrototypeOf(Forms)).apply(this, arguments));
   }
 
   _createClass(Forms, [{

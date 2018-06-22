@@ -24,7 +24,7 @@ var Signatures = function (_TableDefinition) {
   function Signatures() {
     _classCallCheck(this, Signatures);
 
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(Signatures).apply(this, arguments));
+    return _possibleConstructorReturn(this, (Signatures.__proto__ || Object.getPrototypeOf(Signatures)).apply(this, arguments));
   }
 
   _createClass(Signatures, [{
@@ -51,6 +51,7 @@ var Signatures = function (_TableDefinition) {
       this.timestamp('uploaded_at', {});
       this.timestamp('stored_at', {});
       this.timestamp('processed_at', {});
+      this.timestamp('deleted_at', {});
     }
   }, {
     key: 'defineView',
@@ -68,6 +69,7 @@ var Signatures = function (_TableDefinition) {
       this.alias('uploaded_at', 'uploaded_at');
       this.alias('stored_at', 'stored_at');
       this.alias('processed_at', 'processed_at');
+      this.alias('deleted_at', 'deleted_at');
     }
   }, {
     key: 'defineIndexes',

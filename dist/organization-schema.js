@@ -18,8 +18,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Table = _sqldiff2.default.Table;
-var View = _sqldiff2.default.View;
+var Table = _sqldiff2.default.Table,
+    View = _sqldiff2.default.View;
 
 var OrganizationSchema = function () {
   function OrganizationSchema(schema, options) {

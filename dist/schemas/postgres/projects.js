@@ -24,7 +24,7 @@ var Projects = function (_TableDefinition) {
   function Projects() {
     _classCallCheck(this, Projects);
 
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(Projects).apply(this, arguments));
+    return _possibleConstructorReturn(this, (Projects.__proto__ || Object.getPrototypeOf(Projects)).apply(this, arguments));
   }
 
   _createClass(Projects, [{

@@ -24,7 +24,7 @@ var ChoiceLists = function (_TableDefinition) {
   function ChoiceLists() {
     _classCallCheck(this, ChoiceLists);
 
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(ChoiceLists).apply(this, arguments));
+    return _possibleConstructorReturn(this, (ChoiceLists.__proto__ || Object.getPrototypeOf(ChoiceLists)).apply(this, arguments));
   }
 
   _createClass(ChoiceLists, [{

@@ -28,8 +28,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Table = _sqldiff2.default.Table;
-var View = _sqldiff2.default.View;
+var Table = _sqldiff2.default.Table,
+    View = _sqldiff2.default.View;
 
 var Schema = function () {
   function Schema(form, columns, options) {
@@ -65,7 +65,7 @@ var Schema = function () {
   }, {
     key: 'alias',
     value: function alias(part) {
-      var escapePart = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
+      var escapePart = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 
       if (part) {
         var partName = escapePart ? this.escapeDataName(part) : part;

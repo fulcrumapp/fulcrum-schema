@@ -24,7 +24,7 @@ var Audio = function (_TableDefinition) {
   function Audio() {
     _classCallCheck(this, Audio);
 
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(Audio).apply(this, arguments));
+    return _possibleConstructorReturn(this, (Audio.__proto__ || Object.getPrototypeOf(Audio)).apply(this, arguments));
   }
 
   _createClass(Audio, [{
@@ -57,6 +57,7 @@ var Audio = function (_TableDefinition) {
       this.string('track', {});
       this.geometry('geometry', {});
       this.double('duration', {});
+      this.timestamp('deleted_at', {});
     }
   }, {
     key: 'defineView',
@@ -79,6 +80,7 @@ var Audio = function (_TableDefinition) {
       this.alias('track', 'track');
       this.alias('geometry', 'geometry');
       this.alias('duration', 'duration');
+      this.alias('deleted_at', 'deleted_at');
     }
   }, {
     key: 'defineIndexes',

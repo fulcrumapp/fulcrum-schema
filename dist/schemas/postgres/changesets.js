@@ -24,7 +24,7 @@ var Changesets = function (_TableDefinition) {
   function Changesets() {
     _classCallCheck(this, Changesets);
 
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(Changesets).apply(this, arguments));
+    return _possibleConstructorReturn(this, (Changesets.__proto__ || Object.getPrototypeOf(Changesets)).apply(this, arguments));
   }
 
   _createClass(Changesets, [{
