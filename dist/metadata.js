@@ -72,28 +72,36 @@ var Metadata = function () {
       var statements = [];
 
       var systemTablesName = _utils2.default.tableName(this.options.schema, this.options.prefix, this.options.quote, 'tables');
-      var systemTablesViewName = _utils2.default.tableName(this.options.schema, this.options.prefix, this.options.quote, 'tables_view');
+      // const systemTablesViewName = Utils.tableName(this.options.schema, this.options.prefix, this.options.quote, 'tables_view');
       var systemColumnsName = _utils2.default.tableName(this.options.schema, this.options.prefix, this.options.quote, 'columns');
-      var systemColumnsViewName = _utils2.default.tableName(this.options.schema, this.options.prefix, this.options.quote, 'columns_view');
+      // const systemColumnsViewName = Utils.tableName(this.options.schema, this.options.prefix, this.options.quote, 'columns_view');
 
-      statements.push((0, _util.format)('CREATE TABLE IF NOT EXISTS %s (name text, alias text, type text, parent text, form_id text, field text, field_type text, data_name text);', systemTablesName));
+      // statements.push(format('CREATE TABLE IF NOT EXISTS %s (name text, alias text, type text, parent text, form_id text, field text, field_type text, data_name text);',
+      //                        systemTablesName));
 
-      statements.push((0, _util.format)('CREATE OR REPLACE VIEW %s AS SELECT alias AS name, type, parent, form_id, field, field_type, data_name FROM %s;', systemTablesViewName, systemTablesName));
+      // statements.push(format('CREATE OR REPLACE VIEW %s AS SELECT alias AS name, type, parent, form_id, field, field_type, data_name FROM %s;',
+      //                        systemTablesViewName, systemTablesName));
 
-      statements.push((0, _util.format)('CREATE INDEX idx_tables_name ON %s (name);', systemTablesName));
+      // statements.push(format('CREATE INDEX idx_tables_name ON %s (name);',
+      //                        systemTablesName));
 
-      statements.push((0, _util.format)('CREATE INDEX idx_tables_alias ON %s (alias);', systemTablesName));
+      // statements.push(format('CREATE INDEX idx_tables_alias ON %s (alias);',
+      //                        systemTablesName));
 
-      if (this.includeColumns) {
-        // field type
-        statements.push((0, _util.format)('CREATE TABLE IF NOT EXISTS %s (table_name text, table_alias text, name text, ordinal bigint, type text, nullable boolean, form_id text, field text, field_type text, data_name text, part text, data text);', systemColumnsName));
+      // if (this.includeColumns) {
+      //   // field type
+      //   statements.push(format('CREATE TABLE IF NOT EXISTS %s (table_name text, table_alias text, name text, ordinal bigint, type text, nullable boolean, form_id text, field text, field_type text, data_name text, part text, data text);',
+      //                          systemColumnsName));
 
-        statements.push((0, _util.format)('CREATE OR REPLACE VIEW %s AS SELECT table_alias AS table_name, name, ordinal, type, nullable, form_id, field, field_type, data_name, part FROM %s;', systemColumnsViewName, systemColumnsName));
+      //   statements.push(format('CREATE OR REPLACE VIEW %s AS SELECT table_alias AS table_name, name, ordinal, type, nullable, form_id, field, field_type, data_name, part FROM %s;',
+      //                          systemColumnsViewName, systemColumnsName));
 
-        statements.push((0, _util.format)('CREATE INDEX idx_columns_table_name ON %s (table_name);', systemColumnsName));
+      //   statements.push(format('CREATE INDEX idx_columns_table_name ON %s (table_name);',
+      //                          systemColumnsName));
 
-        statements.push((0, _util.format)('CREATE INDEX idx_columns_table_alias ON %s (table_alias);', systemColumnsName));
-      }
+      //   statements.push(format('CREATE INDEX idx_columns_table_alias ON %s (table_alias);',
+      //                          systemColumnsName));
+      // }
 
       // drop old metadata
       var _iteratorNormalCompletion = true;
