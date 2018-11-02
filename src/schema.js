@@ -6,6 +6,18 @@ import DataElements from './data-elements';
 
 const {Table, View} = sqldiff;
 
+const SIMPLE_TYPES = [
+  'pk',
+  'text',
+  'string',
+  'date',
+  'time',
+  'timestamp',
+  'double',
+  'integer',
+  'boolean'
+];
+
 export default class Schema {
   constructor(form, columns, options) {
     this.prefix = 'f';
@@ -68,6 +80,7 @@ export default class Schema {
       const formColumn = _.clone(column);
 
       formColumn.system = true;
+      formColumn.type = this.maybeComplexType(formColumn.type);
 
       table.addColumn(formColumn);
     }
@@ -88,6 +101,7 @@ export default class Schema {
       const valueColumn = _.clone(column);
 
       valueColumn.system = true;
+      valueColumn.type = this.maybeComplexType(valueColumn.type);
 
       table.addColumn(valueColumn);
     }
@@ -105,6 +119,7 @@ export default class Schema {
 
       attrs.id = element.key + '_' + column.name;
       attrs.system = true;
+      attrs.type = this.maybeComplexType(attrs.type);
 
       table.addColumn(attrs);
     }
@@ -181,7 +196,13 @@ export default class Schema {
       for (const index of indexDefinitions) {
         const indexDefinition = _.clone(index);
 
-        table.addIndex(indexDefinition);
+        const isComplex = indexDefinition.method === 'gist' || indexDefinition.method === 'gin';
+
+        const skip = isComplex && this.columns.disableComplexTypes === true;
+
+        if (!skip) {
+          table.addIndex(indexDefinition);
+        }
       }
     }
   }
@@ -410,7 +431,7 @@ export default class Schema {
 
     column = {
       id: name + suffix,
-      type: type,
+      type: this.maybeComplexType(type),
       element: null,
       suffix: suffix
     };
@@ -431,12 +452,18 @@ export default class Schema {
 
     column = {
       id: this.prefix + element.key + suffix,
-      type: type,
+      type: this.maybeComplexType(type),
       element: element,
       suffix: suffix
     };
 
     table.addColumn(column);
+  }
+
+  maybeComplexType(type) {
+    const isComplex = SIMPLE_TYPES.indexOf(type) === -1;
+
+    return isComplex && this.columns.disableComplexTypes === true ? 'string' : type;
   }
 
   addMediaElement(table, element) {

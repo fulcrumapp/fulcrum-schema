@@ -31,6 +31,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var Table = _sqldiff2.default.Table,
     View = _sqldiff2.default.View;
 
+
+var SIMPLE_TYPES = ['pk', 'text', 'string', 'date', 'time', 'timestamp', 'double', 'integer', 'boolean'];
+
 var Schema = function () {
   function Schema(form, columns, options) {
     _classCallCheck(this, Schema);
@@ -108,6 +111,7 @@ var Schema = function () {
           var formColumn = _underscore2.default.clone(column);
 
           formColumn.system = true;
+          formColumn.type = this.maybeComplexType(formColumn.type);
 
           table.addColumn(formColumn);
         }
@@ -148,6 +152,7 @@ var Schema = function () {
           var valueColumn = _underscore2.default.clone(column);
 
           valueColumn.system = true;
+          valueColumn.type = this.maybeComplexType(valueColumn.type);
 
           table.addColumn(valueColumn);
         }
@@ -185,6 +190,7 @@ var Schema = function () {
 
           attrs.id = element.key + '_' + column.name;
           attrs.system = true;
+          attrs.type = this.maybeComplexType(attrs.type);
 
           table.addColumn(attrs);
         }
@@ -356,7 +362,13 @@ var Schema = function () {
 
               var indexDefinition = _underscore2.default.clone(index);
 
-              table.addIndex(indexDefinition);
+              var isComplex = indexDefinition.method === 'gist' || indexDefinition.method === 'gin';
+
+              var skip = isComplex && this.columns.disableComplexTypes === true;
+
+              if (!skip) {
+                table.addIndex(indexDefinition);
+              }
             }
           } catch (err) {
             _didIteratorError8 = true;
@@ -625,7 +637,7 @@ var Schema = function () {
 
       column = {
         id: name + suffix,
-        type: type,
+        type: this.maybeComplexType(type),
         element: null,
         suffix: suffix
       };
@@ -647,12 +659,19 @@ var Schema = function () {
 
       column = {
         id: this.prefix + element.key + suffix,
-        type: type,
+        type: this.maybeComplexType(type),
         element: element,
         suffix: suffix
       };
 
       table.addColumn(column);
+    }
+  }, {
+    key: 'maybeComplexType',
+    value: function maybeComplexType(type) {
+      var isComplex = SIMPLE_TYPES.indexOf(type) === -1;
+
+      return isComplex && this.columns.disableComplexTypes === true ? 'string' : type;
     }
   }, {
     key: 'addMediaElement',
