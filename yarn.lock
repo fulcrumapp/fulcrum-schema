@@ -2699,9 +2699,9 @@ sprintf-js@~1.0.2:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/sprintf-js/-/sprintf-js-1.0.3.tgz#04e6926f662895354f3dd015203633b857297e2c"
 
-sqldiff@^0.0.21:
-  version "0.0.21"
-  resolved "https://registry.yarnpkg.com/sqldiff/-/sqldiff-0.0.21.tgz#5ffdb090d18235179ad34a2ee01c541088367a24"
+sqldiff@^0.0.22:
+  version "0.0.22"
+  resolved "https://registry.yarnpkg.com/sqldiff/-/sqldiff-0.0.22.tgz#1fa2217f1c1f0e3d93b5bca72d6a5993ac8554ce"
   dependencies:
     underscore "^1.7.0"
 
