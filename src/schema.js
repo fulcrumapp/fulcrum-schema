@@ -27,6 +27,8 @@ export default class Schema {
     this.elements = Utils.flattenElements(this.form.elements, false);
     this.schemaElements = DataElements.find(this.elements);
     this.buildSchema();
+
+    columns.calculatedFieldDateFormat = columns.calculatedFieldDateFormat === 'date' ? 'date' : 'double';
   }
 
   buildSchema() {
@@ -342,8 +344,14 @@ export default class Schema {
 
       case 'CalculatedField':
         switch (element.display.style) {
-          case 'number':
           case 'date':
+            if (this.columns.calculatedFieldDateFormat === 'date') {
+              this.addDateElement(elementTable, element);
+            } else {
+              this.addDoubleElement(elementTable, element);
+            }
+            break;
+          case 'number':
           case 'currency':
             this.addDoubleElement(elementTable, element);
             break;

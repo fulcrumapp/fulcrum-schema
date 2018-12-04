@@ -45,6 +45,8 @@ var Schema = function () {
     this.elements = _utils2.default.flattenElements(this.form.elements, false);
     this.schemaElements = _dataElements2.default.find(this.elements);
     this.buildSchema();
+
+    columns.calculatedFieldDateFormat = columns.calculatedFieldDateFormat === 'date' ? 'date' : 'double';
   }
 
   _createClass(Schema, [{
@@ -539,8 +541,14 @@ var Schema = function () {
 
         case 'CalculatedField':
           switch (element.display.style) {
-            case 'number':
             case 'date':
+              if (this.columns.calculatedFieldDateFormat === 'date') {
+                this.addDateElement(elementTable, element);
+              } else {
+                this.addDoubleElement(elementTable, element);
+              }
+              break;
+            case 'number':
             case 'currency':
               this.addDoubleElement(elementTable, element);
               break;
