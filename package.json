@@ -1,6 +1,6 @@
 {
   "name": "fulcrum-schema",
-  "version": "2.0.11",
+  "version": "2.0.12",
   "description": "Table schemas for Fulcrum apps",
   "main": "./index.js",
   "repository": {
@@ -11,7 +11,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "npm run lint && node_modules/.bin/mocha ./test/setup.js test/test.js",
+    "test": "node_modules/.bin/mocha ./test/setup.js test/test.js",
     "prepublish": "npm run clean && npm run build",
     "lint": "node_modules/.bin/eslint src/*.js src/**/*.js",
     "build": "node_modules/.bin/babel src --out-dir dist --source-maps && browserify dist/postgres.js > dist/postgres.min.js --mangle",
@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.9.0",
-    "sqldiff": "^0.0.27",
+    "sqldiff": "^0.0.28",
     "underscore": "^1.8.3"
   },
   "devDependencies": {

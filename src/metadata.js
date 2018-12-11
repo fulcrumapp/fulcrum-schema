@@ -14,6 +14,7 @@ export default class Metadata {
   constructor(diff, options) {
     this.options = options || {};
     this.includeColumns = this.options.includeColumns == null ? true : this.options.includeColumns;
+    this.useAliases = this.options.useAliases == null ? true : this.options.useAliases;
   }
 
   build(generator, changes) {
@@ -114,12 +115,24 @@ export default class Metadata {
 
       let element = view.element || view.table.element;
 
+      let parentViewName = null;
+
+      const {parent} = view.table;
+
+      if (parent) {
+        if (this.useAliases) {
+          parentViewName = parent.alias;
+        } else {
+          parentViewName = this.newViews.find(v => v.table === parent && v.variant == null).name;
+        }
+      }
+
       statements.push(format('INSERT INTO %s (name, alias, type, parent, form_id, field, field_type, data_name) SELECT %s, %s, %s, %s, %s, %s, %s, %s;',
                              systemTablesName,
                              pgvalue(viewName),
                              pgvalue(viewAlias),
                              pgvalue(viewType),
-                             pgvalue(view.table.parent ? view.table.parent.alias : null),
+                             pgvalue(parentViewName),
                              pgvalue(view.table.form_id),
                              pgvalue(element ? element.key : null),
                              pgvalue(element ? element.type : null),

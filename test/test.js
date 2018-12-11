@@ -87,25 +87,23 @@ describe('form schema generator', () => {
 
     // dumpScript(cleanPG);
     // dumpScript(createPG);
-
-    'yo'.should.eql('');
   });
 });
 
-describe('organization schema generator', () => {
-  it('builds the organization schema', () => {
-    const oldSchema = null;
-    const newSchema = new OrganizationSchema(V2);
+// describe('organization schema generator', () => {
+//   it('builds the organization schema', () => {
+//     const oldSchema = null;
+//     const newSchema = new OrganizationSchema(V2);
 
-    const clean = new SchemaDiffer(newSchema, null);
-    const differ = new SchemaDiffer(oldSchema, newSchema);
+//     const clean = new SchemaDiffer(newSchema, null);
+//     const differ = new SchemaDiffer(oldSchema, newSchema);
 
-    const cleanPG = generatePostgres(clean);
-    const createPG = generatePostgres(differ);
+//     const cleanPG = generatePostgres(clean);
+//     const createPG = generatePostgres(differ);
 
-    dumpScript(cleanPG);
-    dumpScript(createPG);
+//     dumpScript(cleanPG);
+//     dumpScript(createPG);
 
-    pg.should.eql('');
-  });
-});
+//     pg.should.eql('');
+//   });
+// });

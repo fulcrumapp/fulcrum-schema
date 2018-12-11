@@ -34,6 +34,7 @@ var Metadata = function () {
 
     this.options = options || {};
     this.includeColumns = this.options.includeColumns == null ? true : this.options.includeColumns;
+    this.useAliases = this.options.useAliases == null ? true : this.options.useAliases;
   }
 
   _createClass(Metadata, [{
@@ -69,6 +70,8 @@ var Metadata = function () {
   }, {
     key: 'buildStatements',
     value: function buildStatements() {
+      var _this = this;
+
       var statements = [];
 
       var systemTablesName = _utils2.default.tableName(this.options.schema, this.options.prefix, this.options.quote, 'tables');
@@ -140,31 +143,46 @@ var Metadata = function () {
       var _iteratorError2 = undefined;
 
       try {
-        for (var _iterator2 = this.newViews[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-          var _view = _step2.value;
+        var _loop = function _loop() {
+          var view = _step2.value;
 
-          var viewName = this.viewName(_view.name);
-          var viewAlias = _view.alias || _view.table.alias;
-          var viewType = _view.type || _view.table.type;
+          var viewName = _this.viewName(view.name);
+          var viewAlias = view.alias || view.table.alias;
+          var viewType = view.type || view.table.type;
 
           // skip the _full and 'values' tables
-          if (viewType === 'values' || _view.variant != null) {
-            continue;
+          if (viewType === 'values' || view.variant != null) {
+            return 'continue';
           }
 
           statements.push((0, _util.format)('DELETE FROM %s WHERE name = %s;', systemTablesName, pgvalue(viewName)));
 
-          if (this.includeColumns) {
+          if (_this.includeColumns) {
             statements.push((0, _util.format)('DELETE FROM %s WHERE table_name = %s;', systemColumnsName, pgvalue(viewName)));
           }
 
-          var element = _view.element || _view.table.element;
+          var element = view.element || view.table.element;
 
-          statements.push((0, _util.format)('INSERT INTO %s (name, alias, type, parent, form_id, field, field_type, data_name) SELECT %s, %s, %s, %s, %s, %s, %s, %s;', systemTablesName, pgvalue(viewName), pgvalue(viewAlias), pgvalue(viewType), pgvalue(_view.table.parent ? _view.table.parent.alias : null), pgvalue(_view.table.form_id), pgvalue(element ? element.key : null), pgvalue(element ? element.type : null), pgvalue(element ? element.data_name : null)));
+          var parentViewName = null;
 
-          if (this.includeColumns) {
-            for (var i = 0; i < _view.columns.length; ++i) {
-              var column = _view.columns[i];
+          var parent = view.table.parent;
+
+
+          if (parent) {
+            if (_this.useAliases) {
+              parentViewName = parent.alias;
+            } else {
+              parentViewName = _this.newViews.find(function (v) {
+                return v.table === parent && v.variant == null;
+              }).name;
+            }
+          }
+
+          statements.push((0, _util.format)('INSERT INTO %s (name, alias, type, parent, form_id, field, field_type, data_name) SELECT %s, %s, %s, %s, %s, %s, %s, %s;', systemTablesName, pgvalue(viewName), pgvalue(viewAlias), pgvalue(viewType), pgvalue(parentViewName), pgvalue(view.table.form_id), pgvalue(element ? element.key : null), pgvalue(element ? element.type : null), pgvalue(element ? element.data_name : null)));
+
+          if (_this.includeColumns) {
+            for (var i = 0; i < view.columns.length; ++i) {
+              var column = view.columns[i];
 
               // statements.push(format('DELETE FROM %s WHERE table_name = %s AND name = %s;',
               //                        systemColumnsName,
@@ -187,9 +205,15 @@ var Metadata = function () {
                 // data = JSON.stringify(element);
               }
 
-              statements.push((0, _util.format)('INSERT INTO %s (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)\n' + 'SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s;', systemColumnsName, pgvalue(viewName), pgvalue(viewAlias), pgvalue(column.alias), pgvalue(i + 1), pgvalue(column.column.type), pgvalue(column.column.allowNull ? 1 : 0), pgvalue(_view.table.form_id), pgvalue(field), pgvalue(fieldType), pgvalue(dataName), pgvalue(part), pgvalue(data)));
+              statements.push((0, _util.format)('INSERT INTO %s (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)\n' + 'SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s;', systemColumnsName, pgvalue(viewName), pgvalue(viewAlias), pgvalue(column.alias), pgvalue(i + 1), pgvalue(column.column.type), pgvalue(column.column.allowNull ? 1 : 0), pgvalue(view.table.form_id), pgvalue(field), pgvalue(fieldType), pgvalue(dataName), pgvalue(part), pgvalue(data)));
             }
           }
+        };
+
+        for (var _iterator2 = this.newViews[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var _ret = _loop();
+
+          if (_ret === 'continue') continue;
         }
       } catch (err) {
         _didIteratorError2 = true;
