@@ -299,7 +299,74 @@ CREATE TABLE IF NOT EXISTS organization.videos (
   CONSTRAINT videos_pkey PRIMARY KEY (id)
 );
 
-DROP VIEW IF EXISTS organization.audio_view;
+CREATE TABLE IF NOT EXISTS organization.query_devices (
+  id bigserial NOT NULL,
+  row_id bigint NOT NULL,
+  row_resource_id text NOT NULL,
+  identifier text NOT NULL,
+  platform text,
+  platform_version text,
+  manufacturer text,
+  model text,
+  application_version text,
+  application_build text,
+  ip_address text,
+  location text,
+  latitude double precision,
+  longitude double precision,
+  accuracy double precision,
+  locality text,
+  admin_area text,
+  postal_code text,
+  country text,
+  created_at timestamp with time zone NOT NULL,
+  updated_at timestamp with time zone NOT NULL,
+  CONSTRAINT query_devices_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS organization.query_memberships_devices (
+  id bigserial NOT NULL,
+  row_id bigint NOT NULL,
+  user_id bigint NOT NULL,
+  user_resource_id text,
+  device_id bigint NOT NULL,
+  device_resource_id text,
+  created_at timestamp with time zone NOT NULL,
+  updated_at timestamp with time zone NOT NULL,
+  CONSTRAINT query_memberships_devices_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS organization.query_memberships_forms (
+  id bigserial NOT NULL,
+  row_id bigint NOT NULL,
+  user_id bigint NOT NULL,
+  user_resource_id text,
+  form_id bigint NOT NULL,
+  form_resource_id text,
+  CONSTRAINT query_memberships_forms_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS organization.query_memberships_projects (
+  id bigserial NOT NULL,
+  row_id bigint NOT NULL,
+  user_id bigint NOT NULL,
+  user_resource_id text,
+  project_id bigint NOT NULL,
+  project_resource_id text,
+  CONSTRAINT query_memberships_projects_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS organization.query_memberships_layers (
+  id bigserial NOT NULL,
+  row_id bigint NOT NULL,
+  user_id bigint NOT NULL,
+  user_resource_id text,
+  layer_id bigint NOT NULL,
+  layer_resource_id text,
+  CONSTRAINT query_memberships_layers_pkey PRIMARY KEY (id)
+);
+
+DROP VIEW IF EXISTS organization.audio_view CASCADE;
 
 CREATE OR REPLACE VIEW organization.audio_view AS
 SELECT
@@ -324,7 +391,7 @@ SELECT
   deleted_at AS deleted_at
 FROM organization.audio;
 
-DROP VIEW IF EXISTS organization.changesets_view;
+DROP VIEW IF EXISTS organization.changesets_view CASCADE;
 
 CREATE OR REPLACE VIEW organization.changesets_view AS
 SELECT
@@ -348,7 +415,7 @@ SELECT
   metadata_index AS metadata_index
 FROM organization.changesets;
 
-DROP VIEW IF EXISTS organization.choice_lists_view;
+DROP VIEW IF EXISTS organization.choice_lists_view CASCADE;
 
 CREATE OR REPLACE VIEW organization.choice_lists_view AS
 SELECT
@@ -363,7 +430,7 @@ SELECT
   updated_at AS updated_at
 FROM organization.choice_lists;
 
-DROP VIEW IF EXISTS organization.classification_sets_view;
+DROP VIEW IF EXISTS organization.classification_sets_view CASCADE;
 
 CREATE OR REPLACE VIEW organization.classification_sets_view AS
 SELECT
@@ -378,7 +445,7 @@ SELECT
   updated_at AS updated_at
 FROM organization.classification_sets;
 
-DROP VIEW IF EXISTS organization.forms_view;
+DROP VIEW IF EXISTS organization.forms_view CASCADE;
 
 CREATE OR REPLACE VIEW organization.forms_view AS
 SELECT
@@ -405,7 +472,7 @@ SELECT
   assignment_enabled AS assignment_enabled
 FROM organization.forms;
 
-DROP VIEW IF EXISTS organization.memberships_view;
+DROP VIEW IF EXISTS organization.memberships_view CASCADE;
 
 CREATE OR REPLACE VIEW organization.memberships_view AS
 SELECT
@@ -422,7 +489,7 @@ SELECT
   updated_at AS updated_at
 FROM organization.memberships;
 
-DROP VIEW IF EXISTS organization.photos_view;
+DROP VIEW IF EXISTS organization.photos_view CASCADE;
 
 CREATE OR REPLACE VIEW organization.photos_view AS
 SELECT
@@ -454,7 +521,7 @@ SELECT
   deleted_at AS deleted_at
 FROM organization.photos;
 
-DROP VIEW IF EXISTS organization.projects_view;
+DROP VIEW IF EXISTS organization.projects_view CASCADE;
 
 CREATE OR REPLACE VIEW organization.projects_view AS
 SELECT
@@ -466,7 +533,7 @@ SELECT
   updated_at AS updated_at
 FROM organization.projects;
 
-DROP VIEW IF EXISTS organization.roles_view;
+DROP VIEW IF EXISTS organization.roles_view CASCADE;
 
 CREATE OR REPLACE VIEW organization.roles_view AS
 SELECT
@@ -499,7 +566,7 @@ SELECT
   can_manage_authorizations AS can_manage_authorizations
 FROM organization.roles;
 
-DROP VIEW IF EXISTS organization.signatures_view;
+DROP VIEW IF EXISTS organization.signatures_view CASCADE;
 
 CREATE OR REPLACE VIEW organization.signatures_view AS
 SELECT
@@ -519,7 +586,7 @@ SELECT
   deleted_at AS deleted_at
 FROM organization.signatures;
 
-DROP VIEW IF EXISTS organization.videos_view;
+DROP VIEW IF EXISTS organization.videos_view CASCADE;
 
 CREATE OR REPLACE VIEW organization.videos_view AS
 SELECT
@@ -545,6 +612,64 @@ SELECT
   duration AS duration,
   deleted_at AS deleted_at
 FROM organization.videos;
+
+DROP VIEW IF EXISTS organization.devices_view CASCADE;
+
+CREATE OR REPLACE VIEW organization.devices_view AS
+SELECT
+  row_resource_id AS device_id,
+  identifier AS identifier,
+  platform AS platform,
+  platform_version AS platform_version,
+  manufacturer AS manufacturer,
+  model AS model,
+  application_version AS application_version,
+  application_build AS application_build,
+  ip_address AS ip_address,
+  location AS location,
+  latitude AS latitude,
+  longitude AS longitude,
+  accuracy AS accuracy,
+  locality AS locality,
+  admin_area AS admin_area,
+  country AS country,
+  created_at AS created_at,
+  updated_at AS updated_at
+FROM organization.query_devices;
+
+DROP VIEW IF EXISTS organization.memberships_devices_view CASCADE;
+
+CREATE OR REPLACE VIEW organization.memberships_devices_view AS
+SELECT
+  user_resource_id AS user_id,
+  device_resource_id AS device_id,
+  created_at AS created_at,
+  updated_at AS updated_at
+FROM organization.query_memberships_devices;
+
+DROP VIEW IF EXISTS organization.memberships_forms_view CASCADE;
+
+CREATE OR REPLACE VIEW organization.memberships_forms_view AS
+SELECT
+  user_resource_id AS user_id,
+  form_resource_id AS form_id
+FROM organization.query_memberships_forms;
+
+DROP VIEW IF EXISTS organization.memberships_projects_view CASCADE;
+
+CREATE OR REPLACE VIEW organization.memberships_projects_view AS
+SELECT
+  user_resource_id AS user_id,
+  project_resource_id AS project_id
+FROM organization.query_memberships_projects;
+
+DROP VIEW IF EXISTS organization.memberships_layers_view CASCADE;
+
+CREATE OR REPLACE VIEW organization.memberships_layers_view AS
+SELECT
+  user_resource_id AS user_id,
+  layer_resource_id AS layer_id
+FROM organization.query_memberships_layers;
 
 CREATE UNIQUE INDEX idx_audio_row_resource_id ON organization.audio USING btree (row_resource_id);
 
@@ -671,6 +796,48 @@ CREATE INDEX idx_videos_created_by_resource_id ON organization.videos USING btre
 CREATE INDEX idx_videos_geometry ON organization.videos USING gist (geometry);
 
 CREATE INDEX idx_videos_updated_at ON organization.videos USING btree (updated_at);
+
+CREATE UNIQUE INDEX idx_query_devices_row_resource_id ON organization.query_devices USING btree (row_resource_id);
+
+CREATE UNIQUE INDEX idx_query_devices_row_id ON organization.query_devices USING btree (row_id);
+
+CREATE INDEX idx_query_devices_identifier ON organization.query_devices USING btree (identifier);
+
+CREATE INDEX idx_query_devices_platform ON organization.query_devices USING btree (platform);
+
+CREATE INDEX idx_query_devices_manufacturer ON organization.query_devices USING btree (manufacturer);
+
+CREATE INDEX idx_query_devices_updated_at ON organization.query_devices USING btree (updated_at);
+
+CREATE UNIQUE INDEX idx_query_memberships_devices_row_id ON organization.query_memberships_devices USING btree (row_id);
+
+CREATE INDEX idx_query_memberships_devices_user_resource_id ON organization.query_memberships_devices USING btree (user_resource_id);
+
+CREATE INDEX idx_query_memberships_devices_device_resource_id ON organization.query_memberships_devices USING btree (device_resource_id);
+
+CREATE INDEX idx_query_memberships_devices_updated_at ON organization.query_memberships_devices USING btree (updated_at);
+
+CREATE UNIQUE INDEX idx_query_memberships_forms_row_id ON organization.query_memberships_forms USING btree (row_id);
+
+CREATE INDEX idx_query_memberships_forms_user_resource_id ON organization.query_memberships_forms USING btree (user_resource_id);
+
+CREATE INDEX idx_query_memberships_forms_form_resource_id ON organization.query_memberships_forms USING btree (form_resource_id);
+
+CREATE UNIQUE INDEX idx_query_memberships_projects_row_id ON organization.query_memberships_projects USING btree (row_id);
+
+CREATE INDEX idx_query_memberships_projects_user_resource_id ON organization.query_memberships_projects USING btree (user_resource_id);
+
+CREATE INDEX idx_query_memberships_projects_project_resource_id ON organization.query_memberships_projects USING btree (project_resource_id);
+
+CREATE UNIQUE INDEX idx_query_memberships_layers_row_id ON organization.query_memberships_layers USING btree (row_id);
+
+CREATE INDEX idx_query_memberships_layers_user_resource_id ON organization.query_memberships_layers USING btree (user_resource_id);
+
+CREATE INDEX idx_query_memberships_layers_layer_resource_id ON organization.query_memberships_layers USING btree (layer_resource_id);
+
+CREATE TABLE IF NOT EXISTS "organization"."schema_changes" (name text NOT NULL, created_at timestamp with time zone NOT NULL, sql TEXT NOT NULL);
+
+CREATE UNIQUE INDEX ON "organization"."schema_changes" (name);
 
 CREATE TABLE IF NOT EXISTS "organization"."tables" (name text, alias text, type text, parent text, form_id text, field text, field_type text, data_name text);
 
@@ -1296,3 +1463,117 @@ SELECT 'videos_view', 'videos', 'duration', '20', 'double', '1', NULL, NULL, NUL
 
 INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'videos_view', 'videos', 'deleted_at', '21', 'timestamp', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+DELETE FROM "organization"."tables" WHERE name = 'devices_view';
+
+DELETE FROM "organization"."columns" WHERE table_name = 'devices_view';
+
+INSERT INTO "organization"."tables" (name, alias, type, parent, form_id, field, field_type, data_name) SELECT 'devices_view', 'devices', 'system', NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'devices_view', 'devices', 'device_id', '1', 'string', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'devices_view', 'devices', 'identifier', '2', 'string', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'devices_view', 'devices', 'platform', '3', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'devices_view', 'devices', 'platform_version', '4', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'devices_view', 'devices', 'manufacturer', '5', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'devices_view', 'devices', 'model', '6', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'devices_view', 'devices', 'application_version', '7', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'devices_view', 'devices', 'application_build', '8', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'devices_view', 'devices', 'ip_address', '9', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'devices_view', 'devices', 'location', '10', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'devices_view', 'devices', 'latitude', '11', 'double', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'devices_view', 'devices', 'longitude', '12', 'double', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'devices_view', 'devices', 'accuracy', '13', 'double', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'devices_view', 'devices', 'locality', '14', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'devices_view', 'devices', 'admin_area', '15', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'devices_view', 'devices', 'country', '16', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'devices_view', 'devices', 'created_at', '17', 'timestamp', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'devices_view', 'devices', 'updated_at', '18', 'timestamp', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+DELETE FROM "organization"."tables" WHERE name = 'memberships_devices_view';
+
+DELETE FROM "organization"."columns" WHERE table_name = 'memberships_devices_view';
+
+INSERT INTO "organization"."tables" (name, alias, type, parent, form_id, field, field_type, data_name) SELECT 'memberships_devices_view', 'memberships_devices', 'system', NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'memberships_devices_view', 'memberships_devices', 'user_id', '1', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'memberships_devices_view', 'memberships_devices', 'device_id', '2', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'memberships_devices_view', 'memberships_devices', 'created_at', '3', 'timestamp', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'memberships_devices_view', 'memberships_devices', 'updated_at', '4', 'timestamp', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+DELETE FROM "organization"."tables" WHERE name = 'memberships_forms_view';
+
+DELETE FROM "organization"."columns" WHERE table_name = 'memberships_forms_view';
+
+INSERT INTO "organization"."tables" (name, alias, type, parent, form_id, field, field_type, data_name) SELECT 'memberships_forms_view', 'memberships_forms', 'system', NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'memberships_forms_view', 'memberships_forms', 'user_id', '1', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'memberships_forms_view', 'memberships_forms', 'form_id', '2', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+DELETE FROM "organization"."tables" WHERE name = 'memberships_projects_view';
+
+DELETE FROM "organization"."columns" WHERE table_name = 'memberships_projects_view';
+
+INSERT INTO "organization"."tables" (name, alias, type, parent, form_id, field, field_type, data_name) SELECT 'memberships_projects_view', 'memberships_projects', 'system', NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'memberships_projects_view', 'memberships_projects', 'user_id', '1', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'memberships_projects_view', 'memberships_projects', 'project_id', '2', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+DELETE FROM "organization"."tables" WHERE name = 'memberships_layers_view';
+
+DELETE FROM "organization"."columns" WHERE table_name = 'memberships_layers_view';
+
+INSERT INTO "organization"."tables" (name, alias, type, parent, form_id, field, field_type, data_name) SELECT 'memberships_layers_view', 'memberships_layers', 'system', NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'memberships_layers_view', 'memberships_layers', 'user_id', '1', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'memberships_layers_view', 'memberships_layers', 'layer_id', '2', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;

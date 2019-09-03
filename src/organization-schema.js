@@ -52,7 +52,9 @@ export default class OrganizationSchema {
 
   buildViews() {
     for (const table of this.tables) {
-      const view = new View(table.name + '_view', null, table);
+      const alias = table.name.replace(/^query_/, '');
+
+      const view = new View(alias + '_view', null, table, {alias});
 
       const columnNames = {};
 
