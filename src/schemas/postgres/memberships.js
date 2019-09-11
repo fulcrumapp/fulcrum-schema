@@ -21,7 +21,7 @@ export default class Memberships extends TableDefinition {
     this.string('status', {});
     this.timestamp('created_at', {"allowNull":false});
     this.timestamp('updated_at', {"allowNull":false});
-    this.boolean('is_managed', {"allowNull":false, "default": "0"});
+    this.boolean('is_managed', {});
   }
 
   defineView() {

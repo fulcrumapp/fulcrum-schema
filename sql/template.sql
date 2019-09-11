@@ -151,7 +151,7 @@ CREATE TABLE IF NOT EXISTS organization.memberships (
   status text,
   created_at timestamp with time zone NOT NULL,
   updated_at timestamp with time zone NOT NULL,
-  is_managed boolean NOT NULL,
+  is_managed boolean,
   CONSTRAINT memberships_pkey PRIMARY KEY (id)
 );
 
@@ -1155,7 +1155,7 @@ INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, ty
 SELECT 'memberships_view', 'memberships', 'updated_at', '11', 'timestamp', '0', NULL, NULL, NULL, NULL, NULL, NULL;
 
 INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'memberships_view', 'memberships', 'is_managed', '12', 'boolean', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+SELECT 'memberships_view', 'memberships', 'is_managed', '12', 'boolean', '1', NULL, NULL, NULL, NULL, NULL, NULL;
 
 DELETE FROM "organization"."tables" WHERE name = 'photos_view';
 
