@@ -21,6 +21,7 @@ export default class Memberships extends TableDefinition {
     this.string('status', {});
     this.timestamp('created_at', {"allowNull":false});
     this.timestamp('updated_at', {"allowNull":false});
+    this.boolean('is_managed', {"allowNull":false, "default": "0"});
   }
 
   defineView() {
@@ -35,6 +36,7 @@ export default class Memberships extends TableDefinition {
     this.alias('status', 'status');
     this.alias('created_at', 'created_at');
     this.alias('updated_at', 'updated_at');
+    this.alias('is_managed', 'is_managed');
   }
 
   defineIndexes() {

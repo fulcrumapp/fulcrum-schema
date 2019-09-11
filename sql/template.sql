@@ -151,6 +151,7 @@ CREATE TABLE IF NOT EXISTS organization.memberships (
   status text,
   created_at timestamp with time zone NOT NULL,
   updated_at timestamp with time zone NOT NULL,
+  is_managed boolean NOT NULL,
   CONSTRAINT memberships_pkey PRIMARY KEY (id)
 );
 
@@ -486,7 +487,8 @@ SELECT
   role_name AS role_name,
   status AS status,
   created_at AS created_at,
-  updated_at AS updated_at
+  updated_at AS updated_at,
+  is_managed AS is_managed
 FROM organization.memberships;
 
 DROP VIEW IF EXISTS organization.photos_view CASCADE;
@@ -1151,6 +1153,9 @@ SELECT 'memberships_view', 'memberships', 'created_at', '10', 'timestamp', '0', 
 
 INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'memberships_view', 'memberships', 'updated_at', '11', 'timestamp', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'memberships_view', 'memberships', 'is_managed', '12', 'boolean', '0', NULL, NULL, NULL, NULL, NULL, NULL;
 
 DELETE FROM "organization"."tables" WHERE name = 'photos_view';
 
