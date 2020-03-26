@@ -18,70 +18,47 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Memberships = function (_TableDefinition) {
-  _inherits(Memberships, _TableDefinition);
+var MembershipsLayers = function (_TableDefinition) {
+  _inherits(MembershipsLayers, _TableDefinition);
 
-  function Memberships() {
-    _classCallCheck(this, Memberships);
+  function MembershipsLayers() {
+    _classCallCheck(this, MembershipsLayers);
 
-    return _possibleConstructorReturn(this, (Memberships.__proto__ || Object.getPrototypeOf(Memberships)).apply(this, arguments));
+    return _possibleConstructorReturn(this, (MembershipsLayers.__proto__ || Object.getPrototypeOf(MembershipsLayers)).apply(this, arguments));
   }
 
-  _createClass(Memberships, [{
+  _createClass(MembershipsLayers, [{
     key: 'defineTable',
     value: function defineTable() {
       this.pk('id', {});
       this.integer('row_id', { "allowNull": false });
-      this.string('row_resource_id', { "allowNull": false });
       this.integer('user_id', { "allowNull": false });
       this.string('user_resource_id', {});
-      this.string('first_name', {});
-      this.string('last_name', {});
-      this.string('name', {});
-      this.string('email', {});
-      this.integer('role_id', { "allowNull": false });
-      this.string('role_resource_id', { "allowNull": false });
-      this.string('role_name', { "allowNull": false });
-      this.string('status', {});
-      this.timestamp('created_at', { "allowNull": false });
-      this.timestamp('updated_at', { "allowNull": false });
-      this.boolean('is_managed', {});
+      this.integer('layer_id', { "allowNull": false });
+      this.string('layer_resource_id', {});
     }
   }, {
     key: 'defineView',
     value: function defineView() {
-      this.alias('row_resource_id', 'membership_id');
       this.alias('user_resource_id', 'user_id');
-      this.alias('first_name', 'first_name');
-      this.alias('last_name', 'last_name');
-      this.alias('name', 'name');
-      this.alias('email', 'email');
-      this.alias('role_resource_id', 'role_id');
-      this.alias('role_name', 'role_name');
-      this.alias('status', 'status');
-      this.alias('created_at', 'created_at');
-      this.alias('updated_at', 'updated_at');
-      this.alias('is_managed', 'is_managed');
+      this.alias('layer_resource_id', 'layer_id');
     }
   }, {
     key: 'defineIndexes',
     value: function defineIndexes() {
-      this.index({ "columns": ["row_resource_id"], "unique": true });
       this.index({ "columns": ["row_id"], "unique": true });
       this.index({ "columns": ["user_resource_id"] });
-      this.index({ "columns": ["role_resource_id"] });
-      this.index({ "columns": ["name"] });
-      this.index({ "columns": ["updated_at"] });
+      this.index({ "columns": ["layer_resource_id"] });
     }
   }, {
     key: 'name',
     get: function get() {
-      return 'memberships';
+      return 'query_memberships_layers';
     }
   }]);
 
-  return Memberships;
+  return MembershipsLayers;
 }(_tableDefinition2.default);
 
-exports.default = Memberships;
-//# sourceMappingURL=memberships.js.map
+exports.default = MembershipsLayers;
+//# sourceMappingURL=memberships-layers.js.map
