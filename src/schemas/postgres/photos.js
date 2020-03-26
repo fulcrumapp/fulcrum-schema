@@ -39,6 +39,14 @@ export default class Photos extends TableDefinition {
     this.string('model', {});
     this.string('software', {});
     this.timestamp('deleted_at', {});
+    this.string('labels', {});
+    this.string('labels_index_content', {});
+    this.fts('labels_index', {});
+    this.timestamp('labels_processed_at', {});
+    this.string('text', {});
+    this.string('text_index_content', {});
+    this.fts('text_index', {});
+    this.timestamp('text_processed_at', {});
   }
 
   defineView() {
@@ -68,6 +76,14 @@ export default class Photos extends TableDefinition {
     this.alias('model', 'model');
     this.alias('software', 'software');
     this.alias('deleted_at', 'deleted_at');
+    this.alias('labels', 'labels');
+    this.alias('labels_index_content', 'labels_index_content');
+    this.alias('labels_index', 'labels_index');
+    this.alias('labels_processed_at', 'labels_processed_at');
+    this.alias('text', 'text');
+    this.alias('text_index_content', 'text_index_content');
+    this.alias('text_index', 'text_index');
+    this.alias('text_processed_at', 'text_processed_at');
   }
 
   defineIndexes() {
@@ -79,5 +95,7 @@ export default class Photos extends TableDefinition {
     this.index({"columns":["created_by_resource_id"]});
     this.index({"columns":["geometry"],"method":"gist"});
     this.index({"columns":["updated_at"]});
+    this.index({"columns":["labels_index"],"method":"gin"});
+    this.index({"columns":["text_index"],"method":"gin"});
   }
 }
