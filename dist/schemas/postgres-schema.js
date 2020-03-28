@@ -48,9 +48,29 @@ var _videos = require('./postgres/videos');
 
 var _videos2 = _interopRequireDefault(_videos);
 
+var _devices = require('./postgres/devices');
+
+var _devices2 = _interopRequireDefault(_devices);
+
+var _membershipsDevices = require('./postgres/memberships-devices');
+
+var _membershipsDevices2 = _interopRequireDefault(_membershipsDevices);
+
+var _membershipsForms = require('./postgres/memberships-forms');
+
+var _membershipsForms2 = _interopRequireDefault(_membershipsForms);
+
+var _membershipsProjects = require('./postgres/memberships-projects');
+
+var _membershipsProjects2 = _interopRequireDefault(_membershipsProjects);
+
+var _membershipsLayers = require('./postgres/memberships-layers');
+
+var _membershipsLayers2 = _interopRequireDefault(_membershipsLayers);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var tables = [_audio2.default, _changesets2.default, _choiceLists2.default, _classificationSets2.default, _forms2.default, _memberships2.default, _photos2.default, _projects2.default, _roles2.default, _signatures2.default, _videos2.default];
+var tables = [_audio2.default, _changesets2.default, _choiceLists2.default, _classificationSets2.default, _forms2.default, _memberships2.default, _photos2.default, _projects2.default, _roles2.default, _signatures2.default, _videos2.default, _devices2.default, _membershipsDevices2.default, _membershipsForms2.default, _membershipsProjects2.default, _membershipsLayers2.default];
 
 exports.default = tables;
 //# sourceMappingURL=postgres-schema.js.map

@@ -146,7 +146,9 @@ var OrganizationSchema = function () {
         for (var _iterator4 = this.tables[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
           var table = _step4.value;
 
-          var view = new View(table.name + '_view', null, table);
+          var alias = table.name.replace(/^query_/, '');
+
+          var view = new View(alias + '_view', null, table, { alias: alias });
 
           var columnNames = {};
 
@@ -160,16 +162,16 @@ var OrganizationSchema = function () {
             for (var _iterator5 = table.columns[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
               var column = _step5.value;
 
-              var alias = definition.viewColumns[column.name];
+              var _alias = definition.viewColumns[column.name];
 
-              if (alias == null) {
+              if (_alias == null) {
                 // console.log('Skipping ' + table.name + '.' + column.name + ' in view.');
                 continue;
               }
 
-              if (!columnNames[alias]) {
-                view.addColumn({ column: column, alias: alias });
-                columnNames[alias] = column;
+              if (!columnNames[_alias]) {
+                view.addColumn({ column: column, alias: _alias });
+                columnNames[_alias] = column;
               }
             }
           } catch (err) {

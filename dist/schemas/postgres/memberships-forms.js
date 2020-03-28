@@ -18,70 +18,47 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Memberships = function (_TableDefinition) {
-  _inherits(Memberships, _TableDefinition);
+var MembershipsForms = function (_TableDefinition) {
+  _inherits(MembershipsForms, _TableDefinition);
 
-  function Memberships() {
-    _classCallCheck(this, Memberships);
+  function MembershipsForms() {
+    _classCallCheck(this, MembershipsForms);
 
-    return _possibleConstructorReturn(this, (Memberships.__proto__ || Object.getPrototypeOf(Memberships)).apply(this, arguments));
+    return _possibleConstructorReturn(this, (MembershipsForms.__proto__ || Object.getPrototypeOf(MembershipsForms)).apply(this, arguments));
   }
 
-  _createClass(Memberships, [{
+  _createClass(MembershipsForms, [{
     key: 'defineTable',
     value: function defineTable() {
       this.pk('id', {});
       this.integer('row_id', { "allowNull": false });
-      this.string('row_resource_id', { "allowNull": false });
       this.integer('user_id', { "allowNull": false });
       this.string('user_resource_id', {});
-      this.string('first_name', {});
-      this.string('last_name', {});
-      this.string('name', {});
-      this.string('email', {});
-      this.integer('role_id', { "allowNull": false });
-      this.string('role_resource_id', { "allowNull": false });
-      this.string('role_name', { "allowNull": false });
-      this.string('status', {});
-      this.timestamp('created_at', { "allowNull": false });
-      this.timestamp('updated_at', { "allowNull": false });
-      this.boolean('is_managed', {});
+      this.integer('form_id', { "allowNull": false });
+      this.string('form_resource_id', {});
     }
   }, {
     key: 'defineView',
     value: function defineView() {
-      this.alias('row_resource_id', 'membership_id');
       this.alias('user_resource_id', 'user_id');
-      this.alias('first_name', 'first_name');
-      this.alias('last_name', 'last_name');
-      this.alias('name', 'name');
-      this.alias('email', 'email');
-      this.alias('role_resource_id', 'role_id');
-      this.alias('role_name', 'role_name');
-      this.alias('status', 'status');
-      this.alias('created_at', 'created_at');
-      this.alias('updated_at', 'updated_at');
-      this.alias('is_managed', 'is_managed');
+      this.alias('form_resource_id', 'form_id');
     }
   }, {
     key: 'defineIndexes',
     value: function defineIndexes() {
-      this.index({ "columns": ["row_resource_id"], "unique": true });
       this.index({ "columns": ["row_id"], "unique": true });
       this.index({ "columns": ["user_resource_id"] });
-      this.index({ "columns": ["role_resource_id"] });
-      this.index({ "columns": ["name"] });
-      this.index({ "columns": ["updated_at"] });
+      this.index({ "columns": ["form_resource_id"] });
     }
   }, {
     key: 'name',
     get: function get() {
-      return 'memberships';
+      return 'query_memberships_forms';
     }
   }]);
 
-  return Memberships;
+  return MembershipsForms;
 }(_tableDefinition2.default);
 
-exports.default = Memberships;
-//# sourceMappingURL=memberships.js.map
+exports.default = MembershipsForms;
+//# sourceMappingURL=memberships-forms.js.map
