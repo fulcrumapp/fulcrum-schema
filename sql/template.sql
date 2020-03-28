@@ -703,6 +703,8 @@ CREATE INDEX idx_changesets_updated_at ON organization.changesets USING btree (u
 
 CREATE INDEX idx_changesets_form_resource_id_updated_at ON organization.changesets USING btree (form_resource_id, updated_at);
 
+CREATE INDEX idx_changesets_created_by_resource_id_updated_at ON organization.changesets USING btree (created_by_resource_id, updated_at);
+
 CREATE UNIQUE INDEX idx_choice_lists_row_resource_id ON organization.choice_lists USING btree (row_resource_id);
 
 CREATE UNIQUE INDEX idx_choice_lists_row_id ON organization.choice_lists USING btree (row_id);

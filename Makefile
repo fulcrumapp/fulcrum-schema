@@ -1,12 +1,10 @@
 all: build
 
-template:
-	./generate-template > sql/template.sql
-
 build:
 	NODE_ENV=production npm run build
+	./generate-template > sql/template.sql
 
 test:
 	npm test
 
-.PHONY: build template test
+.PHONY: build test
