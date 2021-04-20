@@ -612,6 +612,22 @@
             "max_length": null
           },
           {
+            "type": "AttachmentField",
+            "key": "92ff",
+            "label": "Attachments",
+            "description": null,
+            "required": false,
+            "disabled": false,
+            "hidden": false,
+            "data_name": "attachments",
+            "default_value": null,
+            "visible_conditions_type": null,
+            "visible_conditions_behavior": null,
+            "visible_conditions": null,
+            "required_conditions_type": null,
+            "required_conditions": null
+            },
+          {
             "type": "ChoiceField",
             "key": "4cf8",
             "label": "Status",

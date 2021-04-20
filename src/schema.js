@@ -297,6 +297,7 @@ export default class Schema {
       case 'PhotoField':
       case 'VideoField':
       case 'AudioField':
+      case 'AttachmentField':
         this.addMediaElement(elementTable, element);
         break;
 
@@ -500,7 +501,8 @@ export default class Schema {
     const alias = {
       PhotoField: '_photo_id',
       VideoField: '_video_id',
-      AudioField: '_audio_id'
+      AudioField: '_audio_id',
+      AttachmentField: '_attachment_id'
     }[element.type];
 
     if (alias) {

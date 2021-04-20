@@ -16,7 +16,8 @@ const DATA_ELEMENTS = [
   'AddressField',
   'HyperlinkField',
   'CalculatedField',
-  'RecordLinkField'
+  'RecordLinkField',
+  'AttachmentField'
 ];
 
 export default class DataElements {
