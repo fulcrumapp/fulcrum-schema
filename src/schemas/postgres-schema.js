@@ -1,4 +1,5 @@
 import Audio from './postgres/audio';
+import Attachments from './postgres/attachments';
 import Changesets from './postgres/changesets';
 import ChoiceLists from './postgres/choice-lists';
 import ClassificationSets from './postgres/classification-sets';
@@ -17,6 +18,7 @@ import MembershipsLayers from './postgres/memberships-layers';
 
 const tables = [
   Audio,
+  Attachments,
   Changesets,
   ChoiceLists,
   ClassificationSets,
