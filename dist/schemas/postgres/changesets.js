@@ -87,6 +87,8 @@ var Changesets = function (_TableDefinition) {
       this.index({ "columns": ["metadata_index"], "method": "gin" });
       this.index({ "columns": ["form_id", "updated_at"] });
       this.index({ "columns": ["updated_at"] });
+      this.index({ "columns": ["form_resource_id", "updated_at"] });
+      this.index({ "columns": ["created_by_resource_id", "updated_at"] });
     }
   }, {
     key: 'name',

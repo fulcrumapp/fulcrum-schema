@@ -189,6 +189,14 @@ CREATE TABLE IF NOT EXISTS organization.photos (
   model text,
   software text,
   deleted_at timestamp with time zone,
+  labels text,
+  labels_index_content text,
+  labels_index tsvector,
+  labels_processed_at timestamp with time zone,
+  text text,
+  text_index_content text,
+  text_index tsvector,
+  text_processed_at timestamp with time zone,
   CONSTRAINT photos_pkey PRIMARY KEY (id)
 );
 
@@ -520,7 +528,15 @@ SELECT
   make AS make,
   model AS model,
   software AS software,
-  deleted_at AS deleted_at
+  deleted_at AS deleted_at,
+  labels AS labels,
+  labels_index_content AS labels_index_content,
+  labels_index AS labels_index,
+  labels_processed_at AS labels_processed_at,
+  text AS text,
+  text_index_content AS text_index_content,
+  text_index AS text_index,
+  text_processed_at AS text_processed_at
 FROM organization.photos;
 
 DROP VIEW IF EXISTS organization.projects_view CASCADE;
@@ -701,6 +717,10 @@ CREATE INDEX idx_changesets_form_id_updated_at ON organization.changesets USING 
 
 CREATE INDEX idx_changesets_updated_at ON organization.changesets USING btree (updated_at);
 
+CREATE INDEX idx_changesets_form_resource_id_updated_at ON organization.changesets USING btree (form_resource_id, updated_at);
+
+CREATE INDEX idx_changesets_created_by_resource_id_updated_at ON organization.changesets USING btree (created_by_resource_id, updated_at);
+
 CREATE UNIQUE INDEX idx_choice_lists_row_resource_id ON organization.choice_lists USING btree (row_resource_id);
 
 CREATE UNIQUE INDEX idx_choice_lists_row_id ON organization.choice_lists USING btree (row_id);
@@ -752,6 +772,10 @@ CREATE INDEX idx_photos_created_by_resource_id ON organization.photos USING btre
 CREATE INDEX idx_photos_geometry ON organization.photos USING gist (geometry);
 
 CREATE INDEX idx_photos_updated_at ON organization.photos USING btree (updated_at);
+
+CREATE INDEX idx_photos_labels_index ON organization.photos USING gin (labels_index) WITH (fastupdate = off);
+
+CREATE INDEX idx_photos_text_index ON organization.photos USING gin (text_index) WITH (fastupdate = off);
 
 CREATE UNIQUE INDEX idx_projects_row_resource_id ON organization.projects USING btree (row_resource_id);
 
@@ -1240,6 +1264,30 @@ SELECT 'photos_view', 'photos', 'software', '25', 'string', '1', NULL, NULL, NUL
 
 INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'photos_view', 'photos', 'deleted_at', '26', 'timestamp', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'photos_view', 'photos', 'labels', '27', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'photos_view', 'photos', 'labels_index_content', '28', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'photos_view', 'photos', 'labels_index', '29', 'fts', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'photos_view', 'photos', 'labels_processed_at', '30', 'timestamp', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'photos_view', 'photos', 'text', '31', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'photos_view', 'photos', 'text_index_content', '32', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'photos_view', 'photos', 'text_index', '33', 'fts', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'photos_view', 'photos', 'text_processed_at', '34', 'timestamp', '1', NULL, NULL, NULL, NULL, NULL, NULL;
 
 DELETE FROM "organization"."tables" WHERE name = 'projects_view';
 
