@@ -55,7 +55,13 @@ instance.compareOrganization = () => {
 
   const differ = new SchemaDiffer(oldSchema, newSchema);
 
-  return generateSQL(differ, true);
+  return generateSQL(differ, {
+      version: instance.version,
+      dialect: instance.dialect,
+      tableSchema: instance.tableSchema,
+      tablePrefix: instance.tablePrefix,
+      includeMetadata: true
+  });
 };
 
 instance.compareFormSchemas = (oldForm, newForm, options = {}) => {
