@@ -8,11 +8,11 @@ chai.should();
 let oldForm = null;
 let newForm = null;
 
-const fixture = (file) => fs.readFileSync(path.join('test', file)).toString();
+const fixture = (file) => fs.readFileSync(path.join('test', 'fixtures', file)).toString();
 
 beforeEach(function () {
-  oldForm = JSON.parse(fs.readFileSync('./test/form.json')).form;
-  newForm = JSON.parse(fs.readFileSync('./test/form-new.json')).form;
+  oldForm = JSON.parse(fs.readFileSync(path.join('test', 'fixtures', 'form.json'))).form;
+  newForm = JSON.parse(fs.readFileSync(path.join('test', 'fixtures', 'form-new.json'))).form;
   oldForm.row_id = 67777;
   newForm.row_id = 67777;
 });
