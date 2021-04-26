@@ -74,7 +74,7 @@ var Metadata = function () {
 
       var statements = [];
 
-      var METADATA = true;
+      var METADATA = false;
 
       var schemaChangesTableName = _utils2.default.tableName(this.options.schema, this.options.prefix, this.options.quote, 'schema_changes');
       var systemTablesName = _utils2.default.tableName(this.options.schema, this.options.prefix, this.options.quote, 'tables');

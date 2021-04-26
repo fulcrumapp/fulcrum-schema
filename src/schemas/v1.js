@@ -1,3 +1,5 @@
+// The v1 schema is used by the iOS and Android apps
+
 const Schema = {};
 
 Schema.systemFormTableColumns = [
@@ -101,6 +103,23 @@ Schema.systemRepeatableTableColumns = [
 Schema.systemFormViewColumns = null;
 
 Schema.systemRepeatableViewColumns = null;
+
+Schema.systemFormTableIndexes = [
+  { columns: [ 'record_id' ], method: 'btree' },
+  { columns: [ 'record_resource_id' ], method: 'btree' }
+];
+
+Schema.systemRepeatableTableIndexes = [
+  { columns: [ 'resource_id' ], method: 'btree' },
+  { columns: [ 'record_id' ], method: 'btree' },
+  { columns: [ 'record_resource_id' ], method: 'btree' },
+  { columns: [ 'parent_resource_id' ], method: 'btree' }
+];
+
+Schema.systemValuesTableIndexes = [
+  { columns: [ 'record_id' ], method: 'btree' },
+  { columns: [ 'parent_resource_id' ], method: 'btree' }
+];
 
 // V1 didn't emit `_caption` columns for media fields
 Schema.includeMediaCaptions = false;

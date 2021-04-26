@@ -30,6 +30,37 @@ CREATE TABLE IF NOT EXISTS organization.audio (
   CONSTRAINT audio_pkey PRIMARY KEY (id)
 );
 
+CREATE TABLE IF NOT EXISTS organization.attachments (
+  id bigserial NOT NULL,
+  row_id bigint NOT NULL,
+  row_resource_id text NOT NULL,
+  access_key text NOT NULL,
+  record_id bigint,
+  record_resource_id text,
+  form_id bigint,
+  form_resource_id text,
+  file_size bigint,
+  created_by_id bigint,
+  created_by_resource_id text,
+  updated_by_id bigint,
+  updated_by_resource_id text,
+  created_at timestamp with time zone NOT NULL,
+  updated_at timestamp with time zone NOT NULL,
+  file text,
+  content_type text,
+  uploaded_at timestamp with time zone,
+  stored_at timestamp with time zone,
+  processed_at timestamp with time zone,
+  geometry geometry(Geometry, 4326),
+  latitude double precision,
+  longitude double precision,
+  altitude double precision,
+  accuracy double precision,
+  direction double precision,
+  deleted_at timestamp with time zone,
+  CONSTRAINT attachments_pkey PRIMARY KEY (id)
+);
+
 CREATE TABLE IF NOT EXISTS organization.changesets (
   id bigserial NOT NULL,
   row_id bigint NOT NULL,
@@ -121,6 +152,8 @@ CREATE TABLE IF NOT EXISTS organization.forms (
   audio_count bigint,
   signature_usage bigint,
   signature_count bigint,
+  attachment_usage bigint,
+  attachment_count bigint,
   media_usage bigint,
   media_count bigint,
   auto_assign boolean NOT NULL,
@@ -399,6 +432,32 @@ SELECT
   duration AS duration,
   deleted_at AS deleted_at
 FROM organization.audio;
+
+DROP VIEW IF EXISTS organization.attachments_view CASCADE;
+
+CREATE OR REPLACE VIEW organization.attachments_view AS
+SELECT
+  access_key AS attachment_id,
+  record_resource_id AS record_id,
+  form_resource_id AS form_id,
+  file_size AS file_size,
+  created_by_resource_id AS created_by_id,
+  updated_by_resource_id AS updated_by_id,
+  created_at AS created_at,
+  updated_at AS updated_at,
+  file AS file,
+  content_type AS content_type,
+  uploaded_at AS uploaded_at,
+  stored_at AS stored_at,
+  processed_at AS processed_at,
+  geometry AS geometry,
+  latitude AS latitude,
+  longitude AS longitude,
+  altitude AS altitude,
+  accuracy AS accuracy,
+  direction AS direction,
+  deleted_at AS deleted_at
+FROM organization.attachments;
 
 DROP VIEW IF EXISTS organization.changesets_view CASCADE;
 
@@ -705,6 +764,22 @@ CREATE INDEX idx_audio_geometry ON organization.audio USING gist (geometry);
 
 CREATE INDEX idx_audio_updated_at ON organization.audio USING btree (updated_at);
 
+CREATE UNIQUE INDEX idx_attachments_row_resource_id ON organization.attachments USING btree (row_resource_id);
+
+CREATE UNIQUE INDEX idx_attachments_row_id ON organization.attachments USING btree (row_id);
+
+CREATE INDEX idx_attachments_access_key ON organization.attachments USING btree (access_key);
+
+CREATE INDEX idx_attachments_record_resource_id ON organization.attachments USING btree (record_resource_id);
+
+CREATE INDEX idx_attachments_form_resource_id ON organization.attachments USING btree (form_resource_id);
+
+CREATE INDEX idx_attachments_created_by_resource_id ON organization.attachments USING btree (created_by_resource_id);
+
+CREATE INDEX idx_attachments_geometry ON organization.attachments USING gist (geometry);
+
+CREATE INDEX idx_attachments_updated_at ON organization.attachments USING btree (updated_at);
+
 CREATE UNIQUE INDEX idx_changesets_row_resource_id ON organization.changesets USING btree (row_resource_id);
 
 CREATE UNIQUE INDEX idx_changesets_row_id ON organization.changesets USING btree (row_id);
@@ -861,26 +936,6 @@ CREATE INDEX idx_query_memberships_layers_user_resource_id ON organization.query
 
 CREATE INDEX idx_query_memberships_layers_layer_resource_id ON organization.query_memberships_layers USING btree (layer_resource_id);
 
-CREATE TABLE IF NOT EXISTS "organization"."schema_changes" (name text NOT NULL, created_at timestamp with time zone NOT NULL, sql TEXT NOT NULL);
-
-CREATE UNIQUE INDEX ON "organization"."schema_changes" (name);
-
-CREATE TABLE IF NOT EXISTS "organization"."tables" (name text, alias text, type text, parent text, form_id text, field text, field_type text, data_name text);
-
-CREATE OR REPLACE VIEW "organization"."tables_view" AS SELECT alias AS name, type, parent, form_id, field, field_type, data_name FROM "organization"."tables";
-
-CREATE INDEX idx_tables_name ON "organization"."tables" (name);
-
-CREATE INDEX idx_tables_alias ON "organization"."tables" (alias);
-
-CREATE TABLE IF NOT EXISTS "organization"."columns" (table_name text, table_alias text, name text, ordinal bigint, type text, nullable boolean, form_id text, field text, field_type text, data_name text, part text, data text);
-
-CREATE OR REPLACE VIEW "organization"."columns_view" AS SELECT table_alias AS table_name, name, ordinal, type, nullable, form_id, field, field_type, data_name, part FROM "organization"."columns";
-
-CREATE INDEX idx_columns_table_name ON "organization"."columns" (table_name);
-
-CREATE INDEX idx_columns_table_alias ON "organization"."columns" (table_alias);
-
 DELETE FROM "organization"."tables" WHERE name = 'audio_view';
 
 DELETE FROM "organization"."columns" WHERE table_name = 'audio_view';
@@ -943,6 +998,72 @@ SELECT 'audio_view', 'audio', 'duration', '18', 'double', '1', NULL, NULL, NULL,
 
 INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'audio_view', 'audio', 'deleted_at', '19', 'timestamp', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+DELETE FROM "organization"."tables" WHERE name = 'attachments_view';
+
+DELETE FROM "organization"."columns" WHERE table_name = 'attachments_view';
+
+INSERT INTO "organization"."tables" (name, alias, type, parent, form_id, field, field_type, data_name) SELECT 'attachments_view', 'attachments', 'system', NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'attachments_view', 'attachments', 'attachment_id', '1', 'string', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'attachments_view', 'attachments', 'record_id', '2', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'attachments_view', 'attachments', 'form_id', '3', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'attachments_view', 'attachments', 'file_size', '4', 'integer', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'attachments_view', 'attachments', 'created_by_id', '5', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'attachments_view', 'attachments', 'updated_by_id', '6', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'attachments_view', 'attachments', 'created_at', '7', 'timestamp', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'attachments_view', 'attachments', 'updated_at', '8', 'timestamp', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'attachments_view', 'attachments', 'file', '9', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'attachments_view', 'attachments', 'content_type', '10', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'attachments_view', 'attachments', 'uploaded_at', '11', 'timestamp', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'attachments_view', 'attachments', 'stored_at', '12', 'timestamp', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'attachments_view', 'attachments', 'processed_at', '13', 'timestamp', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'attachments_view', 'attachments', 'geometry', '14', 'geometry', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'attachments_view', 'attachments', 'latitude', '15', 'double', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'attachments_view', 'attachments', 'longitude', '16', 'double', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'attachments_view', 'attachments', 'altitude', '17', 'double', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'attachments_view', 'attachments', 'accuracy', '18', 'double', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'attachments_view', 'attachments', 'direction', '19', 'double', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'attachments_view', 'attachments', 'deleted_at', '20', 'timestamp', '1', NULL, NULL, NULL, NULL, NULL, NULL;
 
 DELETE FROM "organization"."tables" WHERE name = 'changesets_view';
 

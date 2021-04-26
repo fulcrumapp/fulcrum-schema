@@ -142,6 +142,10 @@ export default class Schema {
   buildViews() {
     this.viewColumns = {};
 
+    if (!this.columns.systemFormViewColumns) {
+      return;
+    }
+
     for (const table of this.tables) {
       const view = new View(table.name + '_view', null, table);
 

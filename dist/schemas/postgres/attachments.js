@@ -18,101 +18,91 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Forms = function (_TableDefinition) {
-  _inherits(Forms, _TableDefinition);
+var Attachments = function (_TableDefinition) {
+  _inherits(Attachments, _TableDefinition);
 
-  function Forms() {
-    _classCallCheck(this, Forms);
+  function Attachments() {
+    _classCallCheck(this, Attachments);
 
-    return _possibleConstructorReturn(this, (Forms.__proto__ || Object.getPrototypeOf(Forms)).apply(this, arguments));
+    return _possibleConstructorReturn(this, (Attachments.__proto__ || Object.getPrototypeOf(Attachments)).apply(this, arguments));
   }
 
-  _createClass(Forms, [{
+  _createClass(Attachments, [{
     key: 'defineTable',
     value: function defineTable() {
       this.pk('id', {});
       this.integer('row_id', { "allowNull": false });
       this.string('row_resource_id', { "allowNull": false });
-      this.string('name', { "allowNull": false });
-      this.string('description', {});
-      this.integer('version', { "allowNull": false });
-      this.string('elements', {});
-      this.geometry('bounding_box', {});
-      this.integer('record_count', { "allowNull": false, "defaultValue": 0 });
-      this.timestamp('record_changed_at', {});
-      this.json('recent_lat_longs', {});
-      this.string('status', {});
-      this.string('status_field', {});
+      this.string('access_key', { "allowNull": false });
+      this.integer('record_id', {});
+      this.string('record_resource_id', {});
+      this.integer('form_id', {});
+      this.string('form_resource_id', {});
+      this.integer('file_size', {});
       this.integer('created_by_id', {});
       this.string('created_by_resource_id', {});
       this.integer('updated_by_id', {});
       this.string('updated_by_resource_id', {});
       this.timestamp('created_at', { "allowNull": false });
       this.timestamp('updated_at', { "allowNull": false });
-      this.integer('photo_usage', {});
-      this.integer('photo_count', {});
-      this.integer('video_usage', {});
-      this.integer('video_count', {});
-      this.integer('audio_usage', {});
-      this.integer('audio_count', {});
-      this.integer('signature_usage', {});
-      this.integer('signature_count', {});
-      this.integer('attachment_usage', {});
-      this.integer('attachment_count', {});
-      this.integer('media_usage', {});
-      this.integer('media_count', {});
-      this.boolean('auto_assign', { "allowNull": false });
-      this.json('title_field_keys', {});
-      this.boolean('hidden_on_dashboard', { "allowNull": false });
-      this.json('geometry_types', {});
-      this.boolean('geometry_required', { "allowNull": false });
-      this.text('script', {});
-      this.text('image', {});
-      this.boolean('projects_enabled', { "allowNull": false });
-      this.boolean('assignment_enabled', { "allowNull": false });
+      this.string('file', {});
+      this.string('content_type', {});
+      this.timestamp('uploaded_at', {});
+      this.timestamp('stored_at', {});
+      this.timestamp('processed_at', {});
+      this.geometry('geometry', {});
+      this.double('latitude', {});
+      this.double('longitude', {});
+      this.double('altitude', {});
+      this.double('accuracy', {});
+      this.double('direction', {});
+      this.timestamp('deleted_at', {});
     }
   }, {
     key: 'defineView',
     value: function defineView() {
-      this.alias('row_resource_id', 'form_id');
-      this.alias('name', 'name');
-      this.alias('description', 'description');
-      this.alias('version', 'version');
-      this.alias('elements', 'elements');
-      this.alias('bounding_box', 'bounding_box');
-      this.alias('status', 'status');
-      this.alias('status_field', 'status_field');
+      this.alias('access_key', 'attachment_id');
+      this.alias('file_size', 'file_size');
+      this.alias('record_resource_id', 'record_id');
+      this.alias('form_resource_id', 'form_id');
       this.alias('created_by_resource_id', 'created_by_id');
       this.alias('updated_by_resource_id', 'updated_by_id');
       this.alias('created_at', 'created_at');
       this.alias('updated_at', 'updated_at');
-      this.alias('auto_assign', 'auto_assign');
-      this.alias('title_field_keys', 'title_field_keys');
-      this.alias('hidden_on_dashboard', 'hidden_on_dashboard');
-      this.alias('geometry_types', 'geometry_types');
-      this.alias('geometry_required', 'geometry_required');
-      this.alias('script', 'script');
-      this.alias('projects_enabled', 'projects_enabled');
-      this.alias('assignment_enabled', 'assignment_enabled');
-      this.alias('image', 'image');
+      this.alias('file', 'file');
+      this.alias('content_type', 'content_type');
+      this.alias('uploaded_at', 'uploaded_at');
+      this.alias('stored_at', 'stored_at');
+      this.alias('processed_at', 'processed_at');
+      this.alias('geometry', 'geometry');
+      this.alias('latitude', 'latitude');
+      this.alias('longitude', 'longitude');
+      this.alias('accuracy', 'accuracy');
+      this.alias('altitude', 'altitude');
+      this.alias('direction', 'direction');
+      this.alias('deleted_at', 'deleted_at');
     }
   }, {
     key: 'defineIndexes',
     value: function defineIndexes() {
       this.index({ "columns": ["row_resource_id"], "unique": true });
       this.index({ "columns": ["row_id"], "unique": true });
-      this.index({ "columns": ["name"] });
+      this.index({ "columns": ["access_key"] });
+      this.index({ "columns": ["record_resource_id"] });
+      this.index({ "columns": ["form_resource_id"] });
+      this.index({ "columns": ["created_by_resource_id"] });
+      this.index({ "columns": ["geometry"], "method": "gist" });
       this.index({ "columns": ["updated_at"] });
     }
   }, {
     key: 'name',
     get: function get() {
-      return 'forms';
+      return 'attachments';
     }
   }]);
 
-  return Forms;
+  return Attachments;
 }(_tableDefinition2.default);
 
-exports.default = Forms;
-//# sourceMappingURL=forms.js.map
+exports.default = Attachments;
+//# sourceMappingURL=attachments.js.map

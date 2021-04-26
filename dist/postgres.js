@@ -12,9 +12,9 @@ var _postgresSchema = require('./schemas/postgres-schema');
 
 var _postgresSchema2 = _interopRequireDefault(_postgresSchema);
 
-var _postgresQueryV = require('./schemas/postgres-query-v2');
+var _v = require('./schemas/v2');
 
-var _postgresQueryV2 = _interopRequireDefault(_postgresQueryV);
+var _v2 = _interopRequireDefault(_v);
 
 var _metadata = require('./metadata');
 
@@ -67,17 +67,17 @@ instance.compareOrganization = function () {
   return generateSQL(differ, true);
 };
 
-instance.compareForms = function () {
+var compareForms = function compareForms() {
   try {
     var oldSchema = null;
     var newSchema = null;
 
     if (instance.oldForm) {
-      oldSchema = new _schema2.default(instance.oldForm, _postgresQueryV2.default, null);
+      oldSchema = new _schema2.default(instance.oldForm, _v2.default, null);
     }
 
     if (instance.newForm) {
-      newSchema = new _schema2.default(instance.newForm, _postgresQueryV2.default, null);
+      newSchema = new _schema2.default(instance.newForm, _v2.default, null);
     }
 
     var differ = new SchemaDiffer(oldSchema, newSchema);
@@ -87,6 +87,20 @@ instance.compareForms = function () {
     throw new Error(err.stack.toString());
   }
 };
+
+var compareFormSchemas = function compareFormSchemas(oldForm, newForm) {
+  var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+  instance.oldForm = oldForm;
+  instance.newForm = newForm;
+  instance.schema = options.schema;
+  instance.tablePrefix = options.tablePrefix;
+
+  return instance.compareForms();
+};
+
+instance.compareForms;
+instance.compareFormSchemas;
 
 module.exports = instance;
 //# sourceMappingURL=postgres.js.map

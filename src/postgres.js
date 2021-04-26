@@ -3,11 +3,11 @@ require('babel-polyfill');
 import OrganizationSchema from './organization-schema';
 import Schema from './schema';
 import OrganizationSchemaV2 from './schemas/postgres-schema';
-import FormSchemaV2 from './schemas/postgres-query-v2';
+import FormSchemaV2 from './schemas/v2';
 import Metadata from './metadata';
 import sqldiff from 'sqldiff';
 
-const {Postgres, SchemaDiffer} = sqldiff;
+const { Postgres, SchemaDiffer } = sqldiff;
 
 const instance = Function('return this')(); // eslint-disable-line no-new-func
 
@@ -17,9 +17,9 @@ instance.schema = null;
 instance.tablePrefix = null;
 
 function generateSQL(differ, includeMetadata) {
-  const meta = new Metadata(differ, {quote: '"', schema: instance.schema, includeColumns: true});
+  const meta = new Metadata(differ, { quote: '"', schema: instance.schema, includeColumns: true });
 
-  const gen = new Postgres(differ, {afterTransform: includeMetadata ? meta.build.bind(meta) : null});
+  const gen = new Postgres(differ, { afterTransform: includeMetadata ? meta.build.bind(meta) : null });
 
   gen.tableSchema = instance.schema || '';
   gen.tablePrefix = instance.tablePrefix || '';
@@ -44,7 +44,7 @@ instance.compareOrganization = () => {
   return generateSQL(differ, true);
 };
 
-instance.compareForms = () => {
+const compareForms = () => {
   try {
     let oldSchema = null;
     let newSchema = null;
@@ -64,5 +64,17 @@ instance.compareForms = () => {
     throw new Error(err.stack.toString());
   }
 };
+
+const compareFormSchemas = (oldForm, newForm, options = {}) => {
+  instance.oldForm = oldForm;
+  instance.newForm = newForm;
+  instance.schema = options.schema;
+  instance.tablePrefix = options.tablePrefix;
+
+  return instance.compareForms();
+};
+
+instance.compareForms;
+instance.compareFormSchemas;
 
 module.exports = instance;

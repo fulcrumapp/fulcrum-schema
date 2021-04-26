@@ -8,6 +8,10 @@ var _audio = require('./postgres/audio');
 
 var _audio2 = _interopRequireDefault(_audio);
 
+var _attachments = require('./postgres/attachments');
+
+var _attachments2 = _interopRequireDefault(_attachments);
+
 var _changesets = require('./postgres/changesets');
 
 var _changesets2 = _interopRequireDefault(_changesets);
@@ -70,7 +74,7 @@ var _membershipsLayers2 = _interopRequireDefault(_membershipsLayers);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var tables = [_audio2.default, _changesets2.default, _choiceLists2.default, _classificationSets2.default, _forms2.default, _memberships2.default, _photos2.default, _projects2.default, _roles2.default, _signatures2.default, _videos2.default, _devices2.default, _membershipsDevices2.default, _membershipsForms2.default, _membershipsProjects2.default, _membershipsLayers2.default];
+var tables = [_audio2.default, _attachments2.default, _changesets2.default, _choiceLists2.default, _classificationSets2.default, _forms2.default, _memberships2.default, _photos2.default, _projects2.default, _roles2.default, _signatures2.default, _videos2.default, _devices2.default, _membershipsDevices2.default, _membershipsForms2.default, _membershipsProjects2.default, _membershipsLayers2.default];
 
 exports.default = tables;
 //# sourceMappingURL=postgres-schema.js.map

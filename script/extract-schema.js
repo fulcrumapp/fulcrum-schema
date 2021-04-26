@@ -1,7 +1,7 @@
 require('babel-core/register');
 
 import fs from 'fs';
-import schema from '../src/schemas/postgres-query-v2';
+import schema from '../src/schemas/v2';
 
 function convertTable(className, columns, tableName, file, view) {
   const output = [];

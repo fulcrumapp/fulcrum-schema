@@ -706,7 +706,7 @@
             "visible_conditions": null,
             "required_conditions_type": null,
             "required_conditions": null
-            },
+          },
           {
             "type": "ChoiceField",
             "key": "4cf8",
