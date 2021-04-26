@@ -2,7 +2,7 @@
 
 ### Setup
 ```sh
-npm install -g browserify coffee-script
+npm install -g browserify
 ```
 
 ### Build
@@ -16,12 +16,12 @@ make
 Builds the final output
 
 ```sh
-make dist
+make
 ```
 
 ### Deploying
 
-When making changes to this library, the postgres.js file needs to be copied to the Fulcrum web app directory in `public`. At the
+When making changes to this library, the schema-generator.js file needs to be copied to the Fulcrum web app directory in `public`. At the
 same time the `fulcrum-query` repo needs to be upgraded to use the new version.
 
 Creating the `template.sql` file:
@@ -67,12 +67,4 @@ make dist copy # clean, build and deploy everything
 
 ```sh
 make test
-```
-
-### Console
-
-Starts an interactive node terminal with the functions available to call
-
-```sh
-./console
 ```

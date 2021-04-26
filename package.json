@@ -14,7 +14,7 @@
     "test": "node_modules/.bin/mocha ./test/setup.js test/test-postgres.js test/test-sqlite.js",
     "prepublish": "npm run clean && npm run build",
     "lint": "node_modules/.bin/eslint src/*.js src/**/*.js",
-    "build": "node_modules/.bin/babel src --out-dir dist --source-maps && browserify dist/postgres.js > dist/postgres.min.js --mangle",
+    "build": "node_modules/.bin/babel src --out-dir dist --source-maps && browserify dist/schema-generator.js > dist/schema-generator.min.js --mangle",
     "clean": "rm -rf dist"
   },
   "author": "Zac McCormick <zac.mccormick@gmail.com> (http://github.com/zhm)",
