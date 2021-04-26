@@ -100,7 +100,7 @@ instance.compareFormSchemas = function (oldForm, newForm) {
     var schema = {
       v1: _v2.default,
       v2: _v4.default
-    };
+    }[options.version];
 
     if (oldForm) {
       oldSchema = new _schema2.default(oldForm, schema, null);
@@ -120,6 +120,7 @@ instance.compareFormSchemas = function (oldForm, newForm) {
 
 instance.compareForm = function () {
   return instance.compareFormSchemas(instance.oldForm, instance.newForm, {
+    version: instance.version,
     dialect: instance.dialect,
     tableSchema: instance.tableSchema,
     tablePrefix: instance.tablePrefix,

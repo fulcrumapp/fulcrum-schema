@@ -250,6 +250,10 @@ var Schema = function () {
     value: function buildViews() {
       this.viewColumns = {};
 
+      if (!this.columns.systemFormViewColumns) {
+        return;
+      }
+
       var _iteratorNormalCompletion5 = true;
       var _didIteratorError5 = false;
       var _iteratorError5 = undefined;
