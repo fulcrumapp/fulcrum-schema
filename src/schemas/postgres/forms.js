@@ -33,8 +33,6 @@ export default class Forms extends TableDefinition {
     this.integer('audio_count', {});
     this.integer('signature_usage', {});
     this.integer('signature_count', {});
-    this.integer('attachment_usage', {});
-    this.integer('attachment_count', {});
     this.integer('media_usage', {});
     this.integer('media_count', {});
     this.boolean('auto_assign', {"allowNull":false});
