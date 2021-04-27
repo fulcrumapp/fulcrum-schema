@@ -1,4 +1,4 @@
-## Fulcrum Table Schema [![Build Status](https://secure.travis-ci.org/fulcrumapp/fulcrum-schema.svg)](http://travis-ci.org/fulcrumapp/fulcrum-schema)
+## Fulcrum Query Table Schema [![Build Status](https://secure.travis-ci.org/fulcrumapp/fulcrum-schema.svg)](http://travis-ci.org/fulcrumapp/fulcrum-schema)
 
 ### Setup
 ```sh

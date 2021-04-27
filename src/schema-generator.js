@@ -1,4 +1,4 @@
-require('babel-polyfill');
+require('@babel/polyfill');
 
 import OrganizationSchema from './organization-schema';
 import Schema from './schema';
@@ -8,7 +8,7 @@ import FormSchemaV2 from './schemas/v2';
 import Metadata from './metadata';
 import sqldiff from 'sqldiff';
 
-const { Postgres, Sqlite, SchemaDiffer } = sqldiff;
+const { Postgres, SQLite, SchemaDiffer } = sqldiff;
 
 const instance = Function('return this')(); // eslint-disable-line no-new-func
 
@@ -23,7 +23,7 @@ instance.includeMetadata = false;
 function generateSQL(differ, { includeMetadata, dialect, tablePrefix, tableSchema }) {
   const Generator = {
     postgres: Postgres,
-    sqlite: Sqlite
+    sqlite: SQLite
   }[dialect];
 
   const quote = {
@@ -56,11 +56,11 @@ instance.compareOrganization = () => {
   const differ = new SchemaDiffer(oldSchema, newSchema);
 
   return generateSQL(differ, {
-      version: instance.version,
-      dialect: instance.dialect,
-      tableSchema: instance.tableSchema,
-      tablePrefix: instance.tablePrefix,
-      includeMetadata: true
+    version: instance.version,
+    dialect: instance.dialect,
+    tableSchema: instance.tableSchema,
+    tablePrefix: instance.tablePrefix,
+    includeMetadata: true
   });
 };
 
