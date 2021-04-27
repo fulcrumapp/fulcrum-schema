@@ -482,16 +482,18 @@ export default class Schema {
   addMediaElement(table, element) {
     this.addArrayElement(table, element);
 
-    if (this.columns.includeMediaCaptions !== false) {
-      this.addArrayElement(table, element, 'captions');
-    }
+    if (element.type !== 'AttachmentField') {
+      if (this.columns.includeMediaCaptions !== false) {
+        this.addArrayElement(table, element, 'captions');
+      }
 
-    if (this.columns.includeMediaURLs) {
-      this.addArrayElement(table, element, 'urls');
-    }
+      if (this.columns.includeMediaURLs) {
+        this.addArrayElement(table, element, 'urls');
+      }
 
-    if (this.columns.includeMediaViewURLs) {
-      this.addStringElement(table, element, 'view_url');
+      if (this.columns.includeMediaViewURLs) {
+        this.addStringElement(table, element, 'view_url');
+      }
     }
 
     const value = element.key.replace(/'/g, "''");

@@ -90,7 +90,7 @@ instance.compareFormSchemas = (oldForm, newForm, options = {}) => {
   }
 };
 
-instance.compareForm = () => {
+instance.compareForms = () => {
   return instance.compareFormSchemas(
     instance.oldForm,
     instance.newForm,
