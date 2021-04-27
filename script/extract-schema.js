@@ -1,4 +1,4 @@
-require('babel-core/register');
+require('@babel/register');
 
 import fs from 'fs';
 import schema from '../src/schemas/v2';
