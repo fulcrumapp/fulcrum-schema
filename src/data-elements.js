@@ -1,4 +1,4 @@
-import _ from 'underscore';
+import { filter } from 'lodash';
 
 const DATA_ELEMENTS = [
   'TextField',
@@ -30,6 +30,6 @@ export default class DataElements {
   }
 
   static find(elements) {
-    return _.select(elements, DataElements.isDataElement);
+    return filter(elements, DataElements.isDataElement);
   }
 }

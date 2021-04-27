@@ -1,4 +1,4 @@
-import _ from 'underscore';
+import { clone } from 'lodash';
 import sqldiff from 'sqldiff';
 
 const {Table, View} = sqldiff;
@@ -36,7 +36,7 @@ export default class OrganizationSchema {
     const table = new Table(tableDefinition.name, null, {type: 'system', alias: tableDefinition.name});
 
     for (const column of tableDefinition.columns) {
-      const systemColumn = _.clone(column);
+      const systemColumn = clone(column);
 
       systemColumn.system = true;
 

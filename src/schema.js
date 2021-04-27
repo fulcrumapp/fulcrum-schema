@@ -1,4 +1,4 @@
-import _ from 'underscore';
+import { clone } from 'lodash';
 import Utils from './utils';
 import sqldiff from 'sqldiff';
 import {format} from 'util';
@@ -79,7 +79,7 @@ export default class Schema {
                             {type: 'form', alias: this.alias(), form_id: this.form.id});
 
     for (const column of this.columns.systemFormTableColumns) {
-      const formColumn = _.clone(column);
+      const formColumn = clone(column);
 
       formColumn.system = true;
       formColumn.type = this.maybeComplexType(formColumn.type);
@@ -100,7 +100,7 @@ export default class Schema {
                             {type: 'values', alias: this.alias('values'), form_id: this.form.id});
 
     for (const column of this.columns.systemValuesTableColumns) {
-      const valueColumn = _.clone(column);
+      const valueColumn = clone(column);
 
       valueColumn.system = true;
       valueColumn.type = this.maybeComplexType(valueColumn.type);
@@ -117,7 +117,7 @@ export default class Schema {
                             {type: 'repeatable', parent: parentTable, element: element, alias: this.alias(element.data_name), form_id: this.form.id});
 
     for (const column of this.columns.systemRepeatableTableColumns) {
-      const attrs = _.clone(column);
+      const attrs = clone(column);
 
       attrs.id = element.key + '_' + column.name;
       attrs.system = true;
@@ -200,7 +200,7 @@ export default class Schema {
       }
 
       for (const index of indexDefinitions) {
-        const indexDefinition = _.clone(index);
+        const indexDefinition = clone(index);
 
         const isComplex = indexDefinition.method === 'gist' || indexDefinition.method === 'gin';
 

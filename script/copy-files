@@ -1,7 +1,7 @@
 #!/usr/bin/env coffee
 
 fs = require 'fs-sync'
-_ = require 'underscore'
+_ = require 'lodash'
 path = require 'path'
 
 android = process.env.FULCRUM_ANDROID

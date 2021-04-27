@@ -1,6 +1,6 @@
 {
   "name": "fulcrum-schema",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "description": "Table schemas for Fulcrum apps",
   "main": "./index.js",
   "repository": {
