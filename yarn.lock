@@ -3339,9 +3339,10 @@ sprintf-js@~1.0.2:
   resolved "https://registry.yarnpkg.com/sprintf-js/-/sprintf-js-1.0.3.tgz#04e6926f662895354f3dd015203633b857297e2c"
   integrity sha1-BOaSb2YolTVPPdAVIDYzuFcpfiw=
 
-"sqldiff@https://github.com/fulcrumapp/sqldiff#update-deps":
+sqldiff@^0.2.0:
   version "0.2.0"
-  resolved "https://github.com/fulcrumapp/sqldiff#7e554f3a79734c3579f34b0fa81c196c4e4d0f63"
+  resolved "https://registry.yarnpkg.com/sqldiff/-/sqldiff-0.2.0.tgz#e16fbf7d1f13edad377466ef574d73579da2cc1c"
+  integrity sha512-qlm3q8+kPWjiGWLCs1q2L3hUhopw18YC/S8Gz7ectmhJbaU7PLq8vt4GWjLlBqG3QzFecWcDaKDPMfB6C5E1/g==
   dependencies:
     lodash "^4.17.21"
 
