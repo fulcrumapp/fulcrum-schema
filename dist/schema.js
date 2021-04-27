@@ -1,790 +1,612 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.default = void 0;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _underscore = _interopRequireDefault(require("underscore"));
 
-var _underscore = require('underscore');
+var _utils = _interopRequireDefault(require("./utils"));
 
-var _underscore2 = _interopRequireDefault(_underscore);
+var _sqldiff = _interopRequireDefault(require("sqldiff"));
 
-var _utils = require('./utils');
+var _util = require("util");
 
-var _utils2 = _interopRequireDefault(_utils);
-
-var _sqldiff = require('sqldiff');
-
-var _sqldiff2 = _interopRequireDefault(_sqldiff);
-
-var _util = require('util');
-
-var _dataElements = require('./data-elements');
-
-var _dataElements2 = _interopRequireDefault(_dataElements);
+var _dataElements = _interopRequireDefault(require("./data-elements"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+const {
+  Table,
+  View
+} = _sqldiff.default;
+const SIMPLE_TYPES = ['pk', 'text', 'string', 'date', 'time', 'timestamp', 'double', 'integer', 'boolean'];
 
-var Table = _sqldiff2.default.Table,
-    View = _sqldiff2.default.View;
-
-
-var SIMPLE_TYPES = ['pk', 'text', 'string', 'date', 'time', 'timestamp', 'double', 'integer', 'boolean'];
-
-var Schema = function () {
-  function Schema(form, columns, options) {
-    _classCallCheck(this, Schema);
-
+class Schema {
+  constructor(form, columns, options) {
     this.prefix = 'f';
     this.form = form;
     this.columns = columns;
     this.options = options || {};
-    this.elements = _utils2.default.flattenElements(this.form.elements, false);
-    this.schemaElements = _dataElements2.default.find(this.elements);
+    this.elements = _utils.default.flattenElements(this.form.elements, false);
+    this.schemaElements = _dataElements.default.find(this.elements);
     this.buildSchema();
-
     columns.calculatedFieldDateFormat = columns.calculatedFieldDateFormat === 'date' ? 'date' : 'double';
   }
 
-  _createClass(Schema, [{
-    key: 'buildSchema',
-    value: function buildSchema() {
-      this.tables = [];
-      this.views = [];
+  buildSchema() {
+    this.tables = [];
+    this.views = [];
+    this.formTable = this.buildFormTable();
+    this.valuesTable = this.buildValuesTable();
+    this.tables.push(this.formTable);
+    this.tables.push(this.valuesTable);
+    this.buildDataColumns();
+    this.buildViews();
+    this.buildIndexes();
+  }
 
-      this.formTable = this.buildFormTable();
-      this.valuesTable = this.buildValuesTable();
-
-      this.tables.push(this.formTable);
-      this.tables.push(this.valuesTable);
-
-      this.buildDataColumns();
-
-      this.buildViews();
-
-      this.buildIndexes();
+  alias(part, escapePart = true) {
+    if (part) {
+      const partName = escapePart ? this.escapeDataName(part) : part;
+      return this.escapeSlashes(this.form.name) + '/' + this.escapeSlashes(partName);
     }
-  }, {
-    key: 'alias',
-    value: function alias(part) {
-      var escapePart = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 
-      if (part) {
-        var partName = escapePart ? this.escapeDataName(part) : part;
+    return this.escapeSlashes(this.form.name);
+  }
 
-        return this.escapeSlashes(this.form.name) + '/' + this.escapeSlashes(partName);
+  escapeDataName(dataName) {
+    // if a data name starts with an underscore, add an additional underscore to prevent
+    // collisions with future system-defined columns. e.g. `_symbol` becomes `__symbol`
+    // because at some point we might add a system column named `symbol` which needs the
+    // `_symbol` name.
+    if (dataName && dataName[0] === '_') {
+      return '_' + dataName;
+    }
+
+    return dataName || 'no_data_name';
+  }
+
+  escapeSlashes(name) {
+    return name.replace(/\//g, '\\/');
+  }
+
+  buildFormTable() {
+    const table = new Table((0, _util.format)('form_%s', this.form.row_id), null, {
+      type: 'form',
+      alias: this.alias(),
+      form_id: this.form.id
+    });
+
+    for (const column of this.columns.systemFormTableColumns) {
+      const formColumn = _underscore.default.clone(column);
+
+      formColumn.system = true;
+      formColumn.type = this.maybeComplexType(formColumn.type);
+      table.addColumn(formColumn);
+    }
+
+    if (this.options.onAddFormTable) {
+      this.options.onAddFormTable({
+        table,
+        form: this.form,
+        schema: this
+      });
+    }
+
+    return table;
+  }
+
+  buildValuesTable() {
+    const table = new Table((0, _util.format)('form_%s_values', this.form.row_id), null, {
+      type: 'values',
+      alias: this.alias('values'),
+      form_id: this.form.id
+    });
+
+    for (const column of this.columns.systemValuesTableColumns) {
+      const valueColumn = _underscore.default.clone(column);
+
+      valueColumn.system = true;
+      valueColumn.type = this.maybeComplexType(valueColumn.type);
+      table.addColumn(valueColumn);
+    }
+
+    return table;
+  }
+
+  buildRepeatableTable(parentTable, element) {
+    const table = new Table(this.formTable.id + '_' + element.key, null, {
+      type: 'repeatable',
+      parent: parentTable,
+      element: element,
+      alias: this.alias(element.data_name),
+      form_id: this.form.id
+    });
+
+    for (const column of this.columns.systemRepeatableTableColumns) {
+      const attrs = _underscore.default.clone(column);
+
+      attrs.id = element.key + '_' + column.name;
+      attrs.system = true;
+      attrs.type = this.maybeComplexType(attrs.type);
+      table.addColumn(attrs);
+    }
+
+    if (this.options.onAddRepeatableTable) {
+      this.options.onAddRepeatableTable({
+        table,
+        parentTable,
+        element,
+        form: this.form,
+        schema: this
+      });
+    }
+
+    return table;
+  }
+
+  buildDataColumns() {
+    for (const element of this.schemaElements) {
+      this.processElement(element, this.formTable);
+    }
+  }
+
+  buildViews() {
+    this.viewColumns = {};
+
+    if (!this.columns.systemFormViewColumns) {
+      return;
+    }
+
+    for (const table of this.tables) {
+      const view = new View(table.name + '_view', null, table);
+      this.buildViewForTable(table, view);
+      this.views.push(view);
+
+      if (table.type === 'form') {
+        const fullView = new View(table.name + '_view_full', null, table, {
+          variant: 'full',
+          alias: this.alias('_full', false)
+        });
+        this.buildViewForTable(table, fullView);
+        this.views.push(fullView);
+      } else if (table.type === 'repeatable') {
+        const fullView = new View(table.name + '_view_full', null, table, {
+          variant: 'full',
+          alias: this.alias(table.element.data_name) + '/_full'
+        });
+        this.buildViewForTable(table, fullView);
+        this.views.push(fullView);
       }
-      return this.escapeSlashes(this.form.name);
     }
-  }, {
-    key: 'escapeDataName',
-    value: function escapeDataName(dataName) {
-      // if a data name starts with an underscore, add an additional underscore to prevent
-      // collisions with future system-defined columns. e.g. `_symbol` becomes `__symbol`
-      // because at some point we might add a system column named `symbol` which needs the
-      // `_symbol` name.
-      if (dataName && dataName[0] === '_') {
-        return '_' + dataName;
-      }
+  }
 
-      return dataName || 'no_data_name';
-    }
-  }, {
-    key: 'escapeSlashes',
-    value: function escapeSlashes(name) {
-      return name.replace(/\//g, '\\/');
-    }
-  }, {
-    key: 'buildFormTable',
-    value: function buildFormTable() {
-      var table = new Table((0, _util.format)('form_%s', this.form.row_id), null, { type: 'form', alias: this.alias(), form_id: this.form.id });
+  buildViewForTable(table, view) {
+    const columnNames = {};
 
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
+    for (const column of table.columns) {
+      const alias = this.viewColumnName(view, table, column);
 
-      try {
-        for (var _iterator = this.columns.systemFormTableColumns[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var column = _step.value;
-
-          var formColumn = _underscore2.default.clone(column);
-
-          formColumn.system = true;
-          formColumn.type = this.maybeComplexType(formColumn.type);
-
-          table.addColumn(formColumn);
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator.return) {
-            _iterator.return();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
-        }
-      }
-
-      if (this.options.onAddFormTable) {
-        this.options.onAddFormTable({ table: table, form: this.form, schema: this });
-      }
-
-      return table;
-    }
-  }, {
-    key: 'buildValuesTable',
-    value: function buildValuesTable() {
-      var table = new Table((0, _util.format)('form_%s_values', this.form.row_id), null, { type: 'values', alias: this.alias('values'), form_id: this.form.id });
-
-      var _iteratorNormalCompletion2 = true;
-      var _didIteratorError2 = false;
-      var _iteratorError2 = undefined;
-
-      try {
-        for (var _iterator2 = this.columns.systemValuesTableColumns[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-          var column = _step2.value;
-
-          var valueColumn = _underscore2.default.clone(column);
-
-          valueColumn.system = true;
-          valueColumn.type = this.maybeComplexType(valueColumn.type);
-
-          table.addColumn(valueColumn);
-        }
-      } catch (err) {
-        _didIteratorError2 = true;
-        _iteratorError2 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion2 && _iterator2.return) {
-            _iterator2.return();
-          }
-        } finally {
-          if (_didIteratorError2) {
-            throw _iteratorError2;
-          }
-        }
-      }
-
-      return table;
-    }
-  }, {
-    key: 'buildRepeatableTable',
-    value: function buildRepeatableTable(parentTable, element) {
-      var table = new Table(this.formTable.id + '_' + element.key, null, { type: 'repeatable', parent: parentTable, element: element, alias: this.alias(element.data_name), form_id: this.form.id });
-
-      var _iteratorNormalCompletion3 = true;
-      var _didIteratorError3 = false;
-      var _iteratorError3 = undefined;
-
-      try {
-        for (var _iterator3 = this.columns.systemRepeatableTableColumns[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-          var column = _step3.value;
-
-          var attrs = _underscore2.default.clone(column);
-
-          attrs.id = element.key + '_' + column.name;
-          attrs.system = true;
-          attrs.type = this.maybeComplexType(attrs.type);
-
-          table.addColumn(attrs);
-        }
-      } catch (err) {
-        _didIteratorError3 = true;
-        _iteratorError3 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion3 && _iterator3.return) {
-            _iterator3.return();
-          }
-        } finally {
-          if (_didIteratorError3) {
-            throw _iteratorError3;
-          }
-        }
+      if (alias == null) {
+        continue;
       }
 
-      if (this.options.onAddRepeatableTable) {
-        this.options.onAddRepeatableTable({ table: table, parentTable: parentTable, element: element, form: this.form, schema: this });
+      if (!columnNames[alias]) {
+        view.addColumn({
+          column: column,
+          alias: alias
+        });
+        columnNames[alias] = column;
+      }
+    }
+  }
+
+  buildIndexes() {
+    for (const table of this.tables) {
+      let indexDefinitions = [];
+
+      if (table.type === 'form') {
+        indexDefinitions = this.columns.systemFormTableIndexes;
+      } else if (table.type === 'repeatable') {
+        indexDefinitions = this.columns.systemRepeatableTableIndexes;
+      } else if (table.type === 'values') {
+        indexDefinitions = this.columns.systemValuesTableIndexes;
       }
 
-      return table;
-    }
-  }, {
-    key: 'buildDataColumns',
-    value: function buildDataColumns() {
-      var _iteratorNormalCompletion4 = true;
-      var _didIteratorError4 = false;
-      var _iteratorError4 = undefined;
+      for (const index of indexDefinitions) {
+        const indexDefinition = _underscore.default.clone(index);
 
-      try {
-        for (var _iterator4 = this.schemaElements[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-          var element = _step4.value;
+        const isComplex = indexDefinition.method === 'gist' || indexDefinition.method === 'gin';
+        const skip = isComplex && this.columns.disableComplexTypes === true;
 
-          this.processElement(element, this.formTable);
-        }
-      } catch (err) {
-        _didIteratorError4 = true;
-        _iteratorError4 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion4 && _iterator4.return) {
-            _iterator4.return();
-          }
-        } finally {
-          if (_didIteratorError4) {
-            throw _iteratorError4;
-          }
+        if (!skip) {
+          table.addIndex(indexDefinition);
         }
       }
     }
-  }, {
-    key: 'buildViews',
-    value: function buildViews() {
-      this.viewColumns = {};
+  }
 
-      if (!this.columns.systemFormViewColumns) {
-        return;
+  viewColumnName(view, table, column) {
+    let name = null;
+
+    if (column.system) {
+      if (table.type === 'form') {
+        if (view.variant === 'full') {
+          name = this.columns.systemFormFullViewColumns[column.name];
+        } else {
+          name = this.columns.systemFormViewColumns[column.name];
+        }
+      } else if (table.type === 'repeatable') {
+        if (view.variant === 'full') {
+          name = this.columns.systemRepeatableFullViewColumns[column.name];
+        } else {
+          name = this.columns.systemRepeatableViewColumns[column.name];
+        }
+      } else if (table.type === 'values') {
+        name = this.columns.systemValuesViewColumns[column.name];
       }
 
-      var _iteratorNormalCompletion5 = true;
-      var _didIteratorError5 = false;
-      var _iteratorError5 = undefined;
-
-      try {
-        for (var _iterator5 = this.tables[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-          var table = _step5.value;
-
-          var view = new View(table.name + '_view', null, table);
-
-          this.buildViewForTable(table, view);
-
-          this.views.push(view);
-
-          if (table.type === 'form') {
-            var fullView = new View(table.name + '_view_full', null, table, { variant: 'full', alias: this.alias('_full', false) });
-
-            this.buildViewForTable(table, fullView);
-
-            this.views.push(fullView);
-          } else if (table.type === 'repeatable') {
-            var _fullView = new View(table.name + '_view_full', null, table, { variant: 'full',
-              alias: this.alias(table.element.data_name) + '/_full' });
-
-            this.buildViewForTable(table, _fullView);
-
-            this.views.push(_fullView);
-          }
-        }
-      } catch (err) {
-        _didIteratorError5 = true;
-        _iteratorError5 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion5 && _iterator5.return) {
-            _iterator5.return();
-          }
-        } finally {
-          if (_didIteratorError5) {
-            throw _iteratorError5;
-          }
-        }
+      if (name == null) {
+        return null;
       }
+
+      name = '_' + name;
+    } else if (column.element) {
+      name = this.escapeDataName(column.element.data_name) + (column.suffix || '');
+    } else {
+      name = column.name + (column.suffix || '');
     }
-  }, {
-    key: 'buildViewForTable',
-    value: function buildViewForTable(table, view) {
-      var columnNames = {};
 
-      var _iteratorNormalCompletion6 = true;
-      var _didIteratorError6 = false;
-      var _iteratorError6 = undefined;
-
-      try {
-        for (var _iterator6 = table.columns[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-          var column = _step6.value;
-
-          var alias = this.viewColumnName(view, table, column);
-
-          if (alias == null) {
-            continue;
-          }
-
-          if (!columnNames[alias]) {
-            view.addColumn({ column: column, alias: alias });
-            columnNames[alias] = column;
-          }
-        }
-      } catch (err) {
-        _didIteratorError6 = true;
-        _iteratorError6 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion6 && _iterator6.return) {
-            _iterator6.return();
-          }
-        } finally {
-          if (_didIteratorError6) {
-            throw _iteratorError6;
-          }
-        }
-      }
+    if (name) {
+      // dedupe any columns
+      name = this.launderViewColumnName(view, column, name);
     }
-  }, {
-    key: 'buildIndexes',
-    value: function buildIndexes() {
-      var _iteratorNormalCompletion7 = true;
-      var _didIteratorError7 = false;
-      var _iteratorError7 = undefined;
 
-      try {
-        for (var _iterator7 = this.tables[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
-          var table = _step7.value;
+    return name;
+  }
 
-          var indexDefinitions = [];
+  launderViewColumnName(view, column, name) {
+    const views = this.viewColumns;
+    views[view.name] = views[view.name] || {};
+    let count = 1;
+    const rawName = name.substring(0, 63).toLowerCase();
+    let newName = rawName;
 
-          if (table.type === 'form') {
-            indexDefinitions = this.columns.systemFormTableIndexes;
-          } else if (table.type === 'repeatable') {
-            indexDefinitions = this.columns.systemRepeatableTableIndexes;
-          } else if (table.type === 'values') {
-            indexDefinitions = this.columns.systemValuesTableIndexes;
-          }
-
-          var _iteratorNormalCompletion8 = true;
-          var _didIteratorError8 = false;
-          var _iteratorError8 = undefined;
-
-          try {
-            for (var _iterator8 = indexDefinitions[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
-              var index = _step8.value;
-
-              var indexDefinition = _underscore2.default.clone(index);
-
-              var isComplex = indexDefinition.method === 'gist' || indexDefinition.method === 'gin';
-
-              var skip = isComplex && this.columns.disableComplexTypes === true;
-
-              if (!skip) {
-                table.addIndex(indexDefinition);
-              }
-            }
-          } catch (err) {
-            _didIteratorError8 = true;
-            _iteratorError8 = err;
-          } finally {
-            try {
-              if (!_iteratorNormalCompletion8 && _iterator8.return) {
-                _iterator8.return();
-              }
-            } finally {
-              if (_didIteratorError8) {
-                throw _iteratorError8;
-              }
-            }
-          }
-        }
-      } catch (err) {
-        _didIteratorError7 = true;
-        _iteratorError7 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion7 && _iterator7.return) {
-            _iterator7.return();
-          }
-        } finally {
-          if (_didIteratorError7) {
-            throw _iteratorError7;
-          }
-        }
-      }
+    while (views[view.name][newName]) {
+      newName = rawName.substring(0, 63 - count.toString().length) + count;
+      count++;
     }
-  }, {
-    key: 'viewColumnName',
-    value: function viewColumnName(view, table, column) {
-      var name = null;
 
-      if (column.system) {
-        if (table.type === 'form') {
-          if (view.variant === 'full') {
-            name = this.columns.systemFormFullViewColumns[column.name];
-          } else {
-            name = this.columns.systemFormViewColumns[column.name];
-          }
-        } else if (table.type === 'repeatable') {
-          if (view.variant === 'full') {
-            name = this.columns.systemRepeatableFullViewColumns[column.name];
-          } else {
-            name = this.columns.systemRepeatableViewColumns[column.name];
-          }
-        } else if (table.type === 'values') {
-          name = this.columns.systemValuesViewColumns[column.name];
+    views[view.name][newName] = column;
+    return newName;
+  }
+
+  processElement(element, elementTable) {
+    switch (element.type) {
+      case 'TextField':
+        if (element.numeric) {
+          this.addDoubleElement(elementTable, element);
+        } else {
+          this.addStringElement(elementTable, element);
         }
 
-        if (name == null) {
-          return null;
-        }
+        break;
 
-        name = '_' + name;
-      } else if (column.element) {
-        name = this.escapeDataName(column.element.data_name) + (column.suffix || '');
-      } else {
-        name = column.name + (column.suffix || '');
-      }
-
-      if (name) {
-        // dedupe any columns
-        name = this.launderViewColumnName(view, column, name);
-      }
-
-      return name;
-    }
-  }, {
-    key: 'launderViewColumnName',
-    value: function launderViewColumnName(view, column, name) {
-      var views = this.viewColumns;
-
-      views[view.name] = views[view.name] || {};
-
-      var count = 1;
-
-      var rawName = name.substring(0, 63).toLowerCase();
-      var newName = rawName;
-
-      while (views[view.name][newName]) {
-        newName = rawName.substring(0, 63 - count.toString().length) + count;
-        count++;
-      }
-
-      views[view.name][newName] = column;
-
-      return newName;
-    }
-  }, {
-    key: 'processElement',
-    value: function processElement(element, elementTable) {
-      switch (element.type) {
-        case 'TextField':
-          if (element.numeric) {
-            this.addDoubleElement(elementTable, element);
-          } else {
-            this.addStringElement(elementTable, element);
-          }
-          break;
-
-        case 'ChoiceField':
-          if (element.multiple) {
-            this.addArrayElement(elementTable, element);
-          } else {
-            this.addStringElement(elementTable, element);
-          }
-          break;
-
-        case 'ClassificationField':
+      case 'ChoiceField':
+        if (element.multiple) {
           this.addArrayElement(elementTable, element);
-          break;
-
-        case 'YesNoField':
+        } else {
           this.addStringElement(elementTable, element);
-          break;
+        }
 
-        case 'PhotoField':
-        case 'VideoField':
-        case 'AudioField':
-        case 'AttachmentField':
-          this.addMediaElement(elementTable, element);
-          break;
+        break;
 
-        case 'SignatureField':
-          this.addStringElement(elementTable, element);
-          this.addTimestampElement(elementTable, element, 'timestamp');
-          break;
+      case 'ClassificationField':
+        this.addArrayElement(elementTable, element);
+        break;
 
-        case 'BarcodeField':
-          this.addStringElement(elementTable, element);
-          break;
+      case 'YesNoField':
+        this.addStringElement(elementTable, element);
+        break;
 
-        case 'DateTimeField':
-        case 'DateField':
-          this.addDateElement(elementTable, element);
-          break;
+      case 'PhotoField':
+      case 'VideoField':
+      case 'AudioField':
+      case 'AttachmentField':
+        this.addMediaElement(elementTable, element);
+        break;
 
-        case 'TimeField':
-          this.addTimeElement(elementTable, element);
-          break;
+      case 'SignatureField':
+        this.addStringElement(elementTable, element);
+        this.addTimestampElement(elementTable, element, 'timestamp');
+        break;
 
-        case 'Repeatable':
-          this.addRepeatableElement(elementTable, element);
-          break;
+      case 'BarcodeField':
+        this.addStringElement(elementTable, element);
+        break;
 
-        case 'AddressField':
-          this.addStringElement(elementTable, element);
-          this.addStringElement(elementTable, element, 'sub_thoroughfare');
-          this.addStringElement(elementTable, element, 'thoroughfare');
-          this.addStringElement(elementTable, element, 'suite');
-          this.addStringElement(elementTable, element, 'locality');
-          this.addStringElement(elementTable, element, 'admin_area');
-          this.addStringElement(elementTable, element, 'postal_code');
-          this.addStringElement(elementTable, element, 'sub_admin_area');
-          this.addStringElement(elementTable, element, 'country');
-          break;
+      case 'DateTimeField':
+      case 'DateField':
+        this.addDateElement(elementTable, element);
+        break;
 
-        case 'HyperlinkField':
-          this.addStringElement(elementTable, element);
-          break;
+      case 'TimeField':
+        this.addTimeElement(elementTable, element);
+        break;
 
-        case 'RecordLinkField':
-          this.addRecordLinkElement(elementTable, element);
-          break;
+      case 'Repeatable':
+        this.addRepeatableElement(elementTable, element);
+        break;
 
-        case 'CalculatedField':
-          switch (element.display.style) {
-            case 'date':
-              if (this.columns.calculatedFieldDateFormat === 'date') {
-                this.addDateElement(elementTable, element);
-              } else {
-                this.addDoubleElement(elementTable, element);
-              }
-              break;
-            case 'number':
-            case 'currency':
+      case 'AddressField':
+        this.addStringElement(elementTable, element);
+        this.addStringElement(elementTable, element, 'sub_thoroughfare');
+        this.addStringElement(elementTable, element, 'thoroughfare');
+        this.addStringElement(elementTable, element, 'suite');
+        this.addStringElement(elementTable, element, 'locality');
+        this.addStringElement(elementTable, element, 'admin_area');
+        this.addStringElement(elementTable, element, 'postal_code');
+        this.addStringElement(elementTable, element, 'sub_admin_area');
+        this.addStringElement(elementTable, element, 'country');
+        break;
+
+      case 'HyperlinkField':
+        this.addStringElement(elementTable, element);
+        break;
+
+      case 'RecordLinkField':
+        this.addRecordLinkElement(elementTable, element);
+        break;
+
+      case 'CalculatedField':
+        switch (element.display.style) {
+          case 'date':
+            if (this.columns.calculatedFieldDateFormat === 'date') {
+              this.addDateElement(elementTable, element);
+            } else {
               this.addDoubleElement(elementTable, element);
-              break;
-            default:
-              this.addStringElement(elementTable, element);
-              break;
-          }
-          break;
+            }
 
-        default:
-          console.log('Unhandled element type', element.type);
-          break;
-      }
-    }
-  }, {
-    key: 'addStringColumn',
-    value: function addStringColumn(table, name, suffix) {
-      if (suffix == null) {
-        suffix = '';
-      }
-      return this.addColumn(table, name, 'string', suffix);
-    }
-  }, {
-    key: 'addStringElement',
-    value: function addStringElement(table, element, suffix) {
-      if (suffix == null) {
-        suffix = '';
-      }
-      return this.addElement(table, element, 'string', suffix);
-    }
-  }, {
-    key: 'addDateElement',
-    value: function addDateElement(table, element, suffix) {
-      if (suffix == null) {
-        suffix = '';
-      }
-      return this.addElement(table, element, 'date', suffix);
-    }
-  }, {
-    key: 'addTimeElement',
-    value: function addTimeElement(table, element, suffix) {
-      if (suffix == null) {
-        suffix = '';
-      }
-      return this.addElement(table, element, 'time', suffix);
-    }
-  }, {
-    key: 'addTimestampElement',
-    value: function addTimestampElement(table, element, suffix) {
-      if (suffix == null) {
-        suffix = '';
-      }
-      return this.addElement(table, element, 'timestamp', suffix);
-    }
-  }, {
-    key: 'addDoubleElement',
-    value: function addDoubleElement(table, element, suffix) {
-      if (suffix == null) {
-        suffix = '';
-      }
-      return this.addElement(table, element, 'double', suffix);
-    }
-  }, {
-    key: 'addIntegerElement',
-    value: function addIntegerElement(table, element, suffix) {
-      if (suffix == null) {
-        suffix = '';
-      }
-      return this.addElement(table, element, 'integer', suffix);
-    }
-  }, {
-    key: 'addArrayElement',
-    value: function addArrayElement(table, element, suffix) {
-      if (suffix == null) {
-        suffix = '';
-      }
+            break;
 
-      var dataType = this.columns.disableArrays === true ? 'string' : 'array';
+          case 'number':
+          case 'currency':
+            this.addDoubleElement(elementTable, element);
+            break;
 
-      return this.addElement(table, element, dataType, suffix);
+          default:
+            this.addStringElement(elementTable, element);
+            break;
+        }
+
+        break;
+
+      default:
+        console.log('Unhandled element type', element.type);
+        break;
     }
-  }, {
-    key: 'addColumn',
-    value: function addColumn(table, name, type, suffix) {
-      var column = null;
+  }
 
-      if (suffix == null) {
-        suffix = '';
-      }
-
-      if (suffix) {
-        suffix = '_' + suffix;
-      }
-
-      column = {
-        id: name + suffix,
-        type: this.maybeComplexType(type),
-        element: null,
-        suffix: suffix
-      };
-
-      table.addColumn(column);
+  addStringColumn(table, name, suffix) {
+    if (suffix == null) {
+      suffix = '';
     }
-  }, {
-    key: 'addElement',
-    value: function addElement(table, element, type, suffix) {
-      var column = null;
 
-      if (suffix == null) {
-        suffix = '';
-      }
+    return this.addColumn(table, name, 'string', suffix);
+  }
 
-      if (suffix) {
-        suffix = '_' + suffix;
-      }
+  addStringElement(table, element, suffix) {
+    if (suffix == null) {
+      suffix = '';
+    }
 
-      column = {
-        id: this.prefix + element.key + suffix,
-        type: this.maybeComplexType(type),
+    return this.addElement(table, element, 'string', suffix);
+  }
+
+  addDateElement(table, element, suffix) {
+    if (suffix == null) {
+      suffix = '';
+    }
+
+    return this.addElement(table, element, 'date', suffix);
+  }
+
+  addTimeElement(table, element, suffix) {
+    if (suffix == null) {
+      suffix = '';
+    }
+
+    return this.addElement(table, element, 'time', suffix);
+  }
+
+  addTimestampElement(table, element, suffix) {
+    if (suffix == null) {
+      suffix = '';
+    }
+
+    return this.addElement(table, element, 'timestamp', suffix);
+  }
+
+  addDoubleElement(table, element, suffix) {
+    if (suffix == null) {
+      suffix = '';
+    }
+
+    return this.addElement(table, element, 'double', suffix);
+  }
+
+  addIntegerElement(table, element, suffix) {
+    if (suffix == null) {
+      suffix = '';
+    }
+
+    return this.addElement(table, element, 'integer', suffix);
+  }
+
+  addArrayElement(table, element, suffix) {
+    if (suffix == null) {
+      suffix = '';
+    }
+
+    const dataType = this.columns.disableArrays === true ? 'string' : 'array';
+    return this.addElement(table, element, dataType, suffix);
+  }
+
+  addColumn(table, name, type, suffix) {
+    let column = null;
+
+    if (suffix == null) {
+      suffix = '';
+    }
+
+    if (suffix) {
+      suffix = '_' + suffix;
+    }
+
+    column = {
+      id: name + suffix,
+      type: this.maybeComplexType(type),
+      element: null,
+      suffix: suffix
+    };
+    table.addColumn(column);
+  }
+
+  addElement(table, element, type, suffix) {
+    let column = null;
+
+    if (suffix == null) {
+      suffix = '';
+    }
+
+    if (suffix) {
+      suffix = '_' + suffix;
+    }
+
+    column = {
+      id: this.prefix + element.key + suffix,
+      type: this.maybeComplexType(type),
+      element: element,
+      suffix: suffix
+    };
+    table.addColumn(column);
+  }
+
+  maybeComplexType(type) {
+    const isComplex = SIMPLE_TYPES.indexOf(type) === -1;
+    return isComplex && this.columns.disableComplexTypes === true ? 'string' : type;
+  }
+
+  addMediaElement(table, element) {
+    this.addArrayElement(table, element);
+
+    if (this.columns.includeMediaCaptions !== false) {
+      this.addArrayElement(table, element, 'captions');
+    }
+
+    if (this.columns.includeMediaURLs) {
+      this.addArrayElement(table, element, 'urls');
+    }
+
+    if (this.columns.includeMediaViewURLs) {
+      this.addStringElement(table, element, 'view_url');
+    }
+
+    const value = element.key.replace(/'/g, "''");
+    const clause = (0, _util.format)('WHERE key = \'%s\'', value);
+    const filter = {
+      key: value
+    };
+    const alias = {
+      PhotoField: '_photo_id',
+      VideoField: '_video_id',
+      AudioField: '_audio_id',
+      AttachmentField: '_attachment_id'
+    }[element.type];
+
+    if (alias) {
+      const view = new View(this.formTable.id + '_' + element.key + '_view', null, this.valuesTable, {
+        type: 'media',
         element: element,
-        suffix: suffix
-      };
-
-      table.addColumn(column);
-    }
-  }, {
-    key: 'maybeComplexType',
-    value: function maybeComplexType(type) {
-      var isComplex = SIMPLE_TYPES.indexOf(type) === -1;
-
-      return isComplex && this.columns.disableComplexTypes === true ? 'string' : type;
-    }
-  }, {
-    key: 'addMediaElement',
-    value: function addMediaElement(table, element) {
-      this.addArrayElement(table, element);
-
-      if (this.columns.includeMediaCaptions !== false) {
-        this.addArrayElement(table, element, 'captions');
-      }
-
-      if (this.columns.includeMediaURLs) {
-        this.addArrayElement(table, element, 'urls');
-      }
-
-      if (this.columns.includeMediaViewURLs) {
-        this.addStringElement(table, element, 'view_url');
-      }
-
-      var value = element.key.replace(/'/g, "''");
-
-      var clause = (0, _util.format)('WHERE key = \'%s\'', value);
-
-      var filter = {
-        key: value
-      };
-
-      var alias = {
-        PhotoField: '_photo_id',
-        VideoField: '_video_id',
-        AudioField: '_audio_id',
-        AttachmentField: '_attachment_id'
-      }[element.type];
-
-      if (alias) {
-        var view = new View(this.formTable.id + '_' + element.key + '_view', null, this.valuesTable, { type: 'media', element: element, clause: clause, filter: filter, alias: this.alias(element.data_name) });
-
-        view.addColumn({ column: { name: 'record_resource_id', type: 'string' }, alias: 'record_id' });
-        view.addColumn({ column: { name: 'parent_resource_id', type: 'string' }, alias: 'parent_id' });
-        view.addColumn({ column: { name: 'text_value', type: 'string' }, alias: alias });
-
-        this.views.push(view);
-      }
-    }
-  }, {
-    key: 'addRecordLinkElement',
-    value: function addRecordLinkElement(parentTable, element) {
-      this.addArrayElement(parentTable, element);
-
-      var value = element.key.replace(/'/g, "''");
-
-      var clause = (0, _util.format)('WHERE key = \'%s\'', value);
-
-      var view = new View(this.formTable.id + '_' + element.key + '_view', null, this.valuesTable, { type: 'link', element: element, clause: clause, alias: this.alias(element.data_name) });
-
-      view.addColumn({ column: { name: 'record_resource_id', type: 'string' }, alias: 'source_record_id' });
-      view.addColumn({ column: { name: 'parent_resource_id', type: 'string' }, alias: 'parent_id' });
-      view.addColumn({ column: { name: 'text_value', type: 'string' }, alias: 'linked_record_id' });
-
+        clause: clause,
+        filter,
+        alias: this.alias(element.data_name)
+      });
+      view.addColumn({
+        column: {
+          name: 'record_resource_id',
+          type: 'string'
+        },
+        alias: 'record_id'
+      });
+      view.addColumn({
+        column: {
+          name: 'parent_resource_id',
+          type: 'string'
+        },
+        alias: 'parent_id'
+      });
+      view.addColumn({
+        column: {
+          name: 'text_value',
+          type: 'string'
+        },
+        alias: alias
+      });
       this.views.push(view);
     }
-  }, {
-    key: 'addRepeatableElement',
-    value: function addRepeatableElement(parentTable, element) {
-      var childTable = this.buildRepeatableTable(parentTable, element);
+  }
 
-      this.tables.push(childTable);
+  addRecordLinkElement(parentTable, element) {
+    this.addArrayElement(parentTable, element);
+    const value = element.key.replace(/'/g, "''");
+    const clause = (0, _util.format)('WHERE key = \'%s\'', value);
+    const view = new View(this.formTable.id + '_' + element.key + '_view', null, this.valuesTable, {
+      type: 'link',
+      element: element,
+      clause: clause,
+      alias: this.alias(element.data_name)
+    });
+    view.addColumn({
+      column: {
+        name: 'record_resource_id',
+        type: 'string'
+      },
+      alias: 'source_record_id'
+    });
+    view.addColumn({
+      column: {
+        name: 'parent_resource_id',
+        type: 'string'
+      },
+      alias: 'parent_id'
+    });
+    view.addColumn({
+      column: {
+        name: 'text_value',
+        type: 'string'
+      },
+      alias: 'linked_record_id'
+    });
+    this.views.push(view);
+  }
 
-      var elements = _utils2.default.flattenElements(element.elements, false);
+  addRepeatableElement(parentTable, element) {
+    const childTable = this.buildRepeatableTable(parentTable, element);
+    this.tables.push(childTable);
 
-      var childElements = _dataElements2.default.find(elements);
+    const elements = _utils.default.flattenElements(element.elements, false);
 
-      var _iteratorNormalCompletion9 = true;
-      var _didIteratorError9 = false;
-      var _iteratorError9 = undefined;
+    const childElements = _dataElements.default.find(elements);
 
-      try {
-        for (var _iterator9 = childElements[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
-          var childElement = _step9.value;
-
-          this.processElement(childElement, childTable);
-        }
-      } catch (err) {
-        _didIteratorError9 = true;
-        _iteratorError9 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion9 && _iterator9.return) {
-            _iterator9.return();
-          }
-        } finally {
-          if (_didIteratorError9) {
-            throw _iteratorError9;
-          }
-        }
-      }
+    for (const childElement of childElements) {
+      this.processElement(childElement, childTable);
     }
-  }]);
+  }
 
-  return Schema;
-}();
+}
 
 exports.default = Schema;
 //# sourceMappingURL=schema.js.map

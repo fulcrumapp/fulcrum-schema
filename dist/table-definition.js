@@ -1,103 +1,82 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.default = void 0;
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var TableDefinition = function () {
-  function TableDefinition() {
-    _classCallCheck(this, TableDefinition);
-
+class TableDefinition {
+  constructor() {
     this.columns = [];
     this.viewColumns = {};
     this.indexes = [];
   }
 
-  _createClass(TableDefinition, [{
-    key: 'column',
-    value: function column(name, type, options) {
-      this.columns.push(_extends({ name: name, type: type }, options));
-    }
-  }, {
-    key: 'pk',
-    value: function pk() {
-      this.column('id', 'pk');
-    }
-  }, {
-    key: 'integer',
-    value: function integer(name, options) {
-      this.column(name, 'integer', options);
-    }
-  }, {
-    key: 'string',
-    value: function string(name, options) {
-      this.column(name, 'string', options);
-    }
-  }, {
-    key: 'timestamp',
-    value: function timestamp(name, options) {
-      this.column(name, 'timestamp', options);
-    }
-  }, {
-    key: 'boolean',
-    value: function boolean(name, options) {
-      this.column(name, 'boolean', options);
-    }
-  }, {
-    key: 'double',
-    value: function double(name, options) {
-      this.column(name, 'double', options);
-    }
-  }, {
-    key: 'text',
-    value: function text(name, options) {
-      this.column(name, 'text', options);
-    }
-  }, {
-    key: 'array',
-    value: function array(name, options) {
-      this.column(name, 'array', options);
-    }
-  }, {
-    key: 'fts',
-    value: function fts(name, options) {
-      this.column(name, 'fts', options);
-    }
-  }, {
-    key: 'geometry',
-    value: function geometry(name, options) {
-      this.column(name, 'geometry', options);
-    }
-  }, {
-    key: 'json',
-    value: function json(name, options) {
-      this.column(name, 'json', options);
-    }
-  }, {
-    key: 'alias',
-    value: function alias(source, to) {
-      this.viewColumns[source] = to;
-    }
-  }, {
-    key: 'index',
-    value: function index(options) {
-      this.indexes.push(options);
-    }
-  }, {
-    key: 'define',
-    value: function define() {
-      return null;
-    }
-  }]);
+  column(name, type, options) {
+    this.columns.push({
+      name: name,
+      type: type,
+      ...options
+    });
+  }
 
-  return TableDefinition;
-}();
+  pk() {
+    this.column('id', 'pk');
+  }
+
+  integer(name, options) {
+    this.column(name, 'integer', options);
+  }
+
+  string(name, options) {
+    this.column(name, 'string', options);
+  }
+
+  timestamp(name, options) {
+    this.column(name, 'timestamp', options);
+  }
+
+  boolean(name, options) {
+    this.column(name, 'boolean', options);
+  }
+
+  double(name, options) {
+    this.column(name, 'double', options);
+  }
+
+  text(name, options) {
+    this.column(name, 'text', options);
+  }
+
+  array(name, options) {
+    this.column(name, 'array', options);
+  }
+
+  fts(name, options) {
+    this.column(name, 'fts', options);
+  }
+
+  geometry(name, options) {
+    this.column(name, 'geometry', options);
+  }
+
+  json(name, options) {
+    this.column(name, 'json', options);
+  }
+
+  alias(source, to) {
+    this.viewColumns[source] = to;
+  }
+
+  index(options) {
+    this.indexes.push(options);
+  }
+
+  define() {
+    return null;
+  }
+
+}
 
 exports.default = TableDefinition;
 //# sourceMappingURL=table-definition.js.map

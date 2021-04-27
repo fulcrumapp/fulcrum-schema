@@ -1,12 +1,11 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.default = void 0;
 // The v1 schema is used by the iOS and Android apps
-
-var Schema = {};
-
+const Schema = {};
 Schema.systemFormTableColumns = [{
   name: 'id',
   type: 'pk'
@@ -42,7 +41,6 @@ Schema.systemFormTableColumns = [{
   type: 'timestamp',
   allowNull: false
 }];
-
 Schema.systemValuesTableColumns = [{
   name: 'id',
   type: 'pk'
@@ -64,7 +62,6 @@ Schema.systemValuesTableColumns = [{
   name: 'number_value',
   type: 'double'
 }];
-
 Schema.systemRepeatableTableColumns = [{
   name: 'id',
   type: 'pk'
@@ -98,19 +95,37 @@ Schema.systemRepeatableTableColumns = [{
   type: 'timestamp',
   allowNull: false
 }];
-
 Schema.systemFormViewColumns = null;
-
 Schema.systemRepeatableViewColumns = null;
+Schema.systemFormTableIndexes = [{
+  columns: ['record_id'],
+  method: 'btree'
+}, {
+  columns: ['record_resource_id'],
+  method: 'btree'
+}];
+Schema.systemRepeatableTableIndexes = [{
+  columns: ['resource_id'],
+  method: 'btree'
+}, {
+  columns: ['record_id'],
+  method: 'btree'
+}, {
+  columns: ['record_resource_id'],
+  method: 'btree'
+}, {
+  columns: ['parent_resource_id'],
+  method: 'btree'
+}];
+Schema.systemValuesTableIndexes = [{
+  columns: ['record_id'],
+  method: 'btree'
+}, {
+  columns: ['parent_resource_id'],
+  method: 'btree'
+}]; // V1 didn't emit `_caption` columns for media fields
 
-Schema.systemFormTableIndexes = [{ columns: ['record_id'], method: 'btree' }, { columns: ['record_resource_id'], method: 'btree' }];
-
-Schema.systemRepeatableTableIndexes = [{ columns: ['resource_id'], method: 'btree' }, { columns: ['record_id'], method: 'btree' }, { columns: ['record_resource_id'], method: 'btree' }, { columns: ['parent_resource_id'], method: 'btree' }];
-
-Schema.systemValuesTableIndexes = [{ columns: ['record_id'], method: 'btree' }, { columns: ['parent_resource_id'], method: 'btree' }];
-
-// V1 didn't emit `_caption` columns for media fields
 Schema.includeMediaCaptions = false;
-
-exports.default = Schema;
+var _default = Schema;
+exports.default = _default;
 //# sourceMappingURL=v1.js.map
