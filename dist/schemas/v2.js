@@ -5,9 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _underscore = _interopRequireDefault(require("underscore"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _lodash = require("lodash");
 
 const Schema = {};
 Schema.systemFormTableColumns = [{
@@ -1371,7 +1369,7 @@ Schema.systemFormViewColumns = {
   updated_duration: 'updated_duration',
   edited_duration: 'edited_duration'
 };
-Schema.systemFormFullViewColumns = _underscore.default.clone(Schema.systemFormViewColumns);
+Schema.systemFormFullViewColumns = (0, _lodash.clone)(Schema.systemFormViewColumns);
 Schema.systemFormFullViewColumns.form_values = 'form_values';
 Schema.systemFormFullViewColumns.record_index = 'record_index';
 Schema.systemFormFullViewColumns.record_index_text = 'record_index_text';
@@ -1409,7 +1407,7 @@ Schema.systemRepeatableViewColumns = {
   updated_duration: 'updated_duration',
   edited_duration: 'edited_duration'
 };
-Schema.systemRepeatableFullViewColumns = _underscore.default.clone(Schema.systemRepeatableViewColumns);
+Schema.systemRepeatableFullViewColumns = (0, _lodash.clone)(Schema.systemRepeatableViewColumns);
 Schema.systemRepeatableFullViewColumns.form_values = 'form_values';
 Schema.systemRepeatableFullViewColumns.record_index = 'record_index';
 Schema.systemRepeatableFullViewColumns.record_index_text = 'record_index_text';

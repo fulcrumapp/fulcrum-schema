@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _underscore = _interopRequireDefault(require("underscore"));
+var _lodash = require("lodash");
 
 var _sqldiff = _interopRequireDefault(require("sqldiff"));
 
@@ -48,8 +48,7 @@ class OrganizationSchema {
     });
 
     for (const column of tableDefinition.columns) {
-      const systemColumn = _underscore.default.clone(column);
-
+      const systemColumn = (0, _lodash.clone)(column);
       systemColumn.system = true;
       table.addColumn(systemColumn);
     }

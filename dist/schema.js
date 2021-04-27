@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _underscore = _interopRequireDefault(require("underscore"));
+var _lodash = require("lodash");
 
 var _utils = _interopRequireDefault(require("./utils"));
 
@@ -80,8 +80,7 @@ class Schema {
     });
 
     for (const column of this.columns.systemFormTableColumns) {
-      const formColumn = _underscore.default.clone(column);
-
+      const formColumn = (0, _lodash.clone)(column);
       formColumn.system = true;
       formColumn.type = this.maybeComplexType(formColumn.type);
       table.addColumn(formColumn);
@@ -106,8 +105,7 @@ class Schema {
     });
 
     for (const column of this.columns.systemValuesTableColumns) {
-      const valueColumn = _underscore.default.clone(column);
-
+      const valueColumn = (0, _lodash.clone)(column);
       valueColumn.system = true;
       valueColumn.type = this.maybeComplexType(valueColumn.type);
       table.addColumn(valueColumn);
@@ -126,8 +124,7 @@ class Schema {
     });
 
     for (const column of this.columns.systemRepeatableTableColumns) {
-      const attrs = _underscore.default.clone(column);
-
+      const attrs = (0, _lodash.clone)(column);
       attrs.id = element.key + '_' + column.name;
       attrs.system = true;
       attrs.type = this.maybeComplexType(attrs.type);
@@ -216,8 +213,7 @@ class Schema {
       }
 
       for (const index of indexDefinitions) {
-        const indexDefinition = _underscore.default.clone(index);
-
+        const indexDefinition = (0, _lodash.clone)(index);
         const isComplex = indexDefinition.method === 'gist' || indexDefinition.method === 'gin';
         const skip = isComplex && this.columns.disableComplexTypes === true;
 
