@@ -2,7 +2,7 @@
 
 require('@babel/register');
 
-const schemaGenerator = require('./src/schema-generator');
+const schemaGenerator = require('./src/fulcrum-schema');
 
 schemaGenerator.dialect = 'postgres';
 schemaGenerator.version = 'v2';

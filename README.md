@@ -13,7 +13,7 @@ make
 
 ### Distribute
 
-Builds the final output. The main output file `dist/schema-generator.js`.
+Builds the final output. The main output file `dist/fulcrum-schema.js`.
 
 ```sh
 make
@@ -21,7 +21,7 @@ make
 
 ### Deploying
 
-When making changes to this library, the schema-generator.js file needs to be copied to the Fulcrum web app directory in `public`. At the
+When making changes to this library, the fulcrum-schema.js file needs to be copied to the Fulcrum web app directory in `public`. At the
 same time the `fulcrum-query` repo needs to be upgraded to use the new version.
 
 DO NOT change the `template.sql` in the web app without a complete understanding of the side effects. In most cases a core schema

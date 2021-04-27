@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { compareFormSchemas } from '../src/schema-generator';
+import { compareFormSchemas } from '../src/fulcrum-schema';
 import chai from 'chai';
 
 chai.should();
@@ -10,14 +10,14 @@ let newForm = null;
 
 const fixture = (file) => fs.readFileSync(path.join('test', 'fixtures', file)).toString();
 
-beforeEach(function () {
+beforeEach(() => {
   oldForm = JSON.parse(fs.readFileSync(path.join('test', 'fixtures', 'form.json'))).form;
   newForm = JSON.parse(fs.readFileSync(path.join('test', 'fixtures', 'form-new.json'))).form;
   oldForm.row_id = 67777;
   newForm.row_id = 67777;
 });
 
-const dumpScript = function (scripts) {
+const dumpScript = function(scripts) {
   console.log('----------------------------------');
   console.log(toSQL(scripts));
   console.log('----------------------------------');

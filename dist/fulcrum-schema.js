@@ -117,4 +117,4 @@ instance.compareForm = () => {
 };
 
 module.exports = instance;
-//# sourceMappingURL=schema-generator.js.map
+//# sourceMappingURL=fulcrum-schema.js.map
