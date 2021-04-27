@@ -3,18 +3,30 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _tableDefinition = _interopRequireDefault(require("../../table-definition"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-class Photos extends _tableDefinition.default {
-  get name() {
-    return 'photos';
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var Photos = /*#__PURE__*/function (_TableDefinition) {
+  _inheritsLoose(Photos, _TableDefinition);
+
+  function Photos() {
+    return _TableDefinition.apply(this, arguments) || this;
   }
 
-  defineTable() {
+  var _proto = Photos.prototype;
+
+  _proto.defineTable = function defineTable() {
     this.pk('id', {});
     this.integer('row_id', {
       "allowNull": false
@@ -47,11 +59,11 @@ class Photos extends _tableDefinition.default {
     this.timestamp('stored_at', {});
     this.timestamp('processed_at', {});
     this.geometry('geometry', {});
-    this.double('latitude', {});
-    this.double('longitude', {});
-    this.double('altitude', {});
-    this.double('accuracy', {});
-    this.double('direction', {});
+    this["double"]('latitude', {});
+    this["double"]('longitude', {});
+    this["double"]('altitude', {});
+    this["double"]('accuracy', {});
+    this["double"]('direction', {});
     this.integer('width', {});
     this.integer('height', {});
     this.string('make', {});
@@ -66,9 +78,9 @@ class Photos extends _tableDefinition.default {
     this.string('text_index_content', {});
     this.fts('text_index', {});
     this.timestamp('text_processed_at', {});
-  }
+  };
 
-  defineView() {
+  _proto.defineView = function defineView() {
     this.alias('access_key', 'photo_id');
     this.alias('exif', 'exif');
     this.alias('file_size', 'file_size');
@@ -103,9 +115,9 @@ class Photos extends _tableDefinition.default {
     this.alias('text_index_content', 'text_index_content');
     this.alias('text_index', 'text_index');
     this.alias('text_processed_at', 'text_processed_at');
-  }
+  };
 
-  defineIndexes() {
+  _proto.defineIndexes = function defineIndexes() {
     this.index({
       "columns": ["row_resource_id"],
       "unique": true
@@ -141,9 +153,17 @@ class Photos extends _tableDefinition.default {
       "columns": ["text_index"],
       "method": "gin"
     });
-  }
+  };
 
-}
+  _createClass(Photos, [{
+    key: "name",
+    get: function get() {
+      return 'photos';
+    }
+  }]);
 
-exports.default = Photos;
+  return Photos;
+}(_tableDefinition["default"]);
+
+exports["default"] = Photos;
 //# sourceMappingURL=photos.js.map

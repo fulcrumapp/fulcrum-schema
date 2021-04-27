@@ -3,11 +3,11 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _lodash = require("lodash");
 
-const Schema = {};
+var Schema = {};
 Schema.systemFormTableColumns = [{
   name: 'id',
   type: 'pk'
@@ -1860,5 +1860,5 @@ Schema.systemValuesTableIndexes = [// { columns: [ 'record_id' ], method: 'btree
   method: 'btree'
 }];
 var _default = Schema;
-exports.default = _default;
+exports["default"] = _default;
 //# sourceMappingURL=v2.js.map

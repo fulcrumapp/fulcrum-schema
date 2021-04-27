@@ -3,9 +3,9 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 // The v1 schema is used by the iOS and Android apps
-const Schema = {};
+var Schema = {};
 Schema.systemFormTableColumns = [{
   name: 'id',
   type: 'pk'
@@ -127,5 +127,5 @@ Schema.systemValuesTableIndexes = [{
 
 Schema.includeMediaCaptions = false;
 var _default = Schema;
-exports.default = _default;
+exports["default"] = _default;
 //# sourceMappingURL=v1.js.map

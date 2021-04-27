@@ -14,16 +14,14 @@ var _metadata = _interopRequireDefault(require("./metadata"));
 
 var _sqldiff = _interopRequireDefault(require("sqldiff"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 require('@babel/polyfill');
 
-const {
-  Postgres,
-  SQLite,
-  SchemaDiffer
-} = _sqldiff.default;
-const instance = Function('return this')(); // eslint-disable-line no-new-func
+var Postgres = _sqldiff["default"].Postgres,
+    SQLite = _sqldiff["default"].SQLite,
+    SchemaDiffer = _sqldiff["default"].SchemaDiffer;
+var instance = Function('return this')(); // eslint-disable-line no-new-func
 
 instance.dialect = 'postgres';
 instance.version = 'v2';
@@ -33,26 +31,25 @@ instance.tableSchema = null;
 instance.tablePrefix = null;
 instance.includeMetadata = false;
 
-function generateSQL(differ, {
-  includeMetadata,
-  dialect,
-  tablePrefix,
-  tableSchema
-}) {
-  const Generator = {
+function generateSQL(differ, _ref) {
+  var includeMetadata = _ref.includeMetadata,
+      dialect = _ref.dialect,
+      tablePrefix = _ref.tablePrefix,
+      tableSchema = _ref.tableSchema;
+  var Generator = {
     postgres: Postgres,
     sqlite: SQLite
   }[dialect];
-  const quote = {
+  var quote = {
     postgres: '"',
     sqlite: '`'
   }[dialect];
-  const meta = new _metadata.default(differ, {
-    quote,
+  var meta = new _metadata["default"](differ, {
+    quote: quote,
     schema: tableSchema,
     includeColumns: true
   });
-  const generator = new Generator(differ, {
+  var generator = new Generator(differ, {
     afterTransform: includeMetadata ? meta.build.bind(meta) : null
   });
   generator.tableSchema = tableSchema || '';
@@ -60,19 +57,19 @@ function generateSQL(differ, {
   return generator.generate();
 }
 
-instance.compareOrganization = () => {
-  let oldSchema = null;
-  let newSchema = null;
+instance.compareOrganization = function () {
+  var oldSchema = null;
+  var newSchema = null;
 
   if (instance.oldOrganization) {
-    oldSchema = new _organizationSchema.default(_postgresSchema.default);
+    oldSchema = new _organizationSchema["default"](_postgresSchema["default"]);
   }
 
   if (instance.newOrganization) {
-    newSchema = new _organizationSchema.default(_postgresSchema.default);
+    newSchema = new _organizationSchema["default"](_postgresSchema["default"]);
   }
 
-  const differ = new SchemaDiffer(oldSchema, newSchema);
+  var differ = new SchemaDiffer(oldSchema, newSchema);
   return generateSQL(differ, {
     version: instance.version,
     dialect: instance.dialect,
@@ -82,31 +79,35 @@ instance.compareOrganization = () => {
   });
 };
 
-instance.compareFormSchemas = (oldForm, newForm, options = {}) => {
+instance.compareFormSchemas = function (oldForm, newForm, options) {
+  if (options === void 0) {
+    options = {};
+  }
+
   try {
-    let oldSchema = null;
-    let newSchema = null;
-    const schema = {
-      v1: _v.default,
-      v2: _v2.default
+    var oldSchema = null;
+    var newSchema = null;
+    var schema = {
+      v1: _v["default"],
+      v2: _v2["default"]
     }[options.version];
 
     if (oldForm) {
-      oldSchema = new _schema.default(oldForm, schema, null);
+      oldSchema = new _schema["default"](oldForm, schema, null);
     }
 
     if (newForm) {
-      newSchema = new _schema.default(newForm, schema, null);
+      newSchema = new _schema["default"](newForm, schema, null);
     }
 
-    const differ = new SchemaDiffer(oldSchema, newSchema);
+    var differ = new SchemaDiffer(oldSchema, newSchema);
     return generateSQL(differ, options);
   } catch (err) {
     throw new Error(err.stack.toString());
   }
 };
 
-instance.compareForm = () => {
+instance.compareForms = function () {
   return instance.compareFormSchemas(instance.oldForm, instance.newForm, {
     version: instance.version,
     dialect: instance.dialect,

@@ -3,18 +3,30 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _tableDefinition = _interopRequireDefault(require("../../table-definition"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-class Roles extends _tableDefinition.default {
-  get name() {
-    return 'roles';
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var Roles = /*#__PURE__*/function (_TableDefinition) {
+  _inheritsLoose(Roles, _TableDefinition);
+
+  function Roles() {
+    return _TableDefinition.apply(this, arguments) || this;
   }
 
-  defineTable() {
+  var _proto = Roles.prototype;
+
+  _proto.defineTable = function defineTable() {
     this.pk('id', {});
     this.integer('row_id', {
       "allowNull": false
@@ -36,87 +48,87 @@ class Roles extends _tableDefinition.default {
     this.timestamp('updated_at', {
       "allowNull": false
     });
-    this.boolean('is_system', {
+    this["boolean"]('is_system', {
       "allowNull": false
     });
-    this.boolean('is_default', {
+    this["boolean"]('is_default', {
       "allowNull": false
     });
-    this.boolean('can_manage_subscription', {
+    this["boolean"]('can_manage_subscription', {
       "allowNull": false,
       "defaultValue": false
     });
-    this.boolean('can_update_organization', {
+    this["boolean"]('can_update_organization', {
       "allowNull": false,
       "defaultValue": false
     });
-    this.boolean('can_manage_members', {
+    this["boolean"]('can_manage_members', {
       "allowNull": false,
       "defaultValue": false
     });
-    this.boolean('can_manage_roles', {
+    this["boolean"]('can_manage_roles', {
       "allowNull": false,
       "defaultValue": false
     });
-    this.boolean('can_manage_apps', {
+    this["boolean"]('can_manage_apps', {
       "allowNull": false,
       "defaultValue": false
     });
-    this.boolean('can_manage_projects', {
+    this["boolean"]('can_manage_projects', {
       "allowNull": false,
       "defaultValue": false
     });
-    this.boolean('can_manage_choice_lists', {
+    this["boolean"]('can_manage_choice_lists', {
       "allowNull": false,
       "defaultValue": false
     });
-    this.boolean('can_manage_classification_sets', {
+    this["boolean"]('can_manage_classification_sets', {
       "allowNull": false,
       "defaultValue": false
     });
-    this.boolean('can_create_records', {
+    this["boolean"]('can_create_records', {
       "allowNull": false,
       "defaultValue": false
     });
-    this.boolean('can_update_records', {
+    this["boolean"]('can_update_records', {
       "allowNull": false,
       "defaultValue": false
     });
-    this.boolean('can_delete_records', {
+    this["boolean"]('can_delete_records', {
       "allowNull": false,
       "defaultValue": false
     });
-    this.boolean('can_change_status', {
+    this["boolean"]('can_change_status', {
       "allowNull": false,
       "defaultValue": false
     });
-    this.boolean('can_change_project', {
+    this["boolean"]('can_change_project', {
       "allowNull": false,
       "defaultValue": false
     });
-    this.boolean('can_assign_records', {
+    this["boolean"]('can_assign_records', {
       "allowNull": false,
       "defaultValue": false
     });
-    this.boolean('can_import_records', {
+    this["boolean"]('can_import_records', {
       "allowNull": false,
       "defaultValue": false
     });
-    this.boolean('can_export_records', {
+    this["boolean"]('can_export_records', {
       "allowNull": false,
       "defaultValue": false
     });
-    this.boolean('can_run_reports', {
+    this["boolean"]('can_run_reports', {
       "allowNull": false,
       "defaultValue": false
     });
-    this.boolean('can_manage_authorizations', {
+    this["boolean"]('can_manage_authorizations', {
       "allowNull": false,
       "defaultValue": false
     });
-  }
+  };
 
-  defineView() {
+  _proto.defineView = function defineView() {
     this.alias('row_resource_id', 'role_id');
     this.alias('name', 'name');
     this.alias('description', 'description');
@@ -144,9 +156,9 @@ class Roles extends _tableDefinition.default {
     this.alias('can_export_records', 'can_export_records');
     this.alias('can_run_reports', 'can_run_reports');
     this.alias('can_manage_authorizations', 'can_manage_authorizations');
-  }
+  };
 
-  defineIndexes() {
+  _proto.defineIndexes = function defineIndexes() {
     this.index({
       "columns": ["row_resource_id"],
       "unique": true
@@ -161,9 +173,17 @@ class Roles extends _tableDefinition.default {
     this.index({
       "columns": ["updated_at"]
     });
-  }
+  };
 
-}
+  _createClass(Roles, [{
+    key: "name",
+    get: function get() {
+      return 'roles';
+    }
+  }]);
 
-exports.default = Roles;
+  return Roles;
+}(_tableDefinition["default"]);
+
+exports["default"] = Roles;
 //# sourceMappingURL=roles.js.map

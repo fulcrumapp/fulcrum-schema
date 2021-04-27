@@ -3,18 +3,30 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _tableDefinition = _interopRequireDefault(require("../../table-definition"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-class Forms extends _tableDefinition.default {
-  get name() {
-    return 'forms';
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var Forms = /*#__PURE__*/function (_TableDefinition) {
+  _inheritsLoose(Forms, _TableDefinition);
+
+  function Forms() {
+    return _TableDefinition.apply(this, arguments) || this;
   }
 
-  defineTable() {
+  var _proto = Forms.prototype;
+
+  _proto.defineTable = function defineTable() {
     this.pk('id', {});
     this.integer('row_id', {
       "allowNull": false
@@ -59,28 +71,28 @@ class Forms extends _tableDefinition.default {
     this.integer('signature_count', {});
     this.integer('media_usage', {});
     this.integer('media_count', {});
-    this.boolean('auto_assign', {
+    this["boolean"]('auto_assign', {
       "allowNull": false
     });
     this.json('title_field_keys', {});
-    this.boolean('hidden_on_dashboard', {
+    this["boolean"]('hidden_on_dashboard', {
       "allowNull": false
     });
     this.json('geometry_types', {});
-    this.boolean('geometry_required', {
+    this["boolean"]('geometry_required', {
       "allowNull": false
     });
     this.text('script', {});
     this.text('image', {});
-    this.boolean('projects_enabled', {
+    this["boolean"]('projects_enabled', {
       "allowNull": false
     });
-    this.boolean('assignment_enabled', {
+    this["boolean"]('assignment_enabled', {
       "allowNull": false
     });
-  }
+  };
 
-  defineView() {
+  _proto.defineView = function defineView() {
     this.alias('row_resource_id', 'form_id');
     this.alias('name', 'name');
     this.alias('description', 'description');
@@ -102,9 +114,9 @@ class Forms extends _tableDefinition.default {
     this.alias('projects_enabled', 'projects_enabled');
     this.alias('assignment_enabled', 'assignment_enabled');
     this.alias('image', 'image');
-  }
+  };
 
-  defineIndexes() {
+  _proto.defineIndexes = function defineIndexes() {
     this.index({
       "columns": ["row_resource_id"],
       "unique": true
@@ -119,9 +131,17 @@ class Forms extends _tableDefinition.default {
     this.index({
       "columns": ["updated_at"]
     });
-  }
+  };
 
-}
+  _createClass(Forms, [{
+    key: "name",
+    get: function get() {
+      return 'forms';
+    }
+  }]);
 
-exports.default = Forms;
+  return Forms;
+}(_tableDefinition["default"]);
+
+exports["default"] = Forms;
 //# sourceMappingURL=forms.js.map
