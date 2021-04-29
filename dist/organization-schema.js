@@ -1,217 +1,110 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = void 0;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _lodash = require("lodash");
 
-var _underscore = require('underscore');
+var _sqldiff = _interopRequireDefault(require("sqldiff"));
 
-var _underscore2 = _interopRequireDefault(_underscore);
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var _sqldiff = require('sqldiff');
+function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-var _sqldiff2 = _interopRequireDefault(_sqldiff);
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var Table = _sqldiff["default"].Table,
+    View = _sqldiff["default"].View;
 
-var Table = _sqldiff2.default.Table,
-    View = _sqldiff2.default.View;
-
-var OrganizationSchema = function () {
+var OrganizationSchema = /*#__PURE__*/function () {
   function OrganizationSchema(schema, options) {
-    _classCallCheck(this, OrganizationSchema);
-
     this.schema = schema;
     this.options = options || {};
     this.buildSchema();
   }
 
-  _createClass(OrganizationSchema, [{
-    key: 'buildSchema',
-    value: function buildSchema() {
-      this.tables = [];
-      this.tableDefinitions = {};
-      this.views = [];
+  var _proto = OrganizationSchema.prototype;
 
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
+  _proto.buildSchema = function buildSchema() {
+    this.tables = [];
+    this.tableDefinitions = {};
+    this.views = [];
 
-      try {
-        for (var _iterator = this.schema[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var table = _step.value;
-
-          var ModelClass = table;
-
-          var definition = new ModelClass();
-
-          definition.defineTable();
-          definition.defineView();
-          definition.defineIndexes();
-
-          this.tableDefinitions[definition.name] = definition;
-
-          this.buildTable(definition);
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator.return) {
-            _iterator.return();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
-        }
-      }
-
-      this.buildViews();
+    for (var _iterator = _createForOfIteratorHelperLoose(this.schema), _step; !(_step = _iterator()).done;) {
+      var table = _step.value;
+      var ModelClass = table;
+      var definition = new ModelClass();
+      definition.defineTable();
+      definition.defineView();
+      definition.defineIndexes();
+      this.tableDefinitions[definition.name] = definition;
+      this.buildTable(definition);
     }
-  }, {
-    key: 'buildTable',
-    value: function buildTable(tableDefinition) {
-      var table = new Table(tableDefinition.name, null, { type: 'system', alias: tableDefinition.name });
 
-      var _iteratorNormalCompletion2 = true;
-      var _didIteratorError2 = false;
-      var _iteratorError2 = undefined;
+    this.buildViews();
+  };
 
-      try {
-        for (var _iterator2 = tableDefinition.columns[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-          var column = _step2.value;
+  _proto.buildTable = function buildTable(tableDefinition) {
+    var table = new Table(tableDefinition.name, null, {
+      type: 'system',
+      alias: tableDefinition.name
+    });
 
-          var systemColumn = _underscore2.default.clone(column);
-
-          systemColumn.system = true;
-
-          table.addColumn(systemColumn);
-        }
-      } catch (err) {
-        _didIteratorError2 = true;
-        _iteratorError2 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion2 && _iterator2.return) {
-            _iterator2.return();
-          }
-        } finally {
-          if (_didIteratorError2) {
-            throw _iteratorError2;
-          }
-        }
-      }
-
-      var _iteratorNormalCompletion3 = true;
-      var _didIteratorError3 = false;
-      var _iteratorError3 = undefined;
-
-      try {
-        for (var _iterator3 = tableDefinition.indexes[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-          var indexDefinition = _step3.value;
-
-          table.addIndex(indexDefinition);
-        }
-      } catch (err) {
-        _didIteratorError3 = true;
-        _iteratorError3 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion3 && _iterator3.return) {
-            _iterator3.return();
-          }
-        } finally {
-          if (_didIteratorError3) {
-            throw _iteratorError3;
-          }
-        }
-      }
-
-      this.tables.push(table);
+    for (var _iterator2 = _createForOfIteratorHelperLoose(tableDefinition.columns), _step2; !(_step2 = _iterator2()).done;) {
+      var column = _step2.value;
+      var systemColumn = (0, _lodash.clone)(column);
+      systemColumn.system = true;
+      table.addColumn(systemColumn);
     }
-  }, {
-    key: 'buildViews',
-    value: function buildViews() {
-      var _iteratorNormalCompletion4 = true;
-      var _didIteratorError4 = false;
-      var _iteratorError4 = undefined;
 
-      try {
-        for (var _iterator4 = this.tables[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-          var table = _step4.value;
+    for (var _iterator3 = _createForOfIteratorHelperLoose(tableDefinition.indexes), _step3; !(_step3 = _iterator3()).done;) {
+      var indexDefinition = _step3.value;
+      table.addIndex(indexDefinition);
+    }
 
-          var alias = table.name.replace(/^query_/, '');
+    this.tables.push(table);
+  };
 
-          var view = new View(alias + '_view', null, table, { alias: alias });
+  _proto.buildViews = function buildViews() {
+    for (var _iterator4 = _createForOfIteratorHelperLoose(this.tables), _step4; !(_step4 = _iterator4()).done;) {
+      var table = _step4.value;
+      var alias = table.name.replace(/^query_/, '');
+      var view = new View(alias + '_view', null, table, {
+        alias: alias
+      });
+      var columnNames = {};
+      var definition = this.tableDefinitions[table.name];
 
-          var columnNames = {};
+      for (var _iterator5 = _createForOfIteratorHelperLoose(table.columns), _step5; !(_step5 = _iterator5()).done;) {
+        var column = _step5.value;
+        var columnAlias = definition.viewColumns[column.name];
 
-          var definition = this.tableDefinitions[table.name];
-
-          var _iteratorNormalCompletion5 = true;
-          var _didIteratorError5 = false;
-          var _iteratorError5 = undefined;
-
-          try {
-            for (var _iterator5 = table.columns[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-              var column = _step5.value;
-
-              var _alias = definition.viewColumns[column.name];
-
-              if (_alias == null) {
-                // console.log('Skipping ' + table.name + '.' + column.name + ' in view.');
-                continue;
-              }
-
-              if (!columnNames[_alias]) {
-                view.addColumn({ column: column, alias: _alias });
-                columnNames[_alias] = column;
-              }
-            }
-          } catch (err) {
-            _didIteratorError5 = true;
-            _iteratorError5 = err;
-          } finally {
-            try {
-              if (!_iteratorNormalCompletion5 && _iterator5.return) {
-                _iterator5.return();
-              }
-            } finally {
-              if (_didIteratorError5) {
-                throw _iteratorError5;
-              }
-            }
-          }
-
-          if (view.columns.length) {
-            this.views.push(view);
-          }
+        if (columnAlias == null) {
+          // console.log('Skipping ' + table.name + '.' + column.name + ' in view.');
+          continue;
         }
-      } catch (err) {
-        _didIteratorError4 = true;
-        _iteratorError4 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion4 && _iterator4.return) {
-            _iterator4.return();
-          }
-        } finally {
-          if (_didIteratorError4) {
-            throw _iteratorError4;
-          }
+
+        if (!columnNames[columnAlias]) {
+          view.addColumn({
+            column: column,
+            alias: columnAlias
+          });
+          columnNames[columnAlias] = column;
         }
+      }
+
+      if (view.columns.length) {
+        this.views.push(view);
       }
     }
-  }]);
+  };
 
   return OrganizationSchema;
 }();
 
-exports.default = OrganizationSchema;
+exports["default"] = OrganizationSchema;
 //# sourceMappingURL=organization-schema.js.map

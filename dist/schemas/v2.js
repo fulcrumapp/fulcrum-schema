@@ -1,17 +1,13 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = void 0;
 
-var _underscore = require('underscore');
-
-var _underscore2 = _interopRequireDefault(_underscore);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _lodash = require("lodash");
 
 var Schema = {};
-
 Schema.systemFormTableColumns = [{
   name: 'id',
   type: 'pk'
@@ -154,7 +150,6 @@ Schema.systemFormTableColumns = [{
   name: 'edited_duration',
   type: 'integer'
 }];
-
 Schema.systemValuesTableColumns = [{
   name: 'id',
   type: 'pk'
@@ -183,7 +178,6 @@ Schema.systemValuesTableColumns = [{
   name: 'number_value',
   type: 'double'
 }];
-
 Schema.systemRepeatableTableColumns = [{
   name: 'id',
   type: 'pk'
@@ -218,7 +212,8 @@ Schema.systemRepeatableTableColumns = [{
   name: 'record_status',
   type: 'string'
 }, {
-  name: 'index', // TODO(zhm) make this work in the app
+  name: 'index',
+  // TODO(zhm) make this work in the app
   type: 'integer'
 }, {
   name: 'latitude',
@@ -335,9 +330,7 @@ Schema.systemRepeatableTableColumns = [{
 }, {
   name: 'edited_duration',
   type: 'integer'
-}];
-
-// - changesets
+}]; // - changesets
 // - forms
 // - choice lists
 // - classification sets
@@ -429,7 +422,6 @@ Schema.systemChangesetsTable = [{
   name: 'metadata_index',
   type: 'fts'
 }];
-
 Schema.systemFormsTable = [{
   name: 'id',
   type: 'pk'
@@ -558,9 +550,7 @@ Schema.systemFormsTable = [{
   name: 'assignment_enabled',
   type: 'boolean',
   allowNull: false
-}];
-
-// Schema.systemRecordsTable = [
+}]; // Schema.systemRecordsTable = [
 //   {
 //     name: 'id',
 //     type: 'pk'
@@ -709,7 +699,6 @@ Schema.systemChoiceListsTable = [{
   type: 'timestamp',
   allowNull: false
 }];
-
 Schema.systemClassificationSetsTable = [{
   name: 'id',
   type: 'pk'
@@ -757,7 +746,6 @@ Schema.systemClassificationSetsTable = [{
   type: 'timestamp',
   allowNull: false
 }];
-
 Schema.systemProjectsTable = [{
   name: 'id',
   type: 'pk'
@@ -791,7 +779,6 @@ Schema.systemProjectsTable = [{
   type: 'timestamp',
   allowNull: false
 }];
-
 Schema.systemRolesTable = [{
   name: 'id',
   type: 'pk'
@@ -929,7 +916,6 @@ Schema.systemRolesTable = [{
   allowNull: false,
   defaultValue: false
 }];
-
 Schema.systemMembershipsTable = [{
   name: 'id',
   type: 'pk'
@@ -984,7 +970,6 @@ Schema.systemMembershipsTable = [{
   type: 'timestamp',
   allowNull: false
 }];
-
 Schema.systemPhotosTable = [{
   name: 'id',
   type: 'pk'
@@ -1090,7 +1075,6 @@ Schema.systemPhotosTable = [{
   name: 'deleted_at',
   type: 'timestamp'
 }];
-
 Schema.systemVideosTable = [{
   name: 'id',
   type: 'pk'
@@ -1187,7 +1171,6 @@ Schema.systemVideosTable = [{
   name: 'deleted_at',
   type: 'timestamp'
 }];
-
 Schema.systemAudioTable = [{
   name: 'id',
   type: 'pk'
@@ -1278,7 +1261,6 @@ Schema.systemAudioTable = [{
   name: 'deleted_at',
   type: 'timestamp'
 }];
-
 Schema.systemSignaturesTable = [{
   name: 'id',
   type: 'pk'
@@ -1351,7 +1333,6 @@ Schema.systemSignaturesTable = [{
   name: 'deleted_at',
   type: 'timestamp'
 }];
-
 Schema.systemFormViewColumns = {
   record_resource_id: 'record_id',
   project_resource_id: 'project_id',
@@ -1388,12 +1369,10 @@ Schema.systemFormViewColumns = {
   updated_duration: 'updated_duration',
   edited_duration: 'edited_duration'
 };
-
-Schema.systemFormFullViewColumns = _underscore2.default.clone(Schema.systemFormViewColumns);
+Schema.systemFormFullViewColumns = (0, _lodash.clone)(Schema.systemFormViewColumns);
 Schema.systemFormFullViewColumns.form_values = 'form_values';
 Schema.systemFormFullViewColumns.record_index = 'record_index';
 Schema.systemFormFullViewColumns.record_index_text = 'record_index_text';
-
 Schema.systemRepeatableViewColumns = {
   resource_id: 'child_record_id',
   record_resource_id: 'record_id',
@@ -1428,22 +1407,18 @@ Schema.systemRepeatableViewColumns = {
   updated_duration: 'updated_duration',
   edited_duration: 'edited_duration'
 };
-
-Schema.systemRepeatableFullViewColumns = _underscore2.default.clone(Schema.systemRepeatableViewColumns);
+Schema.systemRepeatableFullViewColumns = (0, _lodash.clone)(Schema.systemRepeatableViewColumns);
 Schema.systemRepeatableFullViewColumns.form_values = 'form_values';
 Schema.systemRepeatableFullViewColumns.record_index = 'record_index';
 Schema.systemRepeatableFullViewColumns.record_index_text = 'record_index_text';
-
 Schema.systemValuesViewColumns = {
   record_resource_id: 'record_id',
   parent_resource_id: 'child_record_id',
   key: 'key',
   text_value: 'text_value'
 };
-
 Schema.organizationViews = {};
 Schema.organizationIndexes = {};
-
 Schema.organizationViews.changesets = {
   row_resource_id: 'changeset_id',
   form_resource_id: 'form_id',
@@ -1464,9 +1439,22 @@ Schema.organizationViews.changesets = {
   number_of_updates: 'number_of_updates',
   number_of_deletes: 'number_of_deletes'
 };
-
-Schema.organizationIndexes.changesets = [{ columns: ['row_resource_id'], unique: true }, { columns: ['row_id'], unique: true }, { columns: ['form_id'] }, { columns: ['metadata_index'], method: 'gin' }, { columns: ['form_id', 'updated_at'] }, { columns: ['updated_at'] }];
-
+Schema.organizationIndexes.changesets = [{
+  columns: ['row_resource_id'],
+  unique: true
+}, {
+  columns: ['row_id'],
+  unique: true
+}, {
+  columns: ['form_id']
+}, {
+  columns: ['metadata_index'],
+  method: 'gin'
+}, {
+  columns: ['form_id', 'updated_at']
+}, {
+  columns: ['updated_at']
+}];
 Schema.organizationViews.forms = {
   row_resource_id: 'form_id',
   name: 'name',
@@ -1490,9 +1478,17 @@ Schema.organizationViews.forms = {
   assignment_enabled: 'assignment_enabled',
   image: 'image'
 };
-
-Schema.organizationIndexes.forms = [{ columns: ['row_resource_id'], unique: true }, { columns: ['row_id'], unique: true }, { columns: ['name'] }, { columns: ['updated_at'] }];
-
+Schema.organizationIndexes.forms = [{
+  columns: ['row_resource_id'],
+  unique: true
+}, {
+  columns: ['row_id'],
+  unique: true
+}, {
+  columns: ['name']
+}, {
+  columns: ['updated_at']
+}];
 Schema.organizationViews.choice_lists = {
   row_resource_id: 'choice_list_id',
   name: 'name',
@@ -1504,9 +1500,17 @@ Schema.organizationViews.choice_lists = {
   created_at: 'created_at',
   updated_at: 'updated_at'
 };
-
-Schema.organizationIndexes.choice_lists = [{ columns: ['row_resource_id'], unique: true }, { columns: ['row_id'], unique: true }, { columns: ['name'] }, { columns: ['updated_at'] }];
-
+Schema.organizationIndexes.choice_lists = [{
+  columns: ['row_resource_id'],
+  unique: true
+}, {
+  columns: ['row_id'],
+  unique: true
+}, {
+  columns: ['name']
+}, {
+  columns: ['updated_at']
+}];
 Schema.organizationViews.classification_sets = {
   row_resource_id: 'classification_set_id',
   name: 'name',
@@ -1518,9 +1522,17 @@ Schema.organizationViews.classification_sets = {
   created_at: 'created_at',
   updated_at: 'updated_at'
 };
-
-Schema.organizationIndexes.classification_sets = [{ columns: ['row_resource_id'], unique: true }, { columns: ['row_id'], unique: true }, { columns: ['name'] }, { columns: ['updated_at'] }];
-
+Schema.organizationIndexes.classification_sets = [{
+  columns: ['row_resource_id'],
+  unique: true
+}, {
+  columns: ['row_id'],
+  unique: true
+}, {
+  columns: ['name']
+}, {
+  columns: ['updated_at']
+}];
 Schema.organizationViews.projects = {
   row_resource_id: 'project_id',
   name: 'name',
@@ -1529,9 +1541,17 @@ Schema.organizationViews.projects = {
   created_at: 'created_at',
   updated_at: 'updated_at'
 };
-
-Schema.organizationIndexes.projects = [{ columns: ['row_resource_id'], unique: true }, { columns: ['row_id'], unique: true }, { columns: ['name'] }, { columns: ['updated_at'] }];
-
+Schema.organizationIndexes.projects = [{
+  columns: ['row_resource_id'],
+  unique: true
+}, {
+  columns: ['row_id'],
+  unique: true
+}, {
+  columns: ['name']
+}, {
+  columns: ['updated_at']
+}];
 Schema.organizationViews.roles = {
   row_resource_id: 'role_id',
   name: 'name',
@@ -1561,9 +1581,17 @@ Schema.organizationViews.roles = {
   can_run_reports: 'can_run_reports',
   can_manage_authorizations: 'can_manage_authorizations'
 };
-
-Schema.organizationIndexes.roles = [{ columns: ['row_resource_id'], unique: true }, { columns: ['row_id'], unique: true }, { columns: ['name'] }, { columns: ['updated_at'] }];
-
+Schema.organizationIndexes.roles = [{
+  columns: ['row_resource_id'],
+  unique: true
+}, {
+  columns: ['row_id'],
+  unique: true
+}, {
+  columns: ['name']
+}, {
+  columns: ['updated_at']
+}];
 Schema.organizationViews.memberships = {
   row_resource_id: 'membership_id',
   user_resource_id: 'user_id',
@@ -1577,9 +1605,21 @@ Schema.organizationViews.memberships = {
   created_at: 'created_at',
   updated_at: 'updated_at'
 };
-
-Schema.organizationIndexes.memberships = [{ columns: ['row_resource_id'], unique: true }, { columns: ['row_id'], unique: true }, { columns: ['user_resource_id'] }, { columns: ['role_resource_id'] }, { columns: ['name'] }, { columns: ['updated_at'] }];
-
+Schema.organizationIndexes.memberships = [{
+  columns: ['row_resource_id'],
+  unique: true
+}, {
+  columns: ['row_id'],
+  unique: true
+}, {
+  columns: ['user_resource_id']
+}, {
+  columns: ['role_resource_id']
+}, {
+  columns: ['name']
+}, {
+  columns: ['updated_at']
+}];
 Schema.organizationViews.photos = {
   access_key: 'photo_id',
   exif: 'exif',
@@ -1608,9 +1648,26 @@ Schema.organizationViews.photos = {
   software: 'software',
   deleted_at: 'deleted_at'
 };
-
-Schema.organizationIndexes.photos = [{ columns: ['row_resource_id'], unique: true }, { columns: ['row_id'], unique: true }, { columns: ['access_key'] }, { columns: ['record_resource_id'] }, { columns: ['form_resource_id'] }, { columns: ['created_by_resource_id'] }, { columns: ['geometry'], method: 'gist' }, { columns: ['updated_at'] }];
-
+Schema.organizationIndexes.photos = [{
+  columns: ['row_resource_id'],
+  unique: true
+}, {
+  columns: ['row_id'],
+  unique: true
+}, {
+  columns: ['access_key']
+}, {
+  columns: ['record_resource_id']
+}, {
+  columns: ['form_resource_id']
+}, {
+  columns: ['created_by_resource_id']
+}, {
+  columns: ['geometry'],
+  method: 'gist'
+}, {
+  columns: ['updated_at']
+}];
 Schema.organizationViews.videos = {
   access_key: 'video_id',
   metadata: 'metadata',
@@ -1634,9 +1691,26 @@ Schema.organizationViews.videos = {
   duration: 'duration',
   deleted_at: 'deleted_at'
 };
-
-Schema.organizationIndexes.videos = [{ columns: ['row_resource_id'], unique: true }, { columns: ['row_id'], unique: true }, { columns: ['access_key'] }, { columns: ['record_resource_id'] }, { columns: ['form_resource_id'] }, { columns: ['created_by_resource_id'] }, { columns: ['geometry'], method: 'gist' }, { columns: ['updated_at'] }];
-
+Schema.organizationIndexes.videos = [{
+  columns: ['row_resource_id'],
+  unique: true
+}, {
+  columns: ['row_id'],
+  unique: true
+}, {
+  columns: ['access_key']
+}, {
+  columns: ['record_resource_id']
+}, {
+  columns: ['form_resource_id']
+}, {
+  columns: ['created_by_resource_id']
+}, {
+  columns: ['geometry'],
+  method: 'gist'
+}, {
+  columns: ['updated_at']
+}];
 Schema.organizationViews.audio = {
   access_key: 'audio_id',
   metadata: 'metadata',
@@ -1658,9 +1732,26 @@ Schema.organizationViews.audio = {
   duration: 'duration',
   deleted_at: 'deleted_at'
 };
-
-Schema.organizationIndexes.audio = [{ columns: ['row_resource_id'], unique: true }, { columns: ['row_id'], unique: true }, { columns: ['access_key'] }, { columns: ['record_resource_id'] }, { columns: ['form_resource_id'] }, { columns: ['created_by_resource_id'] }, { columns: ['geometry'], method: 'gist' }, { columns: ['updated_at'] }];
-
+Schema.organizationIndexes.audio = [{
+  columns: ['row_resource_id'],
+  unique: true
+}, {
+  columns: ['row_id'],
+  unique: true
+}, {
+  columns: ['access_key']
+}, {
+  columns: ['record_resource_id']
+}, {
+  columns: ['form_resource_id']
+}, {
+  columns: ['created_by_resource_id']
+}, {
+  columns: ['geometry'],
+  method: 'gist'
+}, {
+  columns: ['updated_at']
+}];
 Schema.organizationViews.signatures = {
   access_key: 'signature_id',
   file_size: 'file_size',
@@ -1677,20 +1768,97 @@ Schema.organizationViews.signatures = {
   processed_at: 'processed_at',
   deleted_at: 'deleted_at'
 };
-
-Schema.organizationIndexes.signatures = [{ columns: ['row_resource_id'], unique: true }, { columns: ['row_id'], unique: true }, { columns: ['access_key'] }, { columns: ['record_resource_id'] }, { columns: ['form_resource_id'] }, { columns: ['created_by_resource_id'] }, { columns: ['updated_at'] }];
-
-Schema.systemFormTableIndexes = [
-// { columns: [ 'record_id' ], method: 'btree', unique: true },
-{ columns: ['record_resource_id'], method: 'btree', unique: true }, { columns: ['geometry'], method: 'gist' }, { columns: ['record_index'], method: 'gin' }, { columns: ['status'], method: 'btree' }, { columns: ['server_updated_at'], method: 'btree' }, { columns: ['project_resource_id'], method: 'btree' }, { columns: ['assigned_to_resource_id'], method: 'btree' }, { columns: ['changeset_resource_id'], method: 'btree' }];
-
-Schema.systemRepeatableTableIndexes = [{ columns: ['resource_id'], method: 'btree', unique: true },
-// { columns: [ 'record_id' ], method: 'btree' },
-{ columns: ['record_resource_id'], method: 'btree' }, { columns: ['parent_resource_id'], method: 'btree' }, { columns: ['geometry'], method: 'gist' }, { columns: ['record_index'], method: 'gin' }, { columns: ['record_status'], method: 'btree' }, { columns: ['updated_at'], method: 'btree' }, { columns: ['record_project_resource_id'], method: 'btree' }, { columns: ['record_assigned_to_resource_id'], method: 'btree' }, { columns: ['changeset_resource_id'], method: 'btree' }];
-
-Schema.systemValuesTableIndexes = [
-// { columns: [ 'record_id' ], method: 'btree' },
-{ columns: ['record_resource_id'], method: 'btree' }, { columns: ['parent_resource_id'], method: 'btree' }, { columns: ['text_value'], method: 'btree' }, { columns: ['key'], method: 'btree' }];
-
-exports.default = Schema;
-//# sourceMappingURL=postgres-query-v2.js.map
+Schema.organizationIndexes.signatures = [{
+  columns: ['row_resource_id'],
+  unique: true
+}, {
+  columns: ['row_id'],
+  unique: true
+}, {
+  columns: ['access_key']
+}, {
+  columns: ['record_resource_id']
+}, {
+  columns: ['form_resource_id']
+}, {
+  columns: ['created_by_resource_id']
+}, {
+  columns: ['updated_at']
+}];
+Schema.systemFormTableIndexes = [// { columns: [ 'record_id' ], method: 'btree', unique: true },
+{
+  columns: ['record_resource_id'],
+  method: 'btree',
+  unique: true
+}, {
+  columns: ['geometry'],
+  method: 'gist'
+}, {
+  columns: ['record_index'],
+  method: 'gin'
+}, {
+  columns: ['status'],
+  method: 'btree'
+}, {
+  columns: ['server_updated_at'],
+  method: 'btree'
+}, {
+  columns: ['project_resource_id'],
+  method: 'btree'
+}, {
+  columns: ['assigned_to_resource_id'],
+  method: 'btree'
+}, {
+  columns: ['changeset_resource_id'],
+  method: 'btree'
+}];
+Schema.systemRepeatableTableIndexes = [{
+  columns: ['resource_id'],
+  method: 'btree',
+  unique: true
+}, // { columns: [ 'record_id' ], method: 'btree' },
+{
+  columns: ['record_resource_id'],
+  method: 'btree'
+}, {
+  columns: ['parent_resource_id'],
+  method: 'btree'
+}, {
+  columns: ['geometry'],
+  method: 'gist'
+}, {
+  columns: ['record_index'],
+  method: 'gin'
+}, {
+  columns: ['record_status'],
+  method: 'btree'
+}, {
+  columns: ['updated_at'],
+  method: 'btree'
+}, {
+  columns: ['record_project_resource_id'],
+  method: 'btree'
+}, {
+  columns: ['record_assigned_to_resource_id'],
+  method: 'btree'
+}, {
+  columns: ['changeset_resource_id'],
+  method: 'btree'
+}];
+Schema.systemValuesTableIndexes = [// { columns: [ 'record_id' ], method: 'btree' },
+{
+  columns: ['record_resource_id'],
+  method: 'btree'
+}, {
+  columns: ['parent_resource_id'],
+  method: 'btree'
+}, {
+  columns: ['text_value'],
+  method: 'btree'
+}, {
+  columns: ['key'],
+  method: 'btree'
+}];
+var _default = Schema;
+exports["default"] = _default;
+//# sourceMappingURL=v2.js.map

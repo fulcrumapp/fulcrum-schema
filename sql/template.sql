@@ -861,26 +861,6 @@ CREATE INDEX idx_query_memberships_layers_user_resource_id ON organization.query
 
 CREATE INDEX idx_query_memberships_layers_layer_resource_id ON organization.query_memberships_layers USING btree (layer_resource_id);
 
-CREATE TABLE IF NOT EXISTS "organization"."schema_changes" (name text NOT NULL, created_at timestamp with time zone NOT NULL, sql TEXT NOT NULL);
-
-CREATE UNIQUE INDEX ON "organization"."schema_changes" (name);
-
-CREATE TABLE IF NOT EXISTS "organization"."tables" (name text, alias text, type text, parent text, form_id text, field text, field_type text, data_name text);
-
-CREATE OR REPLACE VIEW "organization"."tables_view" AS SELECT alias AS name, type, parent, form_id, field, field_type, data_name FROM "organization"."tables";
-
-CREATE INDEX idx_tables_name ON "organization"."tables" (name);
-
-CREATE INDEX idx_tables_alias ON "organization"."tables" (alias);
-
-CREATE TABLE IF NOT EXISTS "organization"."columns" (table_name text, table_alias text, name text, ordinal bigint, type text, nullable boolean, form_id text, field text, field_type text, data_name text, part text, data text);
-
-CREATE OR REPLACE VIEW "organization"."columns_view" AS SELECT table_alias AS table_name, name, ordinal, type, nullable, form_id, field, field_type, data_name, part FROM "organization"."columns";
-
-CREATE INDEX idx_columns_table_name ON "organization"."columns" (table_name);
-
-CREATE INDEX idx_columns_table_alias ON "organization"."columns" (table_alias);
-
 DELETE FROM "organization"."tables" WHERE name = 'audio_view';
 
 DELETE FROM "organization"."columns" WHERE table_name = 'audio_view';

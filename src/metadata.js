@@ -47,7 +47,7 @@ export default class Metadata {
   buildStatements() {
     const statements = [];
 
-    const METADATA = true;
+    const METADATA = false;
 
     const schemaChangesTableName = Utils.tableName(this.options.schema, this.options.prefix, this.options.quote, 'schema_changes');
     const systemTablesName = Utils.tableName(this.options.schema, this.options.prefix, this.options.quote, 'tables');

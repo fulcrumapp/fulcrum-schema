@@ -1,4 +1,4 @@
-import _ from 'underscore';
+import { filter } from 'lodash';
 
 const DATA_ELEMENTS = [
   'TextField',
@@ -16,7 +16,8 @@ const DATA_ELEMENTS = [
   'AddressField',
   'HyperlinkField',
   'CalculatedField',
-  'RecordLinkField'
+  'RecordLinkField',
+  'AttachmentField'
 ];
 
 export default class DataElements {
@@ -29,6 +30,6 @@ export default class DataElements {
   }
 
   static find(elements) {
-    return _.select(elements, DataElements.isDataElement);
+    return filter(elements, DataElements.isDataElement);
   }
 }

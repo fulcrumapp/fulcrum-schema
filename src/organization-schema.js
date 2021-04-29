@@ -1,4 +1,4 @@
-import _ from 'underscore';
+import { clone } from 'lodash';
 import sqldiff from 'sqldiff';
 
 const {Table, View} = sqldiff;
@@ -36,7 +36,7 @@ export default class OrganizationSchema {
     const table = new Table(tableDefinition.name, null, {type: 'system', alias: tableDefinition.name});
 
     for (const column of tableDefinition.columns) {
-      const systemColumn = _.clone(column);
+      const systemColumn = clone(column);
 
       systemColumn.system = true;
 
@@ -54,23 +54,23 @@ export default class OrganizationSchema {
     for (const table of this.tables) {
       const alias = table.name.replace(/^query_/, '');
 
-      const view = new View(alias + '_view', null, table, {alias});
+      const view = new View(alias + '_view', null, table, { alias });
 
       const columnNames = {};
 
       const definition = this.tableDefinitions[table.name];
 
       for (const column of table.columns) {
-        const alias = definition.viewColumns[column.name];
+        const columnAlias = definition.viewColumns[column.name];
 
-        if (alias == null) {
+        if (columnAlias == null) {
           // console.log('Skipping ' + table.name + '.' + column.name + ' in view.');
           continue;
         }
 
-        if (!columnNames[alias]) {
-          view.addColumn({column: column, alias: alias});
-          columnNames[alias] = column;
+        if (!columnNames[columnAlias]) {
+          view.addColumn({column: column, alias: columnAlias});
+          columnNames[columnAlias] = column;
         }
       }
 

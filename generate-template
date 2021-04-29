@@ -1,12 +1,14 @@
 #!/usr/bin/env node
 
-require('babel-core/register')();
+require('@babel/register');
 
-const postgres = require('./src/postgres');
+const schemaGenerator = require('./src/fulcrum-schema');
 
-postgres.newOrganization = 1;
-postgres.schema = 'organization';
+schemaGenerator.dialect = 'postgres';
+schemaGenerator.version = 'v2';
+schemaGenerator.tableSchema = 'organization';
+schemaGenerator.newOrganization = 1;
 
-const diff = postgres.compareOrganization();
+const diff = schemaGenerator.compareOrganization();
 
 console.log(diff.join('\n\n'));

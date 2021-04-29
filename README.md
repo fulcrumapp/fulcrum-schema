@@ -1,8 +1,8 @@
-## Fulcrum Table Schema [![Build Status](https://secure.travis-ci.org/fulcrumapp/fulcrum-schema.svg)](http://travis-ci.org/fulcrumapp/fulcrum-schema)
+## Fulcrum Query Table Schema [![Build Status](https://secure.travis-ci.org/fulcrumapp/fulcrum-schema.svg)](http://travis-ci.org/fulcrumapp/fulcrum-schema)
 
 ### Setup
 ```sh
-npm install -g browserify coffee-script
+npm install -g browserify
 ```
 
 ### Build
@@ -13,22 +13,16 @@ make
 
 ### Distribute
 
-Builds the final output
+Builds the final output. The main output file `dist/fulcrum-schema.js`.
 
 ```sh
-make dist
+make
 ```
 
 ### Deploying
 
-When making changes to this library, the postgres.js file needs to be copied to the Fulcrum web app directory in `public`. At the
+When making changes to this library, the fulcrum-schema.js file needs to be copied to the Fulcrum web app directory in `public`. At the
 same time the `fulcrum-query` repo needs to be upgraded to use the new version.
-
-Creating the `template.sql` file:
-
-```sh
-make template
-```
 
 DO NOT change the `template.sql` in the web app without a complete understanding of the side effects. In most cases a core schema
 change will have to be hand-coded and applied to all existing databases. The `template.sql` file represents the one-time V1 version
@@ -67,12 +61,4 @@ make dist copy # clean, build and deploy everything
 
 ```sh
 make test
-```
-
-### Console
-
-Starts an interactive node terminal with the functions available to call
-
-```sh
-./console
 ```

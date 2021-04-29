@@ -1,4 +1,4 @@
-import _ from 'underscore';
+import { clone } from 'lodash';
 
 const Schema = {};
 
@@ -1407,7 +1407,7 @@ Schema.systemFormViewColumns = {
   edited_duration: 'edited_duration'
 };
 
-Schema.systemFormFullViewColumns = _.clone(Schema.systemFormViewColumns);
+Schema.systemFormFullViewColumns = clone(Schema.systemFormViewColumns);
 Schema.systemFormFullViewColumns.form_values = 'form_values';
 Schema.systemFormFullViewColumns.record_index = 'record_index';
 Schema.systemFormFullViewColumns.record_index_text = 'record_index_text';
@@ -1447,7 +1447,7 @@ Schema.systemRepeatableViewColumns = {
   edited_duration: 'edited_duration'
 };
 
-Schema.systemRepeatableFullViewColumns = _.clone(Schema.systemRepeatableViewColumns);
+Schema.systemRepeatableFullViewColumns = clone(Schema.systemRepeatableViewColumns);
 Schema.systemRepeatableFullViewColumns.form_values = 'form_values';
 Schema.systemRepeatableFullViewColumns.record_index = 'record_index';
 Schema.systemRepeatableFullViewColumns.record_index_text = 'record_index_text';

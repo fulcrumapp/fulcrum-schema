@@ -1,104 +1,77 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = void 0;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-var Utils = function () {
-  function Utils() {
-    _classCallCheck(this, Utils);
-  }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-  _createClass(Utils, null, [{
-    key: 'tableName',
-    value: function tableName(schema, prefix, quote, table) {
-      return Utils.escapedSchema(schema, quote) + Utils.escape((prefix || '') + table, quote);
+var Utils = /*#__PURE__*/function () {
+  function Utils() {}
+
+  Utils.tableName = function tableName(schema, prefix, quote, table) {
+    return Utils.escapedSchema(schema, quote) + Utils.escape((prefix || '') + table, quote);
+  };
+
+  Utils.escapedSchema = function escapedSchema(schema, quote) {
+    if (schema == null || schema.length === 0) {
+      return '';
     }
-  }, {
-    key: 'escapedSchema',
-    value: function escapedSchema(schema, quote) {
-      if (schema == null || schema.length === 0) {
-        return '';
-      }
 
-      return Utils.escape(schema, quote) + '.';
+    return Utils.escape(schema, quote) + '.';
+  };
+
+  Utils.escape = function escape(identifier, quote) {
+    if (identifier == null || identifier.length === 0) {
+      return '';
     }
-  }, {
-    key: 'escape',
-    value: function escape(identifier, quote) {
-      if (identifier == null || identifier.length === 0) {
-        return '';
-      }
 
-      quote = quote || '"';
+    quote = quote || '"';
+    var escaped = identifier.replace(new RegExp(quote, 'g'), quote + quote);
+    return quote + escaped + quote;
+  };
 
-      var escaped = identifier.replace(new RegExp(quote, 'g'), quote + quote);
-
-      return quote + escaped + quote;
+  Utils.flattenElements = function flattenElements(elements, recurseRepeatables, assignParent, parent) {
+    if (recurseRepeatables == null) {
+      recurseRepeatables = true;
     }
-  }, {
-    key: 'flattenElements',
-    value: function flattenElements(elements, recurseRepeatables, assignParent, parent) {
-      if (recurseRepeatables == null) {
-        recurseRepeatables = true;
-      }
 
-      if (assignParent == null) {
-        assignParent = false;
-      }
-
-      var flat = [];
-
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
-
-      try {
-        for (var _iterator = elements[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var element = _step.value;
-
-          if (assignParent) {
-            element.parent = parent;
-          }
-
-          flat.push(element);
-
-          var recurse = true;
-
-          if (!recurseRepeatables && element.type === 'Repeatable') {
-            recurse = false;
-          }
-
-          if (recurse && element.elements) {
-            var children = Utils.flattenElements(element.elements, recurseRepeatables, assignParent, element);
-            Array.prototype.push.apply(flat, children);
-          }
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator.return) {
-            _iterator.return();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
-        }
-      }
-
-      return flat;
+    if (assignParent == null) {
+      assignParent = false;
     }
-  }]);
+
+    var flat = [];
+
+    for (var _iterator = _createForOfIteratorHelperLoose(elements), _step; !(_step = _iterator()).done;) {
+      var element = _step.value;
+
+      if (assignParent) {
+        element.parent = parent;
+      }
+
+      flat.push(element);
+      var recurse = true;
+
+      if (!recurseRepeatables && element.type === 'Repeatable') {
+        recurse = false;
+      }
+
+      if (recurse && element.elements) {
+        var children = Utils.flattenElements(element.elements, recurseRepeatables, assignParent, element);
+        Array.prototype.push.apply(flat, children);
+      }
+    }
+
+    return flat;
+  };
 
   return Utils;
 }();
 
-exports.default = Utils;
+exports["default"] = Utils;
 //# sourceMappingURL=utils.js.map

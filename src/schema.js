@@ -1,4 +1,4 @@
-import _ from 'underscore';
+import { clone } from 'lodash';
 import Utils from './utils';
 import sqldiff from 'sqldiff';
 import {format} from 'util';
@@ -79,7 +79,7 @@ export default class Schema {
                             {type: 'form', alias: this.alias(), form_id: this.form.id});
 
     for (const column of this.columns.systemFormTableColumns) {
-      const formColumn = _.clone(column);
+      const formColumn = clone(column);
 
       formColumn.system = true;
       formColumn.type = this.maybeComplexType(formColumn.type);
@@ -100,7 +100,7 @@ export default class Schema {
                             {type: 'values', alias: this.alias('values'), form_id: this.form.id});
 
     for (const column of this.columns.systemValuesTableColumns) {
-      const valueColumn = _.clone(column);
+      const valueColumn = clone(column);
 
       valueColumn.system = true;
       valueColumn.type = this.maybeComplexType(valueColumn.type);
@@ -117,7 +117,7 @@ export default class Schema {
                             {type: 'repeatable', parent: parentTable, element: element, alias: this.alias(element.data_name), form_id: this.form.id});
 
     for (const column of this.columns.systemRepeatableTableColumns) {
-      const attrs = _.clone(column);
+      const attrs = clone(column);
 
       attrs.id = element.key + '_' + column.name;
       attrs.system = true;
@@ -141,6 +141,10 @@ export default class Schema {
 
   buildViews() {
     this.viewColumns = {};
+
+    if (!this.columns.systemFormViewColumns) {
+      return;
+    }
 
     for (const table of this.tables) {
       const view = new View(table.name + '_view', null, table);
@@ -196,7 +200,7 @@ export default class Schema {
       }
 
       for (const index of indexDefinitions) {
-        const indexDefinition = _.clone(index);
+        const indexDefinition = clone(index);
 
         const isComplex = indexDefinition.method === 'gist' || indexDefinition.method === 'gin';
 
@@ -297,6 +301,7 @@ export default class Schema {
       case 'PhotoField':
       case 'VideoField':
       case 'AudioField':
+      case 'AttachmentField':
         this.addMediaElement(elementTable, element);
         break;
 
@@ -477,16 +482,22 @@ export default class Schema {
   addMediaElement(table, element) {
     this.addArrayElement(table, element);
 
-    if (this.columns.includeMediaCaptions !== false) {
-      this.addArrayElement(table, element, 'captions');
+    if (element.type !== 'AttachmentField') {
+      if (this.columns.includeMediaCaptions !== false) {
+        this.addArrayElement(table, element, 'captions');
+      }
+
+      if (this.columns.includeMediaURLs) {
+        this.addArrayElement(table, element, 'urls');
+      }
+
+      if (this.columns.includeMediaViewURLs) {
+        this.addStringElement(table, element, 'view_url');
+      }
     }
 
-    if (this.columns.includeMediaURLs) {
-      this.addArrayElement(table, element, 'urls');
-    }
-
-    if (this.columns.includeMediaViewURLs) {
-      this.addStringElement(table, element, 'view_url');
+    if (!this.columns.systemFormViewColumns) {
+      return;
     }
 
     const value = element.key.replace(/'/g, "''");
@@ -500,7 +511,8 @@ export default class Schema {
     const alias = {
       PhotoField: '_photo_id',
       VideoField: '_video_id',
-      AudioField: '_audio_id'
+      AudioField: '_audio_id',
+      AttachmentField: '_attachment_id'
     }[element.type];
 
     if (alias) {
@@ -517,6 +529,10 @@ export default class Schema {
 
   addRecordLinkElement(parentTable, element) {
     this.addArrayElement(parentTable, element);
+
+    if (!this.columns.systemFormViewColumns) {
+      return;
+    }
 
     const value = element.key.replace(/'/g, "''");
 
