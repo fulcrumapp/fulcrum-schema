@@ -496,6 +496,10 @@ export default class Schema {
       }
     }
 
+    if (!this.columns.systemFormViewColumns) {
+      return;
+    }
+
     const value = element.key.replace(/'/g, "''");
 
     const clause = format('WHERE key = \'%s\'', value);
@@ -525,6 +529,10 @@ export default class Schema {
 
   addRecordLinkElement(parentTable, element) {
     this.addArrayElement(parentTable, element);
+
+    if (!this.columns.systemFormViewColumns) {
+      return;
+    }
 
     const value = element.key.replace(/'/g, "''");
 

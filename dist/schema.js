@@ -531,6 +531,10 @@ var Schema = /*#__PURE__*/function () {
       }
     }
 
+    if (!this.columns.systemFormViewColumns) {
+      return;
+    }
+
     var value = element.key.replace(/'/g, "''");
     var clause = (0, _util.format)('WHERE key = \'%s\'', value);
     var filter = {
@@ -578,6 +582,11 @@ var Schema = /*#__PURE__*/function () {
 
   _proto.addRecordLinkElement = function addRecordLinkElement(parentTable, element) {
     this.addArrayElement(parentTable, element);
+
+    if (!this.columns.systemFormViewColumns) {
+      return;
+    }
+
     var value = element.key.replace(/'/g, "''");
     var clause = (0, _util.format)('WHERE key = \'%s\'', value);
     var view = new View(this.formTable.id + '_' + element.key + '_view', null, this.valuesTable, {
