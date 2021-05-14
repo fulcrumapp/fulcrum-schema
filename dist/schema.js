@@ -531,6 +531,10 @@ var Schema = /*#__PURE__*/function () {
       }
     }
 
+    if (element.type === 'AttachmentField') {
+      this.addArrayElement(table, element, 'filenames');
+    }
+
     if (!this.columns.systemFormViewColumns) {
       return;
     }

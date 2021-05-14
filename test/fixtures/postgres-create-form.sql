@@ -140,7 +140,7 @@ CREATE TABLE IF NOT EXISTS organization_1.form_67777_4ccf (
   f0fe3 text[],
   f0fe3_captions text[],
   f92ff text[],
-  f92ff_captions text[],
+  f92ff_filenames text[],
   f4cf8 text,
   f335a text,
   f3789 text,
@@ -366,7 +366,7 @@ SELECT
   f0fe3 AS photos,
   f0fe3_captions AS photos_captions,
   f92ff AS attachments,
-  f92ff_captions AS attachments_captions,
+  f92ff_filenames AS attachments_filenames,
   f4cf8 AS status,
   f335a AS issue_comment,
   f3789 AS new_repeatable_text_field
@@ -413,7 +413,7 @@ SELECT
   f0fe3 AS photos,
   f0fe3_captions AS photos_captions,
   f92ff AS attachments,
-  f92ff_captions AS attachments_captions,
+  f92ff_filenames AS attachments_filenames,
   f4cf8 AS status,
   f335a AS issue_comment,
   f3789 AS new_repeatable_text_field
@@ -689,7 +689,7 @@ SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', 'photos_capt
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', 'attachments', '36', 'array', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '92ff', 'AttachmentField', 'attachments', NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', 'attachments_captions', '37', 'array', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '92ff', 'AttachmentField', 'attachments', 'captions', NULL;
+SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', 'attachments_filenames', '37', 'array', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '92ff', 'AttachmentField', 'attachments', 'filenames', NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', 'status', '38', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '4cf8', 'ChoiceField', 'status', NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
