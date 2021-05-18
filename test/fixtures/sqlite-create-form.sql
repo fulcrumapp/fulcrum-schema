@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `account_1_form_67777_4ccf` (
   `ff79c` TEXT,
   `f0fe3` TEXT,
   `f92ff` TEXT,
-  `f92ff_filenames` TEXT,
+  `f92ff_names` TEXT,
   `f4cf8` TEXT,
   `f335a` TEXT,
   `f3789` TEXT
