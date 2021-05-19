@@ -496,6 +496,10 @@ export default class Schema {
       }
     }
 
+    if (element.type === 'AttachmentField') {
+      this.addArrayElement(table, element, 'names');
+    }
+
     if (!this.columns.systemFormViewColumns) {
       return;
     }

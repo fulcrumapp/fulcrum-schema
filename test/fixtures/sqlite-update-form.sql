@@ -46,33 +46,5 @@ ALTER TABLE `account_1_form_67777` RENAME TO `account_1_tmp_old_form_67777`;
 ALTER TABLE `account_1_tmp_new_form_67777` RENAME TO `account_1_form_67777`;
 DROP TABLE IF EXISTS `account_1_tmp_old_form_67777`;
 ALTER TABLE `account_1_form_67777_4ccf` ADD COLUMN `f3789` TEXT;
-DROP VIEW IF EXISTS `account_1_form_67777_0fe3_view`;
-CREATE VIEW IF NOT EXISTS `account_1_form_67777_0fe3_view` AS
-SELECT
-  `record_resource_id` AS `record_id`,
-  `parent_resource_id` AS `parent_id`,
-  `text_value` AS `_photo_id`
-FROM `account_1_form_67777_values` WHERE key = '0fe3';
-DROP VIEW IF EXISTS `account_1_form_67777_92ff_view`;
-CREATE VIEW IF NOT EXISTS `account_1_form_67777_92ff_view` AS
-SELECT
-  `record_resource_id` AS `record_id`,
-  `parent_resource_id` AS `parent_id`,
-  `text_value` AS `_attachment_id`
-FROM `account_1_form_67777_values` WHERE key = '92ff';
-DROP VIEW IF EXISTS `account_1_form_67777_5dcd_view`;
-CREATE VIEW IF NOT EXISTS `account_1_form_67777_5dcd_view` AS
-SELECT
-  `record_resource_id` AS `record_id`,
-  `parent_resource_id` AS `parent_id`,
-  `text_value` AS `_photo_id`
-FROM `account_1_form_67777_values` WHERE key = '5dcd';
-DROP VIEW IF EXISTS `account_1_form_67777_9f01_view`;
-CREATE VIEW IF NOT EXISTS `account_1_form_67777_9f01_view` AS
-SELECT
-  `record_resource_id` AS `record_id`,
-  `parent_resource_id` AS `parent_id`,
-  `text_value` AS `_video_id`
-FROM `account_1_form_67777_values` WHERE key = '9f01';
 CREATE INDEX IF NOT EXISTS `idx_account_1_form_67777_record_id` ON `account_1_form_67777` (record_id);
 CREATE INDEX IF NOT EXISTS `idx_account_1_form_67777_record_resource_id` ON `account_1_form_67777` (record_resource_id);
