@@ -550,6 +550,9 @@ Schema.systemFormsTable = [{
   name: 'assignment_enabled',
   type: 'boolean',
   allowNull: false
+}, {
+  name: 'system_type',
+  type: 'text'
 }]; // Schema.systemRecordsTable = [
 //   {
 //     name: 'id',
@@ -1476,7 +1479,8 @@ Schema.organizationViews.forms = {
   script: 'script',
   projects_enabled: 'projects_enabled',
   assignment_enabled: 'assignment_enabled',
-  image: 'image'
+  image: 'image',
+  system_type: 'system_type'
 };
 Schema.organizationIndexes.forms = [{
   columns: ['row_resource_id'],

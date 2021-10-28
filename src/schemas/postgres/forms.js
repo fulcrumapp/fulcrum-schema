@@ -42,8 +42,9 @@ export default class Forms extends TableDefinition {
     this.boolean('geometry_required', {"allowNull":false});
     this.text('script', {});
     this.text('image', {});
-    this.boolean('projects_enabled', {"allowNull":false});
-    this.boolean('assignment_enabled', {"allowNull":false});
+    this.boolean('projects_enabled', {'allowNull': false});
+    this.boolean('assignment_enabled', {'allowNull': false});
+    this.text('system_type', {});
   }
 
   defineView() {
