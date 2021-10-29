@@ -2,7 +2,7 @@
   "name": "@fulcrum/fulcrum-schema",
   "version": "3.0.2",
   "description": "Table schemas for Fulcrum apps",
-  "main": "dist/fulcrum-schema.min.js",
+  "main": "fulcrum-schema.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/fulcrumapp/fulcrum-schema.git"
@@ -13,7 +13,7 @@
   "scripts": {
     "test": "mocha ./test/setup.js test/test-postgres.js test/test-sqlite.js",
     "lint": "eslint src/*.js src/**/*.js",
-    "build": "cross-env BABEL_ENV=production babel src -d dist --source-maps && cp package.json dist && browserify dist/fulcrum-schema.js > dist/fulcrum-schema.min.js --mangle",
+    "build": "cross-env BABEL_ENV=production babel src -d dist -s && cp package.json dist && browserify dist/fulcrum-schema.js > dist/fulcrum-schema.min.js --mangle",
     "clean": "rm -rf dist"
   },
   "author": "Zac McCormick <zac.mccormick@gmail.com> (http://github.com/zhm)",
