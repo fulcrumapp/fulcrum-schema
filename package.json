@@ -12,7 +12,6 @@
   },
   "scripts": {
     "test": "mocha ./test/setup.js test/test-postgres.js test/test-sqlite.js",
-    "prepublish": "npm run clean && npm run build",
     "lint": "eslint src/*.js src/**/*.js",
     "build": "cross-env BABEL_ENV=production babel src -d dist --source-maps && cp package.json dist && browserify dist/fulcrum-schema.js > dist/fulcrum-schema.min.js --mangle",
     "clean": "rm -rf dist"
