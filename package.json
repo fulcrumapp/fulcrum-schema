@@ -14,7 +14,7 @@
     "test": "mocha ./test/setup.js test/test-postgres.js test/test-sqlite.js",
     "prepublish": "npm run clean && npm run build",
     "lint": "eslint src/*.js src/**/*.js",
-    "build": "babel src --out-dir dist --source-maps && browserify dist/fulcrum-schema.js > dist/fulcrum-schema.min.js --mangle",
+    "build": "babel src --out-dir dist --source-maps && cp package.json dist && browserify dist/fulcrum-schema.js > dist/fulcrum-schema.min.js --mangle",
     "clean": "rm -rf dist"
   },
   "author": "Zac McCormick <zac.mccormick@gmail.com> (http://github.com/zhm)",
@@ -22,10 +22,6 @@
   "eslintConfig": {
     "extends": "fulcrum"
   },
-  "files": [
-    "dist/fulcrum-schema.min.js",
-    "dist/fulcrum-schema.js.map"
-  ],
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
     "lodash": "^4.17.21",
