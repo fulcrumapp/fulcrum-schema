@@ -1,8 +1,8 @@
 {
-  "name": "fulcrum-schema",
-  "version": "3.0.1",
+  "name": "@fulcrum/fulcrum-schema",
+  "version": "3.0.2",
   "description": "Table schemas for Fulcrum apps",
-  "main": "./index.js",
+  "main": "fulcrum-schema.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/fulcrumapp/fulcrum-schema.git"
@@ -12,9 +12,8 @@
   },
   "scripts": {
     "test": "mocha ./test/setup.js test/test-postgres.js test/test-sqlite.js",
-    "prepublish": "npm run clean && npm run build",
     "lint": "eslint src/*.js src/**/*.js",
-    "build": "babel src --out-dir dist --source-maps && browserify dist/fulcrum-schema.js > dist/fulcrum-schema.min.js --mangle",
+    "build": "cross-env BABEL_ENV=production babel src -d dist -s && cp package.json dist && browserify dist/fulcrum-schema.js > dist/fulcrum-schema.min.js --mangle",
     "clean": "rm -rf dist"
   },
   "author": "Zac McCormick <zac.mccormick@gmail.com> (http://github.com/zhm)",
@@ -38,11 +37,12 @@
     "browserify": "^17.0.0",
     "chai": "^4.3.4",
     "chai-as-promised": "^7.1.1",
+    "cross-env": "^7.0.3",
     "eslint": "^7.25.0",
     "eslint-config-fulcrum": "^2.0.1",
     "eslint-plugin-react": "^7.23.2",
     "fs-sync": "^1.0.6",
-    "mocha": "^8.3.2",
+    "mocha": "^9.1.1",
     "season": "^6.0.2",
     "should": "^13.2.3"
   }
