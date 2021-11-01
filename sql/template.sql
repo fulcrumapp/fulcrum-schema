@@ -479,8 +479,7 @@ SELECT
   script AS script,
   image AS image,
   projects_enabled AS projects_enabled,
-  assignment_enabled AS assignment_enabled,
-  system_type AS system_type
+  assignment_enabled AS assignment_enabled
 FROM organization.forms;
 
 DROP VIEW IF EXISTS organization.memberships_view CASCADE;
@@ -1120,9 +1119,6 @@ SELECT 'forms_view', 'forms', 'projects_enabled', '20', 'boolean', '0', NULL, NU
 
 INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'forms_view', 'forms', 'assignment_enabled', '21', 'boolean', '0', NULL, NULL, NULL, NULL, NULL, NULL;
-
-INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'forms_view', 'forms', 'system_type', '22', 'text', '1', NULL, NULL, NULL, NULL, NULL, NULL;
 
 DELETE FROM "organization"."tables" WHERE name = 'memberships_view';
 
