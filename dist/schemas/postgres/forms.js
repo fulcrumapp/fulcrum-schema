@@ -85,11 +85,12 @@ var Forms = /*#__PURE__*/function (_TableDefinition) {
     this.text('script', {});
     this.text('image', {});
     this["boolean"]('projects_enabled', {
-      "allowNull": false
+      'allowNull': false
     });
     this["boolean"]('assignment_enabled', {
-      "allowNull": false
+      'allowNull': false
     });
+    this.text('system_type', {});
   };
 
   _proto.defineView = function defineView() {

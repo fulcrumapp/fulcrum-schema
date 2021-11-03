@@ -132,6 +132,7 @@ CREATE TABLE IF NOT EXISTS organization.forms (
   image text,
   projects_enabled boolean NOT NULL,
   assignment_enabled boolean NOT NULL,
+  system_type text,
   CONSTRAINT forms_pkey PRIMARY KEY (id)
 );
 
