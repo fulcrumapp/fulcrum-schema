@@ -306,6 +306,7 @@ CREATE TABLE IF NOT EXISTS organization.videos (
   height bigint,
   duration double precision,
   deleted_at timestamp with time zone,
+  status text,
   CONSTRAINT videos_pkey PRIMARY KEY (id)
 );
 
@@ -629,7 +630,8 @@ SELECT
   width AS width,
   height AS height,
   duration AS duration,
-  deleted_at AS deleted_at
+  deleted_at AS deleted_at,
+  status AS status
 FROM organization.videos;
 
 DROP VIEW IF EXISTS organization.devices_view CASCADE;
@@ -1497,6 +1499,9 @@ SELECT 'videos_view', 'videos', 'duration', '20', 'double', '1', NULL, NULL, NUL
 
 INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'videos_view', 'videos', 'deleted_at', '21', 'timestamp', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'videos_view', 'videos', 'status', '22', 'text', '1', NULL, NULL, NULL, NULL, NULL, NULL;
 
 DELETE FROM "organization"."tables" WHERE name = 'devices_view';
 

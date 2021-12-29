@@ -1,4 +1,4 @@
-## Fulcrum Query Table Schema [![Build Status](https://secure.travis-ci.org/fulcrumapp/fulcrum-schema.svg)](http://travis-ci.org/fulcrumapp/fulcrum-schema)
+## Fulcrum Query Table Schema
 
 ### Setup
 ```sh
@@ -13,49 +13,24 @@ make
 
 ### Distribute
 
-Builds the final output. The main output file `dist/fulcrum-schema.js`.
+Builds the final output. The main output file `dist/fulcrum-schema.min.js`.
 
 ```sh
 make
 ```
 
 ### Deploying
+Once changes have been merged copy the `dist/fulcrum-schema.min.js` to the following
+destinations **MAKE SURE TO COPY THE .min FILE**:
+  1. `fulcrum-query` : **n/a**
+  2. `fulcrum` : `public/resources/fulcrum-schema.js`
+  3. `fulcrum-android` : `src/main/res/raw/fulcrum_schema.js`
+  4. `fulcrum-ios` : `Fulcrum/Resources/fulcrum-schema.js`
 
-When making changes to this library, the fulcrum-schema.js file needs to be copied to the Fulcrum web app directory in `public`. At the
-same time the `fulcrum-query` repo needs to be upgraded to use the new version.
-
-DO NOT change the `template.sql` in the web app without a complete understanding of the side effects. In most cases a core schema
-change will have to be hand-coded and applied to all existing databases. The `template.sql` file represents the one-time V1 version
+DO NOT change the `template.sql` in the web app without a complete understanding of the
+side effects. In most cases a core schema change will have to be hand-coded and applied
+to all existing databases. The `template.sql` file represents the one-time V1 version
 of the query schema and should never change unless there's a very good reason.
-
-### Copy files to other repositories
-
-Copies the build output and docs to the other repositories (each are optional, but at least one is needed).
-
-You can define the paths to the Fulcrum repos using environment variables in your shell config:
-
-```sh
-export FULCRUM_ANDROID=/path/to/android/app
-export FULCRUM_IOS=/path/to/ios/app
-export FULCRUM_WEB=/path/to/web/app
-export FULCRUM_SITE=/path/to/website
-```
-
-Or you can assign them in the make command:
-
-```sh
-FULCRUM_SITE=$HOME/dev/fulcrumapp.com make dist copy
-```
-
-Once you have the environment variables set, you can run:
-
-```sh
-make copy
-
-or
-
-make dist copy # clean, build and deploy everything
-```
 
 ### Tests
 
