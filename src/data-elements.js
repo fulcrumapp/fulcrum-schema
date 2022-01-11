@@ -5,7 +5,6 @@ const DATA_ELEMENTS = [
   'ChoiceField',
   'ClassificationField',
   'YesNoField',
-  'CheckBoxField',
   'PhotoField',
   'VideoField',
   'AudioField',
@@ -19,6 +18,7 @@ const DATA_ELEMENTS = [
   'CalculatedField',
   'RecordLinkField',
   'AttachmentField',
+  'CheckBoxField',
   'JsonWithSchemaField'
 ];
 

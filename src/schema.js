@@ -295,7 +295,6 @@ export default class Schema {
         break;
 
       case 'YesNoField':
-      case 'CheckBoxField':
         this.addStringElement(elementTable, element);
         break;
 
@@ -367,6 +366,10 @@ export default class Schema {
         }
         break;
 
+      case 'CheckBoxField':
+        this.addBooleanElement(elementTable, element);
+        break;
+
       case 'JsonWithSchemaField':
         this.addArrayElement(elementTable, element);
         this.addArrayElement(elementTable, element, 'schema');
@@ -418,6 +421,13 @@ export default class Schema {
       suffix = '';
     }
     return this.addElement(table, element, 'double', suffix);
+  }
+
+  addBooleanElement(table, element, suffix) {
+    if (suffix == null) {
+      suffix = '';
+    }
+    return this.addElement(table, element, 'boolean', suffix);
   }
 
   addIntegerElement(table, element, suffix) {

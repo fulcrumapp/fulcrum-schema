@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS organization_1.tmp_new_form_67777 (
   fc71a_timestamp timestamp with time zone,
   ff113 double precision,
   fb9d9 text,
-  f92ab text,
+  f92ab boolean,
   f92ac text[],
   f92ac_schema text[],
   CONSTRAINT tmp_new_form_67777_pkey PRIMARY KEY (id)
@@ -561,7 +561,7 @@ SELECT 'form_67777_view', 'Park Inventory Test', 'calculated_park_name', '66', '
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'form_67777_view', 'Park Inventory Test', 'calculation_description', '67', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', 'b9d9', 'TextField', 'calculation_description', NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'checked', '68', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '92ab', 'CheckBoxField', 'checked', NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', 'checked', '68', 'boolean', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '92ab', 'CheckBoxField', 'checked', NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'form_67777_view', 'Park Inventory Test', 'checklist', '69', 'array', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '92ac', 'JsonWithSchemaField', 'checklist', NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
