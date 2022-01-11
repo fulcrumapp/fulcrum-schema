@@ -1137,20 +1137,7 @@
         "visible_conditions_type": null,
         "visible_conditions": null,
         "required_conditions_type": null,
-        "required_conditions": null,
-        "positive": {
-          "label": "Yes",
-          "value": "yes"
-        },
-        "negative": {
-          "label": "No",
-          "value": "no"
-        },
-        "neutral": {
-          "label": "N/A",
-          "value": "n/a"
-        },
-        "neutral_enabled": false
+        "required_conditions": null
       },
       {
         "type": "JsonWithSchemaField",
