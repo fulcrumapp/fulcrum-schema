@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `account_1_form_67777` (
   `fb9d9` TEXT,
   `f92ab` INTEGER,
   `f92ac` TEXT,
-  `f92ac_schema` TEXT
+  `f92ac_elements` TEXT
 );
 CREATE TABLE IF NOT EXISTS `account_1_form_67777_values` (
   `id` INTEGER PRIMARY KEY AUTOINCREMENT,

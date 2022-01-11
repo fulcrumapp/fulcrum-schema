@@ -1233,14 +1233,10 @@
         "disabled": false,
         "hidden": false,
         "data_name": "checked",
-        "default_value": null,
-        "visible_conditions_type": null,
-        "visible_conditions": null,
-        "required_conditions_type": null,
-        "required_conditions": null
+        "default_value": null
       },
       {
-        "type": "JsonWithSchemaField",
+        "type": "DynamicElementsField",
         "key": "92ac",
         "description": null,
         "required": false,

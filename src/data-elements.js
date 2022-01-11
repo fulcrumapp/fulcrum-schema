@@ -19,7 +19,7 @@ const DATA_ELEMENTS = [
   'RecordLinkField',
   'AttachmentField',
   'CheckBoxField',
-  'JsonWithSchemaField'
+  'DynamicElementsField'
 ];
 
 export default class DataElements {

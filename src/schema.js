@@ -370,9 +370,9 @@ export default class Schema {
         this.addBooleanElement(elementTable, element);
         break;
 
-      case 'JsonWithSchemaField':
+      case 'DynamicElementsField':
         this.addArrayElement(elementTable, element);
-        this.addArrayElement(elementTable, element, 'schema');
+        this.addArrayElement(elementTable, element, 'elements');
         break;
 
       default:
