@@ -1123,6 +1123,49 @@
           "currency": null
         },
         "default_values": null
+      },
+      {
+        "type": "CheckBoxField",
+        "key": "92ab",
+        "label": "Checked?",
+        "description": null,
+        "required": false,
+        "disabled": false,
+        "hidden": false,
+        "data_name": "checked",
+        "default_value": null,
+        "visible_conditions_type": null,
+        "visible_conditions": null,
+        "required_conditions_type": null,
+        "required_conditions": null,
+        "positive": {
+          "label": "Yes",
+          "value": "yes"
+        },
+        "negative": {
+          "label": "No",
+          "value": "no"
+        },
+        "neutral": {
+          "label": "N/A",
+          "value": "n/a"
+        },
+        "neutral_enabled": false
+      },
+      {
+        "type": "JsonWithSchemaField",
+        "key": "92ac",
+        "description": null,
+        "required": false,
+        "disabled": false,
+        "hidden": false,
+        "data_name": "checklist",
+        "default_value": null,
+        "visible_conditions_type": null,
+        "visible_conditions": null,
+        "required_conditions_type": null,
+        "required_conditions": null,
+        "agreement_text": ""
       }
     ],
     "image": "https://fulcrumapp.s3.amazonaws.com/form-images/990068fa-00fb-4d4a-956e-3602a2c329a6-819f8a72-2aa2-49c0-92f8-7bfc94f3541b.png"

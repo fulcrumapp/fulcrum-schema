@@ -5,6 +5,7 @@ const DATA_ELEMENTS = [
   'ChoiceField',
   'ClassificationField',
   'YesNoField',
+  'CheckBoxField',
   'PhotoField',
   'VideoField',
   'AudioField',
@@ -17,7 +18,8 @@ const DATA_ELEMENTS = [
   'HyperlinkField',
   'CalculatedField',
   'RecordLinkField',
-  'AttachmentField'
+  'AttachmentField',
+  'JsonWithSchemaField'
 ];
 
 export default class DataElements {

@@ -295,6 +295,7 @@ export default class Schema {
         break;
 
       case 'YesNoField':
+      case 'CheckBoxField':
         this.addStringElement(elementTable, element);
         break;
 
@@ -364,6 +365,11 @@ export default class Schema {
             this.addStringElement(elementTable, element);
             break;
         }
+        break;
+
+      case 'JsonWithSchemaField':
+        this.addArrayElement(elementTable, element);
+        this.addArrayElement(elementTable, element, 'schema');
         break;
 
       default:
