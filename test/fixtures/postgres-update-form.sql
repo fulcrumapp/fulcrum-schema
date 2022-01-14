@@ -190,7 +190,7 @@ SELECT
   fc71a_timestamp AS signature_timestamp,
   ff113 AS calculated_park_name,
   fb9d9 AS calculation_description,
-  f92ab AS checked,
+  f92ab IS NOT NULL AND f92ab = 't' AS checked,
   f92ac AS checklist,
   f92ac_elements AS checklist_elements,
   f92ac_metadata AS checklist_metadata
@@ -268,7 +268,7 @@ SELECT
   fc71a_timestamp AS signature_timestamp,
   ff113 AS calculated_park_name,
   fb9d9 AS calculation_description,
-  f92ab AS checked,
+  f92ab IS NOT NULL AND f92ab = 't' AS checked,
   f92ac AS checklist,
   f92ac_elements AS checklist_elements,
   f92ac_metadata AS checklist_metadata
