@@ -366,11 +366,11 @@ export default class Schema {
         }
         break;
 
-      case 'CheckBoxField':
+      case 'CheckboxField':
         this.addBooleanElement(elementTable, element);
         break;
 
-      case 'DynamicElementsField':
+      case 'DynamicField':
         this.addArrayElement(elementTable, element);
         this.addArrayElement(elementTable, element, 'elements');
         this.addArrayElement(elementTable, element, 'metadata');

@@ -626,13 +626,13 @@ SELECT 'form_67777_view', 'Park Inventory Test', 'calculated_park_name', '66', '
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'form_67777_view', 'Park Inventory Test', 'calculation_description', '67', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', 'b9d9', 'TextField', 'calculation_description', NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'checked', '68', 'boolean', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '92ab', 'CheckBoxField', 'checked', NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', 'checked', '68', 'boolean', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '92ab', 'CheckboxField', 'checked', NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'checklist', '69', 'array', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '92ac', 'DynamicElementsField', 'checklist', NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', 'checklist', '69', 'array', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '92ac', 'DynamicField', 'checklist', NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'checklist_elements', '70', 'array', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '92ac', 'DynamicElementsField', 'checklist', 'elements', NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', 'checklist_elements', '70', 'array', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '92ac', 'DynamicField', 'checklist', 'elements', NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'checklist_metadata', '71', 'array', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '92ac', 'DynamicElementsField', 'checklist', 'metadata', NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', 'checklist_metadata', '71', 'array', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '92ac', 'DynamicField', 'checklist', 'metadata', NULL;
 DELETE FROM "organization_1"."tables" WHERE name = 'form_67777_4ccf_view';
 DELETE FROM "organization_1"."columns" WHERE table_name = 'form_67777_4ccf_view';
 INSERT INTO "organization_1"."tables" (name, alias, type, parent, form_id, field, field_type, data_name) SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', 'repeatable', 'Park Inventory Test', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '4ccf', 'Repeatable', 'park_features';

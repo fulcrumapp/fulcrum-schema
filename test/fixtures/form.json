@@ -1125,7 +1125,7 @@
         "default_values": null
       },
       {
-        "type": "CheckBoxField",
+        "type": "CheckboxField",
         "key": "92ab",
         "label": "Checked?",
         "description": null,
@@ -1136,7 +1136,7 @@
         "default_value": null
       },
       {
-        "type": "DynamicElementsField",
+        "type": "DynamicField",
         "key": "92ac",
         "description": null,
         "required": false,
