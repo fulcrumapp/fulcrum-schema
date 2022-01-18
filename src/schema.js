@@ -377,9 +377,9 @@ export default class Schema {
         break;
 
       case 'DynamicField':
-        this.addArrayElement(elementTable, element);
-        this.addArrayElement(elementTable, element, 'elements');
         this.addArrayElement(elementTable, element, 'metadata');
+        this.addArrayElement(elementTable, element, 'elements');
+        this.addArrayElement(elementTable, element, 'values');
         break;
 
       default:
