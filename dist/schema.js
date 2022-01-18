@@ -208,10 +208,21 @@ var Schema = /*#__PURE__*/function () {
       }
 
       if (!columnNames[alias]) {
-        view.addColumn({
-          column: column,
-          alias: alias
-        });
+        if (column.type === 'boolean') {
+          var projection = column.name + " IS NOT NULL AND " + column.name + " = 't' AS " + _utils["default"].escapeIdentifier(alias);
+
+          view.addColumn({
+            column: column,
+            alias: alias,
+            raw: projection
+          });
+        } else {
+          view.addColumn({
+            column: column,
+            alias: alias
+          });
+        }
+
         columnNames[alias] = column;
       }
     }
@@ -398,6 +409,16 @@ var Schema = /*#__PURE__*/function () {
 
         break;
 
+      case 'CheckboxField':
+        this.addBooleanElement(elementTable, element);
+        break;
+
+      case 'DynamicField':
+        this.addArrayElement(elementTable, element);
+        this.addArrayElement(elementTable, element, 'elements');
+        this.addArrayElement(elementTable, element, 'metadata');
+        break;
+
       default:
         console.log('Unhandled element type', element.type);
         break;
@@ -450,6 +471,14 @@ var Schema = /*#__PURE__*/function () {
     }
 
     return this.addElement(table, element, 'double', suffix);
+  };
+
+  _proto.addBooleanElement = function addBooleanElement(table, element, suffix) {
+    if (suffix == null) {
+      suffix = '';
+    }
+
+    return this.addElement(table, element, 'boolean', suffix);
   };
 
   _proto.addIntegerElement = function addIntegerElement(table, element, suffix) {
