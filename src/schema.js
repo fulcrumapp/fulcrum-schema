@@ -182,7 +182,7 @@ export default class Schema {
 
       if (!columnNames[alias]) {
         if (column.type === 'boolean') {
-          const projection = format('%s AS %s', `${column.name} IS NOT NULL AND ${column.name} = 't'`, Utils.escapeIdentifier(alias));
+          const projection = `${column.name} IS NOT NULL AND ${column.name} = 't' AS ${Utils.escapeIdentifier(alias)}`;
           view.addColumn({column: column, alias: alias, raw: projection});
         } else {
           view.addColumn({column: column, alias: alias});
