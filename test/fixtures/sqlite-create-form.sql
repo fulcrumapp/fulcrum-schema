@@ -39,7 +39,11 @@ CREATE TABLE IF NOT EXISTS `account_1_form_67777` (
   `fc71a` TEXT,
   `fc71a_timestamp` REAL,
   `ff113` REAL,
-  `fb9d9` TEXT
+  `fb9d9` TEXT,
+  `f92ab` INTEGER,
+  `f92ac_metadata` TEXT,
+  `f92ac_elements` TEXT,
+  `f92ac_values` TEXT
 );
 CREATE TABLE IF NOT EXISTS `account_1_form_67777_values` (
   `id` INTEGER PRIMARY KEY AUTOINCREMENT,
