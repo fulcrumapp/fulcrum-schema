@@ -36,6 +36,7 @@ export default class Videos extends TableDefinition {
     this.integer('height', {});
     this.double('duration', {});
     this.timestamp('deleted_at', {});
+    this.text('status', {});
   }
 
   defineView() {
@@ -60,6 +61,7 @@ export default class Videos extends TableDefinition {
     this.alias('height', 'height');
     this.alias('duration', 'duration');
     this.alias('deleted_at', 'deleted_at');
+    this.alias('status', 'status');
   }
 
   defineIndexes() {

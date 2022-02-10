@@ -1202,6 +1202,9 @@ Schema.systemVideosTable = [
   }, {
     name: 'deleted_at',
     type: 'timestamp'
+  }, {
+    name: 'status',
+    type: 'text'
   }
 ];
 
