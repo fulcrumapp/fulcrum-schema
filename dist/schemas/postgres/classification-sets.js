@@ -11,7 +11,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 
 function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
 
@@ -48,6 +48,9 @@ var ClassificationSets = /*#__PURE__*/function (_TableDefinition) {
     this.string('created_by_resource_id', {});
     this.integer('updated_by_id', {});
     this.string('updated_by_resource_id', {});
+    this.string('system_type', {
+      "allowNull": false
+    });
     this.timestamp('created_at', {
       "allowNull": false
     });
@@ -63,6 +66,7 @@ var ClassificationSets = /*#__PURE__*/function (_TableDefinition) {
     this.alias('version', 'version');
     this.alias('items', 'items');
     this.alias('created_by_resource_id', 'created_by_id');
+    this.alias('system_type', 'system_type');
     this.alias('updated_by_resource_id', 'updated_by_id');
     this.alias('created_at', 'created_at');
     this.alias('updated_at', 'updated_at');

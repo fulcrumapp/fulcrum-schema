@@ -748,6 +748,10 @@ Schema.systemClassificationSetsTable = [{
   name: 'updated_at',
   type: 'timestamp',
   allowNull: false
+}, {
+  name: 'system_type',
+  type: 'string',
+  allowNull: false
 }];
 Schema.systemProjectsTable = [{
   name: 'id',
