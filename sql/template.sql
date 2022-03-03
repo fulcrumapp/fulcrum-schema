@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS organization.classification_sets (
   created_by_resource_id text,
   updated_by_id bigint,
   updated_by_resource_id text,
-  system_type text NOT NULL,
+  system_type text,
   created_at timestamp with time zone NOT NULL,
   updated_at timestamp with time zone NOT NULL,
   CONSTRAINT classification_sets_pkey PRIMARY KEY (id)
@@ -1048,7 +1048,7 @@ INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, ty
 SELECT 'classification_sets_view', 'classification_sets', 'updated_by_id', '7', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
 
 INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'classification_sets_view', 'classification_sets', 'system_type', '8', 'string', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+SELECT 'classification_sets_view', 'classification_sets', 'system_type', '8', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
 
 INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'classification_sets_view', 'classification_sets', 'created_at', '9', 'timestamp', '0', NULL, NULL, NULL, NULL, NULL, NULL;

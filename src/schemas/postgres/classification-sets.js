@@ -17,7 +17,7 @@ export default class ClassificationSets extends TableDefinition {
     this.string('created_by_resource_id', {});
     this.integer('updated_by_id', {});
     this.string('updated_by_resource_id', {});
-    this.string('system_type', {"allowNull":false});
+    this.string('system_type', {});
     this.timestamp('created_at', {"allowNull":false});
     this.timestamp('updated_at', {"allowNull":false});
   }
