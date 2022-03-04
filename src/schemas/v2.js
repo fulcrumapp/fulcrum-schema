@@ -762,6 +762,9 @@ Schema.systemClassificationSetsTable = [
     name: 'updated_at',
     type: 'timestamp',
     allowNull: false
+  }, {
+    name: 'system_type',
+    type: 'text'
   }
 ];
 
@@ -1555,7 +1558,8 @@ Schema.organizationViews.classification_sets = {
   created_by_resource_id: 'created_by_id',
   updated_by_resource_id: 'updated_by_id',
   created_at: 'created_at',
-  updated_at: 'updated_at'
+  updated_at: 'updated_at',
+  system_type: 'system_type'
 };
 
 Schema.organizationIndexes.classification_sets = [
