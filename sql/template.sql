@@ -88,9 +88,9 @@ CREATE TABLE IF NOT EXISTS organization.classification_sets (
   created_by_resource_id text,
   updated_by_id bigint,
   updated_by_resource_id text,
-  system_type text,
   created_at timestamp with time zone NOT NULL,
   updated_at timestamp with time zone NOT NULL,
+  system_type text,
   CONSTRAINT classification_sets_pkey PRIMARY KEY (id)
 );
 
@@ -452,9 +452,9 @@ SELECT
   items AS items,
   created_by_resource_id AS created_by_id,
   updated_by_resource_id AS updated_by_id,
-  system_type AS system_type,
   created_at AS created_at,
-  updated_at AS updated_at
+  updated_at AS updated_at,
+  system_type AS system_type
 FROM organization.classification_sets;
 
 DROP VIEW IF EXISTS organization.forms_view CASCADE;
@@ -1048,13 +1048,13 @@ INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, ty
 SELECT 'classification_sets_view', 'classification_sets', 'updated_by_id', '7', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
 
 INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'classification_sets_view', 'classification_sets', 'system_type', '8', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+SELECT 'classification_sets_view', 'classification_sets', 'created_at', '8', 'timestamp', '0', NULL, NULL, NULL, NULL, NULL, NULL;
 
 INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'classification_sets_view', 'classification_sets', 'created_at', '9', 'timestamp', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+SELECT 'classification_sets_view', 'classification_sets', 'updated_at', '9', 'timestamp', '0', NULL, NULL, NULL, NULL, NULL, NULL;
 
 INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'classification_sets_view', 'classification_sets', 'updated_at', '10', 'timestamp', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+SELECT 'classification_sets_view', 'classification_sets', 'system_type', '10', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
 
 DELETE FROM "organization"."tables" WHERE name = 'forms_view';
 
