@@ -20,6 +20,12 @@ Schema.systemFormTableColumns = [{
   type: 'string',
   allowNull: false
 }, {
+  name: 'record_key',
+  type: 'string'
+}, {
+  name: 'record_sequence',
+  type: 'integer'
+}, {
   name: 'project_id',
   type: 'integer'
 }, {
@@ -196,6 +202,12 @@ Schema.systemRepeatableTableColumns = [{
 }, {
   name: 'parent_resource_id',
   type: 'string'
+}, {
+  name: 'record_record_key',
+  type: 'string'
+}, {
+  name: 'record_record_sequence',
+  type: 'integer'
 }, {
   name: 'record_project_id',
   type: 'integer'
@@ -1341,6 +1353,8 @@ Schema.systemSignaturesTable = [{
 }];
 Schema.systemFormViewColumns = {
   record_resource_id: 'record_id',
+  record_key: 'record_key',
+  record_sequence: 'record_sequence',
   project_resource_id: 'project_id',
   assigned_to_resource_id: 'assigned_to_id',
   status: 'status',
@@ -1383,6 +1397,8 @@ Schema.systemRepeatableViewColumns = {
   resource_id: 'child_record_id',
   record_resource_id: 'record_id',
   parent_resource_id: 'parent_id',
+  record_record_key: 'record_record_key',
+  record_record_sequence: 'record_record_sequence',
   record_project_resource_id: 'record_project_id',
   record_assigned_to_resource_id: 'record_assigned_to_id',
   record_status: 'record_status',
@@ -1852,6 +1868,9 @@ Schema.systemRepeatableTableIndexes = [{
 }, {
   columns: ['changeset_resource_id'],
   method: 'btree'
+}, {
+  columns: ['record_record_sequence'],
+  method: 'btree'
 }];
 Schema.systemValuesTableIndexes = [// { columns: [ 'record_id' ], method: 'btree' },
 {
@@ -1865,6 +1884,9 @@ Schema.systemValuesTableIndexes = [// { columns: [ 'record_id' ], method: 'btree
   method: 'btree'
 }, {
   columns: ['key'],
+  method: 'btree'
+}, {
+  columns: ['record_sequence'],
   method: 'btree'
 }];
 var _default = Schema;

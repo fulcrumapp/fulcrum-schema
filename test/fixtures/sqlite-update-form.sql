@@ -2,6 +2,8 @@ CREATE TABLE IF NOT EXISTS `account_1_tmp_new_form_67777` (
   `id` INTEGER PRIMARY KEY AUTOINCREMENT,
   `record_id` INTEGER NOT NULL,
   `record_resource_id` TEXT NOT NULL,
+  `record_key` TEXT,
+  `record_sequence` INTEGER,
   `project_id` INTEGER,
   `assigned_to_id` INTEGER,
   `status` TEXT,

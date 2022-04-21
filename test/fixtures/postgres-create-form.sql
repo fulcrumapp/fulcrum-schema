@@ -2,6 +2,8 @@ CREATE TABLE IF NOT EXISTS organization_1.form_67777 (
   id bigserial NOT NULL,
   record_id bigint NOT NULL,
   record_resource_id text NOT NULL,
+  record_key text,
+  record_sequence bigint,
   project_id bigint,
   project_resource_id text,
   assigned_to_id bigint,
@@ -98,6 +100,8 @@ CREATE TABLE IF NOT EXISTS organization_1.form_67777_4ccf (
   record_id bigint NOT NULL,
   record_resource_id text NOT NULL,
   parent_resource_id text,
+  record_record_key text,
+  record_record_sequence bigint,
   record_project_id bigint,
   record_project_resource_id text,
   record_assigned_to_id bigint,
@@ -182,6 +186,8 @@ DROP VIEW IF EXISTS organization_1.form_67777_view CASCADE;
 CREATE OR REPLACE VIEW organization_1.form_67777_view AS
 SELECT
   record_resource_id AS _record_id,
+  record_key AS _record_key,
+  record_sequence AS _record_sequence,
   project_resource_id AS _project_id,
   assigned_to_resource_id AS _assigned_to_id,
   status AS _status,
@@ -257,6 +263,8 @@ DROP VIEW IF EXISTS organization_1.form_67777_view_full CASCADE;
 CREATE OR REPLACE VIEW organization_1.form_67777_view_full AS
 SELECT
   record_resource_id AS _record_id,
+  record_key AS _record_key,
+  record_sequence AS _record_sequence,
   project_resource_id AS _project_id,
   assigned_to_resource_id AS _assigned_to_id,
   status AS _status,
@@ -345,6 +353,8 @@ SELECT
   resource_id AS _child_record_id,
   record_resource_id AS _record_id,
   parent_resource_id AS _parent_id,
+  record_record_key AS _record_record_key,
+  record_record_sequence AS _record_record_sequence,
   record_project_resource_id AS _record_project_id,
   record_assigned_to_resource_id AS _record_assigned_to_id,
   record_status AS _record_status,
@@ -389,6 +399,8 @@ SELECT
   resource_id AS _child_record_id,
   record_resource_id AS _record_id,
   parent_resource_id AS _parent_id,
+  record_record_key AS _record_record_key,
+  record_record_sequence AS _record_record_sequence,
   record_project_resource_id AS _record_project_id,
   record_assigned_to_resource_id AS _record_assigned_to_id,
   record_status AS _record_status,
@@ -442,6 +454,7 @@ CREATE INDEX idx_form_67777_values_record_resource_id ON organization_1.form_677
 CREATE INDEX idx_form_67777_values_parent_resource_id ON organization_1.form_67777_values USING btree (parent_resource_id);
 CREATE INDEX idx_form_67777_values_text_value ON organization_1.form_67777_values USING btree (text_value);
 CREATE INDEX idx_form_67777_values_key ON organization_1.form_67777_values USING btree (key);
+CREATE INDEX idx_form_67777_values_record_sequence ON organization_1.form_67777_values USING btree (record_sequence);
 CREATE UNIQUE INDEX idx_form_67777_4ccf_resource_id ON organization_1.form_67777_4ccf USING btree (resource_id);
 CREATE INDEX idx_form_67777_4ccf_record_resource_id ON organization_1.form_67777_4ccf USING btree (record_resource_id);
 CREATE INDEX idx_form_67777_4ccf_parent_resource_id ON organization_1.form_67777_4ccf USING btree (parent_resource_id);
@@ -452,6 +465,7 @@ CREATE INDEX idx_form_67777_4ccf_updated_at ON organization_1.form_67777_4ccf US
 CREATE INDEX idx_form_67777_4ccf_record_project_resource_id ON organization_1.form_67777_4ccf USING btree (record_project_resource_id);
 CREATE INDEX idx_form_67777_4ccf_record_assigned_to_resource_id ON organization_1.form_67777_4ccf USING btree (record_assigned_to_resource_id);
 CREATE INDEX idx_form_67777_4ccf_changeset_resource_id ON organization_1.form_67777_4ccf USING btree (changeset_resource_id);
+CREATE INDEX idx_form_67777_4ccf_record_record_sequence ON organization_1.form_67777_4ccf USING btree (record_record_sequence);
 DELETE FROM "organization_1"."tables" WHERE name = 'form_67777_0fe3_view';
 DELETE FROM "organization_1"."columns" WHERE table_name = 'form_67777_0fe3_view';
 INSERT INTO "organization_1"."tables" (name, alias, type, parent, form_id, field, field_type, data_name) SELECT 'form_67777_0fe3_view', 'Park Inventory Test/photos', 'media', NULL, 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '0fe3', 'PhotoField', 'photos';
@@ -494,145 +508,149 @@ INSERT INTO "organization_1"."tables" (name, alias, type, parent, form_id, field
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'form_67777_view', 'Park Inventory Test', '_record_id', '1', 'string', '0', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', '_project_id', '2', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', '_record_key', '2', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', '_assigned_to_id', '3', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', '_record_sequence', '3', 'integer', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', '_status', '4', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', '_project_id', '4', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', '_latitude', '5', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', '_assigned_to_id', '5', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', '_longitude', '6', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', '_status', '6', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', '_created_at', '7', 'timestamp', '0', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', '_latitude', '7', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', '_updated_at', '8', 'timestamp', '0', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', '_longitude', '8', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', '_version', '9', 'integer', '0', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', '_created_at', '9', 'timestamp', '0', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', '_created_by_id', '10', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', '_updated_at', '10', 'timestamp', '0', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', '_updated_by_id', '11', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', '_version', '11', 'integer', '0', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', '_server_created_at', '12', 'timestamp', '0', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', '_created_by_id', '12', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', '_server_updated_at', '13', 'timestamp', '0', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', '_updated_by_id', '13', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', '_geometry', '14', 'geometry', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', '_server_created_at', '14', 'timestamp', '0', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', '_altitude', '15', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', '_server_updated_at', '15', 'timestamp', '0', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', '_speed', '16', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', '_geometry', '16', 'geometry', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', '_course', '17', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', '_altitude', '17', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', '_horizontal_accuracy', '18', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', '_speed', '18', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', '_vertical_accuracy', '19', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', '_course', '19', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', '_changeset_id', '20', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', '_horizontal_accuracy', '20', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', '_title', '21', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', '_vertical_accuracy', '21', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', '_created_latitude', '22', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', '_changeset_id', '22', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', '_created_longitude', '23', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', '_title', '23', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', '_created_geometry', '24', 'geometry', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', '_created_latitude', '24', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', '_created_altitude', '25', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', '_created_longitude', '25', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', '_created_horizontal_accuracy', '26', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', '_created_geometry', '26', 'geometry', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', '_updated_latitude', '27', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', '_created_altitude', '27', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', '_updated_longitude', '28', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', '_created_horizontal_accuracy', '28', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', '_updated_geometry', '29', 'geometry', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', '_updated_latitude', '29', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', '_updated_altitude', '30', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', '_updated_longitude', '30', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', '_updated_horizontal_accuracy', '31', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', '_updated_geometry', '31', 'geometry', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', '_created_duration', '32', 'integer', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', '_updated_altitude', '32', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', '_updated_duration', '33', 'integer', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', '_updated_horizontal_accuracy', '33', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', '_edited_duration', '34', 'integer', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', '_created_duration', '34', 'integer', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'open', '35', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '92aa', 'YesNoField', 'open', NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', '_updated_duration', '35', 'integer', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'status', '36', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', 'af33', 'TextField', 'status', NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', '_edited_duration', '36', 'integer', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'this_is_a_really_long_data_name_that_exceeds_the_maximum_column', '37', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', 'af00', 'TextField', 'this_is_a_really_long_data_name_that_exceeds_the_maximum_column_length_of_the_database', NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', 'open', '37', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '92aa', 'YesNoField', 'open', NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'this_is_a_really_long_data_name_that_exceeds_the_maximum_colum1', '38', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', 'af01', 'TextField', 'this_is_a_really_long_data_name_that_exceeds_the_maximum_column_length_of_the_database_1', NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', 'status', '38', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', 'af33', 'TextField', 'status', NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'this_is_a_really_long_data_name_that_exceeds_the_maximum_colum2', '39', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', 'af02', 'TextField', 'this_is_a_really_long_data_name_that_exceeds_the_maximum_column_length_of_the_database_2', NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', 'this_is_a_really_long_data_name_that_exceeds_the_maximum_column', '39', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', 'af00', 'TextField', 'this_is_a_really_long_data_name_that_exceeds_the_maximum_column_length_of_the_database', NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'park_name', '40', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', 'af72', 'TextField', 'park_name', NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', 'this_is_a_really_long_data_name_that_exceeds_the_maximum_colum1', '40', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', 'af01', 'TextField', 'this_is_a_really_long_data_name_that_exceeds_the_maximum_column_length_of_the_database_1', NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'barcode', '41', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '3fcc', 'BarcodeField', 'barcode', NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', 'this_is_a_really_long_data_name_that_exceeds_the_maximum_colum2', '41', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', 'af02', 'TextField', 'this_is_a_really_long_data_name_that_exceeds_the_maximum_column_length_of_the_database_2', NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'cost', '42', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '5046', 'TextField', 'cost', NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', 'park_name', '42', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', 'af72', 'TextField', 'park_name', NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'age', '43', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '196d', 'TextField', 'age', NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', 'barcode', '43', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '3fcc', 'BarcodeField', 'barcode', NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'operator', '44', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '483d', 'TextField', 'operator', NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', 'cost', '44', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '5046', 'TextField', 'cost', NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'type_of_facility', '45', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', 'cff4', 'ChoiceField', 'type_of_facility', NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', 'age', '45', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '196d', 'TextField', 'age', NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'address', '46', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '0fd9', 'AddressField', 'address', NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', 'operator', '46', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '483d', 'TextField', 'operator', NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'address_sub_thoroughfare', '47', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '0fd9', 'AddressField', 'address', 'sub_thoroughfare', NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', 'type_of_facility', '47', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', 'cff4', 'ChoiceField', 'type_of_facility', NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'address_thoroughfare', '48', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '0fd9', 'AddressField', 'address', 'thoroughfare', NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', 'address', '48', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '0fd9', 'AddressField', 'address', NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'address_suite', '49', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '0fd9', 'AddressField', 'address', 'suite', NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', 'address_sub_thoroughfare', '49', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '0fd9', 'AddressField', 'address', 'sub_thoroughfare', NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'address_locality', '50', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '0fd9', 'AddressField', 'address', 'locality', NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', 'address_thoroughfare', '50', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '0fd9', 'AddressField', 'address', 'thoroughfare', NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'address_admin_area', '51', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '0fd9', 'AddressField', 'address', 'admin_area', NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', 'address_suite', '51', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '0fd9', 'AddressField', 'address', 'suite', NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'address_postal_code', '52', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '0fd9', 'AddressField', 'address', 'postal_code', NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', 'address_locality', '52', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '0fd9', 'AddressField', 'address', 'locality', NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'address_sub_admin_area', '53', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '0fd9', 'AddressField', 'address', 'sub_admin_area', NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', 'address_admin_area', '53', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '0fd9', 'AddressField', 'address', 'admin_area', NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'address_country', '54', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '0fd9', 'AddressField', 'address', 'country', NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', 'address_postal_code', '54', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '0fd9', 'AddressField', 'address', 'postal_code', NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'operating_hours', '55', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '6427', 'TextField', 'operating_hours', NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', 'address_sub_admin_area', '55', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '0fd9', 'AddressField', 'address', 'sub_admin_area', NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'select_colors', '56', 'array', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', 'c00a', 'ChoiceField', 'select_colors', NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', 'address_country', '56', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '0fd9', 'AddressField', 'address', 'country', NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'classification_test', '57', 'array', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '3b66', 'ClassificationField', 'classification_test', NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', 'operating_hours', '57', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '6427', 'TextField', 'operating_hours', NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'date', '58', 'date', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', 'd088', 'DateTimeField', 'date', NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', 'select_colors', '58', 'array', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', 'c00a', 'ChoiceField', 'select_colors', NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'time', '59', 'time', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', 'f654', 'TimeField', 'time', NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', 'classification_test', '59', 'array', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '3b66', 'ClassificationField', 'classification_test', NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'park_photos', '60', 'array', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '5dcd', 'PhotoField', 'park_photos', NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', 'date', '60', 'date', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', 'd088', 'DateTimeField', 'date', NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'park_photos_captions', '61', 'array', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '5dcd', 'PhotoField', 'park_photos', 'captions', NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', 'time', '61', 'time', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', 'f654', 'TimeField', 'time', NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'videos', '62', 'array', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '9f01', 'VideoField', 'videos', NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', 'park_photos', '62', 'array', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '5dcd', 'PhotoField', 'park_photos', NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'videos_captions', '63', 'array', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '9f01', 'VideoField', 'videos', 'captions', NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', 'park_photos_captions', '63', 'array', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '5dcd', 'PhotoField', 'park_photos', 'captions', NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'signature', '64', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', 'c71a', 'SignatureField', 'signature', NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', 'videos', '64', 'array', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '9f01', 'VideoField', 'videos', NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'signature_timestamp', '65', 'timestamp', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', 'c71a', 'SignatureField', 'signature', 'timestamp', NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', 'videos_captions', '65', 'array', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '9f01', 'VideoField', 'videos', 'captions', NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'calculated_park_name', '66', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', 'f113', 'CalculatedField', 'calculated_park_name', NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', 'signature', '66', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', 'c71a', 'SignatureField', 'signature', NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'calculation_description', '67', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', 'b9d9', 'TextField', 'calculation_description', NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', 'signature_timestamp', '67', 'timestamp', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', 'c71a', 'SignatureField', 'signature', 'timestamp', NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'checked', '68', 'boolean', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '92ab', 'CheckboxField', 'checked', NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', 'calculated_park_name', '68', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', 'f113', 'CalculatedField', 'calculated_park_name', NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'checklist_metadata', '69', 'array', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '92ac', 'DynamicField', 'checklist', 'metadata', NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', 'calculation_description', '69', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', 'b9d9', 'TextField', 'calculation_description', NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'checklist_elements', '70', 'array', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '92ac', 'DynamicField', 'checklist', 'elements', NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', 'checked', '70', 'boolean', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '92ab', 'CheckboxField', 'checked', NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'checklist_values', '71', 'array', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '92ac', 'DynamicField', 'checklist', 'values', NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', 'checklist_metadata', '71', 'array', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '92ac', 'DynamicField', 'checklist', 'metadata', NULL;
+INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'form_67777_view', 'Park Inventory Test', 'checklist_elements', '72', 'array', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '92ac', 'DynamicField', 'checklist', 'elements', NULL;
+INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'form_67777_view', 'Park Inventory Test', 'checklist_values', '73', 'array', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '92ac', 'DynamicField', 'checklist', 'values', NULL;
 DELETE FROM "organization_1"."tables" WHERE name = 'form_67777_4ccf_view';
 DELETE FROM "organization_1"."columns" WHERE table_name = 'form_67777_4ccf_view';
 INSERT INTO "organization_1"."tables" (name, alias, type, parent, form_id, field, field_type, data_name) SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', 'repeatable', 'Park Inventory Test', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '4ccf', 'Repeatable', 'park_features';
@@ -643,76 +661,80 @@ SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_record_id'
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_parent_id', '3', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_record_project_id', '4', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_record_record_key', '4', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_record_assigned_to_id', '5', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_record_record_sequence', '5', 'integer', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_record_status', '6', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_record_project_id', '6', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_index', '7', 'integer', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_record_assigned_to_id', '7', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_latitude', '8', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_record_status', '8', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_longitude', '9', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_index', '9', 'integer', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_created_at', '10', 'timestamp', '0', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_latitude', '10', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_updated_at', '11', 'timestamp', '0', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_longitude', '11', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_version', '12', 'integer', '0', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_created_at', '12', 'timestamp', '0', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_created_by_id', '13', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_updated_at', '13', 'timestamp', '0', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_updated_by_id', '14', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_version', '14', 'integer', '0', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_server_created_at', '15', 'timestamp', '0', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_created_by_id', '15', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_server_updated_at', '16', 'timestamp', '0', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_updated_by_id', '16', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_geometry', '17', 'geometry', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_server_created_at', '17', 'timestamp', '0', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_changeset_id', '18', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_server_updated_at', '18', 'timestamp', '0', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_title', '19', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_geometry', '19', 'geometry', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_created_latitude', '20', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_changeset_id', '20', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_created_longitude', '21', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_title', '21', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_created_geometry', '22', 'geometry', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_created_latitude', '22', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_created_altitude', '23', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_created_longitude', '23', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_created_horizontal_accuracy', '24', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_created_geometry', '24', 'geometry', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_updated_latitude', '25', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_created_altitude', '25', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_updated_longitude', '26', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_created_horizontal_accuracy', '26', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_updated_geometry', '27', 'geometry', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_updated_latitude', '27', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_updated_altitude', '28', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_updated_longitude', '28', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_updated_horizontal_accuracy', '29', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_updated_geometry', '29', 'geometry', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_created_duration', '30', 'integer', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_updated_altitude', '30', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_updated_duration', '31', 'integer', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_updated_horizontal_accuracy', '31', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_edited_duration', '32', 'integer', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_created_duration', '32', 'integer', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', 'feature_type', '33', 'array', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', 'f79c', 'ClassificationField', 'feature_type', NULL, NULL;
+SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_updated_duration', '33', 'integer', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', 'photos', '34', 'array', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '0fe3', 'PhotoField', 'photos', NULL, NULL;
+SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_edited_duration', '34', 'integer', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', 'photos_captions', '35', 'array', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '0fe3', 'PhotoField', 'photos', 'captions', NULL;
+SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', 'feature_type', '35', 'array', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', 'f79c', 'ClassificationField', 'feature_type', NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', 'attachments', '36', 'array', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '92ff', 'AttachmentField', 'attachments', NULL, NULL;
+SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', 'photos', '36', 'array', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '0fe3', 'PhotoField', 'photos', NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', 'attachments_names', '37', 'array', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '92ff', 'AttachmentField', 'attachments', 'names', NULL;
+SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', 'photos_captions', '37', 'array', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '0fe3', 'PhotoField', 'photos', 'captions', NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', 'status', '38', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '4cf8', 'ChoiceField', 'status', NULL, NULL;
+SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', 'attachments', '38', 'array', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '92ff', 'AttachmentField', 'attachments', NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', 'issue_comment', '39', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '335a', 'TextField', 'issue_comment', NULL, NULL;
+SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', 'attachments_names', '39', 'array', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '92ff', 'AttachmentField', 'attachments', 'names', NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', 'new_repeatable_text_field', '40', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '3789', 'TextField', 'new_repeatable_text_field', NULL, NULL;
+SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', 'status', '40', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '4cf8', 'ChoiceField', 'status', NULL, NULL;
+INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', 'issue_comment', '41', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '335a', 'TextField', 'issue_comment', NULL, NULL;
+INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', 'new_repeatable_text_field', '42', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '3789', 'TextField', 'new_repeatable_text_field', NULL, NULL;

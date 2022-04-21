@@ -2,6 +2,8 @@ CREATE TABLE IF NOT EXISTS organization_1.tmp_new_form_67777 (
   id bigserial NOT NULL,
   record_id bigint NOT NULL,
   record_resource_id text NOT NULL,
+  record_key text,
+  record_sequence bigint,
   project_id bigint,
   project_resource_id text,
   assigned_to_id bigint,
