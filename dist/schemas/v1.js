@@ -18,6 +18,12 @@ Schema.systemFormTableColumns = [{
   type: 'string',
   allowNull: false
 }, {
+  name: 'record_key',
+  type: 'string'
+}, {
+  name: 'record_sequence',
+  type: 'integer'
+}, {
   name: 'project_id',
   type: 'integer'
 }, {
@@ -80,6 +86,12 @@ Schema.systemRepeatableTableColumns = [{
 }, {
   name: 'parent_resource_id',
   type: 'string'
+}, {
+  name: 'record_record_key',
+  type: 'string'
+}, {
+  name: 'record_record_sequence',
+  type: 'integer'
 }, {
   name: 'latitude',
   type: 'double'
