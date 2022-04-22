@@ -61,6 +61,8 @@ CREATE TABLE IF NOT EXISTS `account_1_form_67777_4ccf` (
   `record_resource_id` TEXT NOT NULL,
   `resource_id` TEXT NOT NULL,
   `parent_resource_id` TEXT,
+  `record_record_key` TEXT,
+  `record_record_sequence` INTEGER,
   `latitude` REAL,
   `longitude` REAL,
   `created_at` REAL NOT NULL,
