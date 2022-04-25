@@ -453,8 +453,6 @@ CREATE INDEX idx_form_67777_changeset_resource_id ON organization_1.form_67777 U
 CREATE INDEX idx_form_67777_values_record_resource_id ON organization_1.form_67777_values USING btree (record_resource_id);
 CREATE INDEX idx_form_67777_values_parent_resource_id ON organization_1.form_67777_values USING btree (parent_resource_id);
 CREATE INDEX idx_form_67777_values_text_value ON organization_1.form_67777_values USING btree (text_value);
-CREATE INDEX idx_form_67777_values_key ON organization_1.form_67777_values USING btree (key);
-CREATE INDEX idx_form_67777_values_record_sequence ON organization_1.form_67777_values USING btree (record_sequence);
 CREATE UNIQUE INDEX idx_form_67777_4ccf_resource_id ON organization_1.form_67777_4ccf USING btree (resource_id);
 CREATE INDEX idx_form_67777_4ccf_record_resource_id ON organization_1.form_67777_4ccf USING btree (record_resource_id);
 CREATE INDEX idx_form_67777_4ccf_parent_resource_id ON organization_1.form_67777_4ccf USING btree (parent_resource_id);

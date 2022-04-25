@@ -1827,9 +1827,7 @@ Schema.systemValuesTableIndexes = [
   // { columns: [ 'record_id' ], method: 'btree' },
   { columns: [ 'record_resource_id' ], method: 'btree' },
   { columns: [ 'parent_resource_id' ], method: 'btree' },
-  { columns: [ 'text_value' ], method: 'btree' },
-  { columns: [ 'key' ], method: 'btree' },
-  { columns: [ 'record_sequence' ], method: 'btree' }
+  { columns: [ 'text_value' ], method: 'btree' }
 ];
 
 export default Schema;
