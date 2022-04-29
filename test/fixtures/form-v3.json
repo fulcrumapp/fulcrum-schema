@@ -4,6 +4,7 @@
     "name": "Park Inventory Test",
     "description": null,
     "record_title_key": "af72",
+    "record_prefix": "ABC",
     "title_field_keys": [
       "af72"
     ],
@@ -102,19 +103,84 @@
         "neutral_enabled": false
       },
       {
-        "type": "BarcodeField",
-        "key": "3fcc",
-        "label": "Barcode",
+        "type": "TextField",
+        "key": "af33",
+        "label": "Park Status",
         "description": null,
         "required": false,
         "disabled": false,
         "hidden": false,
-        "data_name": "barcode",
+        "data_name": "status",
         "default_value": null,
         "visible_conditions_type": null,
         "visible_conditions": null,
         "required_conditions_type": null,
-        "required_conditions": null
+        "required_conditions": null,
+        "numeric": false,
+        "pattern": null,
+        "pattern_description": null,
+        "min_length": null,
+        "max_length": null
+      },
+      {
+        "type": "TextField",
+        "key": "af00",
+        "label": "Park Text 1",
+        "description": null,
+        "required": false,
+        "disabled": false,
+        "hidden": false,
+        "data_name": "this_is_a_really_long_data_name_that_exceeds_the_maximum_column_length_of_the_database",
+        "default_value": null,
+        "visible_conditions_type": null,
+        "visible_conditions": null,
+        "required_conditions_type": null,
+        "required_conditions": null,
+        "numeric": false,
+        "pattern": null,
+        "pattern_description": null,
+        "min_length": null,
+        "max_length": null
+      },
+      {
+        "type": "TextField",
+        "key": "af01",
+        "label": "Park Text 2",
+        "description": null,
+        "required": false,
+        "disabled": false,
+        "hidden": false,
+        "data_name": "this_is_a_really_long_data_name_that_exceeds_the_maximum_column_length_of_the_database_1",
+        "default_value": null,
+        "visible_conditions_type": null,
+        "visible_conditions": null,
+        "required_conditions_type": null,
+        "required_conditions": null,
+        "numeric": false,
+        "pattern": null,
+        "pattern_description": null,
+        "min_length": null,
+        "max_length": null
+      },
+      {
+        "type": "TextField",
+        "key": "af02",
+        "label": "Park Text 3",
+        "description": null,
+        "required": false,
+        "disabled": false,
+        "hidden": false,
+        "data_name": "this_is_a_really_long_data_name_that_exceeds_the_maximum_column_length_of_the_database_2",
+        "default_value": null,
+        "visible_conditions_type": null,
+        "visible_conditions": null,
+        "required_conditions_type": null,
+        "required_conditions": null,
+        "numeric": false,
+        "pattern": null,
+        "pattern_description": null,
+        "min_length": null,
+        "max_length": null
       },
       {
         "type": "TextField",
@@ -137,25 +203,19 @@
         "max_length": null
       },
       {
-        "type": "TextField",
-        "key": "196d",
-        "label": "Age",
+        "type": "BarcodeField",
+        "key": "3fcc",
+        "label": "Barcode",
         "description": null,
         "required": false,
         "disabled": false,
         "hidden": false,
-        "data_name": "age",
+        "data_name": "barcode",
         "default_value": null,
         "visible_conditions_type": null,
         "visible_conditions": null,
         "required_conditions_type": null,
-        "required_conditions": null,
-        "numeric": true,
-        "format": "integer",
-        "min": null,
-        "max": null,
-        "min_length": null,
-        "max_length": null
+        "required_conditions": null
       },
       {
         "type": "TextField",
@@ -173,6 +233,27 @@
         "required_conditions": null,
         "numeric": true,
         "format": "decimal",
+        "min": null,
+        "max": null,
+        "min_length": null,
+        "max_length": null
+      },
+      {
+        "type": "TextField",
+        "key": "196d",
+        "label": "Age",
+        "description": null,
+        "required": false,
+        "disabled": false,
+        "hidden": false,
+        "data_name": "age",
+        "default_value": null,
+        "visible_conditions_type": null,
+        "visible_conditions": null,
+        "required_conditions_type": null,
+        "required_conditions": null,
+        "numeric": true,
+        "format": "integer",
         "min": null,
         "max": null,
         "min_length": null,
@@ -681,6 +762,26 @@
             "pattern_description": null,
             "min_length": null,
             "max_length": null
+          },
+          {
+            "type": "TextField",
+            "key": "3789",
+            "label": "New Repeatable Text Field",
+            "description": null,
+            "required": false,
+            "disabled": false,
+            "hidden": false,
+            "data_name": "new_repeatable_text_field",
+            "default_value": null,
+            "visible_conditions_type": null,
+            "visible_conditions": null,
+            "required_conditions_type": null,
+            "required_conditions": null,
+            "numeric": false,
+            "pattern": null,
+            "pattern_description": null,
+            "min_length": null,
+            "max_length": null
           }
         ],
         "title_field_key": "f79c",
@@ -696,13 +797,13 @@
       },
       {
         "type": "ChoiceField",
-        "key": "4f69",
-        "label": "Select Multiple",
+        "key": "c00a",
+        "label": "Select Colors",
         "description": null,
         "required": false,
         "disabled": false,
         "hidden": false,
-        "data_name": "select_multiple",
+        "data_name": "select_colors",
         "default_value": null,
         "visible_conditions_type": null,
         "visible_conditions": null,
@@ -712,40 +813,20 @@
         "allow_other": true,
         "choices": [
           {
-            "label": "Big",
-            "value": "Big"
+            "label": "Brown",
+            "value": "Brown"
           },
           {
-            "label": "Small",
-            "value": "Small"
+            "label": "Orange",
+            "value": "Orange"
           },
           {
-            "label": "Thin",
-            "value": "Thin"
+            "label": "Yellow",
+            "value": "Yellow"
           },
           {
-            "label": "Wide",
-            "value": "Wide"
-          },
-          {
-            "label": "Heavy",
-            "value": "Heavy"
-          },
-          {
-            "label": "Light",
-            "value": "Light"
-          },
-          {
-            "label": "Dark",
-            "value": "Dark"
-          },
-          {
-            "label": "Fast",
-            "value": "Fast"
-          },
-          {
-            "label": "Slow",
-            "value": "Slow"
+            "label": "Green",
+            "value": "Green"
           }
         ],
         "min_length": null,
@@ -1109,7 +1190,7 @@
         "required": false,
         "disabled": false,
         "hidden": false,
-        "data_name": "calc_field",
+        "data_name": "calculated_park_name",
         "default_value": null,
         "visible_conditions_type": null,
         "visible_conditions": null,
@@ -1119,13 +1200,33 @@
         ],
         "expression": "$park_name + ' ' + $operator",
         "display": {
-          "style": "text",
+          "style": "number",
           "currency": null
         },
         "default_values": null
+      },
+      {
+        "type": "TextField",
+        "key": "b9d9",
+        "label": "Calculation Description",
+        "description": null,
+        "required": false,
+        "disabled": false,
+        "hidden": false,
+        "data_name": "calculation_description",
+        "default_value": null,
+        "visible_conditions_type": null,
+        "visible_conditions": null,
+        "required_conditions_type": null,
+        "required_conditions": null,
+        "numeric": false,
+        "pattern": null,
+        "pattern_description": null,
+        "min_length": null,
+        "max_length": null
       }
     ],
     "image": "https://fulcrumapp.s3.amazonaws.com/form-images/990068fa-00fb-4d4a-956e-3602a2c329a6-819f8a72-2aa2-49c0-92f8-7bfc94f3541b.png",
-    "schema_version": "v2"
+    "schema_version": "v3"
   }
 }
