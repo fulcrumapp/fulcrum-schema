@@ -62,7 +62,7 @@ describe('v2 to v3 form schema generator', () => {
   it('builds a schema diff for a v2 to v3 form', () => {
     const sql = compareFormSchemas(v2Form, v3Form, OPTIONS);
 
-    const expected = fixture('postgres-update-form.sql');
+    const expected = fixture('v3-update-form.sql');
 
     toSQL(sql).should.eql(expected);
   });
