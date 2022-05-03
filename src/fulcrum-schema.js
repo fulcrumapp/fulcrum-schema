@@ -76,13 +76,15 @@ instance.compareFormSchemas = (oldForm, newForm, options = {}) => {
       v3: FormSchemaV3
     };
 
+    const v1Version = options.version === 'v1' ? 'v1' : null;
+
     if (oldForm) {
-      const columns = schemas[options.version || oldForm.schema_version];
+      const columns = schemas[v1Version || oldForm.schema_version];
       oldSchema = new Schema(oldForm, columns, null);
     }
 
     if (newForm) {
-      const columns = schemas[options.version || newForm.schema_version];
+      const columns = schemas[v1Version || newForm.schema_version];
       newSchema = new Schema(newForm, columns, null);
     }
 
