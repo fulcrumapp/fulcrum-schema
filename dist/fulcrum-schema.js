@@ -94,15 +94,14 @@ instance.compareFormSchemas = function (oldForm, newForm, options) {
       v2: _v2["default"],
       v3: _v3["default"]
     };
-    var v1Version = options.version === 'v1' ? 'v1' : null;
 
     if (oldForm) {
-      var columns = schemas[v1Version || oldForm.schema_version];
+      var columns = schemas[options.version || oldForm.schema_version];
       oldSchema = new _schema["default"](oldForm, columns, null);
     }
 
     if (newForm) {
-      var _columns = schemas[v1Version || newForm.schema_version];
+      var _columns = schemas[options.version || newForm.schema_version];
       newSchema = new _schema["default"](newForm, _columns, null);
     }
 
