@@ -5,17 +5,17 @@ import chai from 'chai';
 
 chai.should();
 
-let oldForm = null;
+let v1Form = null;
 let v2Form = null;
 let v3Form = null;
 
 const fixture = (file) => fs.readFileSync(path.join('test', 'fixtures', file)).toString();
 
 beforeEach(() => {
-  oldForm = JSON.parse(fs.readFileSync(path.join('test', 'fixtures', 'form.json'))).form;
-  v2Form = JSON.parse(fs.readFileSync(path.join('test', 'fixtures', 'form-new.json'))).form;
+  v1Form = JSON.parse(fs.readFileSync(path.join('test', 'fixtures', 'form-v1.json'))).form;
+  v2Form = JSON.parse(fs.readFileSync(path.join('test', 'fixtures', 'form-v2.json'))).form;
   v3Form = JSON.parse(fs.readFileSync(path.join('test', 'fixtures', 'form-v3.json'))).form;
-  oldForm.row_id = 67777;
+  v1Form.row_id = 67777;
   v2Form.row_id = 67777;
   v3Form.row_id = 67777;
 });
@@ -52,7 +52,7 @@ describe('v2 to v3 form schema generator', () => {
   });
 
   it('builds a schema diff for a v1 to v2 form', () => {
-    const sql = compareFormSchemas(oldForm, v2Form, OPTIONS);
+    const sql = compareFormSchemas(v1Form, v2Form, OPTIONS);
 
     const expected = fixture('postgres-update-form.sql');
 
