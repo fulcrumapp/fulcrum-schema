@@ -204,12 +204,6 @@ Schema.systemRepeatableTableColumns = [
     name: 'parent_resource_id',
     type: 'string'
   }, {
-    name: 'record_record_key',
-    type: 'string'
-  }, {
-    name: 'record_record_sequence',
-    type: 'integer'
-  }, {
     name: 'record_project_id',
     type: 'integer'
   }, {
@@ -1436,8 +1430,6 @@ Schema.systemRepeatableViewColumns = {
   resource_id: 'child_record_id',
   record_resource_id: 'record_id',
   parent_resource_id: 'parent_id',
-  record_record_key: 'record_record_key',
-  record_record_sequence: 'record_record_sequence',
   record_project_resource_id: 'record_project_id',
   record_assigned_to_resource_id: 'record_assigned_to_id',
   record_status: 'record_status',
