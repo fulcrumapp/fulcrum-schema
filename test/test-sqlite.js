@@ -11,8 +11,8 @@ let newForm = null;
 const fixture = (file) => fs.readFileSync(path.join('test', 'fixtures', file)).toString();
 
 beforeEach(() => {
-  oldForm = JSON.parse(fs.readFileSync(path.join('test', 'fixtures', 'form.json'))).form;
-  newForm = JSON.parse(fs.readFileSync(path.join('test', 'fixtures', 'form-new.json'))).form;
+  oldForm = JSON.parse(fs.readFileSync(path.join('test', 'fixtures', 'form-v1.json'))).form;
+  newForm = JSON.parse(fs.readFileSync(path.join('test', 'fixtures', 'form-v2.json'))).form;
   oldForm.row_id = 67777;
   newForm.row_id = 67777;
 });

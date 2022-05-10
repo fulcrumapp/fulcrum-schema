@@ -10,6 +10,8 @@ var _v = _interopRequireDefault(require("./schemas/v1"));
 
 var _v2 = _interopRequireDefault(require("./schemas/v2"));
 
+var _v3 = _interopRequireDefault(require("./schemas/v3"));
+
 var _metadata = _interopRequireDefault(require("./metadata"));
 
 var _sqldiff = _interopRequireDefault(require("sqldiff"));
@@ -87,17 +89,20 @@ instance.compareFormSchemas = function (oldForm, newForm, options) {
   try {
     var oldSchema = null;
     var newSchema = null;
-    var schema = {
+    var schemas = {
       v1: _v["default"],
-      v2: _v2["default"]
-    }[options.version];
+      v2: _v2["default"],
+      v3: _v3["default"]
+    };
 
     if (oldForm) {
-      oldSchema = new _schema["default"](oldForm, schema, null);
+      var columns = schemas[options.version || oldForm.schema_version];
+      oldSchema = new _schema["default"](oldForm, columns, null);
     }
 
     if (newForm) {
-      newSchema = new _schema["default"](newForm, schema, null);
+      var _columns = schemas[options.version || newForm.schema_version];
+      newSchema = new _schema["default"](newForm, _columns, null);
     }
 
     var differ = new SchemaDiffer(oldSchema, newSchema);
