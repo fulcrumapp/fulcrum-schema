@@ -1,5 +1,5 @@
 {
-  "name": "@fulcrum/fulcrum-schema",
+  "name": "@fulcrumapp/fulcrum-schema",
   "version": "3.2.0",
   "description": "Table schemas for Fulcrum apps",
   "main": "fulcrum-schema.js",
