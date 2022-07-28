@@ -419,9 +419,9 @@ var Schema = /*#__PURE__*/function () {
         this.addArrayElement(elementTable, element, 'values');
         break;
 
-      case 'TaskLocationField':
-        this.addIntegerElement(elementTable, element, 'latitude');
-        this.addIntegerElement(elementTable, element, 'longitude');
+      case 'DirectionsField':
+        this.addDoubleElement(elementTable, element, 'latitude');
+        this.addDoubleElement(elementTable, element, 'longitude');
         this.addStringElement(elementTable, element, 'address');
         break;
 
