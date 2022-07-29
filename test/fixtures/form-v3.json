@@ -1226,6 +1226,27 @@
         "max_length": null
       },
       {
+        "type": "CheckboxField",
+        "key": "92ab",
+        "label": "Checked?",
+        "description": null,
+        "required": false,
+        "disabled": false,
+        "hidden": false,
+        "data_name": "checked",
+        "default_value": null
+      },
+      {
+        "type": "DynamicField",
+        "key": "92ac",
+        "description": null,
+        "required": false,
+        "disabled": false,
+        "hidden": false,
+        "data_name": "checklist",
+        "default_value": null
+      },
+      {
         "type": "LocationField",
         "key": "7ds7",
         "label": "Location",
