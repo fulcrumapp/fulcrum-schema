@@ -20,7 +20,7 @@ const DATA_ELEMENTS = [
   'AttachmentField',
   'CheckboxField',
   'DynamicField',
-  'DirectionsField'
+  'LocationField'
 ];
 
 export default class DataElements {

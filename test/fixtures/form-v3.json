@@ -1224,6 +1224,17 @@
         "pattern_description": null,
         "min_length": null,
         "max_length": null
+      },
+      {
+        "type": "LocationField",
+        "key": "7ds7",
+        "label": "Location",
+        "description": null,
+        "required": false,
+        "disabled": false,
+        "hidden": false,
+        "data_name": "location",
+        "default_value": null
       }
     ],
     "image": "https://fulcrumapp.s3.amazonaws.com/form-images/990068fa-00fb-4d4a-956e-3602a2c329a6-819f8a72-2aa2-49c0-92f8-7bfc94f3541b.png",

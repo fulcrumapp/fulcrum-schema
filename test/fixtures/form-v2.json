@@ -1246,14 +1246,14 @@
         "default_value": null
       },
       {
-        "type": "DirectionsField",
+        "type": "LocationField",
         "key": "7ds7",
-        "label": "Directions",
+        "label": "Location",
         "description": null,
         "required": false,
         "disabled": false,
         "hidden": false,
-        "data_name": "directions",
+        "data_name": "location",
         "default_value": null
       }
     ],

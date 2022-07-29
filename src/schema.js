@@ -382,7 +382,7 @@ export default class Schema {
         this.addArrayElement(elementTable, element, 'values');
         break;
 
-      case 'DirectionsField':
+      case 'LocationField':
         this.addDoubleElement(elementTable, element, 'latitude');
         this.addDoubleElement(elementTable, element, 'longitude');
         this.addStringElement(elementTable, element, 'address');
