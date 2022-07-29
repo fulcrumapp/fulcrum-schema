@@ -382,6 +382,12 @@ export default class Schema {
         this.addArrayElement(elementTable, element, 'values');
         break;
 
+      case 'LocationField':
+        this.addDoubleElement(elementTable, element, 'latitude');
+        this.addDoubleElement(elementTable, element, 'longitude');
+        this.addStringElement(elementTable, element, 'address');
+        break;
+
       default:
         console.log('Unhandled element type', element.type);
         break;

@@ -43,7 +43,10 @@ CREATE TABLE IF NOT EXISTS `account_1_form_67777` (
   `f92ab` INTEGER,
   `f92ac_metadata` TEXT,
   `f92ac_elements` TEXT,
-  `f92ac_values` TEXT
+  `f92ac_values` TEXT,
+  `f7ds7_latitude` REAL,
+  `f7ds7_longitude` REAL,
+  `f7ds7_address` TEXT
 );
 CREATE TABLE IF NOT EXISTS `account_1_form_67777_values` (
   `id` INTEGER PRIMARY KEY AUTOINCREMENT,
