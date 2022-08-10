@@ -14,6 +14,7 @@ import MembershipsDevices from './postgres/memberships-devices';
 import MembershipsForms from './postgres/memberships-forms';
 import MembershipsProjects from './postgres/memberships-projects';
 import MembershipsLayers from './postgres/memberships-layers';
+import RecordLinks from './postgres/record-links';
 
 const tables = [
   Audio,
@@ -31,7 +32,8 @@ const tables = [
   MembershipsDevices,
   MembershipsForms,
   MembershipsProjects,
-  MembershipsLayers
+  MembershipsLayers,
+  RecordLinks
 ];
 
 export default tables;
