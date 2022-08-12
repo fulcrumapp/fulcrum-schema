@@ -62,3 +62,4 @@ convertTable('Signatures', schema.systemSignaturesTable, 'signatures', 'signatur
 // convertTable('QueryRecords', schema.systemFormTableColumns, 'query-records', schema.systemFormViewColumns);
 // convertTable('QueryChildRecords', schema.systemRepeatableTableColumns, 'query-child-records');
 // convertTable('QueryValues', schema.systemValuesTableColumns, 'query-values');
+convertTable('RecordLinks', schema.systemSignaturesTable, 'signatures', 'signatures', schema.organizationViews.signatures);
