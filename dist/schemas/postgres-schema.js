@@ -37,9 +37,11 @@ var _membershipsProjects = _interopRequireDefault(require("./postgres/membership
 
 var _membershipsLayers = _interopRequireDefault(require("./postgres/memberships-layers"));
 
+var _recordLinks = _interopRequireDefault(require("./postgres/record-links"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var tables = [_audio["default"], _changesets["default"], _choiceLists["default"], _classificationSets["default"], _forms["default"], _memberships["default"], _photos["default"], _projects["default"], _roles["default"], _signatures["default"], _videos["default"], _devices["default"], _membershipsDevices["default"], _membershipsForms["default"], _membershipsProjects["default"], _membershipsLayers["default"]];
+var tables = [_audio["default"], _changesets["default"], _choiceLists["default"], _classificationSets["default"], _forms["default"], _memberships["default"], _photos["default"], _projects["default"], _roles["default"], _signatures["default"], _videos["default"], _devices["default"], _membershipsDevices["default"], _membershipsForms["default"], _membershipsProjects["default"], _membershipsLayers["default"], _recordLinks["default"]];
 var _default = tables;
 exports["default"] = _default;
 //# sourceMappingURL=postgres-schema.js.map

@@ -346,6 +346,7 @@ Schema.systemRepeatableTableColumns = [{
 // - videos
 // - audio
 // - signatures
+// - record_links
 
 Schema.systemChangesetsTable = [{
   name: 'id',
@@ -1344,6 +1345,56 @@ Schema.systemSignaturesTable = [{
 }, {
   name: 'deleted_at',
   type: 'timestamp'
+}];
+Schema.systemRecordLinksTable = [{
+  name: 'id',
+  type: 'pk'
+}, {
+  name: 'row_id',
+  type: 'integer',
+  allowNull: false
+}, {
+  name: 'row_resource_id',
+  type: 'string',
+  allowNull: false
+}, {
+  name: 'key',
+  type: 'string',
+  allowNull: false
+}, {
+  name: 'form_id',
+  type: 'integer',
+  allowNull: false
+}, {
+  name: 'form_resource_id',
+  type: 'string',
+  allowNull: false
+}, {
+  name: 'record_id',
+  type: 'integer'
+}, {
+  name: 'record_resource_id',
+  type: 'string'
+}, {
+  name: 'linked_form_id',
+  type: 'integer'
+}, {
+  name: 'linked_form_resource_id',
+  type: 'string'
+}, {
+  name: 'linked_record_id',
+  type: 'integer'
+}, {
+  name: 'linked_record_resource_id',
+  type: 'string'
+}, {
+  name: 'created_at',
+  type: 'timestamp',
+  allowNull: false
+}, {
+  name: 'updated_at',
+  type: 'timestamp',
+  allowNull: false
 }];
 Schema.systemFormViewColumns = {
   record_resource_id: 'record_id',

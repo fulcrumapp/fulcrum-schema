@@ -377,6 +377,24 @@ CREATE TABLE IF NOT EXISTS organization.query_memberships_layers (
   CONSTRAINT query_memberships_layers_pkey PRIMARY KEY (id)
 );
 
+CREATE TABLE IF NOT EXISTS organization.record_links (
+  id bigserial NOT NULL,
+  row_id bigint NOT NULL,
+  row_resource_id text NOT NULL,
+  key text NOT NULL,
+  form_id bigint NOT NULL,
+  form_resource_id text NOT NULL,
+  record_id bigint,
+  record_resource_id text,
+  linked_form_id bigint,
+  linked_form_resource_id text,
+  linked_record_id bigint,
+  linked_record_resource_id text,
+  created_at timestamp with time zone NOT NULL,
+  updated_at timestamp with time zone NOT NULL,
+  CONSTRAINT record_links_pkey PRIMARY KEY (id)
+);
+
 DROP VIEW IF EXISTS organization.audio_view CASCADE;
 
 CREATE OR REPLACE VIEW organization.audio_view AS
@@ -692,6 +710,20 @@ SELECT
   layer_resource_id AS layer_id
 FROM organization.query_memberships_layers;
 
+DROP VIEW IF EXISTS organization.record_links_view CASCADE;
+
+CREATE OR REPLACE VIEW organization.record_links_view AS
+SELECT
+  row_resource_id AS record_link_id,
+  key AS key,
+  form_resource_id AS form_id,
+  record_resource_id AS record_id,
+  linked_form_resource_id AS linked_form_id,
+  linked_record_resource_id AS linked_record_id,
+  created_at AS created_at,
+  updated_at AS updated_at
+FROM organization.record_links;
+
 CREATE UNIQUE INDEX idx_audio_row_resource_id ON organization.audio USING btree (row_resource_id);
 
 CREATE UNIQUE INDEX idx_audio_row_id ON organization.audio USING btree (row_id);
@@ -863,6 +895,22 @@ CREATE UNIQUE INDEX idx_query_memberships_layers_row_id ON organization.query_me
 CREATE INDEX idx_query_memberships_layers_user_resource_id ON organization.query_memberships_layers USING btree (user_resource_id);
 
 CREATE INDEX idx_query_memberships_layers_layer_resource_id ON organization.query_memberships_layers USING btree (layer_resource_id);
+
+CREATE UNIQUE INDEX idx_record_links_row_resource_id ON organization.record_links USING btree (row_resource_id);
+
+CREATE UNIQUE INDEX idx_record_links_row_id ON organization.record_links USING btree (row_id);
+
+CREATE INDEX idx_record_links_form_id_key ON organization.record_links USING btree (form_id, key);
+
+CREATE INDEX idx_record_links_form_resource_id_record_resource_id ON organization.record_links USING btree (form_resource_id, record_resource_id);
+
+CREATE INDEX idx_record_links_linked_form_resource_id ON organization.record_links USING btree (linked_form_resource_id);
+
+CREATE INDEX idx_record_links_linked_form_resource_id_linked_record_resource_id ON organization.record_links USING btree (linked_form_resource_id, linked_record_resource_id);
+
+CREATE INDEX idx_record_links_record_resource_id ON organization.record_links USING btree (record_resource_id);
+
+CREATE INDEX idx_record_links_linked_record_resource_id ON organization.record_links USING btree (linked_record_resource_id);
 
 DELETE FROM "organization"."tables" WHERE name = 'audio_view';
 
@@ -1616,3 +1664,33 @@ SELECT 'memberships_layers_view', 'memberships_layers', 'user_id', '1', 'string'
 
 INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'memberships_layers_view', 'memberships_layers', 'layer_id', '2', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+DELETE FROM "organization"."tables" WHERE name = 'record_links_view';
+
+DELETE FROM "organization"."columns" WHERE table_name = 'record_links_view';
+
+INSERT INTO "organization"."tables" (name, alias, type, parent, form_id, field, field_type, data_name) SELECT 'record_links_view', 'record_links', 'system', NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'record_links_view', 'record_links', 'record_link_id', '1', 'string', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'record_links_view', 'record_links', 'key', '2', 'string', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'record_links_view', 'record_links', 'form_id', '3', 'string', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'record_links_view', 'record_links', 'record_id', '4', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'record_links_view', 'record_links', 'linked_form_id', '5', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'record_links_view', 'record_links', 'linked_record_id', '6', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'record_links_view', 'record_links', 'created_at', '7', 'timestamp', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'record_links_view', 'record_links', 'updated_at', '8', 'timestamp', '0', NULL, NULL, NULL, NULL, NULL, NULL;
