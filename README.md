@@ -37,9 +37,9 @@ You can define the paths to the Fulcrum repos using environment variables in you
 ```sh
 export FULCRUM_ANDROID=/path/to/android/app
 export FULCRUM_IOS=/path/to/ios/app
-export FULCRUM_WEB=/path/to/web/app
 export FULCRUM_SITE=/path/to/website
 ```
+~~ export FULCRUM_WEB=/path/to/web/app ~~ # No longer needed due to schema-service
 
 Or you can assign them in the make command:
 
