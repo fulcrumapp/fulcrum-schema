@@ -395,6 +395,28 @@ CREATE TABLE IF NOT EXISTS organization.record_links (
   CONSTRAINT record_links_pkey PRIMARY KEY (id)
 );
 
+CREATE TABLE IF NOT EXISTS organization.record_series (
+  id bigserial NOT NULL,
+  row_id bigint NOT NULL,
+  row_resource_id text NOT NULL,
+  form_id bigint NOT NULL,
+  form_resource_id text NOT NULL,
+  template JSONB NULL,
+  rrule text NULL,
+  enabled boolean NOT NULL,
+  assigned_to_id bigint,
+  assigned_to_resource_id text,
+  project_id bigint,
+  project_resource_id text,
+  created_by_id bigint,
+  created_by_resource_id text,
+  updated_by_id bigint,
+  updated_by_resource_id text,
+  created_at timestamp with time zone NOT NULL,
+  updated_at timestamp with time zone NOT NULL,
+  CONSTRAINT record_series_pkey PRIMARY KEY (id)
+);
+
 DROP VIEW IF EXISTS organization.audio_view CASCADE;
 
 CREATE OR REPLACE VIEW organization.audio_view AS
@@ -724,6 +746,23 @@ SELECT
   updated_at AS updated_at
 FROM organization.record_links;
 
+DROP VIEW IF EXISTS organization.record_series_view CASCADE;
+
+CREATE OR REPLACE VIEW organization.record_series_view AS
+SELECT
+  row_resource_id AS record_series_id,
+  form_resource_id AS form_id,
+  enabled AS enabled,
+  template AS template,
+  rrule AS rrule,
+  assigned_to_resource_id AS assigned_to_id,
+  project_resource_id AS project_id,
+  created_by_resource_id AS created_by_id,
+  updated_by_resource_id AS updated_by_id,
+  created_at AS created_at,
+  updated_at AS updated_at
+FROM organization.record_links;
+
 CREATE UNIQUE INDEX idx_audio_row_resource_id ON organization.audio USING btree (row_resource_id);
 
 CREATE UNIQUE INDEX idx_audio_row_id ON organization.audio USING btree (row_id);
@@ -911,6 +950,14 @@ CREATE INDEX idx_record_links_linked_form_resource_id_linked_record_resource_id 
 CREATE INDEX idx_record_links_record_resource_id ON organization.record_links USING btree (record_resource_id);
 
 CREATE INDEX idx_record_links_linked_record_resource_id ON organization.record_links USING btree (linked_record_resource_id);
+
+CREATE UNIQUE INDEX idx_record_series_row_resource_id ON organization.record_series USING btree (row_resource_id);
+
+CREATE UNIQUE INDEX idx_record_series_row_id ON organization.record_series USING btree (row_id);
+
+CREATE INDEX idx_record_series_assignee_resource_id ON organization.record_series USING btree (assignee_resource_id);
+
+CREATE INDEX idx_record_series_project_resource_id ON organization.record_series USING btree (project_resource_id);
 
 DELETE FROM "organization"."tables" WHERE name = 'audio_view';
 

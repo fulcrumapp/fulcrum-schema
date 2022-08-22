@@ -1390,6 +1390,68 @@ Schema.systemRecordLinksTable = [{
   type: 'timestamp',
   allowNull: false
 }];
+Schema.systemRecordSeriesTable = [{
+  name: 'id',
+  type: 'pk'
+}, {
+  name: 'row_id',
+  type: 'integer',
+  allowNull: false
+}, {
+  name: 'row_resource_id',
+  type: 'string',
+  allowNull: false
+}, {
+  name: 'form_id',
+  type: 'integer',
+  allowNull: false
+}, {
+  name: 'form_resource_id',
+  type: 'string',
+  allowNull: false
+}, {
+  name: 'template',
+  type: 'jsonb'
+}, {
+  name: 'rrule',
+  type: 'string'
+}, {
+  name: 'enabled',
+  type: 'boolean',
+  allowNull: false
+}, {
+  name: 'assigned_to_id',
+  type: 'integer'
+}, {
+  name: 'assigned_to_resource_id',
+  type: 'string'
+}, {
+  name: 'project_id',
+  type: 'integer'
+}, {
+  name: 'project_resource_id',
+  type: 'string'
+}, {
+  name: 'created_by_id',
+  type: 'integer'
+}, {
+  name: 'created_by_resource_id',
+  type: 'string'
+}, {
+  name: 'updated_by_id',
+  type: 'integer'
+}, {
+  name: 'updated_by_resource_id',
+  type: 'string'
+}, {
+  name: 'created_at',
+  type: 'timestamp',
+  allowNull: false
+}, {
+  name: 'updated_at',
+  type: 'timestamp',
+  allowNull: false
+}];
 Schema.systemFormViewColumns = {
   record_resource_id: 'record_id',
   project_resource_id: 'project_id',

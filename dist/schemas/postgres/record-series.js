@@ -17,117 +17,102 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var Audio = /*#__PURE__*/function (_TableDefinition) {
-  _inheritsLoose(Audio, _TableDefinition);
+var RecordSeries = /*#__PURE__*/function (_TableDefinition) {
+  _inheritsLoose(RecordSeries, _TableDefinition);
 
-  function Audio() {
+  function RecordSeries() {
     return _TableDefinition.apply(this, arguments) || this;
   }
 
-  var _proto = Audio.prototype;
+  var _proto = RecordSeries.prototype;
 
   _proto.defineTable = function defineTable() {
     this.pk('id', {});
     this.integer('row_id', {
-      "allowNull": false
+      'allowNull': false
     });
     this.string('row_resource_id', {
-      "allowNull": false
+      'allowNull': false
     });
-    this.string('access_key', {
-      "allowNull": false
+    this.integer('form_id', {
+      'allowNull': false
     });
-    this.integer('record_id', {});
-    this.string('record_resource_id', {});
-    this.integer('form_id', {});
-    this.string('form_resource_id', {});
-    this.string('metadata', {});
-    this.integer('file_size', {});
+    this.string('form_resource_id', {
+      'allowNull': false
+    });
+    this.jsonb('template', {});
+    this.string('rrule', {});
+    this["boolean"]('enabled', {
+      'allowNull': false
+    });
+    this.integer('assigned_to_id', {});
+    this.string('assigned_to_resource_id', {});
+    this.integer('project_by_id', {});
+    this.string('project_resource_id', {});
     this.integer('created_by_id', {});
     this.string('created_by_resource_id', {});
     this.integer('updated_by_id', {});
     this.string('updated_by_resource_id', {});
     this.timestamp('created_at', {
-      "allowNull": false
+      'allowNull': false
     });
     this.timestamp('updated_at', {
-      "allowNull": false
+      'allowNull': false
     });
-    this.string('file', {});
-    this.string('content_type', {});
-    this.timestamp('uploaded_at', {});
-    this.timestamp('stored_at', {});
-    this.timestamp('processed_at', {});
-    this.timestamp('small_processed_at', {});
-    this.timestamp('medium_processed_at', {});
-    this["boolean"]('has_track', {});
-    this.string('track', {});
-    this.geometry('geometry', {});
-    this["double"]('duration', {});
-    this.timestamp('deleted_at', {});
   };
 
   _proto.defineView = function defineView() {
-    this.alias('access_key', 'audio_id');
-    this.alias('metadata', 'metadata');
-    this.alias('file_size', 'file_size');
-    this.alias('record_resource_id', 'record_id');
+    this.alias('row_resource_id', 'record_link_id');
     this.alias('form_resource_id', 'form_id');
+    this.alias('template', 'template');
+    this.alias('rrule', 'rrule');
+    this.alias('enabled', 'enabled');
+    this.alias('assigned_to_resource_id', 'assigned_to_id');
+    this.alias('project_resource_id', 'project_id');
     this.alias('created_by_resource_id', 'created_by_id');
     this.alias('updated_by_resource_id', 'updated_by_id');
     this.alias('created_at', 'created_at');
     this.alias('updated_at', 'updated_at');
-    this.alias('file', 'file');
-    this.alias('content_type', 'content_type');
-    this.alias('uploaded_at', 'uploaded_at');
-    this.alias('stored_at', 'stored_at');
-    this.alias('processed_at', 'processed_at');
-    this.alias('has_track', 'has_track');
-    this.alias('track', 'track');
-    this.alias('geometry', 'geometry');
-    this.alias('duration', 'duration');
-    this.alias('deleted_at', 'deleted_at');
   };
 
   _proto.defineIndexes = function defineIndexes() {
     this.index({
-      "columns": ["row_resource_id"],
-      "unique": true
+      'columns': ['row_resource_id'],
+      'unique': true
     });
     this.index({
-      "columns": ["row_id"],
-      "unique": true
+      'columns': ['row_id'],
+      'unique': true
     });
     this.index({
-      "columns": ["access_key"]
+      'columns': ['form_id', 'key']
     });
     this.index({
-      "columns": ["record_resource_id"]
+      'columns': ['form_resource_id', 'record_resource_id']
     });
     this.index({
-      "columns": ["form_resource_id"]
+      'columns': ['linked_form_resource_id']
     });
     this.index({
-      "columns": ["created_by_resource_id"]
+      'columns': ['linked_form_resource_id', 'linked_record_resource_id']
     });
     this.index({
-      "columns": ["geometry"],
-      "method": "gist"
+      'columns': ['record_resource_id']
     });
     this.index({
-      "columns": ["updated_at"]
+      'columns': ['linked_record_resource_id']
     });
   };
 
-  _createClass(Audio, [{
+  _createClass(RecordSeries, [{
     key: "name",
     get: function get() {
-      return 'audio';
+      return 'record_series';
     }
   }]);
 
-  return Audio;
+  return RecordSeries;
 }(_tableDefinition["default"]);
 
-exports["default"] = Audio;
-//# sourceMappingURL=audio.js.map
+exports["default"] = RecordSeries;
+//# sourceMappingURL=record-series.js.map
