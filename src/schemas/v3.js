@@ -150,6 +150,13 @@ Schema.systemFormTableColumns = [
   }, {
     name: 'edited_duration',
     type: 'integer'
+  }, {
+    name: 'record_series_id',
+    type: 'integer',
+    allowNull: false
+  }, {
+    name: 'record_series_resource_id',
+    type: 'string'
   }
 ];
 
@@ -1537,7 +1544,8 @@ Schema.systemFormViewColumns = {
   updated_horizontal_accuracy: 'updated_horizontal_accuracy',
   created_duration: 'created_duration',
   updated_duration: 'updated_duration',
-  edited_duration: 'edited_duration'
+  edited_duration: 'edited_duration',
+  record_series_resource_id: 'record_series_id'
 };
 
 Schema.systemFormFullViewColumns = clone(Schema.systemFormViewColumns);
@@ -1918,7 +1926,8 @@ Schema.systemFormTableIndexes = [
   { columns: [ 'record_sequence' ], method: 'btree' },
   { columns: [ 'project_resource_id' ], method: 'btree' },
   { columns: [ 'assigned_to_resource_id' ], method: 'btree' },
-  { columns: [ 'changeset_resource_id' ], method: 'btree' }
+  { columns: [ 'changeset_resource_id' ], method: 'btree' },
+  { columns: [ 'record_series_resource_id' ], method: 'btree' }
 ];
 
 Schema.systemRepeatableTableIndexes = [
