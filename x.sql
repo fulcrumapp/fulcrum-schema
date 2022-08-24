@@ -400,13 +400,13 @@ CREATE TABLE IF NOT EXISTS organization.record_series (
   row_id bigint NOT NULL,
   row_resource_id text NOT NULL,
   enabled boolean NOT NULL,
-  rrule text NULL,
-  template JSONB NULL,
+  rrule text,
+  template text,
   form_id bigint NOT NULL,
   form_resource_id text NOT NULL,
   assigned_to_id bigint,
   assigned_to_resource_id text,
-  project_id bigint,
+  project_by_id bigint,
   project_resource_id text,
   created_by_id bigint,
   created_by_resource_id text,
@@ -750,10 +750,10 @@ DROP VIEW IF EXISTS organization.record_series_view CASCADE;
 
 CREATE OR REPLACE VIEW organization.record_series_view AS
 SELECT
-  row_resource_id AS record_series_id,
+  row_resource_id AS record_link_id,
   enabled AS enabled,
-  template AS template,
   rrule AS rrule,
+  template AS template,
   form_resource_id AS form_id,
   assigned_to_resource_id AS assigned_to_id,
   project_resource_id AS project_id,
@@ -1737,3 +1737,42 @@ SELECT 'record_links_view', 'record_links', 'created_at', '7', 'timestamp', '0',
 
 INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'record_links_view', 'record_links', 'updated_at', '8', 'timestamp', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+DELETE FROM "organization"."tables" WHERE name = 'record_series_view';
+
+DELETE FROM "organization"."columns" WHERE table_name = 'record_series_view';
+
+INSERT INTO "organization"."tables" (name, alias, type, parent, form_id, field, field_type, data_name) SELECT 'record_series_view', 'record_series', 'system', NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'record_series_view', 'record_series', 'record_link_id', '1', 'string', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'record_series_view', 'record_series', 'enabled', '2', 'boolean', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'record_series_view', 'record_series', 'rrule', '3', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'record_series_view', 'record_series', 'template', '4', 'jsonb', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'record_series_view', 'record_series', 'form_id', '5', 'string', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'record_series_view', 'record_series', 'assigned_to_id', '6', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'record_series_view', 'record_series', 'project_id', '7', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'record_series_view', 'record_series', 'created_by_id', '8', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'record_series_view', 'record_series', 'updated_by_id', '9', 'string', '1', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'record_series_view', 'record_series', 'created_at', '10', 'timestamp', '0', NULL, NULL, NULL, NULL, NULL, NULL;
+
+INSERT INTO "organization"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
+SELECT 'record_series_view', 'record_series', 'updated_at', '11', 'timestamp', '0', NULL, NULL, NULL, NULL, NULL, NULL;

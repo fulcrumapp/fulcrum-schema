@@ -577,108 +577,6 @@ Schema.systemFormsTable = [
   }
 ];
 
-// Schema.systemRecordsTable = [
-//   {
-//     name: 'id',
-//     type: 'pk'
-//   }, {
-//     name: 'row_id',
-//     type: 'integer',
-//     allowNull: false
-//   }, {
-//     name: 'row_resource_id',
-//     type: 'string',
-//     allowNull: false
-//   }, {
-//     name: 'version',
-//     type: 'integer',
-//     allowNull: false
-//   }, {
-//     name: 'form_id',
-//     type: 'integer'
-//   }, {
-//     name: 'form_resource_id',
-//     type: 'string'
-//   }, {
-//     name: 'assigned_to_id',
-//     type: 'integer'
-//   }, {
-//     name: 'assigned_to_resource_id',
-//     type: 'string'
-//   }, {
-//     name: 'project_id',
-//     type: 'integer'
-//   }, {
-//     name: 'project_resource_id',
-//     type: 'string'
-//   }, {
-//     name: 'status',
-//     type: 'string'
-//   }, {
-//     name: 'form_values',
-//     type: 'json'
-//   }, {
-//     name: 'latitude',
-//     type: 'double'
-//   }, {
-//     name: 'longitude',
-//     type: 'double'
-//   }, {
-//     name: 'altitude',
-//     type: 'double'
-//   }, {
-//     name: 'speed',
-//     type: 'double'
-//   }, {
-//     name: 'course',
-//     type: 'double'
-//   }, {
-//     name: 'horizontal_accuracy',
-//     type: 'double'
-//   }, {
-//     name: 'vertical_accuracy',
-//     type: 'double'
-//   }, {
-//     name: 'client_created_at',
-//     type: 'timestamp'
-//   }, {
-//     name: 'client_updated_at',
-//     type: 'timestamp'
-//   }, {
-//     name: 'updated_by_id',
-//     type: 'integer'
-//   }, {
-//     name: 'updated_by_resource_id',
-//     type: 'string'
-//   }, {
-//     name: 'created_by_id',
-//     type: 'integer'
-//   }, {
-//     name: 'created_by_resource_id',
-//     type: 'string'
-//   }, {
-//     name: 'changeset_id',
-//     type: 'integer'
-//   }, {
-//     name: 'changeset_resource_id',
-//     type: 'string'
-//   }, {
-//     name: 'record_index_text',
-//     type: 'string'
-//   }, {
-//     name: 'record_index',
-//     type: 'fts'
-//   }, {
-//     name: 'created_at',
-//     type: 'timestamp',
-//     allowNull: false
-//   }, {
-//     name: 'updated_at',
-//     type: 'timestamp',
-//     allowNull: false
-//   }
-// ];
-
 Schema.systemChoiceListsTable = [
   {
     name: 'id',
@@ -1456,22 +1354,22 @@ Schema.systemRecordSeriesTable = [
     type: 'string',
     allowNull: false
   }, {
+    name: 'enabled',
+    type: 'boolean',
+    allowNull: false
+  }, {
+    name: 'rrule',
+    type: 'string'
+  }, {
+    name: 'template',
+    type: 'jsonb'
+  }, {
     name: 'form_id',
     type: 'integer',
     allowNull: false
   }, {
     name: 'form_resource_id',
     type: 'string',
-    allowNull: false
-  }, {
-    name: 'template',
-    type: 'jsonb'
-  }, {
-    name: 'rrule',
-    type: 'string'
-  }, {
-    name: 'enabled',
-    type: 'boolean',
     allowNull: false
   }, {
     name: 'assigned_to_id',
