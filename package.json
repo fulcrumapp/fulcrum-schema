@@ -24,7 +24,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
     "lodash": "^4.17.21",
-    "sqldiff": "ssh://git@github.com:fulcrumapp/sqldiff.git#5e9ca497c18fb416a99940689ad11fcabba945c6"
+    "sqldiff": "ssh://git@github.com:fulcrumapp/sqldiff.git#1cbec3514f73086c656ba9d03854c3bf9b93f853"
   },
   "devDependencies": {
     "@babel/cli": "^7.13.16",
