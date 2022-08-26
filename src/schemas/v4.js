@@ -1442,6 +1442,71 @@ Schema.systemRecordLinksTable = [
   }
 ];
 
+Schema.systemRecordSeriesTable = [
+  {
+    name: 'id',
+    type: 'pk'
+  }, {
+    name: 'row_id',
+    type: 'integer',
+    allowNull: false
+  }, {
+    name: 'row_resource_id',
+    type: 'string',
+    allowNull: false
+  }, {
+    name: 'enabled',
+    type: 'boolean',
+    allowNull: false
+  }, {
+    name: 'rrule',
+    type: 'string',
+  }, {
+    name: 'template',
+    type: 'jsonb'
+  }, {
+    name: 'form_id',
+    type: 'integer',
+    allowNull: false
+  }, {
+    name: 'form_resource_id',
+    type: 'string',
+    allowNull: false
+  }, {
+    name: 'assigned_to_id',
+    type: 'integer'
+  }, {
+    name: 'assigned_to_resource_id',
+    type: 'string'
+  }, {
+    name: 'project_id',
+    type: 'integer'
+  }, {
+    name: 'project_resource_id',
+    type: 'string'
+  }, {
+    name: 'created_by_id',
+    type: 'integer'
+  }, {
+    name: 'created_by_resource_id',
+    type: 'string'
+  }, {
+    name: 'updated_by_id',
+    type: 'integer'
+  }, {
+    name: 'updated_by_resource_id',
+    type: 'string'
+  }, {
+    name: 'created_at',
+    type: 'timestamp',
+    allowNull: false
+  }, {
+    name: 'updated_at',
+    type: 'timestamp',
+    allowNull: false
+  }
+];
+
 Schema.systemFormViewColumns = {
   record_resource_id: 'record_id',
   record_key: 'record_key',
@@ -1839,6 +1904,23 @@ Schema.organizationViews.signatures = {
   deleted_at: 'deleted_at'
 };
 
+Schema.organizationViews.signatures = {
+  access_key: 'signature_id',
+  file_size: 'file_size',
+  record_resource_id: 'record_id',
+  form_resource_id: 'form_id',
+  created_by_resource_id: 'created_by_id',
+  updated_by_resource_id: 'updated_by_id',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  file: 'file',
+  content_type: 'content_type',
+  uploaded_at: 'uploaded_at',
+  stored_at: 'stored_at',
+  processed_at: 'processed_at',
+  deleted_at: 'deleted_at'
+};
+
 Schema.organizationIndexes.signatures = [
   { columns: [ 'row_resource_id' ], unique: true },
   { columns: [ 'row_id' ], unique: true },
@@ -1847,6 +1929,25 @@ Schema.organizationIndexes.signatures = [
   { columns: [ 'form_resource_id' ] },
   { columns: [ 'created_by_resource_id' ] },
   { columns: [ 'updated_at' ] }
+];
+
+Schema.organizationViews.record_series = {
+  row_resource_id: 'record_series_id',
+  enabled: 'enabled',
+  rrule: 'rrule',
+  template: 'template',
+  form_resource_id: 'form_id',
+  assigned_to_resource_id: 'assigned_to_id',
+  project_resource_id: 'project_id',
+  created_by_resource_id: 'created_by_id',
+  updated_by_resource_id: 'updated_by_id',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+};
+
+Schema.organizationIndexes.record_series = [
+  { columns: [ 'row_resource_id' ], unique: true },
+  { columns: [ 'row_id' ], unique: true }
 ];
 
 Schema.systemFormTableIndexes = [
