@@ -12,6 +12,8 @@ var _v2 = _interopRequireDefault(require("./schemas/v2"));
 
 var _v3 = _interopRequireDefault(require("./schemas/v3"));
 
+var _v4 = _interopRequireDefault(require("./schemas/v4"));
+
 var _metadata = _interopRequireDefault(require("./metadata"));
 
 var _sqldiff = _interopRequireDefault(require("sqldiff"));
@@ -92,7 +94,8 @@ instance.compareFormSchemas = function (oldForm, newForm, options) {
     var schemas = {
       v1: _v["default"],
       v2: _v2["default"],
-      v3: _v3["default"]
+      v3: _v3["default"],
+      v4: _v4["default"]
     };
 
     if (oldForm) {

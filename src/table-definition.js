@@ -53,6 +53,10 @@ export default class TableDefinition {
     this.column(name, 'json', options);
   }
 
+  jsonb(name, options) {
+    this.column(name, 'jsonb', options);
+  }
+
   alias(source, to) {
     this.viewColumns[source] = to;
   }

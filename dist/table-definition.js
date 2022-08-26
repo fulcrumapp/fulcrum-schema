@@ -67,6 +67,10 @@ var TableDefinition = /*#__PURE__*/function () {
     this.column(name, 'json', options);
   };
 
+  _proto.jsonb = function jsonb(name, options) {
+    this.column(name, 'jsonb', options);
+  };
+
   _proto.alias = function alias(source, to) {
     this.viewColumns[source] = to;
   };
