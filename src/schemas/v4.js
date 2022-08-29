@@ -1460,7 +1460,7 @@ Schema.systemRecordSeriesTable = [
     allowNull: false
   }, {
     name: 'rrule',
-    type: 'string',
+    type: 'string'
   }, {
     name: 'template',
     type: 'jsonb'
@@ -1942,7 +1942,7 @@ Schema.organizationViews.record_series = {
   created_by_resource_id: 'created_by_id',
   updated_by_resource_id: 'updated_by_id',
   created_at: 'created_at',
-  updated_at: 'updated_at',
+  updated_at: 'updated_at'
 };
 
 Schema.organizationIndexes.record_series = [

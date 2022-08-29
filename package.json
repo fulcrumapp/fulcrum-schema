@@ -1,6 +1,6 @@
 {
   "name": "@fulcrumapp/fulcrum-schema",
-  "version": "3.4.0",
+  "version": "3.5.0",
   "description": "Table schemas for Fulcrum apps",
   "main": "fulcrum-schema.js",
   "repository": {
@@ -11,7 +11,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha ./test/setup.js test/test-postgres.js test/test-sqlite.js test/test-v2-to-v3.js",
+    "test": "mocha ./test/setup.js test/test-postgres.js test/test-sqlite.js test/test-v2-to-v3.js test/test-v3-to-v4.js",
     "lint": "eslint src/*.js src/**/*.js",
     "build": "cross-env BABEL_ENV=production babel src -d dist -s && cp package.json dist && browserify dist/fulcrum-schema.js > dist/fulcrum-schema.min.js --mangle",
     "clean": "rm -rf dist"
@@ -24,7 +24,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
     "lodash": "^4.17.21",
-    "sqldiff": "ssh://git@github.com:fulcrumapp/sqldiff.git#e584bdf43803dbef968052c64c443a76146bd987"
+    "sqldiff": "ssh://git@github.com:fulcrumapp/sqldiff.git#67fb611b55c199a1867cdda0044ec100148abc85"
   },
   "devDependencies": {
     "@babel/cli": "^7.13.16",
