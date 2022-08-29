@@ -1,5 +1,101 @@
-ALTER TABLE organization_1.form_67777 ADD COLUMN record_key text;
-ALTER TABLE organization_1.form_67777 ADD COLUMN record_sequence bigint;
+CREATE TABLE IF NOT EXISTS organization_1.tmp_new_form_67777 (
+  id bigserial NOT NULL,
+  record_id bigint NOT NULL,
+  record_resource_id text NOT NULL,
+  record_key text,
+  record_sequence bigint,
+  project_id bigint,
+  project_resource_id text,
+  assigned_to_id bigint,
+  assigned_to_resource_id text,
+  status text,
+  latitude double precision,
+  longitude double precision,
+  created_at timestamp with time zone NOT NULL,
+  updated_at timestamp with time zone NOT NULL,
+  version bigint NOT NULL,
+  created_by_id bigint NOT NULL,
+  created_by_resource_id text,
+  updated_by_id bigint NOT NULL,
+  updated_by_resource_id text,
+  server_created_at timestamp with time zone NOT NULL,
+  server_updated_at timestamp with time zone NOT NULL,
+  record_index_text text,
+  record_index tsvector,
+  geometry geometry(Geometry, 4326),
+  altitude double precision,
+  speed double precision,
+  course double precision,
+  horizontal_accuracy double precision,
+  vertical_accuracy double precision,
+  form_values text,
+  changeset_id bigint,
+  changeset_resource_id text,
+  title text,
+  created_latitude double precision,
+  created_longitude double precision,
+  created_geometry geometry(Geometry, 4326),
+  created_altitude double precision,
+  created_horizontal_accuracy double precision,
+  updated_latitude double precision,
+  updated_longitude double precision,
+  updated_geometry geometry(Geometry, 4326),
+  updated_altitude double precision,
+  updated_horizontal_accuracy double precision,
+  created_duration bigint,
+  updated_duration bigint,
+  edited_duration bigint,
+  f92aa text,
+  faf33 text,
+  faf00 text,
+  faf01 text,
+  faf02 text,
+  faf72 text,
+  f3fcc text,
+  f5046 double precision,
+  f196d double precision,
+  f483d text,
+  fcff4 text,
+  f0fd9 text,
+  f0fd9_sub_thoroughfare text,
+  f0fd9_thoroughfare text,
+  f0fd9_suite text,
+  f0fd9_locality text,
+  f0fd9_admin_area text,
+  f0fd9_postal_code text,
+  f0fd9_sub_admin_area text,
+  f0fd9_country text,
+  f6427 text,
+  fc00a text[],
+  f3b66 text[],
+  fd088 date,
+  ff654 time without time zone,
+  f5dcd text[],
+  f5dcd_captions text[],
+  f9f01 text[],
+  f9f01_captions text[],
+  fc71a text,
+  fc71a_timestamp timestamp with time zone,
+  ff113 double precision,
+  fb9d9 text,
+  f92ab boolean,
+  f92ac_metadata text[],
+  f92ac_elements text[],
+  f92ac_values text[],
+  f7ds7_latitude double precision,
+  f7ds7_longitude double precision,
+  f7ds7_address text,
+  CONSTRAINT tmp_new_form_67777_pkey PRIMARY KEY (id)
+);
+INSERT INTO organization_1.tmp_new_form_67777 (id, record_id, record_resource_id, project_id, project_resource_id, assigned_to_id, assigned_to_resource_id, status, latitude, longitude, created_at, updated_at, version, created_by_id, created_by_resource_id, updated_by_id, updated_by_resource_id, server_created_at, server_updated_at, record_index_text, record_index, geometry, altitude, speed, course, horizontal_accuracy, vertical_accuracy, form_values, changeset_id, changeset_resource_id, title, created_latitude, created_longitude, created_geometry, created_altitude, created_horizontal_accuracy, updated_latitude, updated_longitude, updated_geometry, updated_altitude, updated_horizontal_accuracy, created_duration, updated_duration, edited_duration, f92aa, faf33, faf00, faf01, faf02, faf72, f3fcc, f5046, f196d, f483d, fcff4, f0fd9, f0fd9_sub_thoroughfare, f0fd9_thoroughfare, f0fd9_suite, f0fd9_locality, f0fd9_admin_area, f0fd9_postal_code, f0fd9_sub_admin_area, f0fd9_country, f6427, fc00a, f3b66, fd088, ff654, f5dcd, f5dcd_captions, f9f01, f9f01_captions, fc71a, fc71a_timestamp, ff113, fb9d9, f92ab, f92ac_metadata, f92ac_elements, f92ac_values, f7ds7_latitude, f7ds7_longitude, f7ds7_address) SELECT id, record_id, record_resource_id, project_id, project_resource_id, assigned_to_id, assigned_to_resource_id, status, latitude, longitude, created_at, updated_at, version, created_by_id, created_by_resource_id, updated_by_id, updated_by_resource_id, server_created_at, server_updated_at, record_index_text, record_index, geometry, altitude, speed, course, horizontal_accuracy, vertical_accuracy, form_values, changeset_id, changeset_resource_id, title, created_latitude, created_longitude, created_geometry, created_altitude, created_horizontal_accuracy, updated_latitude, updated_longitude, updated_geometry, updated_altitude, updated_horizontal_accuracy, created_duration, updated_duration, edited_duration, f92aa, faf33, faf00, faf01, faf02, faf72, f3fcc, f5046, f196d, f483d, fcff4, f0fd9, f0fd9_sub_thoroughfare, f0fd9_thoroughfare, f0fd9_suite, f0fd9_locality, f0fd9_admin_area, f0fd9_postal_code, f0fd9_sub_admin_area, f0fd9_country, f6427, fc00a, f3b66, fd088, ff654, f5dcd, f5dcd_captions, f9f01, f9f01_captions, fc71a, fc71a_timestamp, ff113, fb9d9, f92ab, f92ac_metadata, f92ac_elements, f92ac_values, f7ds7_latitude, f7ds7_longitude, f7ds7_address FROM organization_1.form_67777;
+SELECT setval('organization_1.tmp_new_form_67777_id_seq', (SELECT MAX(id) FROM organization_1.tmp_new_form_67777));
+ALTER TABLE organization_1.form_67777 RENAME TO tmp_old_form_67777;
+ALTER TABLE organization_1.tmp_old_form_67777 RENAME CONSTRAINT form_67777_pkey TO tmp_old_form_67777_pkey;
+ALTER SEQUENCE organization_1.form_67777_id_seq RENAME TO tmp_old_form_67777_id_seq;
+ALTER TABLE organization_1.tmp_new_form_67777 RENAME TO form_67777;
+ALTER TABLE organization_1.form_67777 RENAME CONSTRAINT tmp_new_form_67777_pkey TO form_67777_pkey;
+ALTER SEQUENCE organization_1.tmp_new_form_67777_id_seq RENAME TO form_67777_id_seq;
+DROP TABLE IF EXISTS organization_1.tmp_old_form_67777 CASCADE;
 DROP VIEW IF EXISTS organization_1.form_67777_0fe3_view CASCADE;
 CREATE OR REPLACE VIEW organization_1.form_67777_0fe3_view AS
 SELECT
@@ -191,6 +287,16 @@ SELECT
   f7ds7_longitude AS location_longitude,
   f7ds7_address AS location_address
 FROM organization_1.form_67777;
+CREATE UNIQUE INDEX idx_form_67777_record_resource_id ON organization_1.form_67777 USING btree (record_resource_id);
+CREATE INDEX idx_form_67777_geometry ON organization_1.form_67777 USING gist (geometry);
+CREATE INDEX idx_form_67777_record_index ON organization_1.form_67777 USING gin (record_index) WITH (fastupdate = off);
+CREATE INDEX idx_form_67777_status ON organization_1.form_67777 USING btree (status);
+CREATE INDEX idx_form_67777_server_updated_at ON organization_1.form_67777 USING btree (server_updated_at);
+CREATE INDEX idx_form_67777_record_key ON organization_1.form_67777 USING btree (record_key);
+CREATE INDEX idx_form_67777_record_sequence ON organization_1.form_67777 USING btree (record_sequence);
+CREATE INDEX idx_form_67777_project_resource_id ON organization_1.form_67777 USING btree (project_resource_id);
+CREATE INDEX idx_form_67777_assigned_to_resource_id ON organization_1.form_67777 USING btree (assigned_to_resource_id);
+CREATE INDEX idx_form_67777_changeset_resource_id ON organization_1.form_67777 USING btree (changeset_resource_id);
 DELETE FROM "organization_1"."tables" WHERE name = 'form_67777_0fe3_view';
 DELETE FROM "organization_1"."columns" WHERE table_name = 'form_67777_0fe3_view';
 DELETE FROM "organization_1"."tables" WHERE name = 'form_67777_92ff_view';
