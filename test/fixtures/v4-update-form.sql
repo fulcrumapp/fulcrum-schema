@@ -193,6 +193,7 @@ SELECT
   f7ds7_longitude AS location_longitude,
   f7ds7_address AS location_address
 FROM organization_1.form_67777;
+CREATE INDEX idx_form_67777_record_series_resource_id ON organization_1.form_67777 USING btree (record_series_resource_id) WHERE record_series_resource_id IS NOT NULL;
 DELETE FROM "organization_1"."tables" WHERE name = 'form_67777_0fe3_view';
 DELETE FROM "organization_1"."columns" WHERE table_name = 'form_67777_0fe3_view';
 DELETE FROM "organization_1"."tables" WHERE name = 'form_67777_92ff_view';
