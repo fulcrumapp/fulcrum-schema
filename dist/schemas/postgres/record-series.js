@@ -17,51 +17,58 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var ChoiceLists = /*#__PURE__*/function (_TableDefinition) {
-  _inheritsLoose(ChoiceLists, _TableDefinition);
+var RecordLinks = /*#__PURE__*/function (_TableDefinition) {
+  _inheritsLoose(RecordLinks, _TableDefinition);
 
-  function ChoiceLists() {
+  function RecordLinks() {
     return _TableDefinition.apply(this, arguments) || this;
   }
 
-  var _proto = ChoiceLists.prototype;
+  var _proto = RecordLinks.prototype;
 
   _proto.defineTable = function defineTable() {
     this.pk('id', {});
     this.integer('row_id', {
-      "allowNull": false
+      'allowNull': false
     });
     this.string('row_resource_id', {
-      "allowNull": false
+      'allowNull': false
     });
-    this.string('name', {
-      "allowNull": false
+    this.string('enabled', {
+      'allowNull': false
     });
-    this.string('description', {});
-    this.integer('version', {
-      "allowNull": false
+    this.string('rrule', {});
+    this.jsonb('template', {});
+    this.integer('form_id', {
+      'allowNull': false
     });
-    this.string('items', {
-      "allowNull": false
+    this.string('form_resource_id', {
+      'allowNull': false
     });
+    this.integer('assigned_to_id', {});
+    this.string('assigned_to_resource_id', {});
+    this.integer('project_id', {});
+    this.string('project_resource_id', {});
     this.integer('created_by_id', {});
     this.string('created_by_resource_id', {});
     this.integer('updated_by_id', {});
     this.string('updated_by_resource_id', {});
     this.timestamp('created_at', {
-      "allowNull": false
+      'allowNull': false
     });
     this.timestamp('updated_at', {
-      "allowNull": false
+      'allowNull': false
     });
   };
 
   _proto.defineView = function defineView() {
-    this.alias('row_resource_id', 'choice_list_id');
-    this.alias('name', 'name');
-    this.alias('description', 'description');
-    this.alias('version', 'version');
-    this.alias('items', 'items');
+    this.alias('row_resource_id', 'record_link_id');
+    this.alias('enabled', 'enabled');
+    this.alias('rrule', 'rrule');
+    this.alias('template', 'template');
+    this.alias('form_resource_id', 'form_id');
+    this.alias('assigned_to_id', 'assigned_to_id');
+    this.alias('project_resource_id', 'project_id');
     this.alias('created_by_resource_id', 'created_by_id');
     this.alias('updated_by_resource_id', 'updated_by_id');
     this.alias('created_at', 'created_at');
@@ -70,30 +77,24 @@ var ChoiceLists = /*#__PURE__*/function (_TableDefinition) {
 
   _proto.defineIndexes = function defineIndexes() {
     this.index({
-      "columns": ["row_resource_id"],
-      "unique": true
+      'columns': ['row_resource_id'],
+      'unique': true
     });
     this.index({
-      "columns": ["row_id"],
-      "unique": true
-    });
-    this.index({
-      "columns": ["name"]
-    });
-    this.index({
-      "columns": ["updated_at"]
+      'columns': ['row_id'],
+      'unique': true
     });
   };
 
-  _createClass(ChoiceLists, [{
+  _createClass(RecordLinks, [{
     key: "name",
     get: function get() {
-      return 'choice_lists';
+      return 'record_series';
     }
   }]);
 
-  return ChoiceLists;
+  return RecordLinks;
 }(_tableDefinition["default"]);
 
-exports["default"] = ChoiceLists;
-//# sourceMappingURL=choice-lists.js.map
+exports["default"] = RecordLinks;
+//# sourceMappingURL=record-series.js.map

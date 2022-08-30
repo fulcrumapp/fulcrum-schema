@@ -6,6 +6,7 @@ import OrganizationSchemaV2 from './schemas/postgres-schema';
 import FormSchemaV1 from './schemas/v1';
 import FormSchemaV2 from './schemas/v2';
 import FormSchemaV3 from './schemas/v3';
+import FormSchemaV4 from './schemas/v4';
 import Metadata from './metadata';
 import sqldiff from 'sqldiff';
 
@@ -73,7 +74,8 @@ instance.compareFormSchemas = (oldForm, newForm, options = {}) => {
     const schemas = {
       v1: FormSchemaV1,
       v2: FormSchemaV2,
-      v3: FormSchemaV3
+      v3: FormSchemaV3,
+      v4: FormSchemaV4
     };
 
     if (oldForm) {

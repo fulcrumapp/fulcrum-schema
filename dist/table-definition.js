@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
 var TableDefinition = /*#__PURE__*/function () {
   function TableDefinition() {
@@ -65,6 +65,10 @@ var TableDefinition = /*#__PURE__*/function () {
 
   _proto.json = function json(name, options) {
     this.column(name, 'json', options);
+  };
+
+  _proto.jsonb = function jsonb(name, options) {
+    this.column(name, 'jsonb', options);
   };
 
   _proto.alias = function alias(source, to) {

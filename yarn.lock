@@ -3668,10 +3668,10 @@ sprintf-js@~1.0.2:
   resolved "https://registry.yarnpkg.com/sprintf-js/-/sprintf-js-1.0.3.tgz#04e6926f662895354f3dd015203633b857297e2c"
   integrity sha512-D9cPgkvLlV3t3IzL0D0YLvGA9Ahk4PcvVwUbN0dSGr1aP0Nrt4AEnTUbuGvquEC0mA64Gqt1fzirlRs5ibXx8g==
 
-sqldiff@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/sqldiff/-/sqldiff-0.2.1.tgz#e25ef11a47a45146c073901176b4d9b66786a4fe"
-  integrity sha512-LBVaR0dttfWLF4QCQvQpS0LbaZMTyk1iVGUeHf95ACbCKQ1GDvRIY3BnZBgz2wc/ss/13MUqH6R+l/ujSohZoA==
+sqldiff@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/sqldiff/-/sqldiff-0.3.0.tgz#10faa821581edcc7f2c39ae91fba9eef8fd0b868"
+  integrity sha512-RMazRniPB7S7RO9Ep/hXIFIqBEowgSiP0F9RD8YuKqfsqBDrWomeJ2sTrYqjjQOIy/TvFFw7G+r81KksN83fpw==
   dependencies:
     lodash "^4.17.21"
 
