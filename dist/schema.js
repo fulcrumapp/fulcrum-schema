@@ -425,6 +425,11 @@ var Schema = /*#__PURE__*/function () {
         this.addStringElement(elementTable, element, 'address');
         break;
 
+      case 'ButtonField':
+        this.addStringElement(elementTable, element, 'label');
+        this.addStringElement(elementTable, element, 'type');
+        break;
+
       default:
         console.log('Unhandled element type', element.type);
         break;
