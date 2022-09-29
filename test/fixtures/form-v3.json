@@ -1256,6 +1256,17 @@
         "hidden": false,
         "data_name": "location",
         "default_value": null
+      },
+      {
+        "type": "ButtonField",
+        "key": "bgd4",
+        "label": "Button",
+        "description": null,
+        "required": false,
+        "disabled": false,
+        "hidden": false,
+        "data_name": "button",
+        "default_value": null
       }
     ],
     "image": "https://fulcrumapp.s3.amazonaws.com/form-images/990068fa-00fb-4d4a-956e-3602a2c329a6-819f8a72-2aa2-49c0-92f8-7bfc94f3541b.png",
