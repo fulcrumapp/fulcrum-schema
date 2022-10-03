@@ -83,8 +83,6 @@ CREATE TABLE IF NOT EXISTS organization_1.form_67777 (
   f7ds7_latitude double precision,
   f7ds7_longitude double precision,
   f7ds7_address text,
-  fbgd4_label text,
-  fbgd4_type text,
   CONSTRAINT form_67777_pkey PRIMARY KEY (id)
 );
 CREATE TABLE IF NOT EXISTS organization_1.form_67777_values (
@@ -259,9 +257,7 @@ SELECT
   f92ac_values AS checklist_values,
   f7ds7_latitude AS location_latitude,
   f7ds7_longitude AS location_longitude,
-  f7ds7_address AS location_address,
-  fbgd4_label AS button_label,
-  fbgd4_type AS button_type
+  f7ds7_address AS location_address
 FROM organization_1.form_67777;
 DROP VIEW IF EXISTS organization_1.form_67777_view_full CASCADE;
 CREATE OR REPLACE VIEW organization_1.form_67777_view_full AS
@@ -342,9 +338,7 @@ SELECT
   f92ac_values AS checklist_values,
   f7ds7_latitude AS location_latitude,
   f7ds7_longitude AS location_longitude,
-  f7ds7_address AS location_address,
-  fbgd4_label AS button_label,
-  fbgd4_type AS button_type
+  f7ds7_address AS location_address
 FROM organization_1.form_67777;
 DROP VIEW IF EXISTS organization_1.form_67777_values_view CASCADE;
 CREATE OR REPLACE VIEW organization_1.form_67777_values_view AS
@@ -654,10 +648,6 @@ INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, 
 SELECT 'form_67777_view', 'Park Inventory Test', 'location_longitude', '73', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '7ds7', 'LocationField', 'location', 'longitude', NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'form_67777_view', 'Park Inventory Test', 'location_address', '74', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '7ds7', 'LocationField', 'location', 'address', NULL;
-INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'button_label', '75', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', 'bgd4', 'ButtonField', 'button', 'label', NULL;
-INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'button_type', '76', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', 'bgd4', 'ButtonField', 'button', 'type', NULL;
 DELETE FROM "organization_1"."tables" WHERE name = 'form_67777_4ccf_view';
 DELETE FROM "organization_1"."columns" WHERE table_name = 'form_67777_4ccf_view';
 INSERT INTO "organization_1"."tables" (name, alias, type, parent, form_id, field, field_type, data_name) SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', 'repeatable', 'Park Inventory Test', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '4ccf', 'Repeatable', 'park_features';

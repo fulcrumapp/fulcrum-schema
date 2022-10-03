@@ -389,8 +389,6 @@ export default class Schema {
         break;
 
       case 'ButtonField':
-        this.addStringElement(elementTable, element, 'label');
-        this.addStringElement(elementTable, element, 'type');
         break;
 
       default:
