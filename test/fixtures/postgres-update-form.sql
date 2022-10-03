@@ -83,11 +83,9 @@ CREATE TABLE IF NOT EXISTS organization_1.tmp_new_form_67777 (
   f7ds7_latitude double precision,
   f7ds7_longitude double precision,
   f7ds7_address text,
-  fbgd4_label text,
-  fbgd4_type text,
   CONSTRAINT tmp_new_form_67777_pkey PRIMARY KEY (id)
 );
-INSERT INTO organization_1.tmp_new_form_67777 (id, record_id, record_resource_id, project_id, project_resource_id, assigned_to_id, assigned_to_resource_id, status, latitude, longitude, created_at, updated_at, version, created_by_id, created_by_resource_id, updated_by_id, updated_by_resource_id, server_created_at, server_updated_at, record_index_text, record_index, geometry, altitude, speed, course, horizontal_accuracy, vertical_accuracy, form_values, changeset_id, changeset_resource_id, title, created_latitude, created_longitude, created_geometry, created_altitude, created_horizontal_accuracy, updated_latitude, updated_longitude, updated_geometry, updated_altitude, updated_horizontal_accuracy, created_duration, updated_duration, edited_duration, f92aa, faf72, f3fcc, f5046, f196d, f483d, fcff4, f0fd9, f0fd9_sub_thoroughfare, f0fd9_thoroughfare, f0fd9_suite, f0fd9_locality, f0fd9_admin_area, f0fd9_postal_code, f0fd9_sub_admin_area, f0fd9_country, f6427, f3b66, fd088, ff654, f5dcd, f5dcd_captions, f9f01, f9f01_captions, fc71a, fc71a_timestamp, ff113, f92ab, f92ac_metadata, f92ac_elements, f92ac_values, f7ds7_latitude, f7ds7_longitude, f7ds7_address, fbgd4_label, fbgd4_type) SELECT id, record_id, record_resource_id, project_id, project_resource_id, assigned_to_id, assigned_to_resource_id, status, latitude, longitude, created_at, updated_at, version, created_by_id, created_by_resource_id, updated_by_id, updated_by_resource_id, server_created_at, server_updated_at, record_index_text, record_index, geometry, altitude, speed, course, horizontal_accuracy, vertical_accuracy, form_values, changeset_id, changeset_resource_id, title, created_latitude, created_longitude, created_geometry, created_altitude, created_horizontal_accuracy, updated_latitude, updated_longitude, updated_geometry, updated_altitude, updated_horizontal_accuracy, created_duration, updated_duration, edited_duration, f92aa, faf72, f3fcc, f5046, f196d, f483d, fcff4, f0fd9, f0fd9_sub_thoroughfare, f0fd9_thoroughfare, f0fd9_suite, f0fd9_locality, f0fd9_admin_area, f0fd9_postal_code, f0fd9_sub_admin_area, f0fd9_country, f6427, f3b66, fd088, ff654, f5dcd, f5dcd_captions, f9f01, f9f01_captions, fc71a, fc71a_timestamp, FCM_ConvertToFloat(ff113), f92ab, f92ac_metadata, f92ac_elements, f92ac_values, f7ds7_latitude, f7ds7_longitude, f7ds7_address, fbgd4_label, fbgd4_type FROM organization_1.form_67777;
+INSERT INTO organization_1.tmp_new_form_67777 (id, record_id, record_resource_id, project_id, project_resource_id, assigned_to_id, assigned_to_resource_id, status, latitude, longitude, created_at, updated_at, version, created_by_id, created_by_resource_id, updated_by_id, updated_by_resource_id, server_created_at, server_updated_at, record_index_text, record_index, geometry, altitude, speed, course, horizontal_accuracy, vertical_accuracy, form_values, changeset_id, changeset_resource_id, title, created_latitude, created_longitude, created_geometry, created_altitude, created_horizontal_accuracy, updated_latitude, updated_longitude, updated_geometry, updated_altitude, updated_horizontal_accuracy, created_duration, updated_duration, edited_duration, f92aa, faf72, f3fcc, f5046, f196d, f483d, fcff4, f0fd9, f0fd9_sub_thoroughfare, f0fd9_thoroughfare, f0fd9_suite, f0fd9_locality, f0fd9_admin_area, f0fd9_postal_code, f0fd9_sub_admin_area, f0fd9_country, f6427, f3b66, fd088, ff654, f5dcd, f5dcd_captions, f9f01, f9f01_captions, fc71a, fc71a_timestamp, ff113, f92ab, f92ac_metadata, f92ac_elements, f92ac_values, f7ds7_latitude, f7ds7_longitude, f7ds7_address) SELECT id, record_id, record_resource_id, project_id, project_resource_id, assigned_to_id, assigned_to_resource_id, status, latitude, longitude, created_at, updated_at, version, created_by_id, created_by_resource_id, updated_by_id, updated_by_resource_id, server_created_at, server_updated_at, record_index_text, record_index, geometry, altitude, speed, course, horizontal_accuracy, vertical_accuracy, form_values, changeset_id, changeset_resource_id, title, created_latitude, created_longitude, created_geometry, created_altitude, created_horizontal_accuracy, updated_latitude, updated_longitude, updated_geometry, updated_altitude, updated_horizontal_accuracy, created_duration, updated_duration, edited_duration, f92aa, faf72, f3fcc, f5046, f196d, f483d, fcff4, f0fd9, f0fd9_sub_thoroughfare, f0fd9_thoroughfare, f0fd9_suite, f0fd9_locality, f0fd9_admin_area, f0fd9_postal_code, f0fd9_sub_admin_area, f0fd9_country, f6427, f3b66, fd088, ff654, f5dcd, f5dcd_captions, f9f01, f9f01_captions, fc71a, fc71a_timestamp, FCM_ConvertToFloat(ff113), f92ab, f92ac_metadata, f92ac_elements, f92ac_values, f7ds7_latitude, f7ds7_longitude, f7ds7_address FROM organization_1.form_67777;
 SELECT setval('organization_1.tmp_new_form_67777_id_seq', (SELECT MAX(id) FROM organization_1.tmp_new_form_67777));
 ALTER TABLE organization_1.form_67777 RENAME TO tmp_old_form_67777;
 ALTER TABLE organization_1.tmp_old_form_67777 RENAME CONSTRAINT form_67777_pkey TO tmp_old_form_67777_pkey;
@@ -201,9 +199,7 @@ SELECT
   f92ac_values AS checklist_values,
   f7ds7_latitude AS location_latitude,
   f7ds7_longitude AS location_longitude,
-  f7ds7_address AS location_address,
-  fbgd4_label AS button_label,
-  fbgd4_type AS button_type
+  f7ds7_address AS location_address
 FROM organization_1.form_67777;
 DROP VIEW IF EXISTS organization_1.form_67777_view_full CASCADE;
 CREATE OR REPLACE VIEW organization_1.form_67777_view_full AS
@@ -284,9 +280,7 @@ SELECT
   f92ac_values AS checklist_values,
   f7ds7_latitude AS location_latitude,
   f7ds7_longitude AS location_longitude,
-  f7ds7_address AS location_address,
-  fbgd4_label AS button_label,
-  fbgd4_type AS button_type
+  f7ds7_address AS location_address
 FROM organization_1.form_67777;
 DROP VIEW IF EXISTS organization_1.form_67777_4ccf_view CASCADE;
 CREATE OR REPLACE VIEW organization_1.form_67777_4ccf_view AS
@@ -592,10 +586,6 @@ INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, 
 SELECT 'form_67777_view', 'Park Inventory Test', 'location_longitude', '73', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '7ds7', 'LocationField', 'location', 'longitude', NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'form_67777_view', 'Park Inventory Test', 'location_address', '74', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '7ds7', 'LocationField', 'location', 'address', NULL;
-INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'button_label', '75', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', 'bgd4', 'ButtonField', 'button', 'label', NULL;
-INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', 'button_type', '76', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', 'bgd4', 'ButtonField', 'button', 'type', NULL;
 DELETE FROM "organization_1"."tables" WHERE name = 'form_67777_4ccf_view';
 DELETE FROM "organization_1"."columns" WHERE table_name = 'form_67777_4ccf_view';
 INSERT INTO "organization_1"."tables" (name, alias, type, parent, form_id, field, field_type, data_name) SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', 'repeatable', 'Park Inventory Test', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '4ccf', 'Repeatable', 'park_features';
