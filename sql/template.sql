@@ -401,7 +401,7 @@ CREATE TABLE IF NOT EXISTS organization.record_series (
   row_resource_id text NOT NULL,
   enabled text NOT NULL,
   rrule text,
-  template text,
+  template jsonb,
   form_id bigint NOT NULL,
   form_resource_id text NOT NULL,
   assigned_to_id bigint,
