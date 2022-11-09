@@ -11,12 +11,12 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha ./test/setup.js test/test-postgres.js test/test-sqlite.js test/test-v2-to-v3.js test/test-v3-to-v4.js --reporter-option maxDiffSize=20000",
+    "test": "mocha -r ts-node/register ./test/setup.js test/test-postgres.js test/test-sqlite.js test/test-v2-to-v3.js test/test-v3-to-v4.js --reporter-option maxDiffSize=20000",
     "lint": "eslint src/*.js src/**/*.js",
-    "build": "cross-env BABEL_ENV=production babel src -d dist -s && cp package.json dist && browserify dist/fulcrum-schema.js > dist/fulcrum-schema.min.js --mangle",
+    "build": "tsc && cp package.json dist && browserify dist/fulcrum-schema.js > dist/fulcrum-schema.min.js --mangle",
     "clean": "rm -rf dist"
   },
-  "author": "Zac McCormick <zac.mccormick@gmail.com> (http://github.com/zhm)",
+  "author": "Fulcrum",
   "license": "BSD",
   "eslintConfig": {
     "extends": "fulcrum"
@@ -26,23 +26,20 @@
     "sqldiff": "^0.3.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.19.3",
-    "@babel/core": "^7.20.2",
-    "@babel/eslint-parser": "^7.19.1",
-    "@babel/eslint-plugin": "^7.19.1",
-    "@babel/plugin-transform-modules-commonjs": "^7.19.6",
-    "@babel/preset-env": "^7.20.2",
-    "@babel/register": "^7.18.9",
+    "@typescript-eslint/eslint-plugin": "^5.42.1",
+    "@typescript-eslint/parser": "^5.42.1",
     "browserify": "^17.0.0",
     "chai": "^4.3.7",
     "chai-as-promised": "^7.1.1",
     "cross-env": "^7.0.3",
     "eslint": "^8.27.0",
-    "eslint-config-fulcrum": "^2.0.1",
-    "eslint-plugin-react": "^7.31.10",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
     "fs-sync": "^1.0.6",
     "mocha": "^10.1.0",
     "season": "^6.0.2",
-    "should": "^13.2.3"
+    "should": "^13.2.3",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.8.4"
   }
 }
