@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 // The v1 schema is used by the iOS and Android apps
+
 var Schema = {};
 Schema.systemFormTableColumns = [{
   name: 'id',
@@ -123,8 +124,9 @@ Schema.systemValuesTableIndexes = [{
 }, {
   columns: ['parent_resource_id'],
   method: 'btree'
-}]; // V1 didn't emit `_caption` columns for media fields
+}];
 
+// V1 didn't emit `_caption` columns for media fields
 Schema.includeMediaCaptions = false;
 var _default = Schema;
 exports["default"] = _default;

@@ -4,28 +4,18 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
-
 var _tableDefinition = _interopRequireDefault(require("../../table-definition"));
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-
 function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 var Signatures = /*#__PURE__*/function (_TableDefinition) {
   _inheritsLoose(Signatures, _TableDefinition);
-
   function Signatures() {
     return _TableDefinition.apply(this, arguments) || this;
   }
-
   var _proto = Signatures.prototype;
-
   _proto.defineTable = function defineTable() {
     this.pk('id', {});
     this.integer('row_id', {
@@ -60,7 +50,6 @@ var Signatures = /*#__PURE__*/function (_TableDefinition) {
     this.timestamp('processed_at', {});
     this.timestamp('deleted_at', {});
   };
-
   _proto.defineView = function defineView() {
     this.alias('access_key', 'signature_id');
     this.alias('file_size', 'file_size');
@@ -77,7 +66,6 @@ var Signatures = /*#__PURE__*/function (_TableDefinition) {
     this.alias('processed_at', 'processed_at');
     this.alias('deleted_at', 'deleted_at');
   };
-
   _proto.defineIndexes = function defineIndexes() {
     this.index({
       "columns": ["row_resource_id"],
@@ -103,16 +91,13 @@ var Signatures = /*#__PURE__*/function (_TableDefinition) {
       "columns": ["updated_at"]
     });
   };
-
   _createClass(Signatures, [{
     key: "name",
     get: function get() {
       return 'signatures';
     }
   }]);
-
   return Signatures;
 }(_tableDefinition["default"]);
-
 exports["default"] = Signatures;
 //# sourceMappingURL=signatures.js.map

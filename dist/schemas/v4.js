@@ -4,9 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
-
 var _lodash = require("lodash");
-
 var Schema = {};
 Schema.systemFormTableColumns = [{
   name: 'id',
@@ -342,7 +340,9 @@ Schema.systemRepeatableTableColumns = [{
 }, {
   name: 'edited_duration',
   type: 'integer'
-}]; // - changesets
+}];
+
+// - changesets
 // - forms
 // - choice lists
 // - classification sets
@@ -566,7 +566,9 @@ Schema.systemFormsTable = [{
 }, {
   name: 'system_type',
   type: 'text'
-}]; // Schema.systemRecordsTable = [
+}];
+
+// Schema.systemRecordsTable = [
 //   {
 //     name: 'id',
 //     type: 'pk'
@@ -1957,7 +1959,8 @@ Schema.organizationIndexes.record_series = [{
   columns: ['row_id'],
   unique: true
 }];
-Schema.systemFormTableIndexes = [// { columns: [ 'record_id' ], method: 'btree', unique: true },
+Schema.systemFormTableIndexes = [
+// { columns: [ 'record_id' ], method: 'btree', unique: true },
 {
   columns: ['record_resource_id'],
   method: 'btree',
@@ -1998,7 +2001,8 @@ Schema.systemRepeatableTableIndexes = [{
   columns: ['resource_id'],
   method: 'btree',
   unique: true
-}, // { columns: [ 'record_id' ], method: 'btree' },
+},
+// { columns: [ 'record_id' ], method: 'btree' },
 {
   columns: ['record_resource_id'],
   method: 'btree'
@@ -2027,7 +2031,8 @@ Schema.systemRepeatableTableIndexes = [{
   columns: ['changeset_resource_id'],
   method: 'btree'
 }];
-Schema.systemValuesTableIndexes = [// { columns: [ 'record_id' ], method: 'btree' },
+Schema.systemValuesTableIndexes = [
+// { columns: [ 'record_id' ], method: 'btree' },
 {
   columns: ['record_resource_id'],
   method: 'btree'

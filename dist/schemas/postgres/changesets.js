@@ -4,28 +4,18 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
-
 var _tableDefinition = _interopRequireDefault(require("../../table-definition"));
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-
 function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 var Changesets = /*#__PURE__*/function (_TableDefinition) {
   _inheritsLoose(Changesets, _TableDefinition);
-
   function Changesets() {
     return _TableDefinition.apply(this, arguments) || this;
   }
-
   var _proto = Changesets.prototype;
-
   _proto.defineTable = function defineTable() {
     this.pk('id', {});
     this.integer('row_id', {
@@ -63,7 +53,6 @@ var Changesets = /*#__PURE__*/function (_TableDefinition) {
     this.string('metadata_index_text', {});
     this.fts('metadata_index', {});
   };
-
   _proto.defineView = function defineView() {
     this.alias('row_resource_id', 'changeset_id');
     this.alias('form_resource_id', 'form_id');
@@ -84,7 +73,6 @@ var Changesets = /*#__PURE__*/function (_TableDefinition) {
     this.alias('number_of_updates', 'number_of_updates');
     this.alias('number_of_deletes', 'number_of_deletes');
   };
-
   _proto.defineIndexes = function defineIndexes() {
     this.index({
       "columns": ["row_resource_id"],
@@ -114,16 +102,13 @@ var Changesets = /*#__PURE__*/function (_TableDefinition) {
       "columns": ["created_by_resource_id", "updated_at"]
     });
   };
-
   _createClass(Changesets, [{
     key: "name",
     get: function get() {
       return 'changesets';
     }
   }]);
-
   return Changesets;
 }(_tableDefinition["default"]);
-
 exports["default"] = Changesets;
 //# sourceMappingURL=changesets.js.map
