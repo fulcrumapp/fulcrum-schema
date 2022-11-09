@@ -1,6 +1,6 @@
 {
   "name": "@fulcrumapp/fulcrum-schema",
-  "version": "3.6.1",
+  "version": "3.6.2",
   "description": "Table schemas for Fulcrum apps",
   "main": "fulcrum-schema.js",
   "repository": {
@@ -22,27 +22,26 @@
     "extends": "fulcrum"
   },
   "dependencies": {
-    "@babel/polyfill": "^7.12.1",
     "lodash": "^4.17.21",
     "sqldiff": "^0.3.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.13.16",
-    "@babel/core": "^7.13.16",
-    "@babel/eslint-parser": "^7.13.14",
-    "@babel/eslint-plugin": "^7.13.16",
-    "@babel/plugin-transform-modules-commonjs": "^7.13.8",
-    "@babel/preset-env": "^7.13.15",
-    "@babel/register": "^7.13.16",
+    "@babel/cli": "^7.19.3",
+    "@babel/core": "^7.20.2",
+    "@babel/eslint-parser": "^7.19.1",
+    "@babel/eslint-plugin": "^7.19.1",
+    "@babel/plugin-transform-modules-commonjs": "^7.19.6",
+    "@babel/preset-env": "^7.20.2",
+    "@babel/register": "^7.18.9",
     "browserify": "^17.0.0",
-    "chai": "^4.3.4",
+    "chai": "^4.3.7",
     "chai-as-promised": "^7.1.1",
     "cross-env": "^7.0.3",
-    "eslint": "^7.25.0",
+    "eslint": "^8.27.0",
     "eslint-config-fulcrum": "^2.0.1",
-    "eslint-plugin-react": "^7.23.2",
+    "eslint-plugin-react": "^7.31.10",
     "fs-sync": "^1.0.6",
-    "mocha": "^9.1.1",
+    "mocha": "^10.1.0",
     "season": "^6.0.2",
     "should": "^13.2.3"
   }
