@@ -1,5 +1,3 @@
-require('@babel/polyfill');
-
 import OrganizationSchema from './organization-schema';
 import Schema from './schema';
 import OrganizationSchemaV2 from './schemas/postgres-schema';

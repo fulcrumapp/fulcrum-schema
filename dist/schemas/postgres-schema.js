@@ -1,49 +1,45 @@
 "use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _audio = _interopRequireDefault(require("./postgres/audio"));
-
-var _changesets = _interopRequireDefault(require("./postgres/changesets"));
-
-var _choiceLists = _interopRequireDefault(require("./postgres/choice-lists"));
-
-var _classificationSets = _interopRequireDefault(require("./postgres/classification-sets"));
-
-var _forms = _interopRequireDefault(require("./postgres/forms"));
-
-var _memberships = _interopRequireDefault(require("./postgres/memberships"));
-
-var _photos = _interopRequireDefault(require("./postgres/photos"));
-
-var _projects = _interopRequireDefault(require("./postgres/projects"));
-
-var _roles = _interopRequireDefault(require("./postgres/roles"));
-
-var _signatures = _interopRequireDefault(require("./postgres/signatures"));
-
-var _videos = _interopRequireDefault(require("./postgres/videos"));
-
-var _devices = _interopRequireDefault(require("./postgres/devices"));
-
-var _membershipsDevices = _interopRequireDefault(require("./postgres/memberships-devices"));
-
-var _membershipsForms = _interopRequireDefault(require("./postgres/memberships-forms"));
-
-var _membershipsProjects = _interopRequireDefault(require("./postgres/memberships-projects"));
-
-var _membershipsLayers = _interopRequireDefault(require("./postgres/memberships-layers"));
-
-var _recordLinks = _interopRequireDefault(require("./postgres/record-links"));
-
-var _recordSeries = _interopRequireDefault(require("./postgres/record-series"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-var tables = [_audio["default"], _changesets["default"], _choiceLists["default"], _classificationSets["default"], _forms["default"], _memberships["default"], _photos["default"], _projects["default"], _roles["default"], _signatures["default"], _videos["default"], _devices["default"], _membershipsDevices["default"], _membershipsForms["default"], _membershipsProjects["default"], _membershipsLayers["default"], _recordLinks["default"], _recordSeries["default"]];
-var _default = tables;
-exports["default"] = _default;
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const audio_1 = __importDefault(require("./postgres/audio"));
+const changesets_1 = __importDefault(require("./postgres/changesets"));
+const choice_lists_1 = __importDefault(require("./postgres/choice-lists"));
+const classification_sets_1 = __importDefault(require("./postgres/classification-sets"));
+const forms_1 = __importDefault(require("./postgres/forms"));
+const memberships_1 = __importDefault(require("./postgres/memberships"));
+const photos_1 = __importDefault(require("./postgres/photos"));
+const projects_1 = __importDefault(require("./postgres/projects"));
+const roles_1 = __importDefault(require("./postgres/roles"));
+const signatures_1 = __importDefault(require("./postgres/signatures"));
+const videos_1 = __importDefault(require("./postgres/videos"));
+const devices_1 = __importDefault(require("./postgres/devices"));
+const memberships_devices_1 = __importDefault(require("./postgres/memberships-devices"));
+const memberships_forms_1 = __importDefault(require("./postgres/memberships-forms"));
+const memberships_projects_1 = __importDefault(require("./postgres/memberships-projects"));
+const memberships_layers_1 = __importDefault(require("./postgres/memberships-layers"));
+const record_links_1 = __importDefault(require("./postgres/record-links"));
+const record_series_1 = __importDefault(require("./postgres/record-series"));
+const tables = [
+    audio_1.default,
+    changesets_1.default,
+    choice_lists_1.default,
+    classification_sets_1.default,
+    forms_1.default,
+    memberships_1.default,
+    photos_1.default,
+    projects_1.default,
+    roles_1.default,
+    signatures_1.default,
+    videos_1.default,
+    devices_1.default,
+    memberships_devices_1.default,
+    memberships_forms_1.default,
+    memberships_projects_1.default,
+    memberships_layers_1.default,
+    record_links_1.default,
+    record_series_1.default
+];
+exports.default = tables;
 //# sourceMappingURL=postgres-schema.js.map
