@@ -5,7 +5,7 @@ require('@babel/register');
 const schemaGenerator = require('./src/fulcrum-schema');
 
 schemaGenerator.dialect = 'postgres';
-schemaGenerator.version = 'v4';
+schemaGenerator.version = "v5";
 schemaGenerator.tableSchema = 'organization';
 schemaGenerator.newOrganization = 1;
 

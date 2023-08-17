@@ -10,6 +10,7 @@ const v1_1 = __importDefault(require("./schemas/v1"));
 const v2_1 = __importDefault(require("./schemas/v2"));
 const v3_1 = __importDefault(require("./schemas/v3"));
 const v4_1 = __importDefault(require("./schemas/v4"));
+const v5_1 = __importDefault(require("./schemas/v5"));
 const metadata_1 = __importDefault(require("./metadata"));
 const sqldiff_1 = __importDefault(require("sqldiff"));
 const { Postgres, SQLite, SchemaDiffer } = sqldiff_1.default;
@@ -62,7 +63,8 @@ instance.compareFormSchemas = (oldForm, newForm, options = {}) => {
             v1: v1_1.default,
             v2: v2_1.default,
             v3: v3_1.default,
-            v4: v4_1.default
+            v4: v4_1.default,
+            v5: v5_1.default,
         };
         if (oldForm) {
             const columns = schemas[options.version || oldForm.schema_version];
