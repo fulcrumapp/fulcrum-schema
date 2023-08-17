@@ -1,6 +1,6 @@
 {
   "name": "@fulcrumapp/fulcrum-schema",
-  "version": "3.6.2",
+  "version": "3.7.2",
   "description": "Table schemas for Fulcrum apps",
   "main": "fulcrum-schema.js",
   "repository": {
@@ -11,7 +11,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha -r ts-node/register ./test/setup.js test/test-postgres.js test/test-sqlite.js test/test-v2-to-v3.js test/test-v3-to-v4.js --reporter-option maxDiffSize=20000",
+    "test": "mocha -r ts-node/register ./test/setup.js test/test-postgres.js test/test-sqlite.js test/test-v2-to-v3.js test/test-v3-to-v4.js test/test-v4-to-v5.js --reporter-option maxDiffSize=20000",
     "lint": "eslint src/*.js src/**/*.js",
     "build": "tsc && cp package.json dist && browserify dist/fulcrum-schema.js > dist/fulcrum-schema.min.js --mangle",
     "clean": "rm -rf dist"
