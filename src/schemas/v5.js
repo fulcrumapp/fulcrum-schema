@@ -204,6 +204,10 @@ Schema.systemFormTableColumns = [
     name: "record_series_resource_id",
     type: "string",
   },
+  {
+    name: "system_status",
+    type: "string",
+  },
 ];
 
 Schema.systemValuesTableColumns = [
@@ -240,10 +244,6 @@ Schema.systemValuesTableColumns = [
   {
     name: "number_value",
     type: "double",
-  },
-  {
-    name: "system_status",
-    type: "string",
   },
 ];
 
