@@ -14,7 +14,7 @@ const { Postgres, SQLite, SchemaDiffer } = sqldiff;
 const instance = Function('return this')(); // eslint-disable-line no-new-func
 
 instance.dialect = 'postgres';
-instance.version = 'v2';
+instance.version = 'v5';
 instance.oldForm = null;
 instance.newForm = null;
 instance.tableSchema = null;
