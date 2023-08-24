@@ -463,6 +463,7 @@ CREATE INDEX idx_form_67777_project_resource_id ON organization_1.form_67777 USI
 CREATE INDEX idx_form_67777_assigned_to_resource_id ON organization_1.form_67777 USING btree (assigned_to_resource_id);
 CREATE INDEX idx_form_67777_changeset_resource_id ON organization_1.form_67777 USING btree (changeset_resource_id);
 CREATE INDEX idx_form_67777_record_series_resource_id ON organization_1.form_67777 USING btree (record_series_resource_id) WHERE record_series_resource_id IS NOT NULL;
+CREATE INDEX idx_form_67777_system_status ON organization_1.form_67777 USING btree (system_status) WHERE system_status IS NOT NULL;
 CREATE INDEX idx_form_67777_values_record_resource_id ON organization_1.form_67777_values USING btree (record_resource_id);
 CREATE INDEX idx_form_67777_values_parent_resource_id ON organization_1.form_67777_values USING btree (parent_resource_id);
 CREATE INDEX idx_form_67777_values_text_value ON organization_1.form_67777_values USING btree (text_value);

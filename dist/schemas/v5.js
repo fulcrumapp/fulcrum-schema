@@ -2300,6 +2300,11 @@ Schema.systemFormTableIndexes = [
         method: "btree",
         predicate: "record_series_resource_id IS NOT NULL",
     },
+    {
+        columns: ["system_status"],
+        method: "btree",
+        predicate: "system_status IS NOT NULL",
+    },
 ];
 Schema.systemRepeatableTableIndexes = [
     { columns: ["resource_id"], method: "btree", unique: true },
