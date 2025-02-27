@@ -70,7 +70,7 @@ export default class Schema {
   }
 
   escapeSlashes(name) {
-    return name.replace(/\//g, '\\/');
+    return name.replace(/\\/g, '\\\\').replace(/\//g, '\\/');
   }
 
   buildFormTable() {
