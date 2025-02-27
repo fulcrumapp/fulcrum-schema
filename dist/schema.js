@@ -60,7 +60,7 @@ class Schema {
         return dataName || 'no_data_name';
     }
     escapeSlashes(name) {
-        return name.replace(/\//g, '\\/');
+        return name.replace(/[\/\\]/g, '\\$&');
     }
     buildFormTable() {
         const table = new Table((0, util_1.format)('form_%s', this.form.row_id), null, { type: 'form', alias: this.alias(), form_id: this.form.id });
