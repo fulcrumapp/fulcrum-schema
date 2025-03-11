@@ -2,7 +2,7 @@
   "name": "@fulcrumapp/fulcrum-schema",
   "version": "3.7.4",
   "description": "Table schemas for Fulcrum apps",
-  "main": "dist/fulcrum-schema.js",
+  "main": "fulcrum-schema.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/fulcrumapp/fulcrum-schema.git"
