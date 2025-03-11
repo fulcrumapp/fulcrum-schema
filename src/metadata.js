@@ -162,7 +162,7 @@ export default class Metadata {
           let fieldType = null;
           let dataName = null;
           let part = null;
-          const data = null;
+          let data = null;
 
           element = column.column.element;
 
@@ -171,7 +171,7 @@ export default class Metadata {
             fieldType = element.type;
             dataName = element.data_name;
             part = column.column.suffix ? column.column.suffix.replace(/^_/, '') : null;
-            // data = JSON.stringify(element);
+            data = JSON.stringify({ format: element.format ?? "" });
           }
 
           statements.push(format('INSERT INTO %s (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)\n' +
