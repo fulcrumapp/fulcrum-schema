@@ -41,7 +41,6 @@ class Metadata {
         return (this.options.tablePrefix || '') + name;
     }
     buildStatements() {
-        var _a;
         const statements = [];
         const METADATA = false;
         const schemaChangesTableName = utils_1.default.tableName(this.options.schema, this.options.prefix, this.options.quote, 'schema_changes');
@@ -114,7 +113,7 @@ class Metadata {
                         fieldType = element.type;
                         dataName = element.data_name;
                         part = column.column.suffix ? column.column.suffix.replace(/^_/, '') : null;
-                        data = JSON.stringify({ format: (_a = element.format) !== null && _a !== void 0 ? _a : "" });
+                        data = element.format ? JSON.stringify({ format: element.format }) : null;
                     }
                     statements.push((0, util_1.format)('INSERT INTO %s (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)\n' +
                         'SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s;', systemColumnsName, pgvalue(viewName), pgvalue(viewAlias), pgvalue(column.alias), pgvalue(i + 1), pgvalue(column.column.type), pgvalue(column.column.allowNull ? 1 : 0), pgvalue(view.table.form_id), pgvalue(field), pgvalue(fieldType), pgvalue(dataName), pgvalue(part), pgvalue(data)));
