@@ -36,7 +36,7 @@
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",
     "fs-sync": "^1.0.6",
-    "mocha": "^10.1.0",
+    "mocha": "^11.1.0",
     "season": "^6.0.2",
     "should": "^13.2.3",
     "ts-node": "^10.9.1",
