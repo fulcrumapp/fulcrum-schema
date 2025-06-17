@@ -1,10 +1,10 @@
 import { clone } from 'lodash';
 import Utils from './utils';
 import sqldiff from 'sqldiff';
-import {format} from 'util';
+import { format } from 'util';
 import DataElements from './data-elements';
 
-const {Table, View} = sqldiff;
+const { Table, View } = sqldiff;
 
 const SIMPLE_TYPES = [
   'pk',
@@ -75,8 +75,8 @@ export default class Schema {
 
   buildFormTable() {
     const table = new Table(format('form_%s', this.form.row_id),
-                            null,
-                            {type: 'form', alias: this.alias(), form_id: this.form.id});
+      null,
+      { type: 'form', alias: this.alias(), form_id: this.form.id });
 
     for (const column of this.columns.systemFormTableColumns) {
       const formColumn = clone(column);
@@ -88,7 +88,7 @@ export default class Schema {
     }
 
     if (this.options.onAddFormTable) {
-      this.options.onAddFormTable({table, form: this.form, schema: this});
+      this.options.onAddFormTable({ table, form: this.form, schema: this });
     }
 
     return table;
@@ -96,8 +96,8 @@ export default class Schema {
 
   buildValuesTable() {
     const table = new Table(format('form_%s_values', this.form.row_id),
-                            null,
-                            {type: 'values', alias: this.alias('values'), form_id: this.form.id});
+      null,
+      { type: 'values', alias: this.alias('values'), form_id: this.form.id });
 
     for (const column of this.columns.systemValuesTableColumns) {
       const valueColumn = clone(column);
@@ -113,8 +113,8 @@ export default class Schema {
 
   buildRepeatableTable(parentTable, element) {
     const table = new Table(this.formTable.id + '_' + element.key,
-                            null,
-                            {type: 'repeatable', parent: parentTable, element: element, alias: this.alias(element.data_name), form_id: this.form.id});
+      null,
+      { type: 'repeatable', parent: parentTable, element: element, alias: this.alias(element.data_name), form_id: this.form.id });
 
     for (const column of this.columns.systemRepeatableTableColumns) {
       const attrs = clone(column);
@@ -127,7 +127,7 @@ export default class Schema {
     }
 
     if (this.options.onAddRepeatableTable) {
-      this.options.onAddRepeatableTable({table, parentTable, element, form: this.form, schema: this});
+      this.options.onAddRepeatableTable({ table, parentTable, element, form: this.form, schema: this });
     }
 
     return table;
@@ -154,14 +154,16 @@ export default class Schema {
       this.views.push(view);
 
       if (table.type === 'form') {
-        const fullView = new View(table.name + '_view_full', null, table, {variant: 'full', alias: this.alias('_full', false)});
+        const fullView = new View(table.name + '_view_full', null, table, { variant: 'full', alias: this.alias('_full', false) });
 
         this.buildViewForTable(table, fullView);
 
         this.views.push(fullView);
       } else if (table.type === 'repeatable') {
-        const fullView = new View(table.name + '_view_full', null, table, {variant: 'full',
-                                                                           alias: this.alias(table.element.data_name) + '/_full'});
+        const fullView = new View(table.name + '_view_full', null, table, {
+          variant: 'full',
+          alias: this.alias(table.element.data_name) + '/_full'
+        });
 
         this.buildViewForTable(table, fullView);
 
@@ -183,9 +185,9 @@ export default class Schema {
       if (!columnNames[alias]) {
         if (column.type === 'boolean') {
           const projection = `${column.name} IS NOT NULL AND ${column.name} = 't' AS ${Utils.escapeIdentifier(alias)}`;
-          view.addColumn({column: column, alias: alias, raw: projection});
+          view.addColumn({ column: column, alias: alias, raw: projection });
         } else {
-          view.addColumn({column: column, alias: alias});
+          view.addColumn({ column: column, alias: alias });
         }
 
         columnNames[alias] = column;
@@ -308,6 +310,7 @@ export default class Schema {
       case 'VideoField':
       case 'AudioField':
       case 'AttachmentField':
+      case 'SketchField':
         this.addMediaElement(elementTable, element);
         break;
 
@@ -548,16 +551,17 @@ export default class Schema {
       PhotoField: '_photo_id',
       VideoField: '_video_id',
       AudioField: '_audio_id',
-      AttachmentField: '_attachment_id'
+      AttachmentField: '_attachment_id',
+      SketchField: '_sketch_id'
     }[element.type];
 
     if (alias) {
       const view = new View(this.formTable.id + '_' + element.key + '_view',
-                            null, this.valuesTable, {type: 'media', element: element, clause: clause, filter, alias: this.alias(element.data_name)});
+        null, this.valuesTable, { type: 'media', element: element, clause: clause, filter, alias: this.alias(element.data_name) });
 
-      view.addColumn({column: {name: 'record_resource_id', type: 'string'}, alias: 'record_id'});
-      view.addColumn({column: {name: 'parent_resource_id', type: 'string'}, alias: 'parent_id'});
-      view.addColumn({column: {name: 'text_value', type: 'string'}, alias: alias});
+      view.addColumn({ column: { name: 'record_resource_id', type: 'string' }, alias: 'record_id' });
+      view.addColumn({ column: { name: 'parent_resource_id', type: 'string' }, alias: 'parent_id' });
+      view.addColumn({ column: { name: 'text_value', type: 'string' }, alias: alias });
 
       this.views.push(view);
     }
@@ -575,11 +579,11 @@ export default class Schema {
     const clause = format('WHERE key = \'%s\'', value);
 
     const view = new View(this.formTable.id + '_' + element.key + '_view',
-                          null, this.valuesTable, {type: 'link', element: element, clause: clause, alias: this.alias(element.data_name)});
+      null, this.valuesTable, { type: 'link', element: element, clause: clause, alias: this.alias(element.data_name) });
 
-    view.addColumn({column: {name: 'record_resource_id', type: 'string'}, alias: 'source_record_id'});
-    view.addColumn({column: {name: 'parent_resource_id', type: 'string'}, alias: 'parent_id'});
-    view.addColumn({column: {name: 'text_value', type: 'string'}, alias: 'linked_record_id'});
+    view.addColumn({ column: { name: 'record_resource_id', type: 'string' }, alias: 'source_record_id' });
+    view.addColumn({ column: { name: 'parent_resource_id', type: 'string' }, alias: 'parent_id' });
+    view.addColumn({ column: { name: 'text_value', type: 'string' }, alias: 'linked_record_id' });
 
     this.views.push(view);
   }
