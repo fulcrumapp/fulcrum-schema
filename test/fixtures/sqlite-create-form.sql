@@ -36,6 +36,7 @@ CREATE TABLE IF NOT EXISTS `account_1_form_67777` (
   `ff654` REAL,
   `f5dcd` TEXT,
   `f9f01` TEXT,
+  `fyui8` TEXT,
   `fc71a` TEXT,
   `fc71a_timestamp` REAL,
   `ff113` REAL,
