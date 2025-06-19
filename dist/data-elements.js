@@ -22,7 +22,8 @@ const DATA_ELEMENTS = [
     'CheckboxField',
     'DynamicField',
     'LocationField',
-    'ButtonField'
+    'ButtonField',
+    'SketchField',
 ];
 class DataElements {
     static get dataElements() {

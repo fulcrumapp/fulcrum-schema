@@ -119,8 +119,10 @@ class Schema {
                 this.views.push(fullView);
             }
             else if (table.type === 'repeatable') {
-                const fullView = new View(table.name + '_view_full', null, table, { variant: 'full',
-                    alias: this.alias(table.element.data_name) + '/_full' });
+                const fullView = new View(table.name + '_view_full', null, table, {
+                    variant: 'full',
+                    alias: this.alias(table.element.data_name) + '/_full'
+                });
                 this.buildViewForTable(table, fullView);
                 this.views.push(fullView);
             }
@@ -247,6 +249,7 @@ class Schema {
             case 'VideoField':
             case 'AudioField':
             case 'AttachmentField':
+            case 'SketchField':
                 this.addMediaElement(elementTable, element);
                 break;
             case 'SignatureField':
@@ -441,7 +444,8 @@ class Schema {
             PhotoField: '_photo_id',
             VideoField: '_video_id',
             AudioField: '_audio_id',
-            AttachmentField: '_attachment_id'
+            AttachmentField: '_attachment_id',
+            SketchField: '_sketch_id'
         }[element.type];
         if (alias) {
             const view = new View(this.formTable.id + '_' + element.key + '_view', null, this.valuesTable, { type: 'media', element: element, clause: clause, filter, alias: this.alias(element.data_name) });
