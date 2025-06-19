@@ -74,8 +74,6 @@ CREATE TABLE IF NOT EXISTS organization_1.form_67777 (
   f5dcd_captions text[],
   f9f01 text[],
   f9f01_captions text[],
-  fyui8 text[],
-  fyui8_captions text[],
   fc71a text,
   fc71a_timestamp timestamp with time zone,
   ff113 double precision,
@@ -87,6 +85,8 @@ CREATE TABLE IF NOT EXISTS organization_1.form_67777 (
   f7ds7_latitude double precision,
   f7ds7_longitude double precision,
   f7ds7_address text,
+  fyui8 text[],
+  fyui8_captions text[],
   CONSTRAINT form_67777_pkey PRIMARY KEY (id)
 );
 CREATE TABLE IF NOT EXISTS organization_1.form_67777_values (
@@ -185,7 +185,6 @@ SELECT
   parent_resource_id AS parent_id,
   text_value AS _video_id
 FROM organization_1.form_67777_values WHERE key = '9f01';
-DROP VIEW IF EXISTS organization_1.form_67777_view CASCADE;
 DROP VIEW IF EXISTS organization_1.form_67777_yui8_view CASCADE;
 CREATE OR REPLACE VIEW organization_1.form_67777_yui8_view AS
 SELECT
@@ -193,6 +192,7 @@ SELECT
   parent_resource_id AS parent_id,
   text_value AS _sketch_id
 FROM organization_1.form_67777_values WHERE key = 'yui8';
+DROP VIEW IF EXISTS organization_1.form_67777_view CASCADE;
 CREATE OR REPLACE VIEW organization_1.form_67777_view AS
 SELECT
   record_resource_id AS _record_id,
@@ -260,8 +260,6 @@ SELECT
   f5dcd_captions AS park_photos_captions,
   f9f01 AS videos,
   f9f01_captions AS videos_captions,
-  fyui8 AS sketches,
-  fyui8_captions AS sketches_captions,
   fc71a AS signature,
   fc71a_timestamp AS signature_timestamp,
   ff113 AS calculated_park_name,
@@ -272,7 +270,9 @@ SELECT
   f92ac_values AS checklist_values,
   f7ds7_latitude AS location_latitude,
   f7ds7_longitude AS location_longitude,
-  f7ds7_address AS location_address
+  f7ds7_address AS location_address,
+  fyui8 AS sketches,
+  fyui8_captions AS sketches_captions
 FROM organization_1.form_67777;
 DROP VIEW IF EXISTS organization_1.form_67777_view_full CASCADE;
 CREATE OR REPLACE VIEW organization_1.form_67777_view_full AS
@@ -345,8 +345,6 @@ SELECT
   f5dcd_captions AS park_photos_captions,
   f9f01 AS videos,
   f9f01_captions AS videos_captions,
-  fyui8 AS sketches,
-  fyui8_captions AS sketches_captions,
   fc71a AS signature,
   fc71a_timestamp AS signature_timestamp,
   ff113 AS calculated_park_name,
@@ -357,7 +355,9 @@ SELECT
   f92ac_values AS checklist_values,
   f7ds7_latitude AS location_latitude,
   f7ds7_longitude AS location_longitude,
-  f7ds7_address AS location_address
+  f7ds7_address AS location_address,
+  fyui8 AS sketches,
+  fyui8_captions AS sketches_captions
 FROM organization_1.form_67777;
 DROP VIEW IF EXISTS organization_1.form_67777_values_view CASCADE;
 CREATE OR REPLACE VIEW organization_1.form_67777_values_view AS
@@ -682,10 +682,10 @@ INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, 
 SELECT 'form_67777_view', 'Park Inventory Test', 'location_longitude', '75', 'double', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '7ds7', 'LocationField', 'location', 'longitude', NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'form_67777_view', 'Park Inventory Test', 'location_address', '76', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '7ds7', 'LocationField', 'location', 'address', NULL;
+INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'form_67777_view', 'Park Inventory Test', 'sketches', '77', 'array', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', 'yui8', 'SketchField', 'sketches', NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'form_67777_view', 'Park Inventory Test', 'sketches_captions', '78', 'array', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', 'yui8', 'SketchField', 'sketches', 'captions', NULL;
-INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 DELETE FROM "organization_1"."tables" WHERE name = 'form_67777_4ccf_view';
 DELETE FROM "organization_1"."columns" WHERE table_name = 'form_67777_4ccf_view';
 INSERT INTO "organization_1"."tables" (name, alias, type, parent, form_id, field, field_type, data_name) SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', 'repeatable', 'Park Inventory Test', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '4ccf', 'Repeatable', 'park_features';
