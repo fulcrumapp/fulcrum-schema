@@ -1266,6 +1266,23 @@
         "hidden": false,
         "data_name": "button",
         "default_value": null
+      },
+      {
+        "type": "SketchField",
+        "key": "yui8",
+        "label": "Sketches",
+        "description": null,
+        "required": false,
+        "disabled": false,
+        "hidden": false,
+        "data_name": "sketches",
+        "default_value": null,
+        "visible_conditions_type": null,
+        "visible_conditions": null,
+        "required_conditions_type": null,
+        "required_conditions": null,
+        "min_length": null,
+        "max_length": null
       }
     ],
     "image": "https://fulcrumapp.s3.amazonaws.com/form-images/990068fa-00fb-4d4a-956e-3602a2c329a6-819f8a72-2aa2-49c0-92f8-7bfc94f3541b.png",
