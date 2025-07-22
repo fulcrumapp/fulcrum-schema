@@ -535,6 +535,10 @@ export default class Schema {
       this.addArrayElement(table, element, 'names');
     }
 
+    if (element.type === 'SketchField') {
+      this.addArrayElement(table, element, 'backgrounds');
+    }
+
     if (!this.columns.systemFormViewColumns) {
       return;
     }
