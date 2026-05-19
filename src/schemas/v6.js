@@ -2191,23 +2191,6 @@ Schema.organizationViews.signatures = {
   deleted_at: "deleted_at",
 };
 
-Schema.organizationViews.signatures = {
-  access_key: "signature_id",
-  file_size: "file_size",
-  record_resource_id: "record_id",
-  form_resource_id: "form_id",
-  created_by_resource_id: "created_by_id",
-  updated_by_resource_id: "updated_by_id",
-  created_at: "created_at",
-  updated_at: "updated_at",
-  file: "file",
-  content_type: "content_type",
-  uploaded_at: "uploaded_at",
-  stored_at: "stored_at",
-  processed_at: "processed_at",
-  deleted_at: "deleted_at",
-};
-
 Schema.organizationIndexes.signatures = [
   { columns: ["row_resource_id"], unique: true },
   { columns: ["row_id"], unique: true },

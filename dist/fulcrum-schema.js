@@ -11,12 +11,13 @@ const v2_1 = __importDefault(require("./schemas/v2"));
 const v3_1 = __importDefault(require("./schemas/v3"));
 const v4_1 = __importDefault(require("./schemas/v4"));
 const v5_1 = __importDefault(require("./schemas/v5"));
+const v6_1 = __importDefault(require("./schemas/v6"));
 const metadata_1 = __importDefault(require("./metadata"));
 const sqldiff_1 = __importDefault(require("sqldiff"));
 const { Postgres, SQLite, SchemaDiffer } = sqldiff_1.default;
-const instance = Function('return this')(); // eslint-disable-line no-new-func
+const instance = new Function('return this')(); // eslint-disable-line no-new-func
 instance.dialect = 'postgres';
-instance.version = 'v5';
+instance.version = 'v6';
 instance.oldForm = null;
 instance.newForm = null;
 instance.tableSchema = null;
@@ -65,6 +66,7 @@ instance.compareFormSchemas = (oldForm, newForm, options = {}) => {
             v3: v3_1.default,
             v4: v4_1.default,
             v5: v5_1.default,
+            v6: v6_1.default,
         };
         if (oldForm) {
             const columns = schemas[options.version || oldForm.schema_version];
