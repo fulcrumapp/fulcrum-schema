@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS organization_1.form_67777 (
   record_series_id bigint,
   record_series_resource_id text,
   system_status text,
-  gps_device_capture text,
+  gps_device_capture jsonb,
   f92aa text,
   faf33 text,
   faf00 text,
@@ -483,7 +483,7 @@ CREATE INDEX idx_form_67777_assigned_to_resource_id ON organization_1.form_67777
 CREATE INDEX idx_form_67777_changeset_resource_id ON organization_1.form_67777 USING btree (changeset_resource_id);
 CREATE INDEX idx_form_67777_record_series_resource_id ON organization_1.form_67777 USING btree (record_series_resource_id) WHERE record_series_resource_id IS NOT NULL;
 CREATE INDEX idx_form_67777_system_status ON organization_1.form_67777 USING btree (system_status) WHERE system_status IS NOT NULL;
-CREATE INDEX idx_form_67777_gps_device_capture ON organization_1.form_67777 USING btree (gps_device_capture) WHERE gps_device_capture IS NOT NULL;
+CREATE INDEX idx_form_67777_gps_device_capture ON organization_1.form_67777 USING gin (gps_device_capture) WITH (fastupdate = off) WHERE gps_device_capture IS NOT NULL;
 CREATE INDEX idx_form_67777_values_record_resource_id ON organization_1.form_67777_values USING btree (record_resource_id);
 CREATE INDEX idx_form_67777_values_parent_resource_id ON organization_1.form_67777_values USING btree (parent_resource_id);
 CREATE INDEX idx_form_67777_values_text_value ON organization_1.form_67777_values USING btree (text_value);
@@ -623,7 +623,7 @@ SELECT 'form_67777_view', 'Park Inventory Test', '_record_series_id', '37', 'str
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'form_67777_view', 'Park Inventory Test', '_system_status', '38', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
-SELECT 'form_67777_view', 'Park Inventory Test', '_gps_device_capture', '39', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
+SELECT 'form_67777_view', 'Park Inventory Test', '_gps_device_capture', '39', 'jsonb', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'form_67777_view', 'Park Inventory Test', 'open', '40', 'string', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '92aa', 'YesNoField', 'open', NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)

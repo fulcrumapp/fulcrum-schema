@@ -210,7 +210,7 @@ Schema.systemFormTableColumns = [
   },
   {
     name: "gps_device_capture",
-    type: "string",
+    type: "jsonb",
   },
 ];
 
@@ -2244,7 +2244,7 @@ Schema.systemFormTableIndexes = [
   },
   {
     columns: ["gps_device_capture"],
-    method: "btree",
+    method: "gin",
     predicate: "gps_device_capture IS NOT NULL",
   },
 ];
