@@ -1,0 +1,201 @@
+{
+  "jira_issue": "FLCRM-22117",
+  "change": "flcrm-22117-pure-form-schema-validation",
+  "entries": [
+    {
+      "timestamp": "2026-09-08T18:00:00-07:00",
+      "phase": "IMPLEMENTATION",
+      "summary": "Added isolated internal pure validation core with own-property create/update materialization, bounded iterative indexing, structural/type/reference/compatibility rules, deterministic provisional result metadata, inert executable-looking values, and focused adversarial Mocha coverage.",
+      "files": [
+        "src/validation/materialize.js",
+        "src/validation/traversal.js",
+        "src/validation/rules.js",
+        "src/validation/result.js",
+        "src/validation/form-validator.js",
+        "test/test-validation.js",
+        "package.json"
+      ],
+      "functions": [
+        "materialize",
+        "indexForm",
+        "checkRoot",
+        "checkElements",
+        "resolveReferences",
+        "checkCompatibility",
+        "validate",
+        "makeResult"
+      ],
+      "public_api_exported": false,
+      "shared_contract": "FLCRM-22116 pending approval"
+    },
+    {
+      "timestamp": "2026-09-09T13:34:40-07:00",
+      "phase": "IMPLEMENTATION_CORRECTION",
+      "summary": "Applied bounded audit corrections: cap diagnostic production during rule and traversal execution, preserve invalid outcomes after truncation, use the approved unsupported outcome, stop version-specific validation for unsupported schema versions, sanitize schema metadata, enforce finite/bounded numeric and scalar yes/no value semantics, and report the actual FastFill diagnostic path.",
+      "files": [
+        "src/validation/result.js",
+        "src/validation/traversal.js",
+        "src/validation/rules.js",
+        "src/validation/form-validator.js",
+        "test/test-validation.js"
+      ],
+      "functions": [
+        "makeResult",
+        "indexForm",
+        "add",
+        "addWarning",
+        "validate",
+        "checkCompatibility",
+        "resolveReferences",
+        "checkTypeSpecific"
+      ],
+      "public_api_exported": false,
+      "shared_contract": "FLCRM-22116 pending approval"
+    },
+    {
+      "timestamp": "2026-09-09T13:49:07-07:00",
+      "phase": "IMPLEMENTATION_REAUDIT",
+      "summary": "Re-audited against fulcrumapp/fulcrum revision 25503ce61df71e9932c2ecef4bde348780afb15d and corrected condition vocabulary/field_key handling, repeatable and data-name scopes, title flattening, field-specific Rails attributes and bounds, Photo FastFill parsing, form-level field effects, status enablement, ProjectField rejection, bounded malformed traversal, input-only outcomes, and package deep-import isolation.",
+      "files": [
+        "src/validation/traversal.js",
+        "src/validation/rules.js",
+        "src/validation/result.js",
+        "test/test-validation.js",
+        "tsconfig.json",
+        ".agents/state.json",
+        ".agents/validation/rails-source-evidence.json",
+        ".agents/validation/test-results.log"
+      ],
+      "functions": [
+        "indexForm",
+        "checkRoot",
+        "checkStatusField",
+        "checkChoices",
+        "checkFieldLengths",
+        "checkNumericBounds",
+        "checkTypeSpecific",
+        "resolveReferences",
+        "checkCondition",
+        "checkConditionOperator",
+        "checkPhotoFastFill",
+        "checkFieldEffects",
+        "makeResult"
+      ],
+      "authoritative_rails_revision": "25503ce61df71e9932c2ecef4bde348780afb15d",
+      "public_api_exported": false,
+      "compiled_deep_import_available": false,
+      "shared_contract": "FLCRM-22116 pending approval"
+    },
+    {
+      "timestamp": "2026-09-09T13:58:00-07:00",
+      "phase": "IMPLEMENTATION_CORRECTION",
+      "summary": "Aligned optional Rails-blank status and condition values, prevented numeric condition field keys from coercing to string keys, and covered those boundaries in focused tests.",
+      "files": [
+        "src/validation/rules.js",
+        "test/test-validation.js",
+        ".agents/state.json",
+        ".agents/validation/test-results.log"
+      ],
+      "functions": [
+        "present",
+        "checkRoot",
+        "checkStatusField",
+        "checkCondition",
+        "checkConditionOperator"
+      ],
+      "public_api_exported": false,
+      "shared_contract": "FLCRM-22116 pending approval"
+    },
+    {
+      "timestamp": "2026-09-09T14:02:00-07:00",
+      "phase": "IMPLEMENTATION_CORRECTION",
+      "summary": "Closed the remaining package-boundary and own-property gaps: excluded internal validation sources from npm package contents and generated dist, ignored inherited status-field enablement, and tested both deep-import boundaries.",
+      "files": [
+        ".npmignore",
+        "src/validation/rules.js",
+        "test/test-validation.js"
+      ],
+      "functions": [
+        "checkStatusField"
+      ],
+      "public_api_exported": false,
+      "shared_contract": "FLCRM-22116 pending approval"
+    },
+    {
+      "timestamp": "2026-09-09T14:10:00-07:00",
+      "phase": "IMPLEMENTATION_CORRECTION",
+      "summary": "Applied remaining audit parity corrections: valid outcomes now require completion of the internal requested pure-check profile, requested gaps distinguish incomplete from unavailable, numeric Text defaults no longer claim an unsupported Rails rule, Yes/No false values follow Rails present semantics, blank choice-list and length values follow the parity profile, and Sketch backgrounds enforce only the evidenced array shape. Corrected Rails Form::TYPES evidence to 24 and verified package boundaries.",
+      "files": [
+        "src/validation/result.js",
+        "src/validation/form-validator.js",
+        "src/validation/rules.js",
+        "test/test-validation.js",
+        ".npmignore",
+        ".agents/specs/active-spec.md",
+        ".agents/validation/rails-source-evidence.json",
+        ".agents/validation/qa-scenarios.md",
+        ".agents/validation/test-results.log",
+        ".agents/state.json"
+      ],
+      "functions": [
+        "requestedChecks",
+        "makeResult",
+        "checkChoices",
+        "checkFieldLengths",
+        "checkTypeSpecific"
+      ],
+      "public_api_exported": false,
+      "package_version": "3.9.1 unchanged",
+      "sql_schema_diff": "unchanged",
+      "shared_contract": "FLCRM-22116 pending approval"
+    },
+    {
+      "timestamp": "2026-09-09T14:27:18-07:00",
+      "phase": "IMPLEMENTATION_CORRECTION",
+      "summary": "Closed four remaining audit parity blockers: valid/invalid outcomes are separated from full coverage claims and requested unavailable checks become unsupported, choice_list_id branch selection follows Ruby truthiness, optional lengths follow Ruby truthiness while preserving zero validation, and Sketch backgrounds accepts null while requiring arrays for non-null values without inspecting members.",
+      "files": [
+        "src/validation/rules.js",
+        "src/validation/result.js",
+        "test/test-validation.js",
+        ".npmignore",
+        ".agents/implementations/changes-log.json",
+        ".agents/validation/rails-source-evidence.json",
+        ".agents/validation/qa-scenarios.md",
+        ".agents/validation/test-results.log",
+        ".agents/state.json"
+      ],
+      "functions": [
+        "rubyTruthy",
+        "checkChoices",
+        "checkFieldLengths",
+        "checkTypeSpecific",
+        "makeResult"
+      ],
+      "public_api_exported": false,
+      "package_version": "3.9.1 unchanged",
+      "sql_schema_diff": "unchanged",
+      "shared_contract": "FLCRM-22116 pending approval"
+    },
+    {
+      "timestamp": "2026-09-09T14:22:00-07:00",
+      "phase": "IMPLEMENTATION_CORRECTION",
+      "summary": "Aligned result orchestration with the shared coordinator: contextual, provisional, skipped, and otherwise incomplete coverage can never produce valid; the minimal form is incomplete, while makeResult can report valid only for an explicitly complete pure profile without hiding contextual checks.",
+      "files": [
+        "src/validation/result.js",
+        "test/test-validation.js",
+        ".agents/validation/qa-scenarios.md",
+        ".agents/validation/test-results.log",
+        ".agents/state.json"
+      ],
+      "functions": [
+        "makeResult"
+      ],
+      "focused_tests": "38 passing",
+      "full_tests": "48 passing, 14 unchanged baseline failures",
+      "public_api_exported": false,
+      "package_version": "3.9.1 unchanged",
+      "sql_schema_diff": "unchanged",
+      "shared_contract": "FLCRM-22116 pending approval"
+    }
+  ]
+}
