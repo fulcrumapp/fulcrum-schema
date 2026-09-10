@@ -31,6 +31,22 @@ Review findings fixed: blank schema metadata, hard-coded package version,
 Rails-present empty arrays/objects, enumerable overflow flag, indentation.
 No SQL/schema source or fixture changes; package version remains 3.9.1; no
 publish/deploy/merge/new PR.
+Final bounded-compatibility audit (2026-09-09, commit
+8081923090d4f4fcba3a85782ac0ce2cdf95723d, PR #72 head
+8081923090d4f4fcba3a85782ac0ce2cdf95723d):
+The audit found and fixed compatibility coverage being reported complete after
+bounded indexing truncation, and global diagnostic overflow incorrectly
+invalidating unrelated completed checks. Compatibility now returns structured
+incomplete/overflow status; public coverage records INPUT_LIMIT_EXCEEDED only
+for affected checks.
+Focused Mocha: PASS (55 passing).
+ESLint: PASS.
+TypeScript declarations/browser build: PASS.
+Package npm pack boundary: PASS (193 files; dist public validator and
+compatibility present; dist form-validator/materialize/result absent).
+Full Mocha: 65 passing, exactly 14 unchanged SQL fixture/runtime failures.
+No SQL/schema source or fixture changes; package version remains 3.9.1; no
+publish/deploy/merge.
 
 Final public-validator audit corrections (2026-09-09, Node 26.8.1):
 The public adapter propagates index diagnostic overflow into raw diagnostics
