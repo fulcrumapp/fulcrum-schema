@@ -7,8 +7,9 @@ const { ELEMENT_TYPES, add } = require('./rules');
  * adapter be shipped without publishing patch/materialization internals.
  */
 function checkCompatibility(previous, candidate, diagnostics) {
-    if (!isObject(previous) || !isObject(candidate))
-        return;
+    if (!isObject(previous) || !isObject(candidate)) {
+        return { incomplete: false, diagnosticOverflow: false };
+    }
     const oldIndex = indexForm(previous);
     const newIndex = indexForm(candidate);
     const oldLeaves = Object.create(null);
@@ -44,6 +45,11 @@ function checkCompatibility(previous, candidate, diagnostics) {
                 + `(${effectiveType}) at ${newLeaves[key].path}`, 'use a new key for a different field type');
         }
     });
+    return {
+        incomplete: oldIndex.tooDeep || oldIndex.cyclic || oldIndex.tooLarge
+            || newIndex.tooDeep || newIndex.cyclic || newIndex.tooLarge,
+        diagnosticOverflow: oldIndex.diagnosticOverflow || newIndex.diagnosticOverflow
+    };
 }
 module.exports = { checkCompatibility };
 //# sourceMappingURL=compatibility.js.map

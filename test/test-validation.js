@@ -787,6 +787,60 @@ describe('internal pure form validation', () => {
     });
   });
 
+  it('does not claim compatibility completed after bounded indexing truncates input', () => {
+    const schema = require('../src/fulcrum-schema');
+    const elements = Array.from({ length: 1401 }, (_, index) => field({
+      key: `field_${index}`,
+      data_name: `field_${index}`
+    }));
+    const result = schema.validateForm({
+      contract_version: 'v1',
+      artifact_type: 'form',
+      operation: 'update',
+      artifact: { name: 'Current', elements },
+      previous_artifact: { name: 'Previous', elements },
+      checks: ['compatibility']
+    });
+    assert.strictEqual(result.outcome, 'unavailable');
+    assert.deepStrictEqual(result.coverage.completed, []);
+    assert.deepStrictEqual(result.coverage.failures, [{
+      check: 'compatibility',
+      reason_code: 'INPUT_LIMIT_EXCEEDED',
+      path: '$.elements'
+    }]);
+  });
+
+  it('does not mark compatibility unavailable for overflow in another check', () => {
+    const schema = require('../src/fulcrum-schema');
+    const result = schema.validateForm({
+      contract_version: 'v1',
+      artifact_type: 'form',
+      operation: 'update',
+      artifact: {
+        name: 'Current',
+        elements: Array.from({ length: DIAGNOSTIC_LIMIT + 1 }, (_, index) => field({
+          key: `field_${index}`,
+          data_name: `field_${index}`,
+          disabled: 'invalid'
+        }))
+      },
+      previous_artifact: {
+        name: 'Previous',
+        elements: [{ type: 'TextField', key: 'name', data_name: 'name' }]
+      },
+      checks: ['structural', 'compatibility']
+    });
+    assert.strictEqual(result.outcome, 'invalid');
+    assert.deepStrictEqual(result.coverage.completed, ['compatibility']);
+    assert.deepStrictEqual(result.coverage.failures, [
+      {
+        check: 'structural',
+        reason_code: 'INPUT_LIMIT_EXCEEDED',
+        path: '$.elements'
+      }
+    ]);
+  });
+
   it('uses the actual FastFill property path and keeps compatibility messages bounded', () => {
     const previous = form({
       elements: [field({ key: 'photo', type: 'TextField', data_name: 'photo' })]

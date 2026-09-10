@@ -235,6 +235,24 @@ function validateForm(request) {
     requested.forEach((check) => {
       if (!uniqueRequested.includes(check)) uniqueRequested.push(check);
     });
+    const markDiagnosticOverflow = (check) => {
+      if (!Object.prototype.hasOwnProperty.call(diagnostics, 'overflowedChecks')) {
+        Object.defineProperty(diagnostics, 'overflowedChecks', {
+          configurable: true,
+          writable: true,
+          value: []
+        });
+      }
+      if (!diagnostics.overflowedChecks.includes(check)) {
+        diagnostics.overflowedChecks.push(check);
+      }
+      Object.defineProperty(diagnostics, 'overflowed', {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        value: true
+      });
+    };
     const mark = (bucket, check, reasonCode, path) => {
       const buckets = [
         coverage.completed,
@@ -289,20 +307,22 @@ function validateForm(request) {
       checkRoot(request.artifact, diagnostics, { allowEmptyElements: true });
       index = indexForm(request.artifact);
       if (structural) {
+        const overflowedBefore = diagnostics.overflowed === true;
         checkElements(index, diagnostics, { requireCommonBooleans: false });
         mark('completed', 'structural');
+        if (index.diagnosticOverflow || (!overflowedBefore && diagnostics.overflowed)) {
+          markDiagnosticOverflow('structural');
+        }
       }
       if (semantic) {
+        const overflowedBefore = diagnostics.overflowed === true;
         if (isObject(request.artifact)) resolveReferences(request.artifact, index, diagnostics);
         mark('completed', 'semantic');
-      }
-      if (index.diagnosticOverflow) {
-        Object.defineProperty(diagnostics, 'overflowed', {
-          configurable: true,
-          enumerable: true,
-          writable: true,
-          value: true
-        });
+        if (index.diagnosticOverflow) {
+          markDiagnosticOverflow('semantic');
+        } else if (!overflowedBefore && diagnostics.overflowed) {
+          markDiagnosticOverflow('semantic');
+        }
       }
       if (index.tooDeep || index.cyclic || index.tooLarge) {
         if (structural) mark('failures', 'structural', 'INPUT_LIMIT_EXCEEDED', '/elements');
@@ -329,8 +349,19 @@ function validateForm(request) {
       } else if (!own(request, 'previous_artifact') || !isObject(request.previous_artifact)) {
         mark('skipped', 'compatibility', 'CONTEXT_REQUIRED');
       } else {
-        checkCompatibility(request.previous_artifact, request.artifact, diagnostics);
-        mark('completed', 'compatibility');
+        const overflowedBefore = diagnostics.overflowed === true;
+        const compatibility = checkCompatibility(
+          request.previous_artifact, request.artifact, diagnostics
+        );
+        if (compatibility.incomplete) {
+          mark('failures', 'compatibility', 'INPUT_LIMIT_EXCEEDED', '/elements');
+        } else {
+          mark('completed', 'compatibility');
+        }
+        if (compatibility.diagnosticOverflow
+          || (!overflowedBefore && diagnostics.overflowed)) {
+          markDiagnosticOverflow('compatibility');
+        }
       }
     }
 
@@ -348,7 +379,9 @@ function validateForm(request) {
 
 function result(rawDiagnostics, coverage, versions) {
   if (rawDiagnostics.overflowed) {
-    const affectedChecks = coverage.completed.filter((check) => SUPPORTED_CHECKS.has(check));
+    const affectedChecks = Array.isArray(rawDiagnostics.overflowedChecks)
+      ? rawDiagnostics.overflowedChecks
+      : [];
     affectedChecks.forEach((check) => {
       for (let i = coverage.completed.length - 1; i >= 0; i -= 1) {
         if (coverage.completed[i] === check) coverage.completed.splice(i, 1);
