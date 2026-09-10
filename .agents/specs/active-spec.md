@@ -170,5 +170,7 @@ review findings: blank schema-version metadata, hard-coded package-version
 provenance, Rails `present?` parity for empty arrays/objects, preservation of
 an enumerable diagnostic-overflow flag, and indentation. The pinned app-mcp
 PR34 SHA remains `60449c84da193840804f6d2ab309d01f32ba4351`; the validation
-contract document and canonical fixtures remain in scope; SQL/schema diffs,
-publication, deployment, merge, and new PR creation remain prohibited.
+contract document and canonical fixtures remain in scope. Validator provenance
+MUST be read from loaded package metadata rather than duplicated as a literal
+or replaced by a repository-local ruleset label. SQL/schema diffs, publication,
+deployment, merge, and new PR creation remain prohibited.

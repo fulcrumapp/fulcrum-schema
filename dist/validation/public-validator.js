@@ -7,11 +7,13 @@ const { indexForm, isObject } = require('./traversal');
 const { checkRoot, checkElements, resolveReferences, add, addWarning } = require('./rules');
 const { checkCompatibility } = require('./form-validator');
 const { DIAGNOSTIC_LIMIT } = require('./limits');
-// This is the package metadata value used by the published package.  Do not
-// turn absent caller/runtime/schema values into placeholders such as
-// "unknown": the v1 contract uses null for a non-applicable/unobserved
-// version.
-const VALIDATOR_VERSION = 'flcrm-22117-v1';
+// Source tests run from src/, while the published package runs from dist/.
+// Both paths load package metadata rather than duplicating its version.
+const moduleDirectories = __dirname.split(/[\\/]/);
+const packageMetadata = moduleDirectories[moduleDirectories.length - 2] === 'src'
+    ? require('../../package.json')
+    : require('../package.json');
+const VALIDATOR_VERSION = `${packageMetadata.name}@${packageMetadata.version}`;
 const CONTRACT_VERSION = 'v1';
 const DEFAULT_CHECKS = ['structural', 'semantic'];
 const SUPPORTED_CHECKS = new Set(['structural', 'semantic', 'compatibility']);

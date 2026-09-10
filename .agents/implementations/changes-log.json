@@ -287,6 +287,42 @@
       "package_version": "3.9.1 unchanged",
       "sql_schema_diff": "unchanged",
       "shared_contract": "FLCRM-22116 approved"
+    },
+    {
+      "timestamp": "2026-09-09T18:38:29-07:00",
+      "phase": "REVISION_IMPLEMENTATION_CORRECTION",
+      "summary": "Completed the user-authorized forward correction against canonical app-mcp commit 60449c84da193840804f6d2ab309d01f32ba4351: validator provenance is now derived from loaded package metadata, the blank-schema public regression is an independently executed test, and the specified continuation indentation is normalized. Revalidated the four narrow findings without changing SQL/schema behavior.",
+      "files": [
+        "src/validation/public-validator.js",
+        "src/validation/rules.js",
+        "test/test-validation.js",
+        "dist/validation/public-validator.js",
+        "dist/validation/public-validator.js.map",
+        "dist/validation/rules.js.map",
+        "dist/fulcrum-schema.min.js",
+        "docs/validation-contract.md",
+        "openspec/changes/flcrm-22117-pure-form-schema-validation/specs/pure-form-schema-validation/spec.md",
+        "openspec/changes/flcrm-22117-pure-form-schema-validation/tasks.md",
+        ".agents/specs/active-spec.md",
+        ".agents/implementations/changes-log.json",
+        ".agents/validation/qa-scenarios.md",
+        ".agents/validation/test-results.log",
+        ".agents/state.json"
+      ],
+      "review_findings": {
+        "blank_schema_version_metadata": "verified; blank and whitespace-only observed schema metadata is null and produces incomplete unsupported-version coverage",
+        "hard_coded_package_version": "corrected; public validator provenance is loaded from package metadata and reports @fulcrumapp/fulcrum-schema@3.9.1",
+        "rails_present_empty_arrays_objects": "verified; empty arrays and objects are blank for the supported present? call sites",
+        "enumerable_diagnostic_overflow": "verified; overflowed remains enumerable through sorting and truncation",
+        "indentation": "corrected; the remaining length-order continuation uses repository indentation"
+      },
+      "focused_tests": "50 passing",
+      "full_tests": "60 passing, 14 unchanged baseline SQL fixture/runtime failures",
+      "package_tarball": "PASS (119 files; installed CommonJS smoke; validator metadata @fulcrumapp/fulcrum-schema@3.9.1; no workflow or source-validation leakage)",
+      "canonical_app_mcp_revision": "60449c84da193840804f6d2ab309d01f32ba4351",
+      "package_version": "3.9.1 unchanged",
+      "sql_schema_diff": "unchanged",
+      "shared_contract": "FLCRM-22116 approved"
     }
   ]
 }

@@ -39,6 +39,6 @@
 
 ## 7. Verification and Review
 
-- [ ] 7.1 Run `yarn lint`, the full `yarn test`, focused adversarial tests, `yarn build`, a CommonJS load smoke test, and `openspec validate flcrm-22117-pure-form-schema-validation --strict`; classify unchanged SQL fixture failures and attach repository-required evidence.
+- [x] 7.1 Run `yarn lint`, the full `yarn test`, focused adversarial tests, `yarn build`, a CommonJS load smoke test, and `openspec validate flcrm-22117-pure-form-schema-validation --strict`; classify unchanged SQL fixture failures and attach repository-required evidence.
 - [ ] 7.2 Use the user-approved Luna implementation agents for implementation work under the approved spec, then complete audit/review without expanding into schema-service or app-mcp; verify only this repository's pure validation scope changed.
 - [ ] 7.3 Prepare one cohesive reviewed PR and coordinate the future package/consumer release sequence with schema-service owners; verify no npm publish, tag, package-version bump, deployment, consumer change, or generated SQL execution occurs.

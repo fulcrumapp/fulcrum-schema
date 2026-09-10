@@ -139,8 +139,8 @@ is unavailable, incomplete, invalid, then valid.
 
 - Blank and whitespace-only `schema_version` values produce `versions.schema:
   null`; unsupported metadata is reported through coverage and is never echoed.
-- Public validator provenance is the ruleset identifier `flcrm-22117-v1`, not a
-  hard-coded package-version string; package version remains 3.9.1.
+- Public validator provenance is loaded from package metadata and reports
+  `@fulcrumapp/fulcrum-schema@3.9.1`; the package version remains unchanged.
 - Rails `present?` parity covers empty arrays and objects for status,
   status-field defaults, and field-effects inputs.
 - The shared diagnostic limit is used by producers and truncation, and the
@@ -150,3 +150,11 @@ is unavailable, incomplete, invalid, then valid.
 - No SQL/schema source or fixture diff was made. No review finding was
   rejected; publication, deployment, merge, and new-PR creation remain
   unauthorized.
+- The pinned contract and fixture provenance is app-mcp commit
+  `60449c84da193840804f6d2ab309d01f32ba4351`.
+- Focused validation has 50 passing tests. The built `dist` tarball contains
+  119 files, installs and loads through CommonJS, derives validator provenance
+  from its packaged metadata, and contains no workflow or source-validation
+  files.
+- The full suite has 60 passing tests and the same 14 SQL fixture/runtime
+  failures as the unchanged 10-passing/14-failing SQL and migration baseline.

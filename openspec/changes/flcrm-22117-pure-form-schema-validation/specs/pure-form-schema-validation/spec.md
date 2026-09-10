@@ -20,8 +20,9 @@ Public diagnostics SHALL use `FORM.*` or `VALIDATION.*` codes and
 JSONPath-like paths. Outcome precedence is invalid, unavailable, incomplete,
 then valid. Non-applicable or unobserved version values are `null`; caller
 declared versions are not copied into response metadata. Operational failures
-are coverage facts, not error diagnostics. The package version remains 3.9.1
-and publication is not part of this change.
+are coverage facts, not error diagnostics. Validator provenance is read from
+the loaded package metadata rather than duplicated as a source literal. The
+package version remains 3.9.1 and publication is not part of this change.
 
 ### Requirement: Approved shared contract
 The package SHALL export the approved FLCRM-22116 v1 request, result,

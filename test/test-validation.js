@@ -54,7 +54,11 @@ describe('internal pure form validation', () => {
     assert.strictEqual(invalidResult.diagnostics[0].code, 'FORM.DUPLICATE_DATA_NAME');
     assert.strictEqual(invalidResult.diagnostics[0].path, '$.elements[1].data_name');
     assert.deepStrictEqual(invalidResult.coverage, invalid.response.coverage);
-    assert.strictEqual(validResult.versions.validator, 'flcrm-22117-v1');
+    const packageMetadata = require('../package.json');
+    assert.strictEqual(
+      validResult.versions.validator,
+      `${packageMetadata.name}@${packageMetadata.version}`
+    );
     assert.strictEqual(validResult.versions.schema, null);
     assert.strictEqual(validResult.versions.runtime, null);
     ['contract_version', 'outcome', 'diagnostics', 'coverage', 'versions']
@@ -147,31 +151,6 @@ describe('internal pure form validation', () => {
       runtime_version: 'caller-runtime',
       checks: ['structural', 'semantic']
     });
-
-    it('does not expose blank schema-version metadata', () => {
-      const schema = require('../src/fulcrum-schema');
-      const result = schema.validateForm({
-        contract_version: 'v1',
-        artifact_type: 'form',
-        operation: 'create',
-        artifact: {
-          name: 'Inspection',
-          schema_version: '   ',
-          elements: [{
-            type: 'TextField',
-            key: 'name',
-            label: 'Name',
-            data_name: 'name'
-          }]
-        },
-        checks: ['structural']
-      });
-      assert.strictEqual(result.versions.schema, null);
-      assert.strictEqual(result.outcome, 'incomplete');
-      assert.ok(result.coverage.skipped.some(
-        (entry) => entry.check === 'structural' && entry.reason_code === 'UNSUPPORTED_VERSION'
-      ));
-    });
     assert.strictEqual(result.outcome, 'incomplete');
     assert.strictEqual(result.versions.schema, 'v6');
     assert.strictEqual(result.versions.runtime, null);
@@ -180,6 +159,31 @@ describe('internal pure form validation', () => {
       { check: 'structural', reason_code: 'VERSION_MISMATCH' },
       { check: 'semantic', reason_code: 'VERSION_MISMATCH' }
     ]);
+  });
+
+  it('does not expose blank schema-version metadata', () => {
+    const schema = require('../src/fulcrum-schema');
+    const result = schema.validateForm({
+      contract_version: 'v1',
+      artifact_type: 'form',
+      operation: 'create',
+      artifact: {
+        name: 'Inspection',
+        schema_version: '   ',
+        elements: [{
+          type: 'TextField',
+          key: 'name',
+          label: 'Name',
+          data_name: 'name'
+        }]
+      },
+      checks: ['structural']
+    });
+    assert.strictEqual(result.versions.schema, null);
+    assert.strictEqual(result.outcome, 'incomplete');
+    assert.ok(result.coverage.skipped.some(
+      (entry) => entry.check === 'structural' && entry.reason_code === 'UNSUPPORTED_VERSION'
+    ));
   });
 
   it('reports dynamic semantic coverage as unverified without an error', () => {

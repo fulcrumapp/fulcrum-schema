@@ -290,7 +290,7 @@ function checkFieldLengths(element, path, diagnostics) {
     }
   });
   if (own(element, 'min_length') && own(element, 'max_length')
-  && present(element.min_length) && present(element.max_length)
+    && present(element.min_length) && present(element.max_length)
     && Number.isInteger(element.min_length) && Number.isInteger(element.max_length)
     && element.min_length > element.max_length) {
     add(diagnostics, 'length-order', path, 'minimum length must not exceed maximum length');

@@ -26,7 +26,8 @@ Responses contain exactly these top-level fields:
 
 Unobserved or non-applicable version values are `null`. In particular, blank
 or unsupported artifact schema metadata is never copied into `versions.schema`.
-Caller-declared version fields are not provenance.
+`versions.validator` is read from the loaded package metadata. Caller-declared
+version fields are not provenance.
 
 Diagnostics use `FORM.*` or `VALIDATION.*` codes, `error`, `warning`, or `info`
 severity, bounded actionable messages, and JSONPath-like paths. The validator
