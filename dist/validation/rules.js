@@ -1,5 +1,4 @@
 'use strict';
-const { hasOwn } = require('./materialize');
 const { appendPointer, isObject } = require('./traversal');
 const { DIAGNOSTIC_LIMIT } = require('./limits');
 const ELEMENT_TYPES = [
@@ -49,7 +48,8 @@ const BOOLEAN_FIELDS = new Set([
     'allow_existing_records'
 ]);
 function own(value, key) {
-    return hasOwn(value, key);
+    return value !== null && typeof value === 'object'
+        && Object.prototype.hasOwnProperty.call(value, key);
 }
 function nonblank(value) {
     return typeof value === 'string' && value.trim().length > 0;
@@ -95,7 +95,7 @@ function setDiagnosticFlag(diagnostics, name) {
     }
     diagnostics[name] = true;
 }
-function checkRoot(form, diagnostics) {
+function checkRoot(form, diagnostics, options = {}) {
     if (!isObject(form)) {
         add(diagnostics, 'form-object', '', 'form must be an object');
         return;
@@ -106,7 +106,7 @@ function checkRoot(form, diagnostics) {
     if (!own(form, 'elements') || !Array.isArray(form.elements)) {
         add(diagnostics, 'form-elements-array', '/elements', 'form elements must be an array');
     }
-    else if (!form.elements.length) {
+    else if (!form.elements.length && options.allowEmptyElements !== true) {
         add(diagnostics, 'form-elements-nonempty', '/elements', 'form elements must not be empty');
     }
     if (own(form, 'status') && present(form.status)

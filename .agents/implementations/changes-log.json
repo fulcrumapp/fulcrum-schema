@@ -323,6 +323,37 @@
       "package_version": "3.9.1 unchanged",
       "sql_schema_diff": "unchanged",
       "shared_contract": "FLCRM-22116 approved"
+    },
+    {
+      "timestamp": "2026-09-09T19:07:59-07:00",
+      "phase": "PUBLIC_CONTRACT_CORRECTION",
+      "summary": "Completed the remaining pinned v1 contract and package-boundary corrections: checker-wide missing-check coverage has no fabricated check, the canonical empty-elements update fixture is exact and does not merge prior data, the public response shape and nullable validator declaration are asserted, and successful builds and installed tarballs exclude legacy lifecycle modules while retaining the package-root validator and compare APIs.",
+      "files": [
+        "src/validation/public-validator.js",
+        "src/validation/compatibility.js",
+        "src/validation/form-validator.js",
+        "src/validation/rules.js",
+        "src/fulcrum-schema.d.ts",
+        "test/test-validation.js",
+        "test/fixtures/validation/incomplete-missing-previous.json",
+        "test/fixtures/validation/metadata.json",
+        "tsconfig.json",
+        "package.json",
+        "README.md",
+        "docs/validation-contract.md",
+        "openspec/changes/flcrm-22117-pure-form-schema-validation/specs/pure-form-schema-validation/spec.md",
+        ".agents/validation/qa-scenarios.md",
+        ".agents/validation/test-results.log",
+        ".agents/state.json"
+      ],
+      "focused_tests": "52 passing",
+      "full_tests": "62 passing, 14 unchanged baseline SQL fixture/runtime failures",
+      "baseline_tests": "10 passing, the identical 14 SQL fixture/runtime failures",
+      "package_tarball": "PASS (113 files; installed package-root smoke; legacy form-validator/materialize/result deep imports unavailable; no workflow, OpenSpec, or source-validation leakage)",
+      "canonical_app_mcp_revision": "60449c84da193840804f6d2ab309d01f32ba4351",
+      "package_version": "3.9.1 unchanged",
+      "sql_schema_diff": "unchanged",
+      "shared_contract": "FLCRM-22116 approved"
     }
   ]
 }

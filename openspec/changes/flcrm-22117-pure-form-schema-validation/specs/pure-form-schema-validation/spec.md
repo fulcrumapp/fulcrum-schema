@@ -74,11 +74,22 @@ For the same JSON-compatible input and validator/ruleset version, validation SHA
 - **THEN** validation treats them as inert data and neither executes nor resolves them
 
 ### Requirement: Structural form and element validation
-The supported pure rules SHALL validate the confirmed Rails structural subset: nonblank form name; `elements` as a nonempty array for a create/effective form; no more than 1,400 flattened elements; every element as an object; globally unique, nonblank keys; nonblank labels; required `data_name` except on `Section` and `Label`; one of the confirmed form element types; explicit boolean `disabled`, `hidden`, and `required`; and nonempty element arrays for `Section` and `Repeatable`.
+The supported pure rules SHALL validate the confirmed Rails structural subset:
+nonblank form name; `elements` as an array (the public v1 contract also
+accepts an explicitly empty root array); no more than 1,400 flattened
+elements; every element as an object; globally unique, nonblank keys; nonblank
+labels; required `data_name` except on `Section` and `Label`; one of the
+confirmed form element types; explicit boolean `disabled`, `hidden`, and
+`required`; and nonempty element arrays for `Section` and `Repeatable`.
 
 #### Scenario: Malformed root
-- **WHEN** the candidate is not a plain JSON object or has a blank name or non-array/empty `elements`
+- **WHEN** the candidate is not a plain JSON object or has a blank name or non-array `elements`
 - **THEN** path-addressed structural errors are returned without throwing
+
+#### Scenario: Canonical empty public root
+- **WHEN** a v1 public artifact has `name: "Inspection"` and `elements: []`
+- **THEN** structural validation completes without a diagnostic, and no prior
+  artifact is merged into or used to populate the candidate
 
 #### Scenario: Malformed nested element
 - **WHEN** an element is not an object, lacks required common properties, has an unknown type, or a container has malformed or empty children
@@ -236,6 +247,12 @@ The implementation SHALL follow the repository's CommonJS JavaScript-source/Type
 #### Scenario: Repository verification
 - **WHEN** the change is ready for review
 - **THEN** lint, existing tests, new validation tests, TypeScript declaration emission, CommonJS loading, and browserify build all pass
+
+#### Scenario: Published package boundary
+- **WHEN** the built `dist` directory is packed and installed
+- **THEN** `validateForm` loads from the package root, existing compare APIs
+  remain available, and legacy lifecycle, materialization, and result modules
+  are not available as deep imports
 
 #### Scenario: Release is requested implicitly by existing README
 - **WHEN** implementation reaches completion

@@ -5,7 +5,7 @@
  */
 const { indexForm, isObject } = require('./traversal');
 const { checkRoot, checkElements, resolveReferences, add, addWarning } = require('./rules');
-const { checkCompatibility } = require('./form-validator');
+const { checkCompatibility } = require('./compatibility');
 const { DIAGNOSTIC_LIMIT } = require('./limits');
 // Source tests run from src/, while the published package runs from dist/.
 // Both paths load package metadata rather than duplicating its version.
@@ -130,16 +130,17 @@ function observedSchemaVersion(artifact) {
     }
     return artifact.schema_version;
 }
-function versionsFor(artifact) {
+function versionsFor(artifact, contractVersion) {
     return {
-        validator: VALIDATOR_VERSION,
+        validator: contractVersion === null || contractVersion === undefined
+            ? null : VALIDATOR_VERSION,
         schema: observedSchemaVersion(artifact),
         // This package does not load a separate validation runtime.  In
         // particular, caller-declared runtime_version is not provenance.
         runtime: null
     };
 }
-function malformed(path, message, artifact) {
+function malformed(path, message, artifact, contractVersion) {
     return {
         contract_version: CONTRACT_VERSION,
         outcome: 'invalid',
@@ -157,7 +158,7 @@ function malformed(path, message, artifact) {
             unverified: [],
             failures: []
         },
-        versions: versionsFor(artifact)
+        versions: versionsFor(artifact, contractVersion)
     };
 }
 function validateForm(request) {
@@ -165,27 +166,27 @@ function validateForm(request) {
         if (!isObject(request))
             return malformed('$', 'request must be a JSON object');
         if (!own(request, 'contract_version') || request.contract_version !== CONTRACT_VERSION) {
-            return malformed('$', 'contract_version must be "v1"');
+            return malformed('$', 'contract_version must be "v1"', undefined, own(request, 'contract_version') ? request.contract_version : undefined);
         }
         if (!own(request, 'artifact_type') || request.artifact_type !== 'form') {
-            return malformed('$', 'artifact_type must be "form"');
+            return malformed('$', 'artifact_type must be "form"', undefined, request.contract_version);
         }
         if (!own(request, 'operation') || !['create', 'update', 'validate'].includes(request.operation)) {
-            return malformed('$', 'operation must be create, update, or validate');
+            return malformed('$', 'operation must be create, update, or validate', undefined, request.contract_version);
         }
         if (!own(request, 'artifact') || !isObject(request.artifact)) {
-            return malformed('$', 'The request is missing the complete candidate artifact.');
+            return malformed('$', 'The request is missing the complete candidate artifact.', undefined, request.contract_version);
         }
         if (own(request, 'context')) {
             // Context is intentionally not consumed by the pure validator.  It is
             // accepted as structured input, but never authorizes external lookups.
             if (request.context !== null && typeof request.context !== 'object') {
-                return malformed('$', 'context must be a structured JSON value', request.artifact);
+                return malformed('$', 'context must be a structured JSON value', request.artifact, request.contract_version);
             }
         }
         const checks = own(request, 'checks') ? request.checks : DEFAULT_CHECKS;
         if (!Array.isArray(checks) || checks.some((check) => typeof check !== 'string')) {
-            return malformed('$', 'checks must be an array of check-name strings', request.artifact);
+            return malformed('$', 'checks must be an array of check-name strings', request.artifact, request.contract_version);
         }
         const requested = checks.slice();
         const coverage = {
@@ -197,9 +198,9 @@ function validateForm(request) {
             failures: []
         };
         const diagnostics = [];
-        const versions = versionsFor(request.artifact);
+        const versions = versionsFor(request.artifact, request.contract_version);
         if (!requested.length) {
-            coverage.skipped.push(coverageEntry('validation', 'MISSING_CHECK'));
+            coverage.skipped.push({ reason_code: 'MISSING_CHECK' });
             return result(diagnostics, coverage, versions);
         }
         const uniqueRequested = [];
@@ -257,7 +258,7 @@ function validateForm(request) {
         if (structural || semantic) {
             // The canonical v1 form examples omit Rails' transport defaults.  The
             // validator checks malformed supplied booleans, but never invents them.
-            checkRoot(request.artifact, diagnostics);
+            checkRoot(request.artifact, diagnostics, { allowEmptyElements: true });
             index = indexForm(request.artifact);
             if (structural) {
                 checkElements(index, diagnostics, { requireCommonBooleans: false });
@@ -296,7 +297,8 @@ function validateForm(request) {
         return result(diagnostics, coverage, versions);
     }
     catch (error) {
-        return malformed('$', 'validation could not complete safely');
+        return malformed('$', 'validation could not complete safely', isObject(request) ? request.artifact : undefined, isObject(request) && own(request, 'contract_version')
+            ? request.contract_version : undefined);
     }
 }
 function result(rawDiagnostics, coverage, versions) {

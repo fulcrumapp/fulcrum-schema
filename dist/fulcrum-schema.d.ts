@@ -29,7 +29,7 @@ declare const schema: {
       failures: Array<object>;
     };
     versions: {
-      validator: string;
+      validator: string | null;
       schema: string | null;
       runtime: string | null;
     };

@@ -45,5 +45,20 @@ checks remain explicit coverage gaps.
 
 The canonical request/response examples are in
 `test/fixtures/validation/valid-form.json` and
-`test/fixtures/validation/invalid-form.json`; their provenance is recorded in
-`test/fixtures/validation/metadata.json`.
+`test/fixtures/validation/invalid-form.json`. The canonical incomplete update
+is in `test/fixtures/validation/incomplete-missing-previous.json`; fixture
+provenance is recorded in `test/fixtures/validation/metadata.json`.
+
+The v1 public structural contract intentionally accepts an explicit empty
+root `elements` array. This is a transport-neutral canonical case for an
+incomplete update: it produces no structural diagnostic, while a requested
+compatibility check without `previous_artifact` is skipped with
+`CONTEXT_REQUIRED`. The public adapter never merges that artifact with a
+previous form. This exception is limited to the root public contract; malformed
+types and empty Section/Repeatable child arrays remain structural errors.
+
+The legacy internal lifecycle validator and its materialization helper remain
+available to source-level regression tests only. They are excluded from the
+compiled package boundary, so `validation/form-validator` and
+`validation/materialize`, along with the legacy `validation/result` helper,
+are not installable deep imports.

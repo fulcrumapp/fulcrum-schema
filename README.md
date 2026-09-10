@@ -45,6 +45,14 @@ requesting the `compatibility` check. Validation never mutates, persists,
 executes, logs, or resolves submitted scripts, expressions, templates, or
 external identifiers.
 
+For the public v1 contract, an explicitly supplied empty `artifact.elements`
+array is a valid structural input (and is not filled from
+`previous_artifact`). This preserves the canonical incomplete-update envelope:
+structural validation can complete with zero diagnostics while compatibility is
+reported as `CONTEXT_REQUIRED` when no previous artifact is supplied. Other
+malformed root and element shapes remain errors; container child arrays remain
+required to be nonempty.
+
 The result always contains the v1 `contract_version`, one of `valid`,
 `invalid`, `incomplete`, or `unavailable`, deterministic namespaced
 diagnostics, `coverage` (`requested`, `completed`, `skipped`, `unsupported`,
@@ -56,4 +64,6 @@ not an error diagnostic. Non-applicable or unobserved version values are
 `null`, and caller-declared version inputs are not copied into the response.
 Only local structural, semantic, and leaf-type compatibility checks are
 performed; resource existence, authorization, normalization, and other
-contextual checks are not claimed as covered.
+contextual checks are not claimed as covered. Packaged consumers import
+`validateForm` from the package root; legacy lifecycle, materialization, and
+result helpers are not published as deep imports.

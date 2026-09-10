@@ -9,7 +9,7 @@ diagnostics/coverage/versions shape, `FORM.*` and `VALIDATION.*` namespaces,
 JSONPath-like paths, complete-artifact update behavior, compatibility context
 gating, malformed-request safety, compiled CommonJS loading, declarations,
 browser build, and npm pack/install-like loading. The public outcome ordering
-is unavailable, incomplete, invalid, then valid.
+is invalid, unavailable, incomplete, then valid.
 
 ## 1. Purity and Determinism
 
@@ -158,3 +158,34 @@ is unavailable, incomplete, invalid, then valid.
   files.
 - The full suite has 60 passing tests and the same 14 SQL fixture/runtime
   failures as the unchanged 10-passing/14-failing SQL and migration baseline.
+
+## Public-validator review findings (2026-09-09)
+
+- Empty `checks: []` returns checker-wide coverage
+  `{ "reason_code": "MISSING_CHECK" }` with no fabricated `check`; ordinary
+  coverage entries retain both `check` and `reason_code`.
+- The canonical incomplete-update case uses
+  `artifact: { name: "Inspection", elements: [] }` and
+  `checks: ["structural", "compatibility"]`. It returns `incomplete`, zero
+  diagnostics, `structural` completed, and compatibility skipped with
+  `CONTEXT_REQUIRED`; the public adapter never merges a previous artifact.
+  The local `incomplete-missing-previous.json` fixture mirrors the pinned
+  app-mcp fixture at commit `60449c84da193840804f6d2ab309d01f32ba4351`.
+- Public root structural validation accepts this explicit empty root array only
+  for the v1 transport contract; malformed root types and empty container
+  children remain errors. The focused regression asserts the exact envelope.
+- `versions.validator` is `@fulcrumapp/fulcrum-schema@3.9.1` only when a
+  non-null contract version is present, loaded from package metadata in both
+  source and compiled builds; absent/null contract versions report null.
+  Caller schema/runtime declarations are never copied.
+- Compatibility is isolated from the legacy source lifecycle/materialization
+  module. The build removes `form-validator`, `materialize`, and legacy
+  `result` artifacts from `dist`; an installed package exposes root
+  `validateForm` and rejects those deep imports.
+- The root declaration reports `versions.validator` as `string | null`, which
+  matches malformed requests where validator provenance is not observed.
+- Final focused Mocha: 52 passing. Full Mocha: 62 passing and the same 14
+  SQL fixture/runtime failures. Lint, no-emit, build, strict OpenSpec, and
+  real npm-pack/install-like smoke all pass. Dist tarball contains 113 files,
+  including root `fulcrum-schema.js`, declarations, and public validation
+  modules, with no legacy lifecycle/materialization artifacts.

@@ -31,6 +31,25 @@ Review findings fixed: blank schema metadata, hard-coded package version,
 Rails-present empty arrays/objects, enumerable overflow flag, indentation.
 No SQL/schema source or fixture changes; package version remains 3.9.1; no
 publish/deploy/merge/new PR.
+Public-contract completion (2026-09-09, Node 26.8.1):
+Canonical contract: app-mcp 60449c84da193840804f6d2ab309d01f32ba4351.
+Focused Mocha: PASS (52 passing), including the exact incomplete update
+fixture, checker-wide MISSING_CHECK entry, exact public field sets, built-root
+import, and negative lifecycle deep imports.
+ESLint: PASS.
+TypeScript no-emit: PASS.
+Strict OpenSpec and proposal/specs/design/tasks instructions: PASS.
+Build/declarations/browser bundle: PASS.
+Package tarball: PASS (113 files); install-like CommonJS root smoke preserved
+validateForm and the three compare APIs, reported
+@fulcrumapp/fulcrum-schema@3.9.1 from packaged metadata, and rejected
+form-validator/materialize/result deep imports. No .agents/, openspec/,
+src/validation/, or lifecycle artifacts leaked into the tarball.
+Full Mocha: 62 passing, 14 SQL fixture/runtime failures.
+Unchanged main SQL/migration baseline: 10 passing, the identical 14 failures
+(2 PostgreSQL, 2 SQLite, 4 v2-to-v3, 3 v3-to-v4, 3 v4-to-v5).
+No SQL/schema source or fixture changes; package version remains 3.9.1; no
+publish/deploy/merge/new PR.
 Forward revision correction (2026-09-09, Node 26.8.1):
 Canonical contract: app-mcp 60449c84da193840804f6d2ab309d01f32ba4351.
 Focused Mocha: PASS (50 passing; blank-schema regression executes independently).

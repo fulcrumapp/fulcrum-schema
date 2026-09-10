@@ -38,6 +38,21 @@ function form(overrides = {}) {
   }, overrides);
 }
 
+function assertPublicResultShape(result) {
+  assert.deepStrictEqual(
+    Object.keys(result).sort(),
+    ['contract_version', 'outcome', 'diagnostics', 'coverage', 'versions'].sort()
+  );
+  assert.deepStrictEqual(
+    Object.keys(result.coverage).sort(),
+    ['requested', 'completed', 'skipped', 'unsupported', 'unverified', 'failures'].sort()
+  );
+  assert.deepStrictEqual(
+    Object.keys(result.versions).sort(),
+    ['validator', 'schema', 'runtime'].sort()
+  );
+}
+
 describe('internal pure form validation', () => {
   it('matches the approved v1 public envelope for canonical form fixtures', () => {
     const schema = require('../src/fulcrum-schema');
@@ -61,8 +76,8 @@ describe('internal pure form validation', () => {
     );
     assert.strictEqual(validResult.versions.schema, null);
     assert.strictEqual(validResult.versions.runtime, null);
-    ['contract_version', 'outcome', 'diagnostics', 'coverage', 'versions']
-      .forEach((key) => assert.ok(Object.prototype.hasOwnProperty.call(validResult, key)));
+    assertPublicResultShape(validResult);
+    assertPublicResultShape(invalidResult);
   });
 
   it('uses default checks and reports an explicit missing-check entry', () => {
@@ -95,11 +110,21 @@ describe('internal pure form validation', () => {
     });
     assert.strictEqual(missing.outcome, 'incomplete');
     assert.deepStrictEqual(missing.coverage.requested, []);
-    assert.deepStrictEqual(missing.coverage.skipped, [{
-      check: 'validation',
-      reason_code: 'MISSING_CHECK'
-    }]);
+    assert.deepStrictEqual(missing.coverage.skipped, [{ reason_code: 'MISSING_CHECK' }]);
     assert.deepStrictEqual(missing.coverage.completed, []);
+  });
+
+  it('matches the canonical incomplete update without merging a previous artifact', () => {
+    const schema = require('../src/fulcrum-schema');
+    const fixture = JSON.parse(fs.readFileSync(path.join(
+      __dirname,
+      'fixtures',
+      'validation',
+      'incomplete-missing-previous.json'
+    )));
+    const result = schema.validateForm(fixture.request);
+    assert.deepStrictEqual(result, fixture.response);
+    assertPublicResultShape(result);
   });
 
   it('keeps public coverage entries structured and applies invalid precedence', () => {
@@ -261,6 +286,24 @@ describe('internal pure form validation', () => {
     assert.strictEqual(result.diagnostics[0].code, 'VALIDATION.INVALID_REQUEST');
     assert.strictEqual(result.diagnostics[0].path, '$');
     assert.ok(!Object.prototype.hasOwnProperty.call(result, 'reason'));
+    assertPublicResultShape(result);
+  });
+
+  it('does not claim validator provenance when the contract version is absent', () => {
+    const schema = require('../src/fulcrum-schema');
+    const missing = schema.validateForm({
+      artifact_type: 'form',
+      operation: 'create',
+      artifact: { name: 'Inspection', elements: [] }
+    });
+    const nullContract = schema.validateForm({
+      contract_version: null,
+      artifact_type: 'form',
+      operation: 'create',
+      artifact: { name: 'Inspection', elements: [] }
+    });
+    assert.strictEqual(missing.versions.validator, null);
+    assert.strictEqual(nullContract.versions.validator, null);
   });
 
   it('keeps the supported element type profile aligned with Rails Form::TYPES', () => {
@@ -268,17 +311,38 @@ describe('internal pure form validation', () => {
     assert.ok(!ELEMENT_TYPES.includes('ProjectField'));
   });
 
-  it('exports the approved validator only from the package root', () => {
+  it('exports the approved validator from source and built package roots only', () => {
     const schema = require('../src/fulcrum-schema');
+    const builtSchema = require('../dist');
     assert.strictEqual(typeof schema.validateForm, 'function');
+    assert.strictEqual(typeof builtSchema.validateForm, 'function');
+    assert.strictEqual(typeof builtSchema.compareOrganization, 'function');
+    assert.strictEqual(typeof builtSchema.compareFormSchemas, 'function');
+    assert.strictEqual(typeof builtSchema.compareForms, 'function');
+    const builtResult = builtSchema.validateForm({
+      contract_version: 'v1',
+      artifact_type: 'form',
+      operation: 'update',
+      artifact: { name: 'Inspection', elements: [] },
+      checks: ['structural', 'compatibility']
+    });
+    assert.strictEqual(builtResult.outcome, 'incomplete');
+    assert.strictEqual(
+      builtResult.versions.validator,
+      '@fulcrumapp/fulcrum-schema@3.9.1'
+    );
     assert.strictEqual(
       fs.existsSync(path.join(__dirname, '../src/validation/index.js')),
       false
     );
-    assert.strictEqual(
-      fs.existsSync(path.join(__dirname, '../dist/validation/form-validator.js')),
-      true
-    );
+    ['form-validator', 'materialize', 'result'].forEach((moduleName) => {
+      const modulePath = path.join(__dirname, '../dist/validation', moduleName);
+      assert.strictEqual(fs.existsSync(`${modulePath}.js`), false);
+      assert.throws(
+        () => require(modulePath),
+        (error) => error && error.code === 'MODULE_NOT_FOUND'
+      );
+    });
     assert.throws(() => require('../src/validation'), /Cannot find module/);
   });
 

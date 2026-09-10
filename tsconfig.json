@@ -14,5 +14,10 @@
   },
   "include": [
     "src/"
+  ],
+  "exclude": [
+    "src/validation/form-validator.js",
+    "src/validation/materialize.js",
+    "src/validation/result.js"
   ]
 }
