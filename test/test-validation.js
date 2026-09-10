@@ -70,12 +70,16 @@ describe('internal pure form validation', () => {
     assert.strictEqual(invalidResult.diagnostics[0].path, '$.elements[1].data_name');
     assert.deepStrictEqual(invalidResult.coverage, invalid.response.coverage);
     const packageMetadata = require('../package.json');
-    assert.strictEqual(
-      validResult.versions.validator,
-      `${packageMetadata.name}@${packageMetadata.version}`
-    );
-    assert.strictEqual(validResult.versions.schema, null);
-    assert.strictEqual(validResult.versions.runtime, null);
+    [valid, invalid].forEach((fixture, index) => {
+      const result = index === 0 ? validResult : invalidResult;
+      assert.deepStrictEqual(result.versions, fixture.response.versions);
+      assert.strictEqual(
+        result.versions.validator,
+        `${packageMetadata.name}@${packageMetadata.version}`
+      );
+      assert.strictEqual(result.versions.schema, null);
+      assert.strictEqual(result.versions.runtime, null);
+    });
     assertPublicResultShape(validResult);
     assertPublicResultShape(invalidResult);
   });
@@ -748,6 +752,39 @@ describe('internal pure form validation', () => {
     assert.ok(result.coverage.skipped.includes('diagnostic-overflow'));
     assert.ok(result.diagnostics.some((diagnostic) => diagnostic.code === 'element-limit'));
     assert.ok(result.diagnostics.every((diagnostic) => diagnostic.message.length < 300));
+  });
+
+  it('marks public structural and semantic checks unavailable after index overflow', () => {
+    const schema = require('../src/fulcrum-schema');
+    const result = schema.validateForm({
+      contract_version: 'v1',
+      artifact_type: 'form',
+      operation: 'create',
+      artifact: {
+        name: 'Overflow',
+        elements: Array.from({ length: DIAGNOSTIC_LIMIT + 1 }, () => null)
+      },
+      checks: ['structural', 'semantic']
+    });
+    assert.strictEqual(result.outcome, 'invalid');
+    assert.strictEqual(result.diagnostics.length, DIAGNOSTIC_LIMIT);
+    assert.deepStrictEqual(result.coverage.completed, []);
+    assert.deepStrictEqual(result.coverage.failures, [
+      {
+        check: 'structural',
+        reason_code: 'INPUT_LIMIT_EXCEEDED',
+        path: '$.elements'
+      },
+      {
+        check: 'semantic',
+        reason_code: 'INPUT_LIMIT_EXCEEDED',
+        path: '$.elements'
+      }
+    ]);
+    result.coverage.failures.forEach((entry) => {
+      assert.strictEqual(typeof entry.check, 'string');
+      assert.strictEqual(typeof entry.reason_code, 'string');
+    });
   });
 
   it('uses the actual FastFill property path and keeps compatibility messages bounded', () => {

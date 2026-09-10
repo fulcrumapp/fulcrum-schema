@@ -27,6 +27,11 @@
       "unsupported": [],
       "unverified": [],
       "failures": []
+    },
+    "versions": {
+      "validator": "@fulcrumapp/fulcrum-schema@3.9.1",
+      "schema": null,
+      "runtime": null
     }
   }
 }

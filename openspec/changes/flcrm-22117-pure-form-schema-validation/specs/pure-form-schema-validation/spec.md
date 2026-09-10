@@ -224,7 +224,10 @@ The validator SHALL terminate safely for malformed, cyclic, excessively deep, an
 
 #### Scenario: Diagnostic limit reached
 - **WHEN** violations exceed the supported diagnostic limit
-- **THEN** returned diagnostics use deterministic truncation and coverage indicates that validation was incomplete
+- **THEN** returned diagnostics use deterministic truncation, retained errors
+  remain diagnostics, and affected structural or semantic checks are removed
+  from `completed` and represented by structured `INPUT_LIMIT_EXCEEDED`
+  coverage failures
 
 #### Scenario: Hostile JSON Pointer segment
 - **WHEN** path construction receives an object, symbol, boolean, invalid number, or oversized string segment

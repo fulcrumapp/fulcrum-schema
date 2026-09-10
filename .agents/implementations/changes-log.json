@@ -354,6 +354,33 @@
       "package_version": "3.9.1 unchanged",
       "sql_schema_diff": "unchanged",
       "shared_contract": "FLCRM-22116 approved"
+    },
+    {
+      "timestamp": "2026-09-09T19:24:00-07:00",
+      "phase": "PUBLIC_VALIDATOR_AUDIT_CORRECTION",
+      "summary": "Fixed final public-validator audit findings: propagated index diagnostic overflow before public result construction so affected structural and semantic checks cannot remain completed, emitted structured INPUT_LIMIT_EXCEEDED failures while retaining capped errors, added a >200 malformed-element adversarial public test, and completed canonical valid/invalid fixture versions metadata with package-derived validator and null schema/runtime provenance.",
+      "files": [
+        "src/validation/public-validator.js",
+        "test/test-validation.js",
+        "test/fixtures/validation/valid-form.json",
+        "test/fixtures/validation/invalid-form.json",
+        "README.md",
+        "docs/validation-contract.md",
+        "openspec/changes/flcrm-22117-pure-form-schema-validation/specs/pure-form-schema-validation/spec.md",
+        ".agents/state.json",
+        ".agents/validation/test-results.log",
+        ".agents/implementations/changes-log.json"
+      ],
+      "review_findings": {
+        "public_diagnostic_overflow": "fixed; index.diagnosticOverflow is propagated to raw diagnostics and affected checks become structured INPUT_LIMIT_EXCEEDED failures",
+        "canonical_fixture_versions": "fixed; valid and invalid fixtures include the pinned v1 validator/schema/runtime shape without fabricated runtime provenance"
+      },
+      "focused_tests": "53 passing",
+      "full_tests": "63 passing, 14 unchanged baseline SQL fixture/runtime failures",
+      "package_tarball": "PASS (dist pack/install-like root smoke; validator metadata @fulcrumapp/fulcrum-schema@3.9.1; legacy lifecycle deep imports unavailable)",
+      "package_version": "3.9.1 unchanged",
+      "sql_schema_diff": "unchanged",
+      "shared_contract": "FLCRM-22116 approved"
     }
   ]
 }

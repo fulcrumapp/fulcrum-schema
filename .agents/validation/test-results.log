@@ -31,6 +31,26 @@ Review findings fixed: blank schema metadata, hard-coded package version,
 Rails-present empty arrays/objects, enumerable overflow flag, indentation.
 No SQL/schema source or fixture changes; package version remains 3.9.1; no
 publish/deploy/merge/new PR.
+
+Final public-validator audit corrections (2026-09-09, Node 26.8.1):
+The public adapter propagates index diagnostic overflow into raw diagnostics
+before result construction. Retained errors remain diagnostics, while
+structural and semantic coverage is removed from `completed` and represented
+by structured `INPUT_LIMIT_EXCEEDED` failures at `$.elements`.
+Focused Mocha: PASS (53 passing, including 201 malformed-element adversarial
+coverage and canonical valid/invalid fixture version parity).
+ESLint: PASS.
+TypeScript no-emit: PASS.
+Build/declarations/browser bundle: PASS.
+Strict OpenSpec validation: PASS.
+Dist npm pack/install-like CommonJS smoke: PASS; root `validateForm` reports
+@fulcrumapp/fulcrum-schema@3.9.1 and the three legacy lifecycle deep imports
+are unavailable.
+Full Mocha: 63 passing, exactly 14 unchanged SQL fixture/runtime failures
+(2 PostgreSQL, 2 SQLite, 4 v2-to-v3, 3 v3-to-v4, 3 v4-to-v5).
+Unchanged SQL/migration baseline: 10 passing, the identical 14 failures.
+No SQL/schema source or fixture changes; package version remains 3.9.1; no
+publish/deploy/merge/new PR.
 Public-contract completion (2026-09-09, Node 26.8.1):
 Canonical contract: app-mcp 60449c84da193840804f6d2ab309d01f32ba4351.
 Focused Mocha: PASS (52 passing), including the exact incomplete update

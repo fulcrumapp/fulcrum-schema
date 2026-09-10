@@ -34,6 +34,12 @@ severity, bounded actionable messages, and JSONPath-like paths. The validator
 uses one shared diagnostic limit; overflow is reported through coverage and
 does not hide an error diagnostic.
 
+When indexing discards diagnostics after the shared limit, the affected
+structural and semantic checks are removed from `completed` and represented by
+structured `failures` entries with `reason_code: "INPUT_LIMIT_EXCEEDED"` and
+the `$.elements` path. The retained diagnostics remain errors and are still
+returned up to the shared limit.
+
 ## Coverage and purity
 
 Outcome precedence is invalid, unavailable, incomplete, then valid. The

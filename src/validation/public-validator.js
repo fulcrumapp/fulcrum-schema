@@ -296,6 +296,14 @@ function validateForm(request) {
         if (isObject(request.artifact)) resolveReferences(request.artifact, index, diagnostics);
         mark('completed', 'semantic');
       }
+      if (index.diagnosticOverflow) {
+        Object.defineProperty(diagnostics, 'overflowed', {
+          configurable: true,
+          enumerable: true,
+          writable: true,
+          value: true
+        });
+      }
       if (index.tooDeep || index.cyclic || index.tooLarge) {
         if (structural) mark('failures', 'structural', 'INPUT_LIMIT_EXCEEDED', '/elements');
         if (semantic) mark('failures', 'semantic', 'INPUT_LIMIT_EXCEEDED', '/elements');
@@ -340,12 +348,15 @@ function validateForm(request) {
 
 function result(rawDiagnostics, coverage, versions) {
   if (rawDiagnostics.overflowed) {
-    coverage.requested.forEach((check) => {
-      if (SUPPORTED_CHECKS.has(check)
-        && !coverage.failures.some((entry) => (
-          entry.check === check && entry.reason_code === 'INPUT_LIMIT_EXCEEDED'
-        ))) {
-        coverage.failures.push(coverageEntry(check, 'INPUT_LIMIT_EXCEEDED'));
+    const affectedChecks = coverage.completed.filter((check) => SUPPORTED_CHECKS.has(check));
+    affectedChecks.forEach((check) => {
+      for (let i = coverage.completed.length - 1; i >= 0; i -= 1) {
+        if (coverage.completed[i] === check) coverage.completed.splice(i, 1);
+      }
+      if (!coverage.failures.some((entry) => (
+        entry.check === check && entry.reason_code === 'INPUT_LIMIT_EXCEEDED'
+      ))) {
+        coverage.failures.push(coverageEntry(check, 'INPUT_LIMIT_EXCEEDED', '/elements'));
       }
     });
   }

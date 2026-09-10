@@ -62,6 +62,9 @@ and `runtime`). A supplied empty `checks` array returns `incomplete` with a
 incomplete > valid` precedence; an operational failure is a coverage failure,
 not an error diagnostic. Non-applicable or unobserved version values are
 `null`, and caller-declared version inputs are not copied into the response.
+If more than the shared diagnostic limit is discarded while indexing, the
+affected structural and semantic checks are reported as structured
+`INPUT_LIMIT_EXCEEDED` coverage failures rather than as completed checks.
 Only local structural, semantic, and leaf-type compatibility checks are
 performed; resource existence, authorization, normalization, and other
 contextual checks are not claimed as covered. Packaged consumers import
