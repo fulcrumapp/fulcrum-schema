@@ -90,6 +90,10 @@ The supported subset SHALL include deterministic, input-only rules confirmed in 
 - **WHEN** a supported numeric or boolean property is explicitly zero or false
 - **THEN** it is validated according to its rule and is not treated as omitted
 
+#### Scenario: Hostile AI prompt value
+- **WHEN** `ai_prompt` is not a string and defines user-controlled coercion hooks
+- **THEN** validation emits one type diagnostic without invoking `toString`, `valueOf`, or any other coercion hook
+
 #### Scenario: Rule cannot be implemented with cross-runtime parity
 - **WHEN** a rule depends on Ruby-specific regular-expression syntax, normalization, or another behavior not safely reproducible in the package
 - **THEN** that check is reported as unsupported or provisional rather than silently approximated
@@ -129,7 +133,7 @@ For update operations with a previous form, the validator SHALL compare previous
 - **THEN** no `Schema`, `SchemaDiffer`, SQL generator, or database path is invoked
 
 ### Requirement: Structured diagnostics and outcome
-The result SHALL provide a deterministic outcome and ordered diagnostics. Subject to shared-contract naming approval, every diagnostic SHALL contain a stable code, `error|warning|info` severity, RFC 6901 JSON Pointer path, actionable message, optional non-sensitive fix guidance, and optional source range only when supplied by an upstream parser. Diagnostics SHALL not echo complete forms, scripts, credentials, or suspected secret values.
+The result SHALL provide a deterministic outcome and ordered diagnostics. Subject to shared-contract naming approval, every diagnostic SHALL contain a stable code, `error|warning|info` severity, RFC 6901 JSON Pointer path, actionable message, optional non-sensitive fix guidance, and optional source range only when supplied by an upstream parser. Diagnostics SHALL not echo complete forms, scripts, credentials, or suspected secret values. Required common booleans SHALL produce exactly one diagnostic per malformed property.
 
 #### Scenario: Invalid form
 - **WHEN** one or more supported rules fail
@@ -142,6 +146,10 @@ The result SHALL provide a deterministic outcome and ordered diagnostics. Subjec
 #### Scenario: Fully covered valid form
 - **WHEN** all requested pure checks complete and no error diagnostic exists
 - **THEN** the outcome is valid
+
+#### Scenario: Malformed required common booleans
+- **WHEN** `disabled`, `hidden`, or `required` is absent or is not a boolean
+- **THEN** each malformed property produces exactly one common-boolean diagnostic
 
 ### Requirement: Versioned coverage
 Every result SHALL include concrete contract, validator/ruleset, package, and form-schema version information where available, plus machine-readable requested, completed, skipped, unsupported, and provisional check identifiers and an unambiguous completeness indicator. Exact field names and enum spellings remain provisional until FLCRM-22116 approval.
@@ -170,7 +178,7 @@ Coverage SHALL explicitly exclude Rails checks that require account/application 
 - **THEN** the package leaves the input unchanged and reports either an explicit diagnostic/fix or unsupported normalization coverage
 
 ### Requirement: Bounded and safe handling
-The validator SHALL terminate safely for malformed, cyclic, excessively deep, and oversized JavaScript inputs, SHALL avoid catastrophic regular-expression evaluation, and SHALL bound diagnostic production while making truncation explicit.
+The validator SHALL terminate safely for malformed, cyclic, excessively deep, and oversized JavaScript inputs, SHALL avoid catastrophic regular-expression evaluation, and SHALL bound diagnostic production while making truncation explicit. Diagnostic producers and result construction SHALL use one shared diagnostic limit. JSON Pointer segments SHALL accept only bounded primitive string keys or nonnegative safe-integer indexes and SHALL never coerce attacker-controlled objects.
 
 #### Scenario: Cyclic or excessive input
 - **WHEN** the caller passes a cyclic value, nesting beyond the supported JSON depth, or an oversized element collection
@@ -179,6 +187,10 @@ The validator SHALL terminate safely for malformed, cyclic, excessively deep, an
 #### Scenario: Diagnostic limit reached
 - **WHEN** violations exceed the supported diagnostic limit
 - **THEN** returned diagnostics use deterministic truncation and coverage indicates that validation was incomplete
+
+#### Scenario: Hostile JSON Pointer segment
+- **WHEN** path construction receives an object, symbol, boolean, invalid number, or oversized string segment
+- **THEN** it emits a bounded deterministic safe segment without invoking user-defined coercion
 
 ### Requirement: Existing schema-diff compatibility
 Adding validation SHALL preserve the package's existing `compareOrganization`, `compareFormSchemas`, and singleton `compareForms` behavior, output, state semantics, and supported builds.

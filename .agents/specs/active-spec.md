@@ -34,13 +34,13 @@ Add a reusable, deterministic, non-mutating validator for unsaved Fulcrum form s
 3. **Operations:** create validates a complete candidate. Update requires `previous_form`, overlays patch-owned top-level properties on a copy of the previous form, and treats nested objects/arrays as replacements. Omission retains the previous value; explicit `null`, `false`, zero, empty string/object/array is preserved. This merge rule is provisional pending shared approval.
 4. **Structure:** validate root name/elements, maximum 1,400 flattened elements, object elements, globally unique nonblank keys, labels, required data names except `Section`/`Label`, known element types, required booleans, and nonempty container children.
 5. **Scoped data names:** enforce uniqueness per storage scope with sections transparent and repeatable children isolated, but mark the rule provisional until authoritative case/normalization/reserved-name behavior is confirmed.
-6. **Type-specific subset:** cover deterministic local portions of choices, status/status field, explicit geometry, feature booleans, map style type, field effects, numeric text, hyperlink, calculated, yes/no, date/time, lengths, AI prompt lengths, sketch shape, photo FastFill targets, classification ID presence, and record-link shape/flags.
+6. **Type-specific subset:** cover deterministic local portions of choices, status/status field, explicit geometry, feature booleans, map style type, field effects, numeric text, hyperlink, calculated, yes/no, date/time, lengths, AI prompt lengths, sketch shape, photo FastFill targets, classification ID presence, and record-link shape/flags. Validate `ai_prompt` as a string without invoking user-defined coercion.
 7. **References:** resolve record title keys, title field lists, repeatable title keys, conditions including `@status`, allowed operators by target type/scope, and FastFill targets.
 8. **Compatibility:** with a supplied previous form, reject a changed type for an existing leaf key without invoking SQL/schema diff; additions/removals are allowed by this confirmed rule.
-9. **Diagnostics:** stable code; `error|warning|info`; RFC 6901 path; actionable bounded message; optional safe fix; optional source range only when provided upstream; deterministic order; no raw payload/script/credential leakage.
+9. **Diagnostics:** stable code; `error|warning|info`; RFC 6901 path; actionable bounded message; optional safe fix; optional source range only when provided upstream; deterministic order; exactly one common diagnostic for each malformed required boolean; no raw payload/script/credential leakage. JSON Pointer construction accepts only bounded primitive string keys and nonnegative safe-integer indexes and never invokes user-defined coercion.
 10. **Outcome and coverage:** distinguish valid, invalid, incomplete, and unsupported; report concrete contract/ruleset/package/schema versions and requested/completed/skipped/unsupported/provisional checks. Exact field/enum/check names await FLCRM-22116.
 11. **Unsupported context:** report, but never perform, parent-form access; entitlement checks; classification/choice-list/record-link target existence/access; attachment checks and sketch sanitization; map-engine normalization; hidden model/database state.
-12. **Bounds:** reject or report cyclic, too-deep, too-large, unsupported-version, and diagnostic-overflow cases deterministically; avoid Ruby/JavaScript regex approximation or unbounded regex work.
+12. **Bounds:** reject or report cyclic, too-deep, too-large, unsupported-version, and diagnostic-overflow cases deterministically; avoid Ruby/JavaScript regex approximation or unbounded regex work. All diagnostic producers and result truncation use one shared diagnostic-limit constant.
 13. **Non-regression:** existing `compareOrganization`, `compareFormSchemas`, singleton `compareForms`, SQL fixtures, mutable compare configuration, CommonJS loading, declarations, and browser build remain unchanged.
 14. **Delivery:** use the user-approved Luna implementation agents only after approval to implement; keep the change cohesive in one reviewed PR; never publish.
 
@@ -88,6 +88,7 @@ See `openspec/changes/flcrm-22117-pure-form-schema-validation/design.md` for the
 ## Security & Edge Cases
 
 - Treat scripts, expressions, SQL-looking text, imports, and templates as inert strings; never use `eval`, `Function`, dynamic import, a template engine, or SQL paths.
+- Type-check attacker-controlled values before length, splitting, or path operations; never invoke their `toString` or `valueOf` methods.
 - Traverse iteratively with cycle detection and depth/element/diagnostic caps; never recurse unboundedly or evaluate attacker-controlled regular expressions.
 - Use own-property presence, not truthiness, so false/zero/null/empty/omitted behavior is correct.
 - Deep-freeze and snapshot inputs in tests; verify no defaulting, parent links, sanitization, sorting, or shared-state mutation.
@@ -109,6 +110,7 @@ See `openspec/changes/flcrm-22117-pure-form-schema-validation/design.md` for the
 - Deep-freeze/deep-equality and repeated-call determinism tests for both current and previous forms.
 - Nested/repeatable target-scope matrices, global duplicate keys, scoped duplicate data names, title/status references, and leaf type-change compatibility.
 - Type-specific boundary/adversarial cases, including malformed members and maximum/minimum values.
+- Hostile `ai_prompt` and JSON Pointer segment objects whose `toString`/`valueOf` throw, plus exactly-one diagnostics for malformed `disabled`/`hidden`/`required`.
 - Cyclic/depth/1,400-element/diagnostic-overflow tests with bounded execution.
 - Side-effect sentinels proving no logging, I/O, imports, SQL/schema differ use, persistence, or executable-content evaluation.
 - Sensitive-data assertions proving messages do not echo full forms, scripts, credentials, or secret candidates.

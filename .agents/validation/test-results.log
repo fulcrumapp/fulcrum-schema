@@ -1,6 +1,6 @@
 FLCRM-22117 implementation validation
 Authoritative Rails revision: 25503ce61df71e9932c2ecef4bde348780afb15d
-Focused Mocha: PASS (38 passing)
+Focused Mocha: PASS (41 passing)
 ESLint: PASS
 TypeScript no-emit: PASS
 TypeScript declarations/browser build: PASS
@@ -9,10 +9,11 @@ Compiled/deep-import validation API absence: PASS
 npm pack dry-run/package-boundary: PASS (172 files; no .agents/, openspec/, src/validation/, or validation paths)
 OpenSpec strict validation: PASS
 Git diff check: PASS
-Full yarn test: FAIL (14 pre-existing SQL fixture assertion failures under the installed sqldiff/runtime; 48 passing, including all 38 validation tests; validation modules do not import SQL)
+Full yarn test: FAIL (14 pre-existing SQL fixture assertion failures under the installed sqldiff/runtime; 51 passing, including all 41 validation tests; validation modules do not import SQL)
 Baseline comparison: unchanged SQL/migration suite is 10 passing and 14 failing; the 14 SQL fixture/runtime failures are unchanged and out of scope.
 Public validation export: intentionally not added; FLCRM-22116 shared contract remains pending approval.
 Package version/publication: unchanged and not published.
 Toolchain note: repository pins unavailable Node 26.1.0; prior validation used installed Node 20.20.2 without modifying .tool-versions. The final focused/build checks also pass with installed Node 26.8.1.
 Post-validation correction: requested-check outcome semantics, Rails Ruby-truthiness choice-list and length handling, zero length preservation, Sketch null/array-only shape, and 24-type evidence were corrected; .npmignore excludes .agents/, openspec/, and src/validation/. Focused Mocha: PASS (38 passing). Package dry-run and CommonJS public-boundary smoke: PASS. No SQL/schema source or fixture changes, commit, publish, PR, merge, or public export.
 Final blocker correction rerun (Node 26.8.1): focused Mocha 38 passing; ESLint PASS; TypeScript no-emit PASS; declarations/browser build PASS; strict OpenSpec PASS. Full suite remains 48 passing with 14 unchanged SQL fixture/runtime failures (2 PostgreSQL, 2 SQLite, 4 v2-to-v3, 3 v3-to-v4, 3 v4-to-v5). The minimal form is incomplete when contextual/provisional coverage is present; only an explicitly complete pure profile is valid.
+Guarded review correction (2026-09-09, Node 26.8.1): hostile non-string ai_prompt values are type-checked without coercion; disabled/hidden/required emit exactly one common diagnostic each; diagnostic production and result truncation share src/validation/limits.js; bounded JSON Pointer segments reject objects and other unsupported primitives without invoking toString/valueOf. Focused Mocha: PASS (41 passing); ESLint PASS; TypeScript no-emit PASS; declarations/browser build PASS; strict OpenSpec PASS; CommonJS/deep-import boundary PASS; npm pack dry-run PASS (172 files, zero forbidden internal paths). Full suite: 51 passing, 14 unchanged pre-existing SQL fixture/runtime failures.

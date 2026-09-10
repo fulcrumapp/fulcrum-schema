@@ -8,6 +8,7 @@
 4. Seed existing singleton compare configuration, invoke validation, and compare again; assert singleton state and SQL output are unchanged.
 5. Spy on console logging, schema constructors, `sqldiff`, filesystem/network/process APIs, dynamic imports, and execution primitives; assert none are called.
 6. Put JavaScript, EJS, SQL, import syntax, and secret-like strings in supported string properties; assert they remain inert and are not echoed wholesale in diagnostics.
+7. Supply hostile non-string `ai_prompt` and path-segment objects whose `toString` and `valueOf` throw; assert no coercion hook runs and bounded explicit diagnostics/segments result.
 
 ## 2. Create and Update Semantics
 
@@ -23,11 +24,13 @@
 1. Non-object/cyclic root, blank name, absent/non-array/empty elements.
 2. Non-object element; unknown type; missing/blank key, label, or required data name.
 3. Missing and non-boolean `disabled`, `hidden`, `required`, including explicit false as valid.
+   Assert every missing or malformed required common boolean produces exactly one diagnostic, not both common and optional-boolean diagnostics.
 4. Duplicate keys at siblings, through Sections, and across repeatable branches; assert global collision.
 5. Section/Repeatable children absent, non-array, or empty; deeply nested valid structure.
 6. Exactly 1,400 flattened elements and 1,401 elements; assert the boundary and bounded processing.
 7. Nesting at and beyond the approved depth; assert deterministic bounded handling.
 8. More violations than the approved diagnostic cap; assert deterministic truncation and incomplete coverage.
+9. Assert traversal producers and result truncation import one shared diagnostic-limit constant.
 
 ## 4. Data-Name Scopes
 

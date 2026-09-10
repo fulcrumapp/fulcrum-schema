@@ -5,7 +5,8 @@ const { indexForm, isObject } = require('./traversal');
 const {
   ELEMENT_TYPES, checkRoot, checkElements, resolveReferences, add, addWarning
 } = require('./rules');
-const { makeResult, DIAGNOSTIC_LIMIT, requestedChecks } = require('./result');
+const { DIAGNOSTIC_LIMIT } = require('./limits');
+const { makeResult, requestedChecks } = require('./result');
 const KNOWN_SCHEMA_VERSIONS = new Set(['v1', 'v2', 'v3', 'v4', 'v5', 'v6']);
 
 function sortDiagnostics(diagnostics) {

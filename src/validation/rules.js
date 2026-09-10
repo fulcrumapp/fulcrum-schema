@@ -1,8 +1,8 @@
 'use strict';
 
 const { hasOwn } = require('./materialize');
-const { isObject } = require('./traversal');
-const { DIAGNOSTIC_LIMIT } = require('./result');
+const { appendPointer, isObject } = require('./traversal');
+const { DIAGNOSTIC_LIMIT } = require('./limits');
 
 const ELEMENT_TYPES = [
   'AddressField', 'AttachmentField', 'AudioField', 'BarcodeField', 'ButtonField',
@@ -46,9 +46,9 @@ const PHOTO_FASTFILL_TARGET_TYPE_BLACKLIST = new Set([
   'CalculatedField', 'SignatureField', 'AttachmentField', 'RecordLinkField'
 ]);
 const BOOLEAN_FIELDS = new Set([
-  'disabled', 'hidden', 'required', 'multiple', 'allow_other', 'numeric',
-  'neutral_enabled', 'enabled', 'read_only', 'track_enabled', 'audio_enabled',
-  'allow_creating_records', 'allow_existing_records'
+  'multiple', 'allow_other', 'numeric', 'neutral_enabled', 'enabled',
+  'read_only', 'track_enabled', 'audio_enabled', 'allow_creating_records',
+  'allow_existing_records'
 ]);
 
 function own(value, key) {
@@ -162,7 +162,12 @@ function checkGeometry(value, path, diagnostics) {
   }
   value.forEach((item, index) => {
     if (typeof item !== 'string' || !GEOMETRIES.has(item)) {
-      add(diagnostics, 'geometry-value', `${path}/${index}`, 'geometry contains an unsupported value');
+      add(
+        diagnostics,
+        'geometry-value',
+        appendPointer(path, index),
+        'geometry contains an unsupported value'
+      );
     }
   });
 }
@@ -186,7 +191,7 @@ function checkStatusField(statusField, diagnostics) {
     add(diagnostics, 'status-field-choices', '/status_field/choices', 'enabled status_field requires choices');
   } else {
     statusField.choices.forEach((choice, index) => {
-      const path = `/status_field/choices/${index}`;
+      const path = appendPointer('/status_field/choices', index);
       if (!isObject(choice) || !own(choice, 'label') || !nonblank(choice.label)) {
         add(diagnostics, 'status-choice-shape', path, 'status choices require a label');
       }
@@ -258,7 +263,7 @@ function checkChoices(element, path, diagnostics) {
     return;
   }
   element.choices.forEach((choice, index) => {
-    const choicePath = `${path}/choices/${index}`;
+    const choicePath = appendPointer(`${path}/choices`, index);
     if (!isObject(choice) || !own(choice, 'label') || !nonblank(choice.label)) {
       add(diagnostics, 'choice-shape', choicePath, 'each choice must be an object with a label');
     }
@@ -399,11 +404,18 @@ function checkTypeSpecific(element, path, diagnostics) {
     add(diagnostics, 'sketch-backgrounds', `${path}/backgrounds`, 'sketch backgrounds must be an array');
   }
   if (own(element, 'ai_prompt')) {
-    const promptLength = typeof element.ai_prompt === 'string'
-      ? element.ai_prompt.length : String(element.ai_prompt).length;
-    const promptLimit = type === 'PhotoField' ? 10000 : 150;
-    if (promptLength > promptLimit) {
-      add(diagnostics, 'ai-prompt-length', `${path}/ai_prompt`, `ai_prompt must not exceed ${promptLimit} characters`);
+    if (typeof element.ai_prompt !== 'string') {
+      add(
+        diagnostics,
+        'ai-prompt-type',
+        `${path}/ai_prompt`,
+        'ai_prompt must be a string'
+      );
+    } else {
+      const promptLimit = type === 'PhotoField' ? 10000 : 150;
+      if (element.ai_prompt.length > promptLimit) {
+        add(diagnostics, 'ai-prompt-length', `${path}/ai_prompt`, `ai_prompt must not exceed ${promptLimit} characters`);
+      }
     }
   }
   BOOLEAN_FIELDS.forEach((key) => {
@@ -426,7 +438,12 @@ function resolveReferences(form, index, diagnostics) {
     } else {
       form.title_field_keys.forEach((key, i) => {
         if (!keyEntry(key)) {
-        add(diagnostics, 'title-field-reference', `/title_field_keys/${i}`, 'title field key does not resolve');
+        add(
+          diagnostics,
+          'title-field-reference',
+          appendPointer('/title_field_keys', i),
+          'title field key does not resolve'
+        );
         }
       });
     }
@@ -460,7 +477,7 @@ function resolveReferences(form, index, diagnostics) {
         add(diagnostics, 'conditions-behavior', `${entry.path}/${behaviorProperty}`, 'condition behavior must be clear or preserve');
       }
       element[property].forEach((condition, i) => checkCondition(
-        condition, `${entry.path}/${property}/${i}`, entry, index, diagnostics
+        condition, appendPointer(`${entry.path}/${property}`, i), entry, index, diagnostics
       ));
     });
     checkPhotoFastFill(entry, index, diagnostics);
@@ -559,7 +576,7 @@ function checkFieldEffects(value, diagnostics) {
     return;
   }
   value.effects.forEach((effect, index) => {
-    const effectPath = `${path}/effects/${index}`;
+    const effectPath = appendPointer(`${path}/effects`, index);
     if (!isObject(effect)) {
       add(diagnostics, 'field-effect-shape', effectPath, 'field effect must be an object');
       return;
@@ -579,7 +596,7 @@ function checkFieldEffects(value, diagnostics) {
           add(
             diagnostics,
             'field-effect-condition',
-            `${effectPath}/conditions/${conditionIndex}`,
+            appendPointer(`${effectPath}/conditions`, conditionIndex),
             'field effect conditions require field and operator'
           );
         }
@@ -593,7 +610,7 @@ function checkFieldEffects(value, diagnostics) {
           add(
             diagnostics,
             'field-effect-action',
-            `${effectPath}/actions/${actionIndex}`,
+            appendPointer(`${effectPath}/actions`, actionIndex),
             'field effect actions require a type'
           );
         }

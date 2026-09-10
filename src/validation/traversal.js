@@ -1,11 +1,33 @@
 'use strict';
 
+const { DIAGNOSTIC_LIMIT } = require('./limits');
+
 const MAX_ELEMENTS = 1400;
 const MAX_DEPTH = 100;
-const MAX_DIAGNOSTICS = 200;
+const MAX_POINTER_SEGMENT_LENGTH = 256;
+const INVALID_POINTER_SEGMENT = 'invalid-segment';
 
 function pointerPart(value) {
-  return String(value).replace(/~/g, '~0').replace(/\//g, '~1');
+  let segment;
+  if (typeof value === 'string') {
+    segment = value;
+  } else if (typeof value === 'number'
+    && Number.isSafeInteger(value) && value >= 0) {
+    segment = `${value}`;
+  } else {
+    return INVALID_POINTER_SEGMENT;
+  }
+  if (segment.length > MAX_POINTER_SEGMENT_LENGTH) {
+    return INVALID_POINTER_SEGMENT;
+  }
+  const escaped = segment.replace(/~/g, '~0').replace(/\//g, '~1');
+  return escaped.length <= MAX_POINTER_SEGMENT_LENGTH
+    ? escaped : INVALID_POINTER_SEGMENT;
+}
+
+function appendPointer(path, value) {
+  const base = typeof path === 'string' ? path : '';
+  return `${base}/${pointerPart(value)}`;
 }
 
 function isObject(value) {
@@ -63,7 +85,7 @@ function indexForm(form) {
     const elementIndex = current.index;
     current.index += 1;
     const element = current.value[elementIndex];
-    const path = `${current.path}/${elementIndex}`;
+    const path = appendPointer(current.path, elementIndex);
     if (!isObject(element)) {
       addIndexError(index, {
         code: 'element-object', path, message: 'element must be an object'
@@ -147,15 +169,16 @@ function indexForm(form) {
 }
 
 function addIndexError(index, error) {
-  if (index.errors.length < MAX_DIAGNOSTICS) index.errors.push(error);
+  if (index.errors.length < DIAGNOSTIC_LIMIT) index.errors.push(error);
   else index.diagnosticOverflow = true;
 }
 
 module.exports = {
   MAX_ELEMENTS,
   MAX_DEPTH,
-  MAX_DIAGNOSTICS,
+  MAX_POINTER_SEGMENT_LENGTH,
   pointerPart,
+  appendPointer,
   isObject,
   indexForm
 };

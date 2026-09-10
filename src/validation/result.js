@@ -1,9 +1,10 @@
 'use strict';
 
+const { DIAGNOSTIC_LIMIT } = require('./limits');
+
 const PACKAGE_VERSION = '3.9.1';
 const VALIDATOR_VERSION = 'flcrm-22117-ruleset-1';
 const CONTRACT_VERSION = 'pending-flcrm-22116';
-const DIAGNOSTIC_LIMIT = 200;
 
 const CHECKS = [
   'root-structure', 'element-structure', 'key-uniqueness', 'data-name-scope',
@@ -79,7 +80,6 @@ function makeResult(schemaVersion, diagnostics, coverage, unsupported) {
 
 module.exports = {
   CHECKS,
-  DIAGNOSTIC_LIMIT,
   requestedChecks,
   makeResult
 };

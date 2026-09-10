@@ -2,8 +2,12 @@ const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
 const { validate } = require('../src/validation/form-validator');
+const { DIAGNOSTIC_LIMIT } = require('../src/validation/limits');
 const { ELEMENT_TYPES } = require('../src/validation/rules');
 const { makeResult, requestedChecks } = require('../src/validation/result');
+const {
+  MAX_POINTER_SEGMENT_LENGTH, appendPointer, pointerPart
+} = require('../src/validation/traversal');
 
 function freeze(value, seen = new WeakSet()) {
   if (value && typeof value === 'object' && !seen.has(value)) {
@@ -133,6 +137,86 @@ describe('internal pure form validation', () => {
     const result = validate({ operation: 'create', form: candidate });
     assert.ok(!result.diagnostics.some((diagnostic) => diagnostic.message.includes('child_process')));
     assert.ok(result.diagnostics.every((diagnostic) => diagnostic.message.length < 300));
+  });
+
+  it('does not coerce hostile AI prompt values', () => {
+    let coercions = 0;
+    const hostilePrompt = {
+      toString() {
+        coercions += 1;
+        throw new Error('ai_prompt toString must not execute');
+      },
+      valueOf() {
+        coercions += 1;
+        throw new Error('ai_prompt valueOf must not execute');
+      }
+    };
+    const candidate = freeze(form({ elements: [field({ ai_prompt: hostilePrompt })] }));
+    const request = {
+      operation: 'create',
+      form: candidate
+    };
+    const result = validate(request);
+    const repeated = validate(request);
+    assert.strictEqual(coercions, 0);
+    assert.deepStrictEqual(repeated, result);
+    assert.strictEqual(result.diagnostics.filter(
+      (diagnostic) => diagnostic.code === 'ai-prompt-type'
+    ).length, 1);
+    assert.strictEqual(
+      result.diagnostics.find((diagnostic) => diagnostic.code === 'ai-prompt-type').path,
+      '/elements/0/ai_prompt'
+    );
+  });
+
+  it('emits exactly one diagnostic for each required common boolean', () => {
+    const result = validate({
+      operation: 'create',
+      form: form({
+        elements: [field({
+          disabled: 'false',
+          hidden: 0,
+          required: null
+        })]
+      })
+    });
+    ['disabled', 'hidden', 'required'].forEach((property) => {
+      const diagnostics = result.diagnostics.filter(
+        (diagnostic) => diagnostic.path === `/elements/0/${property}`
+      );
+      assert.strictEqual(diagnostics.length, 1);
+      assert.strictEqual(diagnostics[0].code, 'element-boolean');
+    });
+  });
+
+  it('builds bounded JSON pointer segments without user-defined coercion', () => {
+    let coercions = 0;
+    const hostileSegment = {
+      toString() {
+        coercions += 1;
+        throw new Error('path toString must not execute');
+      },
+      valueOf() {
+        coercions += 1;
+        throw new Error('path valueOf must not execute');
+      }
+    };
+    assert.strictEqual(pointerPart(hostileSegment), 'invalid-segment');
+    assert.strictEqual(pointerPart(Symbol('hostile')), 'invalid-segment');
+    assert.strictEqual(pointerPart(true), 'invalid-segment');
+    assert.strictEqual(pointerPart(-1), 'invalid-segment');
+    assert.strictEqual(
+      pointerPart('x'.repeat(MAX_POINTER_SEGMENT_LENGTH + 1)),
+      'invalid-segment'
+    );
+    assert.strictEqual(
+      pointerPart('~'.repeat(MAX_POINTER_SEGMENT_LENGTH)),
+      'invalid-segment'
+    );
+    assert.strictEqual(pointerPart('key/with~escapes'), 'key~1with~0escapes');
+    assert.strictEqual(pointerPart(42), '42');
+    assert.strictEqual(appendPointer(hostileSegment, hostileSegment), '/invalid-segment');
+    assert.strictEqual(coercions, 0);
   });
 
   it('is deterministic and leaves the SQL singleton configuration untouched', () => {
@@ -328,7 +412,7 @@ describe('internal pure form validation', () => {
     });
     const first = validate({ operation: 'create', form: candidate });
     const second = validate({ operation: 'create', form: candidate });
-    assert.strictEqual(first.diagnostics.length, 200);
+    assert.strictEqual(first.diagnostics.length, DIAGNOSTIC_LIMIT);
     assert.ok(first.coverage.skipped.includes('diagnostic-overflow'));
     assert.deepStrictEqual(first, second);
   });
@@ -337,7 +421,7 @@ describe('internal pure form validation', () => {
     const candidate = form({ elements: Array.from({ length: 1401 }, () => null) });
     const result = validate({ operation: 'create', form: candidate });
     assert.strictEqual(result.outcome, 'invalid');
-    assert.strictEqual(result.diagnostics.length, 200);
+    assert.strictEqual(result.diagnostics.length, DIAGNOSTIC_LIMIT);
     assert.ok(result.coverage.skipped.includes('diagnostic-overflow'));
     assert.ok(result.diagnostics.some((diagnostic) => diagnostic.code === 'element-limit'));
     assert.ok(result.diagnostics.every((diagnostic) => diagnostic.message.length < 300));

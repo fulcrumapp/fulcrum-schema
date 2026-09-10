@@ -101,7 +101,7 @@ Build an immutable internal index in deterministic preorder with:
 - candidate lookup sets for titles, conditions, and FastFill;
 - previous/effective leaf-key maps for compatibility.
 
-Use iterative traversal with cycle detection, depth and element caps, and own-property checks. Sections preserve their parent storage scope; each repeatable's children use a child scope. Rule evaluation order is fixed, then final diagnostics are sorted by path and rule/code order.
+Use iterative traversal with cycle detection, depth and element caps, and own-property checks. Sections preserve their parent storage scope; each repeatable's children use a child scope. Rule evaluation order is fixed, then final diagnostics are sorted by path and rule/code order. Construct JSON Pointer segments only from bounded primitive strings or nonnegative safe-integer indexes; unsupported segments use a fixed safe marker and never invoke caller-defined coercion.
 
 ### 5. Implement an explicit parity/coverage registry
 
@@ -118,7 +118,7 @@ Each rule has a stable internal ID, category, applicability, source citation, su
 | Conditions | `required_conditions`/`visible_conditions` arrays; type is `any|all`; behavior is `clear|preserve`; only `field_key` identifies a target; self, blacklisted types, sibling/deeper repeatable targets are rejected; `@status` is allowed; operators use Rails names `equal_to`, `not_equal_to`, `contains`, `starts_with`, `greater_than`, `less_than`, `is_empty`, and `is_not_empty` according to target type. |
 | Form status/geometry | Status is `active|inactive`; enabled status-field requires label/data name/default/choice array, valid default, labels, six-digit hex colors; explicit geometry array members use the six confirmed values. |
 | Basic attributes | Explicit feature flags are booleans; `style_mapnik` is string or null/omitted; form-level `field_effects.effects` entries have required event/conditions/actions shape. |
-| Field-specific | ChoiceField uses `choice_list_id` or inline choices; ClassificationField ID presence; RecordLinkField `form_id` shape and at least one of `allow_creating_records`/`allow_existing_records`; YesNo choices/default; numeric Text min/max accept finite negative or positive integers/floats; Hyperlink validates `default_url`; Calculated display styles are `text|number|date|currency` and currency style requires a code; DateTime/Time default blank or `now`; applicable integer lengths/bounds; `ai_prompt` is limited to 10,000 characters for PhotoField and 150 otherwise; Sketch backgrounds array shape; Photo FastFill resolves newline-delimited `ai_prompt` data names in the exact repeatable scope. `ProjectField` is rejected because it is absent from `Form::TYPES`. |
+| Field-specific | ChoiceField uses `choice_list_id` or inline choices; ClassificationField ID presence; RecordLinkField `form_id` shape and at least one of `allow_creating_records`/`allow_existing_records`; YesNo choices/default; numeric Text min/max accept finite negative or positive integers/floats; Hyperlink validates `default_url`; Calculated display styles are `text|number|date|currency` and currency style requires a code; DateTime/Time default blank or `now`; applicable integer lengths/bounds; `ai_prompt` must be a string and is limited to 10,000 characters for PhotoField and 150 otherwise without coercion; Sketch backgrounds array shape; Photo FastFill resolves newline-delimited `ai_prompt` data names in the exact repeatable scope. `ProjectField` is rejected because it is absent from `Form::TYPES`. |
 | Update compatibility | Existing leaf key cannot change field type; additions/removals are not rejected by that Rails rule. |
 
 Where Rails coerces keys, booleans, geometry, colors, or backgrounds, the pure implementation validates against a local copy or emits a diagnostic but never returns mutated input. Error text need not clone Rails prose; behavior and fixtures establish parity.
@@ -151,7 +151,7 @@ Diagnostic order must not depend on object hash order except where the form arra
 
 ### 7. Bound work without new dependencies
 
-Use the confirmed 1,400-element limit and the Rails API parser's observed maximum JSON nesting of 100 as initial safety bounds. Add cycle detection for direct JavaScript callers and a deterministic diagnostic cap selected during contract approval. Traversal and reference indexing should be O(elements + references); avoid repeated whole-tree scans. Do not add a regex engine or schema dependency during the initial implementation unless parity evidence and dependency review justify it.
+Use the confirmed 1,400-element limit and the Rails API parser's observed maximum JSON nesting of 100 as initial safety bounds. Add cycle detection for direct JavaScript callers and a deterministic diagnostic cap selected during contract approval. Keep that cap in one limits module shared by diagnostic production and result truncation. Traversal and reference indexing should be O(elements + references); avoid repeated whole-tree scans. Do not add a regex engine or schema dependency during the initial implementation unless parity evidence and dependency review justify it.
 
 ### 8. Test against parity tables and side-effect sentinels
 
