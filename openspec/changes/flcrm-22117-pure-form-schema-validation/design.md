@@ -26,6 +26,16 @@ FLCRM-22116 blocks the final shared public API. Comment 205323 proposes, but doe
 
 ## Decisions
 
+### Approved v1 integration
+
+The shared FLCRM-22116 contract is approved. The package-level adapter is
+`validateForm(request)` and accepts only the shared `artifact` and
+`previous_artifact` names. It returns the v1 envelope with namespaced
+diagnostics, JSONPath-like paths, exact coverage categories, and concrete
+validator/schema/runtime versions. The complete artifact is validated as
+submitted; compatibility compares it with `previous_artifact` and never
+materializes a patch.
+
 ### 1. Separate the validator core from the existing SQL singleton
 
 Create focused modules such as `src/validation/form-validator.js`, `src/validation/traversal.js`, `src/validation/rules.js`, and `src/validation/result.js`. They must not import `src/schema.js`, `sqldiff`, SQL generators, filesystem/network modules, or the mutable singleton. Pure functions receive all state as arguments and allocate fresh result data.

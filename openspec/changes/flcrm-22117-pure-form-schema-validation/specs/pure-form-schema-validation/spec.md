@@ -4,8 +4,27 @@ Provide deterministic, side-effect-free semantic validation of unsaved Fulcrum f
 
 ## ADDED Requirements
 
-### Requirement: Provisional shared contract gate
-The package SHALL NOT finalize or export a new public validation API until the FLCRM-22116 shared request, result, diagnostic, coverage, and version contract has explicit owner approval. Before approval, implementation MAY build an unexported core and fixtures that are adaptable to the approved contract, but SHALL NOT introduce a competing public envelope.
+### Approved v1 contract addendum
+
+The FLCRM-22116 shared contract is approved for this change. The package
+SHALL export `validateForm(request)` from its package root. The request SHALL
+use `contract_version: "v1"`, `artifact_type: "form"`, `operation` of
+`create`, `update`, or `validate`, and a complete `artifact`. The optional
+`previous_artifact` is required only when update compatibility is requested;
+it is never merged into or used to materialize the candidate. Public results
+SHALL contain exactly the v1 top-level fields `contract_version`, `outcome`,
+`diagnostics`, `coverage`, and `versions`; coverage SHALL contain
+`requested`, `completed`, `skipped`, `unsupported`, `unverified`, and
+`failures`, and versions SHALL contain `validator`, `schema`, and `runtime`.
+Public diagnostics SHALL use `FORM.*` or `VALIDATION.*` codes and
+JSONPath-like paths. Outcome precedence is unavailable, incomplete, invalid,
+then valid. The package version remains 3.9.1 and publication is not part of
+this change.
+
+### Requirement: Approved shared contract
+The package SHALL export the approved FLCRM-22116 v1 request, result,
+diagnostic, coverage, and version contract and SHALL NOT introduce
+route-specific aliases or a competing envelope.
 
 #### Scenario: Contract has not been approved
 - **WHEN** implementation reaches the package export or consumer-facing documentation step while FLCRM-22116 remains unapproved
@@ -16,19 +35,21 @@ The package SHALL NOT finalize or export a new public validation API until the F
 - **THEN** the package maps the pure validator to that contract without changing the agreed semantics or adding a repository-specific competing envelope
 
 ### Requirement: Explicit create and update semantics
-The validator SHALL distinguish a complete create candidate from an update patch. For an update, it SHALL require a previous form to materialize an effective candidate and to perform compatibility checks. Omitted top-level properties SHALL retain their previous values; properties explicitly present with `null`, `false`, zero, an empty string, an empty object, or an empty array SHALL retain that exact value in the effective candidate. Present nested object or array properties SHALL replace that top-level property as a whole unless the approved shared contract defines a different merge rule.
+The validator SHALL validate `artifact` as the complete candidate for create,
+update, and validate operations. For an update, `previous_artifact` SHALL be
+required only when compatibility checks are requested and SHALL be compared
+without merging, materializing, or mutating either artifact. Explicit
+`null`, `false`, zero, empty strings, objects, arrays, and omissions SHALL
+remain distinct input values.
 
 #### Scenario: Complete create candidate
 - **WHEN** a create operation supplies a complete JSON-compatible form
 - **THEN** the validator validates that candidate without reading external state
 
-#### Scenario: Partial update preserves omission
-- **WHEN** an update patch omits `elements` and supplies a previous form
-- **THEN** the effective candidate uses the previous form's `elements` and does not report them missing
-
-#### Scenario: Partial update preserves explicit falsy values
-- **WHEN** an update patch explicitly contains `false`, zero, `null`, an empty string, or an empty collection
-- **THEN** the effective candidate retains each supplied value rather than replacing it with a default or the previous value
+#### Scenario: Update validates the complete candidate
+- **WHEN** an update artifact omits a required property
+- **THEN** the validator reports the omission on the candidate rather than
+  copying it from `previous_artifact`
 
 #### Scenario: Update lacks previous form
 - **WHEN** an update operation does not supply the previous form needed for merge or compatibility
@@ -65,7 +86,9 @@ The supported pure rules SHALL validate the confirmed Rails structural subset: n
 - **THEN** validation returns deterministic errors without unbounded traversal
 
 ### Requirement: Scoped data-name validation
-The validator SHALL enforce the ticket-required data-name rules according to storage scope: sections are transparent, each repeatable starts a child scope, and names for data-producing elements must be unique within their scope. The exact authoritative source and treatment of system/reserved names SHALL be confirmed before this rule is exported; until then its coverage entry SHALL identify it as provisional rather than claiming Rails parity.
+The validator SHALL enforce the approved data-name rules according to storage
+scope: sections are transparent, each repeatable starts a child scope, and
+names for data-producing elements must be unique within their scope.
 
 #### Scenario: Duplicate in one scope
 - **WHEN** two data-producing fields resolve to the same `data_name` in the same root or repeatable scope, including through sections
@@ -75,9 +98,10 @@ The validator SHALL enforce the ticket-required data-name rules according to sto
 - **WHEN** equal data names occur only in distinct repeatable scopes
 - **THEN** the validator does not report a same-scope collision
 
-#### Scenario: Unresolved reserved-name policy
-- **WHEN** the approved shared contract has not resolved system/reserved data-name handling
-- **THEN** coverage marks that subcheck provisional or unsupported and the result does not claim full parity
+#### Scenario: Reserved-name policy
+- **WHEN** a data name is checked
+- **THEN** only the approved local scope rule is applied; resource and
+  authorization checks are not performed
 
 ### Requirement: Pure type-specific rules
 The supported subset SHALL include deterministic, input-only rules confirmed in the Rails validator for inline choices, status and enabled status-field shape, explicit geometry arrays, feature booleans, `style_mapnik`, field-effects structure, numeric text fields, hyperlinks, calculated-field display configuration, yes/no choices and defaults, date/time defaults, applicable min/max lengths, AI prompt lengths, sketch background array shape, and record-link shape/creation flags. External resource existence and entitlement portions of those rules SHALL not run in the pure package.

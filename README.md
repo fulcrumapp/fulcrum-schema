@@ -24,3 +24,31 @@ In order to publish a new version, run `yarn publish dist --new-version $(params
 ```sh
 yarn test
 ```
+
+### Pure form validation
+
+The package root exports a stateless, non-writing validator:
+
+```js
+const result = schema.validateForm({
+  contract_version: 'v1',
+  artifact_type: 'form',
+  operation: 'create', // create, update, or validate
+  artifact: completeForm,
+  checks: ['structural', 'semantic']
+});
+```
+
+`artifact` is always the complete candidate; it is never a patch or merged
+with `previous_artifact`. For an update, provide `previous_artifact` only when
+requesting the `compatibility` check. Validation never mutates, persists,
+executes, logs, or resolves submitted scripts, expressions, templates, or
+external identifiers.
+
+The result always contains the v1 `contract_version`, one of `valid`,
+`invalid`, `incomplete`, or `unavailable`, deterministic namespaced
+diagnostics, `coverage` (`requested`, `completed`, `skipped`, `unsupported`,
+`unverified`, and `failures`), and concrete `versions` (`validator`, `schema`,
+and `runtime`). Only local structural, semantic, and leaf-type compatibility
+checks are performed; resource existence, authorization, normalization, and
+other contextual checks are not claimed as covered.

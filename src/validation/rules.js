@@ -213,7 +213,8 @@ function checkStatusField(statusField, diagnostics) {
   }
 }
 
-function checkElements(index, diagnostics) {
+function checkElements(index, diagnostics, options = {}) {
+  const requireCommonBooleans = options.requireCommonBooleans !== false;
   index.elements.forEach((entry) => {
     const { element, path } = entry;
     const type = own(element, 'type') ? element.type : undefined;
@@ -232,7 +233,8 @@ function checkElements(index, diagnostics) {
       add(diagnostics, 'element-data-name', `${path}/data_name`, 'data-producing elements require a nonblank data_name');
     }
     ['disabled', 'hidden', 'required'].forEach((key) => {
-      if (!own(element, key) || typeof element[key] !== 'boolean') {
+      if ((requireCommonBooleans && !own(element, key))
+        || (own(element, key) && typeof element[key] !== 'boolean')) {
         add(diagnostics, 'element-boolean', `${path}/${key}`, `${key} must be an explicit boolean`);
       }
     });

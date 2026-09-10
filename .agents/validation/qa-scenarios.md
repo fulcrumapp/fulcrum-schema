@@ -1,5 +1,16 @@
 # QA Scenarios: FLCRM-22117 Pure Form-Schema Validation
 
+## Approved v1 public-contract evidence
+
+The package-root `validateForm(request)` adapter is covered by canonical
+`valid-form.json` and `invalid-form.json` fixtures from the shared contract.
+The smoke matrix asserts the exact `contract_version`, outcome, top-level
+diagnostics/coverage/versions shape, `FORM.*` and `VALIDATION.*` namespaces,
+JSONPath-like paths, complete-artifact update behavior, compatibility context
+gating, malformed-request safety, compiled CommonJS loading, declarations,
+browser build, and npm pack/install-like loading. The public outcome ordering
+is unavailable, incomplete, invalid, then valid.
+
 ## 1. Purity and Determinism
 
 1. Deep-freeze complete create input; validate; assert no exception from attempted writes and exact deep equality afterward.

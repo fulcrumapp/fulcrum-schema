@@ -39,21 +39,91 @@ function form(overrides = {}) {
 }
 
 describe('internal pure form validation', () => {
+  it('matches the approved v1 public envelope for canonical form fixtures', () => {
+    const schema = require('../src/fulcrum-schema');
+    const fixtureRoot = '/Users/trey/.copilot/repos/copilot-worktrees/app-mcp/'
+      + 'treyhyde-effective-fortnight/docs/validation-fixtures/';
+    const valid = JSON.parse(fs.readFileSync(`${fixtureRoot}valid-form.json`));
+    const invalid = JSON.parse(fs.readFileSync(`${fixtureRoot}invalid-form.json`));
+    const validResult = schema.validateForm(valid.request);
+    const invalidResult = schema.validateForm(invalid.request);
+    assert.strictEqual(validResult.contract_version, 'v1');
+    assert.strictEqual(validResult.outcome, 'valid');
+    assert.deepStrictEqual(validResult.diagnostics, []);
+    assert.deepStrictEqual(validResult.coverage, valid.response.coverage);
+    assert.strictEqual(invalidResult.outcome, 'invalid');
+    assert.strictEqual(invalidResult.diagnostics[0].code, 'FORM.DUPLICATE_DATA_NAME');
+    assert.strictEqual(invalidResult.diagnostics[0].path, '$.elements[1].data_name');
+    assert.deepStrictEqual(invalidResult.coverage, invalid.response.coverage);
+    ['contract_version', 'outcome', 'diagnostics', 'coverage', 'versions']
+      .forEach((key) => assert.ok(Object.prototype.hasOwnProperty.call(validResult, key)));
+  });
+
+  it('does not merge update artifacts and gates compatibility on previous_artifact', () => {
+    const schema = require('../src/fulcrum-schema');
+    const artifact = form({ elements: [field({ key: 'current', data_name: 'current' })] });
+    const previous = form({ elements: [field({ key: 'previous', data_name: 'previous' })] });
+    const result = schema.validateForm({
+      contract_version: 'v1',
+      artifact_type: 'form',
+      operation: 'update',
+      artifact,
+      checks: ['structural']
+    });
+    assert.strictEqual(result.outcome, 'valid');
+    assert.deepStrictEqual(result.coverage.completed, ['structural']);
+    const incomplete = schema.validateForm({
+      contract_version: 'v1',
+      artifact_type: 'form',
+      operation: 'update',
+      artifact,
+      checks: ['structural', 'compatibility']
+    });
+    assert.strictEqual(incomplete.outcome, 'incomplete');
+    assert.deepStrictEqual(incomplete.coverage.skipped, [{
+      check: 'compatibility', reason_code: 'CONTEXT_REQUIRED'
+    }]);
+    const compatible = schema.validateForm({
+      contract_version: 'v1',
+      artifact_type: 'form',
+      operation: 'update',
+      artifact: form({ elements: [field({ key: 'previous', data_name: 'previous' })] }),
+      previous_artifact: previous,
+      checks: ['compatibility']
+    });
+    assert.strictEqual(compatible.outcome, 'valid');
+    assert.notStrictEqual(artifact.elements, previous.elements);
+  });
+
+  it('returns safe structured errors for malformed public requests', () => {
+    const schema = require('../src/fulcrum-schema');
+    const result = schema.validateForm({
+      contract_version: 'v1',
+      artifact_type: 'form',
+      operation: 'create',
+      artifact: []
+    });
+    assert.strictEqual(result.outcome, 'invalid');
+    assert.strictEqual(result.diagnostics[0].code, 'VALIDATION.INVALID_REQUEST');
+    assert.strictEqual(result.diagnostics[0].path, '$.artifact');
+    assert.ok(!Object.prototype.hasOwnProperty.call(result, 'reason'));
+  });
+
   it('keeps the supported element type profile aligned with Rails Form::TYPES', () => {
     assert.strictEqual(ELEMENT_TYPES.length, 24);
     assert.ok(!ELEMENT_TYPES.includes('ProjectField'));
   });
 
-  it('keeps the provisional validator out of public and directory deep-import APIs', () => {
+  it('exports the approved validator only from the package root', () => {
     const schema = require('../src/fulcrum-schema');
-    assert.strictEqual(schema.validateForm, undefined);
+    assert.strictEqual(typeof schema.validateForm, 'function');
     assert.strictEqual(
       fs.existsSync(path.join(__dirname, '../src/validation/index.js')),
       false
     );
     assert.strictEqual(
       fs.existsSync(path.join(__dirname, '../dist/validation/form-validator.js')),
-      false
+      true
     );
     assert.throws(() => require('../src/validation'), /Cannot find module/);
   });

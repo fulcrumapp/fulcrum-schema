@@ -14,6 +14,7 @@ const v5_1 = __importDefault(require("./schemas/v5"));
 const v6_1 = __importDefault(require("./schemas/v6"));
 const metadata_1 = __importDefault(require("./metadata"));
 const sqldiff_1 = __importDefault(require("sqldiff"));
+const { validateForm } = require('./validation/public-validator');
 const { Postgres, SQLite, SchemaDiffer } = sqldiff_1.default;
 const instance = new Function('return this')(); // eslint-disable-line no-new-func
 instance.dialect = 'postgres';
@@ -92,5 +93,6 @@ instance.compareForms = () => {
         includeMetadata: instance.includeMetadata
     });
 };
+instance.validateForm = validateForm;
 module.exports = instance;
 //# sourceMappingURL=fulcrum-schema.js.map
