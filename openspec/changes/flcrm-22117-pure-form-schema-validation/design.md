@@ -42,26 +42,27 @@ Create focused modules such as `src/validation/form-validator.js`, `src/validati
 
 After FLCRM-22116 approval, expose one adapter from `src/fulcrum-schema.js` using the approved name. Do not add validator state to the singleton. Until then, omit a validation directory index and exclude `src/validation/` from compiled package artifacts so neither a public export nor a package deep import is available.
 
-### 2. Provisional public API and gate
+### 2. Approved public API and contract
 
 The strawman API, derived directly from FLCRM-22115 comment 205323, is:
 
 ```js
-// PROVISIONAL — names and envelope MUST NOT be finalized/exported
-// until FLCRM-22116 approves the shared v1 contract.
 validateForm({
-  operation: 'create' | 'update',
-  form: formOrPatch,
-  previous_form: previousForm // required for update
+  contract_version: 'v1',
+  artifact_type: 'form',
+  operation: 'create' | 'update' | 'validate',
+  artifact: completeArtifact,
+  previous_artifact: previousArtifact,
+  checks: ['structural', 'semantic']
 }) => validationResult
 ```
 
 The minimum result semantics are:
 
 ```js
-// PROVISIONAL semantic sketch, not an approved wire format.
 {
-  outcome: 'valid' | 'invalid' | 'incomplete' | 'unsupported',
+  contract_version: 'v1',
+  outcome: 'valid' | 'invalid' | 'incomplete' | 'unavailable',
   diagnostics: [{
     code: 'stable-approved-code',
     severity: 'error' | 'warning' | 'info',
@@ -71,23 +72,29 @@ The minimum result semantics are:
     fix: undefined                 // optional, never contains sensitive data
   }],
   versions: {
-    contract: 'approved-v1',
-    validator: 'concrete-ruleset-version',
-    package: 'concrete-package-version',
-    schema: 'declared-form-schema-version'
+    validator: 'actual-package-version-or-null',
+    schema: 'observed-schema-version-or-null',
+    runtime: 'observed-runtime-version-or-null'
   },
   coverage: {
-    complete: true | false,
     requested: [],
     completed: [],
     skipped: [],
     unsupported: [],
-    provisional: []
+    unverified: [],
+    failures: []
   }
 }
 ```
 
-Only semantics explicitly required by Jira are fixed: stable codes; three severities; JSON path; optional range; actionable message/fix; concrete versions; requested/completed/skipped/unsupported coverage; and distinction among valid, invalid, incomplete, and unsupported. The internal requested-check profile contains only checks that this pure core can complete (plus compatibility for updates); provisional and contextual checks remain explicit in coverage without making a result claim that they completed. An outcome is valid only when every requested check completed without errors. Exact casing, field names, check IDs, code taxonomy, `range` format, aggregation rules, package export name, exception behavior, and schema-version selection are unresolved contract questions. The implementation task must re-read the approved FLCRM-22116 artifact and update specs before exporting.
+The approved semantics are stable diagnostic codes and severities, JSONPath-like
+paths, optional ranges/fixes, observed version metadata, the six coverage
+categories above, and the four outcomes. Outcome precedence is
+`invalid > unavailable > incomplete > valid`; an error diagnostic wins over
+operational failures, while failures without an error diagnostic produce
+`unavailable`. A valid result requires every requested check to be completed.
+The package form adapter validates only a complete `artifact`; it never merges
+or materializes a patch from `previous_artifact`.
 
 ### 3. Materialize updates by presence, not truthiness
 
@@ -99,7 +106,11 @@ The internal core should first validate the request mode, then create an effecti
 - Omitted is distinct from present `null`, `false`, `0`, `""`, `{}`, and `[]`.
 - Neither source object is modified.
 
-This matches Rails `FormUtils.update_form` treating supplied model attributes as top-level replacements while avoiding the current validator's risk of treating a partial `attrs` hash as a complete form. A recursive merge was rejected because it can invent server semantics for serialized fields and make deletion ambiguous. This merge rule is itself provisional until shared-contract approval; fixtures should lock it only after that review.
+The pure adapter does not apply this internal patch materialization. Its
+approved public contract always receives a complete candidate and uses
+`previous_artifact` only for the explicit compatibility check. A recursive
+merge is rejected because it can invent server semantics for serialized
+fields and make deletion ambiguous.
 
 ### 4. Traverse iteratively and index once
 
@@ -155,7 +166,11 @@ Where Rails coerces keys, booleans, geometry, colors, or backgrounds, the pure i
 
 ### 6. Treat coverage as part of validity
 
-A result is `invalid` when any completed rule yields an error. It is `unsupported` when the declared schema version cannot be evaluated and `incomplete` when bounded production diagnostics truncate evaluation. Otherwise, successful input-only validation is `valid`; unsupported contextual and provisional checks remain explicit in coverage and keep `coverage.complete` false without misclassifying the supplied input.
+A result is `invalid` when any diagnostic has error severity. A checker or
+dependency failure without an error diagnostic is `unavailable`; skipped,
+unsupported, or unverified requested coverage is `incomplete`; otherwise a
+fully completed request is `valid`. Operational failures remain coverage
+facts, not artifact error diagnostics.
 
 Diagnostic order must not depend on object hash order except where the form array order defines paths. Use RFC 6901 escaping for `~` and `/`. Messages identify values only when safe and bounded; never include full submitted scripts, form payloads, credentials, or secret-like text.
 

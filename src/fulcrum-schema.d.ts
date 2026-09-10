@@ -30,8 +30,8 @@ declare const schema: {
     };
     versions: {
       validator: string;
-      schema: string;
-      runtime: string;
+      schema: string | null;
+      runtime: string | null;
     };
   };
 };

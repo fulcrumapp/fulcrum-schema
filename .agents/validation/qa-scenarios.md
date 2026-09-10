@@ -134,3 +134,19 @@ is unavailable, incomplete, invalid, then valid.
   (`min_length: 0` allowed and `max_length: 0` rejected).
 - SketchField: `backgrounds: null` is accepted; every non-null value must be an
   array, and array members are not inspected by the pure validator.
+
+## Current-head review revision verification (2026-09-09)
+
+- Blank and whitespace-only `schema_version` values produce `versions.schema:
+  null`; unsupported metadata is reported through coverage and is never echoed.
+- Public validator provenance is the ruleset identifier `flcrm-22117-v1`, not a
+  hard-coded package-version string; package version remains 3.9.1.
+- Rails `present?` parity covers empty arrays and objects for status,
+  status-field defaults, and field-effects inputs.
+- The shared diagnostic limit is used by producers and truncation, and the
+  enumerable `diagnostics.overflowed` flag survives internal truncation.
+- Dangling `else` branches in the revised validation paths use repository
+  indentation conventions.
+- No SQL/schema source or fixture diff was made. No review finding was
+  rejected; publication, deployment, merge, and new-PR creation remain
+  unauthorized.

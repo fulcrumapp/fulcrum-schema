@@ -1,6 +1,5 @@
 'use strict';
 const { DIAGNOSTIC_LIMIT } = require('./limits');
-const PACKAGE_VERSION = '3.9.1';
 const VALIDATOR_VERSION = 'flcrm-22117-ruleset-1';
 const CONTRACT_VERSION = 'pending-flcrm-22116';
 const CHECKS = [
@@ -26,6 +25,14 @@ function makeResult(schemaVersion, diagnostics, coverage, unsupported) {
     const errors = diagnostics.hasError
         || diagnostics.some((diagnostic) => diagnostic.severity === 'error');
     const ordered = diagnostics.slice(0, DIAGNOSTIC_LIMIT);
+    if (diagnostics.overflowed) {
+        Object.defineProperty(ordered, 'overflowed', {
+            configurable: true,
+            enumerable: true,
+            writable: true,
+            value: true
+        });
+    }
     const truncated = diagnostics.length > DIAGNOSTIC_LIMIT || diagnostics.overflowed;
     const requested = coverage.requested || CHECKS;
     const completed = new Set(coverage.completed);
@@ -59,8 +66,8 @@ function makeResult(schemaVersion, diagnostics, coverage, unsupported) {
         versions: {
             contract: CONTRACT_VERSION,
             validator: VALIDATOR_VERSION,
-            package: PACKAGE_VERSION,
-            schema: schemaVersion || 'unknown'
+            schema: typeof schemaVersion === 'string' && schemaVersion.trim()
+                ? schemaVersion : null,
         },
         coverage: {
             complete,

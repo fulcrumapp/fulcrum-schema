@@ -35,7 +35,7 @@ const result = schema.validateForm({
   artifact_type: 'form',
   operation: 'create', // create, update, or validate
   artifact: completeForm,
-  checks: ['structural', 'semantic']
+  checks: ['structural', 'semantic'] // omitted uses these defaults
 });
 ```
 
@@ -48,7 +48,12 @@ external identifiers.
 The result always contains the v1 `contract_version`, one of `valid`,
 `invalid`, `incomplete`, or `unavailable`, deterministic namespaced
 diagnostics, `coverage` (`requested`, `completed`, `skipped`, `unsupported`,
-`unverified`, and `failures`), and concrete `versions` (`validator`, `schema`,
-and `runtime`). Only local structural, semantic, and leaf-type compatibility
-checks are performed; resource existence, authorization, normalization, and
-other contextual checks are not claimed as covered.
+`unverified`, and `failures`), and observed `versions` (`validator`, `schema`,
+and `runtime`). A supplied empty `checks` array returns `incomplete` with a
+`MISSING_CHECK` coverage entry. Outcomes use `invalid > unavailable >
+incomplete > valid` precedence; an operational failure is a coverage failure,
+not an error diagnostic. Non-applicable or unobserved version values are
+`null`, and caller-declared version inputs are not copied into the response.
+Only local structural, semantic, and leaf-type compatibility checks are
+performed; resource existence, authorization, normalization, and other
+contextual checks are not claimed as covered.

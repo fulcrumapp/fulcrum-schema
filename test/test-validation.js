@@ -41,10 +41,9 @@ function form(overrides = {}) {
 describe('internal pure form validation', () => {
   it('matches the approved v1 public envelope for canonical form fixtures', () => {
     const schema = require('../src/fulcrum-schema');
-    const fixtureRoot = '/Users/trey/.copilot/repos/copilot-worktrees/app-mcp/'
-      + 'treyhyde-effective-fortnight/docs/validation-fixtures/';
-    const valid = JSON.parse(fs.readFileSync(`${fixtureRoot}valid-form.json`));
-    const invalid = JSON.parse(fs.readFileSync(`${fixtureRoot}invalid-form.json`));
+    const fixtureRoot = path.join(__dirname, 'fixtures', 'validation');
+    const valid = JSON.parse(fs.readFileSync(path.join(fixtureRoot, 'valid-form.json')));
+    const invalid = JSON.parse(fs.readFileSync(path.join(fixtureRoot, 'invalid-form.json')));
     const validResult = schema.validateForm(valid.request);
     const invalidResult = schema.validateForm(invalid.request);
     assert.strictEqual(validResult.contract_version, 'v1');
@@ -55,8 +54,159 @@ describe('internal pure form validation', () => {
     assert.strictEqual(invalidResult.diagnostics[0].code, 'FORM.DUPLICATE_DATA_NAME');
     assert.strictEqual(invalidResult.diagnostics[0].path, '$.elements[1].data_name');
     assert.deepStrictEqual(invalidResult.coverage, invalid.response.coverage);
+    assert.strictEqual(validResult.versions.validator, 'flcrm-22117-v1');
+    assert.strictEqual(validResult.versions.schema, null);
+    assert.strictEqual(validResult.versions.runtime, null);
     ['contract_version', 'outcome', 'diagnostics', 'coverage', 'versions']
       .forEach((key) => assert.ok(Object.prototype.hasOwnProperty.call(validResult, key)));
+  });
+
+  it('uses default checks and reports an explicit missing-check entry', () => {
+    const schema = require('../src/fulcrum-schema');
+    const candidate = {
+      name: 'Inspection',
+      elements: [{
+        type: 'TextField',
+        key: 'name',
+        label: 'Name',
+        data_name: 'name'
+      }]
+    };
+    const defaults = schema.validateForm({
+      contract_version: 'v1',
+      artifact_type: 'form',
+      operation: 'create',
+      artifact: candidate
+    });
+    assert.deepStrictEqual(defaults.coverage.requested, ['structural', 'semantic']);
+    assert.deepStrictEqual(defaults.coverage.completed, ['structural', 'semantic']);
+    assert.strictEqual(defaults.outcome, 'valid');
+
+    const missing = schema.validateForm({
+      contract_version: 'v1',
+      artifact_type: 'form',
+      operation: 'create',
+      artifact: candidate,
+      checks: []
+    });
+    assert.strictEqual(missing.outcome, 'incomplete');
+    assert.deepStrictEqual(missing.coverage.requested, []);
+    assert.deepStrictEqual(missing.coverage.skipped, [{
+      check: 'validation',
+      reason_code: 'MISSING_CHECK'
+    }]);
+    assert.deepStrictEqual(missing.coverage.completed, []);
+  });
+
+  it('keeps public coverage entries structured and applies invalid precedence', () => {
+    const schema = require('../src/fulcrum-schema');
+    const result = schema.validateForm({
+      contract_version: 'v1',
+      artifact_type: 'form',
+      operation: 'create',
+      artifact: {
+        name: '',
+        elements: []
+      },
+      checks: ['structural', 'future_check']
+    });
+    assert.strictEqual(result.outcome, 'invalid');
+    assert.ok(result.coverage.unsupported.some((entry) => (
+      entry.check === 'future_check' && entry.reason_code === 'UNSUPPORTED_CHECK'
+    )));
+    assert.ok(result.coverage.completed.includes('structural'));
+    [...result.coverage.skipped, ...result.coverage.unsupported,
+      ...result.coverage.unverified, ...result.coverage.failures]
+      .forEach((entry) => {
+        assert.strictEqual(typeof entry.check, 'string');
+        assert.strictEqual(typeof entry.reason_code, 'string');
+      });
+    assert.ok(result.diagnostics.every((diagnostic) => (
+      ['error', 'warning', 'info'].includes(diagnostic.severity)
+    )));
+  });
+
+  it('does not copy caller versions and reports schema mismatches as incomplete', () => {
+    const schema = require('../src/fulcrum-schema');
+    const candidate = {
+      name: 'Inspection',
+      schema_version: 'v6',
+      elements: [{
+        type: 'TextField',
+        key: 'name',
+        label: 'Name',
+        data_name: 'name'
+      }]
+    };
+    const result = schema.validateForm({
+      contract_version: 'v1',
+      artifact_type: 'form',
+      operation: 'create',
+      artifact: candidate,
+      schema_version: 'caller-schema',
+      runtime_version: 'caller-runtime',
+      checks: ['structural', 'semantic']
+    });
+
+    it('does not expose blank schema-version metadata', () => {
+      const schema = require('../src/fulcrum-schema');
+      const result = schema.validateForm({
+        contract_version: 'v1',
+        artifact_type: 'form',
+        operation: 'create',
+        artifact: {
+          name: 'Inspection',
+          schema_version: '   ',
+          elements: [{
+            type: 'TextField',
+            key: 'name',
+            label: 'Name',
+            data_name: 'name'
+          }]
+        },
+        checks: ['structural']
+      });
+      assert.strictEqual(result.versions.schema, null);
+      assert.strictEqual(result.outcome, 'incomplete');
+      assert.ok(result.coverage.skipped.some(
+        (entry) => entry.check === 'structural' && entry.reason_code === 'UNSUPPORTED_VERSION'
+      ));
+    });
+    assert.strictEqual(result.outcome, 'incomplete');
+    assert.strictEqual(result.versions.schema, 'v6');
+    assert.strictEqual(result.versions.runtime, null);
+    assert.deepStrictEqual(result.coverage.completed, []);
+    assert.deepStrictEqual(result.coverage.skipped, [
+      { check: 'structural', reason_code: 'VERSION_MISMATCH' },
+      { check: 'semantic', reason_code: 'VERSION_MISMATCH' }
+    ]);
+  });
+
+  it('reports dynamic semantic coverage as unverified without an error', () => {
+    const schema = require('../src/fulcrum-schema');
+    const result = schema.validateForm({
+      contract_version: 'v1',
+      artifact_type: 'form',
+      operation: 'create',
+      artifact: {
+        name: 'Inspection',
+        elements: [{
+          type: 'DynamicField',
+          key: 'dynamic',
+          label: 'Dynamic',
+          data_name: 'dynamic'
+        }]
+      },
+      checks: ['structural', 'semantic']
+    });
+    assert.strictEqual(result.outcome, 'incomplete');
+    assert.deepStrictEqual(result.coverage.completed, ['structural']);
+    assert.deepStrictEqual(result.coverage.unverified, [{
+      check: 'semantic',
+      reason_code: 'DYNAMIC_REFERENCE',
+      path: '$.elements[0]'
+    }]);
+    assert.strictEqual(result.diagnostics[0].severity, 'warning');
   });
 
   it('does not merge update artifacts and gates compatibility on previous_artifact', () => {
@@ -105,7 +255,7 @@ describe('internal pure form validation', () => {
     });
     assert.strictEqual(result.outcome, 'invalid');
     assert.strictEqual(result.diagnostics[0].code, 'VALIDATION.INVALID_REQUEST');
-    assert.strictEqual(result.diagnostics[0].path, '$.artifact');
+    assert.strictEqual(result.diagnostics[0].path, '$');
     assert.ok(!Object.prototype.hasOwnProperty.call(result, 'reason'));
   });
 
@@ -463,7 +613,7 @@ describe('internal pure form validation', () => {
     const secret = { schema_version: { token: 'do-not-echo' }, name: '', elements: [] };
     const result = validate({ operation: 'create', form: secret });
     assert.strictEqual(result.outcome, 'unsupported');
-    assert.strictEqual(result.versions.schema, 'unknown');
+    assert.strictEqual(result.versions.schema, null);
     assert.deepStrictEqual(result.coverage.skipped.includes('root-structure'), true);
     assert.ok(!JSON.stringify(result).includes('do-not-echo'));
   });
@@ -483,8 +633,43 @@ describe('internal pure form validation', () => {
     const first = validate({ operation: 'create', form: candidate });
     const second = validate({ operation: 'create', form: candidate });
     assert.strictEqual(first.diagnostics.length, DIAGNOSTIC_LIMIT);
+    assert.strictEqual(Object.prototype.propertyIsEnumerable.call(
+      first.diagnostics, 'overflowed'
+    ), true);
     assert.ok(first.coverage.skipped.includes('diagnostic-overflow'));
     assert.deepStrictEqual(first, second);
+  });
+
+  it('matches Rails present? for empty arrays and objects', () => {
+    const emptyValues = validate({
+      operation: 'create',
+      form: form({
+        status: [],
+        field_effects: [],
+        status_field: {
+          enabled: true,
+          label: {},
+          data_name: 'status',
+          choices: [],
+          default_value: {}
+        }
+      })
+    });
+    assert.ok(!emptyValues.diagnostics.some(
+      (diagnostic) => diagnostic.code === 'form-status'
+    ));
+    assert.ok(emptyValues.diagnostics.some(
+      (diagnostic) => diagnostic.code === 'status-field-label'
+    ));
+    assert.ok(emptyValues.diagnostics.some(
+      (diagnostic) => diagnostic.code === 'status-field-choices'
+    ));
+    assert.ok(!emptyValues.diagnostics.some(
+      (diagnostic) => diagnostic.code === 'field-effects-object'
+    ));
+    assert.ok(!emptyValues.diagnostics.some(
+      (diagnostic) => diagnostic.code === 'field-effects-array'
+    ));
   });
 
   it('bounds diagnostics while indexing malformed element collections', () => {

@@ -4,8 +4,7 @@ export function validate(request: any): {
     versions: {
         contract: string;
         validator: string;
-        package: string;
-        schema: any;
+        schema: string | null;
     };
     coverage: {
         complete: any;

@@ -62,7 +62,10 @@ function nonblank(value) {
 function present(value) {
   return value !== null && value !== undefined
     && value !== false
-    && (typeof value !== 'string' || value.trim().length > 0);
+    && (typeof value !== 'string' || value.trim().length > 0)
+    && (!Array.isArray(value) || value.length > 0)
+    && (Array.isArray(value) || typeof value !== 'object'
+      || Object.keys(value).length > 0);
 }
 
 // Ruby conditionals treat every value other than nil and false as truthy,
@@ -99,7 +102,7 @@ function setDiagnosticFlag(diagnostics, name) {
   if (!Object.prototype.hasOwnProperty.call(diagnostics, name)) {
     Object.defineProperty(diagnostics, name, {
       configurable: true,
-      enumerable: false,
+      enumerable: name === 'overflowed',
       writable: true,
       value: false
     });

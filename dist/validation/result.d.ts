@@ -6,8 +6,7 @@ export function makeResult(schemaVersion: any, diagnostics: any, coverage: any, 
     versions: {
         contract: string;
         validator: string;
-        package: string;
-        schema: any;
+        schema: string | null;
     };
     coverage: {
         complete: any;

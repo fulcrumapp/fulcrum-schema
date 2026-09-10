@@ -23,7 +23,7 @@ function sortDiagnostics(diagnostics) {
     if (diagnostics[flag]) {
       Object.defineProperty(ordered, flag, {
         configurable: true,
-        enumerable: false,
+        enumerable: flag === 'overflowed',
         writable: true,
         value: true
       });
@@ -136,8 +136,11 @@ function validate(request) {
     } else {
       coverage.skipped.push('compatibility');
     }
-    if (index.tooDeep || index.cyclic) coverage.skipped.push('bounded-traversal');
-    else coverage.completed.push('bounded-traversal');
+    if (index.tooDeep || index.cyclic) {
+      coverage.skipped.push('bounded-traversal');
+    } else {
+      coverage.completed.push('bounded-traversal');
+    }
   } else if (materialized.candidate === undefined) {
     coverage.skipped.push(
       'root-structure', 'element-structure', 'key-uniqueness', 'data-name-scope',
@@ -159,8 +162,9 @@ function validate(request) {
   }
   if (diagnostics.length > DIAGNOSTIC_LIMIT || diagnostics.overflowed) {
     coverage.skipped.push('diagnostic-overflow');
+  } else {
+    coverage.completed.push('diagnostic-overflow');
   }
-  else coverage.completed.push('diagnostic-overflow');
 
   return makeResult(
     safeSchemaVersion(schemaVersion),
@@ -171,7 +175,7 @@ function validate(request) {
 }
 
 function safeSchemaVersion(value) {
-  if (typeof value !== 'string') return 'unknown';
+  if (typeof value !== 'string' || !value.trim()) return null;
   return value.length <= 64 ? value : `${value.slice(0, 61)}...`;
 }
 

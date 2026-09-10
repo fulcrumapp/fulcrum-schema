@@ -11,11 +11,15 @@ const {
 const { checkCompatibility } = require('./form-validator');
 const { DIAGNOSTIC_LIMIT } = require('./limits');
 
-const PACKAGE_VERSION = '3.9.1';
-const RULESET_VERSION = 'flcrm-22117-ruleset-1';
+// This is the package metadata value used by the published package.  Do not
+// turn absent caller/runtime/schema values into placeholders such as
+// "unknown": the v1 contract uses null for a non-applicable/unobserved
+// version.
+const VALIDATOR_VERSION = 'flcrm-22117-v1';
 const CONTRACT_VERSION = 'v1';
 const DEFAULT_CHECKS = ['structural', 'semantic'];
 const SUPPORTED_CHECKS = new Set(['structural', 'semantic', 'compatibility']);
+const KNOWN_SCHEMA_VERSIONS = new Set(['v1', 'v2', 'v3', 'v4', 'v5', 'v6']);
 const SEVERITIES = { error: 0, warning: 1, info: 2 };
 
 function own(value, key) {
@@ -29,9 +33,13 @@ function pointerToPath(pointer) {
     .replace(/~1/g, '/').replace(/~0/g, '~'));
   let result = '$';
   segments.forEach((segment) => {
-    if (/^(0|[1-9][0-9]*)$/.test(segment)) result += `[${segment}]`;
-    else if (/^[A-Za-z_$][A-Za-z0-9_$]*$/.test(segment)) result += `.${segment}`;
-    else result += `[${JSON.stringify(segment)}]`;
+    if (/^(0|[1-9][0-9]*)$/.test(segment)) {
+      result += `[${segment}]`;
+    } else if (/^[A-Za-z_$][A-Za-z0-9_$]*$/.test(segment)) {
+      result += `.${segment}`;
+    } else {
+      result += `[${JSON.stringify(segment)}]`;
+    }
   });
   return result;
 }
@@ -42,7 +50,7 @@ function normalizePath(path) {
 
 function codeFor(code) {
   if (typeof code !== 'string') return 'VALIDATION.INVALID_DIAGNOSTIC';
-  if (code.indexOf('.') >= 0) return code;
+  if (/^(FORM|VALIDATION)\.[A-Z][A-Z0-9_]*$/.test(code)) return code;
   const normalized = code.replace(/[^A-Za-z0-9]+/g, '_')
     .replace(/^_+|_+$/g, '').toUpperCase() || 'RULE_FAILURE';
   return `FORM.${normalized}`;
@@ -72,7 +80,8 @@ function toPublicDiagnostic(diagnostic) {
     : safeMessage(diagnostic.message);
   const result = {
     code: codeFor(diagnostic.code),
-    severity: diagnostic.severity === 'warning' ? 'warning' : 'error',
+    severity: ['error', 'warning', 'info'].includes(diagnostic.severity)
+      ? diagnostic.severity : 'error',
     message,
     path: normalizePath(diagnostic.path)
   };
@@ -109,12 +118,28 @@ function coverageEntry(check, reasonCode, path) {
   return entry;
 }
 
-function versionValue(value) {
-  return typeof value === 'string' && value.length <= 128 && value.length > 0
-    ? value : 'unknown';
+function observedSchemaVersion(artifact) {
+  if (!isObject(artifact) || !own(artifact, 'schema_version')
+    || typeof artifact.schema_version !== 'string'
+    || artifact.schema_version.length === 0
+    || artifact.schema_version.length > 128
+    || !KNOWN_SCHEMA_VERSIONS.has(artifact.schema_version)) {
+    return null;
+  }
+  return artifact.schema_version;
 }
 
-function malformed(path, message) {
+function versionsFor(artifact) {
+  return {
+    validator: VALIDATOR_VERSION,
+    schema: observedSchemaVersion(artifact),
+    // This package does not load a separate validation runtime.  In
+    // particular, caller-declared runtime_version is not provenance.
+    runtime: null
+  };
+}
+
+function malformed(path, message, artifact) {
   return {
     contract_version: CONTRACT_VERSION,
     outcome: 'invalid',
@@ -132,39 +157,35 @@ function malformed(path, message) {
       unverified: [],
       failures: []
     },
-    versions: {
-      validator: `@fulcrumapp/fulcrum-schema@${PACKAGE_VERSION}/${RULESET_VERSION}`,
-      schema: 'unknown',
-      runtime: 'unknown'
-    }
+    versions: versionsFor(artifact)
   };
 }
 
 function validateForm(request) {
   try {
     if (!isObject(request)) return malformed('$', 'request must be a JSON object');
-    if (request.contract_version !== CONTRACT_VERSION) {
-      return malformed('$.contract_version', 'contract_version must be "v1"');
+    if (!own(request, 'contract_version') || request.contract_version !== CONTRACT_VERSION) {
+      return malformed('$', 'contract_version must be "v1"');
     }
-    if (request.artifact_type !== 'form') {
-      return malformed('$.artifact_type', 'artifact_type must be "form"');
+    if (!own(request, 'artifact_type') || request.artifact_type !== 'form') {
+      return malformed('$', 'artifact_type must be "form"');
     }
-    if (!['create', 'update', 'validate'].includes(request.operation)) {
-      return malformed('$.operation', 'operation must be create, update, or validate');
+    if (!own(request, 'operation') || !['create', 'update', 'validate'].includes(request.operation)) {
+      return malformed('$', 'operation must be create, update, or validate');
     }
     if (!own(request, 'artifact') || !isObject(request.artifact)) {
-      return malformed('$.artifact', 'artifact must be a complete form object');
+      return malformed('$', 'The request is missing the complete candidate artifact.');
     }
     if (own(request, 'context')) {
       // Context is intentionally not consumed by the pure validator.  It is
       // accepted as structured input, but never authorizes external lookups.
       if (request.context !== null && typeof request.context !== 'object') {
-        return malformed('$.context', 'context must be a structured JSON value');
+        return malformed('$', 'context must be a structured JSON value', request.artifact);
       }
     }
     const checks = own(request, 'checks') ? request.checks : DEFAULT_CHECKS;
     if (!Array.isArray(checks) || checks.some((check) => typeof check !== 'string')) {
-      return malformed('$.checks', 'checks must be an array of check-name strings');
+      return malformed('$', 'checks must be an array of check-name strings', request.artifact);
     }
     const requested = checks.slice();
     const coverage = {
@@ -176,66 +197,87 @@ function validateForm(request) {
       failures: []
     };
     const diagnostics = [];
-    const schema = versionValue(own(request, 'schema_version')
-      ? request.schema_version : request.artifact.schema_version);
-    const runtime = versionValue(request.runtime_version);
-    const versions = {
-      validator: `@fulcrumapp/fulcrum-schema@${PACKAGE_VERSION}/${RULESET_VERSION}`,
-      schema,
-      runtime
-    };
+    const versions = versionsFor(request.artifact);
     if (!requested.length) {
       coverage.skipped.push(coverageEntry('validation', 'MISSING_CHECK'));
       return result(diagnostics, coverage, versions);
-    }
-    if (typeof request.schema_version === 'string'
-      && typeof request.artifact.schema_version === 'string'
-      && request.schema_version !== request.artifact.schema_version) {
-      requested.forEach((check) => {
-        if (SUPPORTED_CHECKS.has(check)) {
-          coverage.skipped.push(coverageEntry(check, 'VERSION_MISMATCH'));
-        }
-      });
     }
 
     const uniqueRequested = [];
     requested.forEach((check) => {
       if (!uniqueRequested.includes(check)) uniqueRequested.push(check);
     });
-    uniqueRequested.forEach((check) => {
-      if (!SUPPORTED_CHECKS.has(check)) {
-        coverage.unsupported.push(coverageEntry(check, 'UNSUPPORTED_CHECK'));
+    const mark = (bucket, check, reasonCode, path) => {
+      const buckets = [
+        coverage.completed,
+        coverage.skipped,
+        coverage.unsupported,
+        coverage.unverified,
+        coverage.failures
+      ];
+      buckets.forEach((entries) => {
+        if (entries !== coverage.completed) {
+          for (let i = entries.length - 1; i >= 0; i -= 1) {
+            if (entries[i].check === check) entries.splice(i, 1);
+          }
+        }
+      });
+      for (let i = coverage.completed.length - 1; i >= 0; i -= 1) {
+        if (coverage.completed[i] === check) coverage.completed.splice(i, 1);
       }
+      if (bucket === 'completed') {
+        coverage.completed.push(check);
+      } else {
+        coverage[bucket].push(coverageEntry(check, reasonCode, path));
+      }
+    };
+
+    uniqueRequested.filter((check) => !SUPPORTED_CHECKS.has(check)).forEach((check) => {
+      mark('unsupported', check, 'UNSUPPORTED_CHECK');
     });
+
+    const requestedSupported = uniqueRequested.filter((check) => SUPPORTED_CHECKS.has(check));
+    const declaredSchema = own(request, 'schema_version') ? request.schema_version : undefined;
+    const artifactSchema = own(request.artifact, 'schema_version')
+      ? request.artifact.schema_version : undefined;
+    const requestedSchemaMismatch = declaredSchema !== undefined
+      && artifactSchema !== undefined
+      && (typeof declaredSchema !== 'string' || declaredSchema !== artifactSchema);
+    const artifactSchemaUnsupported = artifactSchema !== undefined
+      && (typeof artifactSchema !== 'string' || !KNOWN_SCHEMA_VERSIONS.has(artifactSchema));
+
+    if (requestedSchemaMismatch || artifactSchemaUnsupported) {
+      const reason = artifactSchemaUnsupported ? 'UNSUPPORTED_VERSION' : 'VERSION_MISMATCH';
+      requestedSupported.forEach((check) => mark('skipped', check, reason));
+      return result(diagnostics, coverage, versions);
+    }
 
     const structural = uniqueRequested.includes('structural');
     const semantic = uniqueRequested.includes('semantic');
+    let index;
     if (structural || semantic) {
       // The canonical v1 form examples omit Rails' transport defaults.  The
       // validator checks malformed supplied booleans, but never invents them.
       checkRoot(request.artifact, diagnostics);
-      const index = indexForm(request.artifact);
+      index = indexForm(request.artifact);
       if (structural) {
         checkElements(index, diagnostics, { requireCommonBooleans: false });
-        coverage.completed.push('structural');
+        mark('completed', 'structural');
       }
       if (semantic) {
         if (isObject(request.artifact)) resolveReferences(request.artifact, index, diagnostics);
-        coverage.completed.push('semantic');
+        mark('completed', 'semantic');
       }
       if (index.tooDeep || index.cyclic || index.tooLarge) {
-        coverage.skipped.push(coverageEntry(
-          structural ? 'structural' : 'semantic', 'INPUT_LIMIT_EXCEEDED', '/elements'
-        ));
+        if (structural) mark('failures', 'structural', 'INPUT_LIMIT_EXCEEDED', '/elements');
+        if (semantic) mark('failures', 'semantic', 'INPUT_LIMIT_EXCEEDED', '/elements');
       }
-      if (index.elements.some((entry) => entry.element.type === 'DynamicField')
-        && semantic) {
+      if (semantic && !index.tooDeep && !index.cyclic && !index.tooLarge
+        && index.elements.some((entry) => entry.element.type === 'DynamicField')) {
         const dynamicPath = index.elements.find(
           (entry) => entry.element.type === 'DynamicField'
         ).path;
-        coverage.unverified.push(coverageEntry(
-          'semantic', 'DYNAMIC_REFERENCE', dynamicPath
-        ));
+        mark('unverified', 'semantic', 'DYNAMIC_REFERENCE', dynamicPath);
         addWarning(
           diagnostics,
           'dynamic-reference',
@@ -247,12 +289,12 @@ function validateForm(request) {
 
     if (uniqueRequested.includes('compatibility')) {
       if (request.operation !== 'update') {
-        coverage.unsupported.push(coverageEntry('compatibility', 'UNSUPPORTED_CHECK'));
+        mark('unsupported', 'compatibility', 'UNSUPPORTED_CHECK');
       } else if (!own(request, 'previous_artifact') || !isObject(request.previous_artifact)) {
-        coverage.skipped.push(coverageEntry('compatibility', 'CONTEXT_REQUIRED'));
+        mark('skipped', 'compatibility', 'CONTEXT_REQUIRED');
       } else {
         checkCompatibility(request.previous_artifact, request.artifact, diagnostics);
-        coverage.completed.push('compatibility');
+        mark('completed', 'compatibility');
       }
     }
 
@@ -265,31 +307,54 @@ function validateForm(request) {
 function result(rawDiagnostics, coverage, versions) {
   if (rawDiagnostics.overflowed) {
     coverage.requested.forEach((check) => {
-      if (!coverage.skipped.some((entry) => entry.check === check)) {
-        coverage.skipped.push(coverageEntry(check, 'INPUT_LIMIT_EXCEEDED'));
+      if (SUPPORTED_CHECKS.has(check)
+        && !coverage.failures.some((entry) => (
+          entry.check === check && entry.reason_code === 'INPUT_LIMIT_EXCEEDED'
+        ))) {
+        coverage.failures.push(coverageEntry(check, 'INPUT_LIMIT_EXCEEDED'));
       }
     });
   }
   const diagnostics = sortDiagnostics(rawDiagnostics.map(toPublicDiagnostic))
     .slice(0, DIAGNOSTIC_LIMIT);
-  const hasError = diagnostics.some((diagnostic) => diagnostic.severity === 'error');
+  const hasError = rawDiagnostics.hasError
+    || rawDiagnostics.some((diagnostic) => diagnostic.severity === 'error');
   const unavailable = coverage.failures.length > 0;
   let outcome = 'valid';
-  if (unavailable) outcome = 'unavailable';
-  else if (coverage.skipped.length || coverage.unsupported.length
-    || coverage.unverified.length) outcome = 'incomplete';
-  else if (hasError) outcome = 'invalid';
+  if (hasError) {
+    outcome = 'invalid';
+  } else if (unavailable) {
+    outcome = 'unavailable';
+  } else if (coverage.skipped.length || coverage.unsupported.length
+    || coverage.unverified.length) {
+    outcome = 'incomplete';
+  }
+  const order = new Map();
+  coverage.requested.forEach((check, index) => {
+    if (!order.has(check)) order.set(check, index);
+  });
+  const orderEntries = (entries) => entries.slice().sort((a, b) => {
+    const left = order.has(a.check) ? order.get(a.check) : Number.MAX_SAFE_INTEGER;
+    const right = order.has(b.check) ? order.get(b.check) : Number.MAX_SAFE_INTEGER;
+    return left - right || a.check.localeCompare(b.check)
+      || a.reason_code.localeCompare(b.reason_code);
+  });
+  const completed = coverage.completed.slice().sort((a, b) => (
+    (order.has(a) ? order.get(a) : Number.MAX_SAFE_INTEGER)
+      - (order.has(b) ? order.get(b) : Number.MAX_SAFE_INTEGER)
+      || a.localeCompare(b)
+  ));
   return {
     contract_version: CONTRACT_VERSION,
     outcome,
     diagnostics,
     coverage: {
       requested: coverage.requested.slice(),
-      completed: coverage.completed.slice(),
-      skipped: coverage.skipped.slice(),
-      unsupported: coverage.unsupported.slice(),
-      unverified: coverage.unverified.slice(),
-      failures: coverage.failures.slice()
+      completed,
+      skipped: orderEntries(coverage.skipped),
+      unsupported: orderEntries(coverage.unsupported),
+      unverified: orderEntries(coverage.unverified),
+      failures: orderEntries(coverage.failures)
     },
     versions
   };

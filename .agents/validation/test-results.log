@@ -18,3 +18,16 @@ Post-validation correction: requested-check outcome semantics, Rails Ruby-truthi
 Final blocker correction rerun (Node 26.8.1): focused Mocha 38 passing; ESLint PASS; TypeScript no-emit PASS; declarations/browser build PASS; strict OpenSpec PASS. Full suite remains 48 passing with 14 unchanged SQL fixture/runtime failures (2 PostgreSQL, 2 SQLite, 4 v2-to-v3, 3 v3-to-v4, 3 v4-to-v5). The minimal form is incomplete when contextual/provisional coverage is present; only an explicitly complete pure profile is valid.
 Guarded review correction (2026-09-09, Node 26.8.1): hostile non-string ai_prompt values are type-checked without coercion; disabled/hidden/required emit exactly one common diagnostic each; diagnostic production and result truncation share src/validation/limits.js; bounded JSON Pointer segments reject objects and other unsupported primitives without invoking toString/valueOf. Focused Mocha: PASS (41 passing); ESLint PASS; TypeScript no-emit PASS; declarations/browser build PASS; strict OpenSpec PASS; CommonJS/deep-import boundary PASS; npm pack dry-run PASS (172 files, zero forbidden internal paths). Full suite: 51 passing, 14 unchanged pre-existing SQL fixture/runtime failures.
 Approved public v1 baseline (2026-09-09, Node 26.8.1): exported validateForm(request) from the package root; request uses complete artifact/previous_artifact names and structural, semantic, compatibility checks; response uses exact v1 envelope, FORM.* / VALIDATION.* diagnostics, JSONPath-like paths, and unavailable > incomplete > invalid > valid precedence. Canonical valid/invalid form fixtures pass parity assertions; update no-merge and malformed-request tests pass. Focused Mocha: 44 passing. Root declaration and compiled validation modules are emitted; package remains 3.9.1 and no publication occurred. Full Mocha: 54 passing with exactly 14 unchanged SQL fixture/runtime failures.
+Current-head narrow revision (Node 26.8.1):
+Focused Mocha: PASS (49 passing).
+ESLint: PASS.
+TypeScript no-emit: PASS.
+Strict OpenSpec: PASS.
+Build/declarations/browser bundle: PASS.
+Compiled CommonJS blank-schema metadata smoke: PASS.
+Full Mocha: 59 passing, 14 unchanged SQL fixture/runtime failures (2
+PostgreSQL, 2 SQLite, 4 v2-to-v3, 3 v3-to-v4, 3 v4-to-v5).
+Review findings fixed: blank schema metadata, hard-coded package version,
+Rails-present empty arrays/objects, enumerable overflow flag, indentation.
+No SQL/schema source or fixture changes; package version remains 3.9.1; no
+publish/deploy/merge/new PR.

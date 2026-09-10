@@ -169,8 +169,11 @@ function indexForm(form) {
 }
 
 function addIndexError(index, error) {
-  if (index.errors.length < DIAGNOSTIC_LIMIT) index.errors.push(error);
-  else index.diagnosticOverflow = true;
+  if (index.errors.length < DIAGNOSTIC_LIMIT) {
+    index.errors.push(error);
+  } else {
+    index.diagnosticOverflow = true;
+  }
 }
 
 module.exports = {

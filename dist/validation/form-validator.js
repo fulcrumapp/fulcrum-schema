@@ -20,7 +20,7 @@ function sortDiagnostics(diagnostics) {
         if (diagnostics[flag]) {
             Object.defineProperty(ordered, flag, {
                 configurable: true,
-                enumerable: false,
+                enumerable: flag === 'overflowed',
                 writable: true,
                 value: true
             });
@@ -116,10 +116,12 @@ function validate(request) {
         else {
             coverage.skipped.push('compatibility');
         }
-        if (index.tooDeep || index.cyclic)
+        if (index.tooDeep || index.cyclic) {
             coverage.skipped.push('bounded-traversal');
-        else
+        }
+        else {
             coverage.completed.push('bounded-traversal');
+        }
     }
     else if (materialized.candidate === undefined) {
         coverage.skipped.push('root-structure', 'element-structure', 'key-uniqueness', 'data-name-scope', 'container-children', 'field-types', 'form-references', 'conditions', 'type-specific', 'regex-syntax', 'compatibility', 'bounded-traversal');
@@ -136,13 +138,14 @@ function validate(request) {
     if (diagnostics.length > DIAGNOSTIC_LIMIT || diagnostics.overflowed) {
         coverage.skipped.push('diagnostic-overflow');
     }
-    else
+    else {
         coverage.completed.push('diagnostic-overflow');
+    }
     return makeResult(safeSchemaVersion(schemaVersion), sortDiagnostics(diagnostics), coverage, coverage.unsupported.includes('schema-version'));
 }
 function safeSchemaVersion(value) {
-    if (typeof value !== 'string')
-        return 'unknown';
+    if (typeof value !== 'string' || !value.trim())
+        return null;
     return value.length <= 64 ? value : `${value.slice(0, 61)}...`;
 }
 module.exports = {

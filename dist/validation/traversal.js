@@ -167,10 +167,12 @@ function indexForm(form) {
     return index;
 }
 function addIndexError(index, error) {
-    if (index.errors.length < DIAGNOSTIC_LIMIT)
+    if (index.errors.length < DIAGNOSTIC_LIMIT) {
         index.errors.push(error);
-    else
+    }
+    else {
         index.diagnosticOverflow = true;
+    }
 }
 module.exports = {
     MAX_ELEMENTS,

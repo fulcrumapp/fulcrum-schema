@@ -258,6 +258,35 @@
       "package_version": "3.9.1 unchanged",
       "sql_schema_diff": "unchanged",
       "shared_contract": "FLCRM-22116 approved"
+    },
+    {
+      "timestamp": "2026-09-09T18:20:53-07:00",
+      "phase": "REVISION_IMPLEMENTATION",
+      "summary": "Applied the user-authorized narrow current-head review corrections: blank or unobserved schema metadata now remains null, validator provenance no longer hard-codes the package version, Rails-present handling treats empty arrays and objects as blank, diagnostic overflow metadata is enumerable and preserved through truncation, and dangling-else indentation was normalized. Added adversarial tests and the pinned validation contract document.",
+      "files": [
+        "src/validation/public-validator.js",
+        "src/validation/result.js",
+        "src/validation/rules.js",
+        "src/validation/form-validator.js",
+        "src/validation/traversal.js",
+        "test/test-validation.js",
+        "docs/validation-contract.md",
+        ".agents/state.json"
+      ],
+      "review_findings": {
+        "blank_schema_version_metadata": "fixed; null is emitted and whitespace/unsupported values are incomplete coverage",
+        "hard_coded_package_version": "fixed; public validator provenance is the ruleset identifier flcrm-22117-v1",
+        "rails_present_empty_arrays_objects": "fixed and tested",
+        "enumerable_diagnostic_overflow": "fixed and tested",
+        "indentation": "fixed"
+      },
+      "rejected_findings": [
+        "No review finding was rejected; SQL/schema-diff changes remain out of scope and none were made."
+      ],
+      "focused_tests": "49 passing",
+      "package_version": "3.9.1 unchanged",
+      "sql_schema_diff": "unchanged",
+      "shared_contract": "FLCRM-22116 approved"
     }
   ]
 }

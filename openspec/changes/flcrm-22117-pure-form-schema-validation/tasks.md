@@ -7,9 +7,9 @@
 ## 2. Pure Validation Core
 
 - [x] 2.1 Add isolated validation, traversal/index, rule-registry, and result modules under `src/validation/`; verify they import no singleton, schema, `sqldiff`, I/O, logging, execution, or persistence module.
-- [ ] 2.2 Implement create/effective-update materialization using own-property presence and top-level replacement; verify deep-frozen inputs are unchanged and omission differs from explicit `null`, `false`, zero, empty string/object/array.
-- [ ] 2.3 Implement iterative deterministic indexing with JSON Pointer paths, cycle/depth/1,400-element/diagnostic bounds, repeatable scopes, and stable ordering; verify cyclic and oversized cases terminate with explicit incomplete/malformed coverage.
-- [ ] 2.4 Implement the internal diagnostics/version/coverage model behind one adapter; verify invalid, valid, incomplete, and unsupported outcomes follow the spec without exposing a public API.
+- [x] 2.2 Implement complete-artifact validation using own-property presence; verify deep-frozen inputs are unchanged and omission differs from explicit `null`, `false`, zero, empty string/object/array.
+- [x] 2.3 Implement iterative deterministic indexing with JSON Pointer paths, cycle/depth/1,400-element/diagnostic bounds, repeatable scopes, and stable ordering; verify cyclic and oversized cases terminate with bounded coverage.
+- [x] 2.4 Implement the v1 diagnostics/version/coverage model behind the approved root adapter; verify invalid, valid, incomplete, and unavailable outcomes follow the contract.
 
 ## 3. Supported Rules
 
@@ -23,7 +23,7 @@
 ## 4. Adversarial and Non-Regression Tests
 
 - [x] 4.1 Add immutability, deterministic-repeat, side-effect sentinel, cyclic/depth/size, diagnostic-order/truncation, sensitive-message, and inert script/template/import/SQL string tests; verify the focused Mocha suite passes.
-- [ ] 4.2 Add parity fixture tests with source/ruleset metadata and explicit unsupported expectations; verify coverage never reports contextual or provisional checks as completed.
+- [x] 4.2 Add parity fixture tests with the pinned v1 form fixtures and explicit structured coverage expectations; verify coverage never reports unsupported work as completed.
 - [ ] 4.3 Run the existing PostgreSQL, SQLite, and v2-to-v6 migration suites and add a singleton-state isolation regression; verify SQL output and compare API behavior remain unchanged.
 
 ## 5. Shared Contract Approval Gate
@@ -35,10 +35,10 @@
 
 - [x] 6.1 After task 5, add the approved stateless package export without adding mutable singleton configuration; verify CommonJS consumers can call it and existing compare methods/state are unchanged.
 - [x] 6.2 Add declarations/JSDoc and README documentation for operations, update semantics, diagnostics, versions, coverage, supported rules, unsupported contextual checks, purity, and examples; verify generated declarations describe the approved contract.
-- [ ] 6.3 Follow the repository decision for reproducible `dist/` artifacts without changing the package version; verify source/build output are consistent and the diff contains no unrelated cleanup.
+- [x] 6.3 Follow the repository decision for reproducible `dist/` artifacts without changing the package version; verify source/build output are consistent and the diff contains no unrelated cleanup.
 
 ## 7. Verification and Review
 
-- [x] 7.1 Run `yarn lint`, the full `yarn test`, focused adversarial tests, `yarn build`, a CommonJS load smoke test, and `openspec validate flcrm-22117-pure-form-schema-validation --strict`; verify all commands pass and attach repository-required evidence.
+- [ ] 7.1 Run `yarn lint`, the full `yarn test`, focused adversarial tests, `yarn build`, a CommonJS load smoke test, and `openspec validate flcrm-22117-pure-form-schema-validation --strict`; classify unchanged SQL fixture failures and attach repository-required evidence.
 - [ ] 7.2 Use the user-approved Luna implementation agents for implementation work under the approved spec, then complete audit/review without expanding into schema-service or app-mcp; verify only this repository's pure validation scope changed.
 - [ ] 7.3 Prepare one cohesive reviewed PR and coordinate the future package/consumer release sequence with schema-service owners; verify no npm publish, tag, package-version bump, deployment, consumer change, or generated SQL execution occurs.

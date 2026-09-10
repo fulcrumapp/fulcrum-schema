@@ -17,9 +17,11 @@ SHALL contain exactly the v1 top-level fields `contract_version`, `outcome`,
 `requested`, `completed`, `skipped`, `unsupported`, `unverified`, and
 `failures`, and versions SHALL contain `validator`, `schema`, and `runtime`.
 Public diagnostics SHALL use `FORM.*` or `VALIDATION.*` codes and
-JSONPath-like paths. Outcome precedence is unavailable, incomplete, invalid,
-then valid. The package version remains 3.9.1 and publication is not part of
-this change.
+JSONPath-like paths. Outcome precedence is invalid, unavailable, incomplete,
+then valid. Non-applicable or unobserved version values are `null`; caller
+declared versions are not copied into response metadata. Operational failures
+are coverage facts, not error diagnostics. The package version remains 3.9.1
+and publication is not part of this change.
 
 ### Requirement: Approved shared contract
 The package SHALL export the approved FLCRM-22116 v1 request, result,
