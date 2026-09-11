@@ -1,4 +1,40 @@
 FLCRM-22117 implementation validation
+CURRENT HEAD AUDIT (2026-09-11, committed head
+e705dbdecc1083702108b17756deeacf9ee7cf96, PR #72):
+Canonical contract and fixtures: fulcrumapp/app-mcp commit
+0bbd776019c79b2aa1cf0a2e6da287d8a7b767f4
+(docs/validation-contract.md blob c470cc222194db6d4a41978a2af41e468f7a8f47).
+Detailed machine-readable evidence: .agents/validation/current-head-audit.json.
+Clean-head package smoke used a git archive, then:
+ASDF_NODEJS_VERSION=26.8.1 yarn install --frozen-lockfile --ignore-scripts
+ASDF_NODEJS_VERSION=26.8.1 yarn build
+ASDF_NODEJS_VERSION=26.8.1 npm pack ./dist --ignore-scripts
+and a fresh npm install of the resulting tarball.
+Package entry: dist/fulcrum-schema.js (installed main: fulcrum-schema.js).
+Package: @fulcrumapp/fulcrum-schema@3.9.1; runtime dependencies are
+lodash ^4.18.1 and sqldiff ^0.3.0; validator provenance reports the loaded
+package metadata as @fulcrumapp/fulcrum-schema@3.9.1. Legacy lifecycle
+deep-imports form-validator, materialize, and result are unavailable.
+Canonical pure-form parity from the clean install:
+valid-form, invalid-form, empty-checks, incomplete-missing-previous, and
+invalid-request all match envelope/coverage semantics exactly after treating
+versions.validator null in fixtures as the contract's producer-specific
+metadata slot. Empty checks produce checker-wide MISSING_CHECK; missing
+previous compatibility is incomplete with CONTEXT_REQUIRED; invalid requests
+remain invalid with empty requested coverage. A null schema version remains
+null and is not echoed from caller input.
+The canonical unavailable.json is not applicable to this pure package because
+it simulates an external compatibility dependency outage; this package loads
+no such dependency. A synthetic form case with an input-limit failure plus an
+artifact error returns invalid while retaining INPUT_LIMIT_EXCEEDED coverage,
+confirming invalid-over-unavailable precedence.
+Focused Mocha: PASS (55 passing). ESLint: PASS. Build: PASS.
+Full Mocha: 65 passing and exactly 14 unchanged SQL fixture/runtime failures,
+matching the recorded baseline. PR checks CodeQL and Blocking Label are
+successful; review decision remains REVIEW_REQUIRED. No SQL/schema source,
+publication, deployment, tag, or merge.
+
+HISTORICAL SNAPSHOTS (preserved below)
 Authoritative Rails revision: 25503ce61df71e9932c2ecef4bde348780afb15d
 Focused Mocha: PASS (41 passing)
 ESLint: PASS
