@@ -1,20 +1,20 @@
 {
   "repository": "fulcrumapp/fulcrum-schema",
   "pr": 72,
-  "head": "e705dbdecc1083702108b17756deeacf9ee7cf96",
+  "head": "9eee23baa703eba96999cbae104dc203d20e8f76",
   "base": "main",
   "canonical_contract_repository": "fulcrumapp/app-mcp",
   "canonical_contract_commit": "0bbd776019c79b2aa1cf0a2e6da287d8a7b767f4",
   "canonical_contract_blob": "c470cc222194db6d4a41978a2af41e468f7a8f47",
   "audit_scope": "Committed-head public package and pure form validation contract",
-  "clean_archive": "/tmp/fulcrum-schema-clean-audit/src",
-  "package_tarball": "/tmp/fulcrum-schema-clean-audit/install2/package.tgz",
+  "clean_archive": "/tmp/fulcrum-schema-clean-audit-9eee/src",
+  "package_tarball": "/tmp/fulcrum-schema-clean-audit-9eee/install/package.tgz",
   "reproducible_commands": [
-    "git archive e705dbdecc1083702108b17756deeacf9ee7cf96 | tar -x -C /tmp/fulcrum-schema-clean-audit/src",
-    "cd /tmp/fulcrum-schema-clean-audit/src && ASDF_NODEJS_VERSION=26.8.1 yarn install --frozen-lockfile --ignore-scripts",
-    "cd /tmp/fulcrum-schema-clean-audit/src && ASDF_NODEJS_VERSION=26.8.1 yarn build",
-    "cd /tmp/fulcrum-schema-clean-audit/src && ASDF_NODEJS_VERSION=26.8.1 npm pack ./dist --ignore-scripts",
-    "ASDF_NODEJS_VERSION=26.8.1 npm install --ignore-scripts ./package.tgz"
+    "git archive 9eee23baa703eba96999cbae104dc203d20e8f76 | tar -x -C /tmp/fulcrum-schema-clean-audit-9eee/src",
+    "cd /tmp/fulcrum-schema-clean-audit-9eee/src && ASDF_NODEJS_VERSION=26.8.1 yarn install --frozen-lockfile --ignore-scripts",
+    "cd /tmp/fulcrum-schema-clean-audit-9eee/src && ASDF_NODEJS_VERSION=26.8.1 yarn build",
+    "cd /tmp/fulcrum-schema-clean-audit-9eee/src && ASDF_NODEJS_VERSION=26.8.1 npm pack ./dist --ignore-scripts",
+    "cd /tmp/fulcrum-schema-clean-audit-9eee/install && ASDF_NODEJS_VERSION=26.8.1 npm install --ignore-scripts ./package.tgz"
   ],
   "package": {
     "name": "@fulcrumapp/fulcrum-schema",

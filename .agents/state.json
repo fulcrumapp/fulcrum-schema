@@ -32,7 +32,7 @@
   "public_api_gate": "PASS (root validateForm v1 export; no route-specific names)",
   "package_version": "3.9.1 unchanged",
   "sql_schema_diff_scope": "UNCHANGED",
-  "latest_audit_commit": "e705dbdecc1083702108b17756deeacf9ee7cf96",
+  "latest_audit_commit": "9eee23baa703eba96999cbae104dc203d20e8f76",
   "latest_audit_artifact": ".agents/validation/current-head-audit.json",
   "remaining_blockers": [
     "14 unchanged baseline SQL fixture failures under installed sqldiff/runtime",
