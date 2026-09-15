@@ -1,0 +1,35 @@
+{
+  "request": {
+    "contract_version": "v1",
+    "artifact_type": "form",
+    "operation": "update",
+    "artifact": {
+      "name": "Inspection",
+      "elements": []
+    },
+    "checks": ["structural", "compatibility"]
+  },
+  "response": {
+    "contract_version": "v1",
+    "outcome": "incomplete",
+    "diagnostics": [],
+    "coverage": {
+      "requested": ["structural", "compatibility"],
+      "completed": ["structural"],
+      "skipped": [
+        {
+          "check": "compatibility",
+          "reason_code": "CONTEXT_REQUIRED"
+        }
+      ],
+      "unsupported": [],
+      "unverified": [],
+      "failures": []
+    },
+    "versions": {
+      "validator": "@fulcrumapp/fulcrum-schema@3.9.1",
+      "schema": null,
+      "runtime": null
+    }
+  }
+}

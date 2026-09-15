@@ -9,6 +9,7 @@ import FormSchemaV5 from "./schemas/v5";
 import FormSchemaV6 from './schemas/v6';
 import Metadata from './metadata';
 import sqldiff from 'sqldiff';
+const { validateForm } = require('./validation/public-validator');
 
 const { Postgres, SQLite, SchemaDiffer } = sqldiff;
 
@@ -111,5 +112,7 @@ instance.compareForms = () => {
     }
   );
 };
+
+instance.validateForm = validateForm;
 
 module.exports = instance;
