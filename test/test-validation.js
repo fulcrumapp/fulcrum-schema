@@ -333,7 +333,7 @@ describe('internal pure form validation', () => {
     assert.strictEqual(builtResult.outcome, 'incomplete');
     assert.strictEqual(
       builtResult.versions.validator,
-      '@fulcrumapp/fulcrum-schema@3.9.1'
+      `${require('../dist/package.json').name}@${require('../dist/package.json').version}`
     );
     assert.strictEqual(
       fs.existsSync(path.join(__dirname, '../src/validation/index.js')),
@@ -566,6 +566,8 @@ describe('internal pure form validation', () => {
     });
     assert.ok(!atLimit.diagnostics.some((diagnostic) => diagnostic.code === 'element-limit'));
     assert.ok(overLimit.diagnostics.some((diagnostic) => diagnostic.code === 'element-limit'));
+    assert.ok(overLimit.coverage.skipped.includes('bounded-traversal'));
+    assert.ok(!overLimit.coverage.completed.includes('bounded-traversal'));
   });
 
   it('keeps section names transparent and repeatable names scoped', () => {

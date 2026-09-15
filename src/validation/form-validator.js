@@ -92,7 +92,7 @@ function validate(request) {
     } else {
       coverage.skipped.push('compatibility');
     }
-    if (index.tooDeep || index.cyclic) {
+    if (index.tooDeep || index.cyclic || index.tooLarge) {
       coverage.skipped.push('bounded-traversal');
     } else {
       coverage.completed.push('bounded-traversal');
