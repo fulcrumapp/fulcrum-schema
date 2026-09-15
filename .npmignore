@@ -1,4 +1,4 @@
 .agents/
 openspec/
 src/validation/
-test/test-validation.js
+test/
