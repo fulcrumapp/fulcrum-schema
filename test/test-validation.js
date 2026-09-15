@@ -317,7 +317,7 @@ describe('internal pure form validation', () => {
 
   it('exports the approved validator from source and built package roots only', () => {
     const schema = require('../src/fulcrum-schema');
-    const builtSchema = require('../dist/fulcrum-schema.js');
+    const builtSchema = require('../dist');
     assert.strictEqual(typeof schema.validateForm, 'function');
     assert.strictEqual(typeof builtSchema.validateForm, 'function');
     assert.strictEqual(typeof builtSchema.compareOrganization, 'function');
