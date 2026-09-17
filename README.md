@@ -2,12 +2,14 @@
 
 ### Setup
 ```sh
-npm install -g browserify
+yarn install --frozen-lockfile
 ```
 
 ### Distribute
 
-Builds the final output. The main output file `dist/fulcrum-schema.js`.
+The package compiles into the ignored `dist/` directory. Build artifacts are
+created automatically for `yarn pack` and `yarn publish`, and are the only
+files included in the published package.
 
 ```sh
 yarn build
@@ -15,9 +17,12 @@ yarn build
 
 ### Deploying
 
-When making changes to this library, the fulcrum-schema.js file needs to be included in the `schema-service` as a dependency.
+When making changes to this library, publish the package root; do not publish
+the `dist/` directory directly.
 
-In order to publish a new version, run `yarn publish dist --new-version $(params.version) --no-git-tag-version` where "params.version" is the version you're publishing.
+```sh
+yarn publish --new-version <version> --no-git-tag-version
+```
 
 ### Tests
 
