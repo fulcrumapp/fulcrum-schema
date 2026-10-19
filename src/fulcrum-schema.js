@@ -7,6 +7,7 @@ import FormSchemaV3 from './schemas/v3';
 import FormSchemaV4 from './schemas/v4';
 import FormSchemaV5 from "./schemas/v5";
 import FormSchemaV6 from './schemas/v6';
+import FormSchemaV7 from './schemas/v7';
 import Metadata from './metadata';
 import sqldiff from 'sqldiff';
 
@@ -15,7 +16,7 @@ const { Postgres, SQLite, SchemaDiffer } = sqldiff;
 const instance = new Function('return this')(); // eslint-disable-line no-new-func
 
 instance.dialect = 'postgres';
-instance.version = 'v6';
+instance.version = 'v7';
 instance.oldForm = null;
 instance.newForm = null;
 instance.tableSchema = null;
@@ -78,6 +79,7 @@ instance.compareFormSchemas = (oldForm, newForm, options = {}) => {
       v4: FormSchemaV4,
       v5: FormSchemaV5,
       v6: FormSchemaV6,
+      v7: FormSchemaV7,
     };
 
     if (oldForm) {
