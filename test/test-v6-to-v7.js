@@ -58,6 +58,17 @@ describe('v6 to v7 form schema generator', () => {
     const expected = fixture('v7-update-form.sql');
 
     toSQL(sql).should.eql(expected);
+
+    const sqlText = toSQL(sql);
+    const tableCleanup = sqlText.match(
+      /DELETE FROM "organization_1"\."tables" WHERE name = 'form_67777_0fe3_view';/g
+    ) || [];
+    const columnCleanup = sqlText.match(
+      /DELETE FROM "organization_1"\."columns" WHERE table_name = 'form_67777_0fe3_view';/g
+    ) || [];
+
+    tableCleanup.length.should.eql(1);
+    columnCleanup.length.should.eql(1);
   });
 
   it('builds a schema diff for a deleted v7 form', () => {
