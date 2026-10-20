@@ -330,8 +330,6 @@ DELETE FROM "organization_1"."tables" WHERE name = 'form_67777_4ccf_view';
 DELETE FROM "organization_1"."columns" WHERE table_name = 'form_67777_4ccf_view';
 DELETE FROM "organization_1"."tables" WHERE name = 'form_67777_4ccf_view_full';
 DELETE FROM "organization_1"."columns" WHERE table_name = 'form_67777_4ccf_view_full';
-DELETE FROM "organization_1"."tables" WHERE name = 'form_67777_0fe3_view';
-DELETE FROM "organization_1"."columns" WHERE table_name = 'form_67777_0fe3_view';
 INSERT INTO "organization_1"."tables" (name, alias, type, parent, form_id, field, field_type, data_name) SELECT 'form_67777_0fe3_view', 'Park Inventory Test/photos', 'media', NULL, 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '0fe3', 'PhotoField', 'photos';
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'form_67777_0fe3_view', 'Park Inventory Test/photos', 'record_id', '1', 'string', '0', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
@@ -339,8 +337,6 @@ INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, 
 SELECT 'form_67777_0fe3_view', 'Park Inventory Test/photos', 'parent_id', '2', 'string', '0', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'form_67777_0fe3_view', 'Park Inventory Test/photos', '_photo_id', '3', 'string', '0', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
-DELETE FROM "organization_1"."tables" WHERE name = 'form_67777_92ff_view';
-DELETE FROM "organization_1"."columns" WHERE table_name = 'form_67777_92ff_view';
 INSERT INTO "organization_1"."tables" (name, alias, type, parent, form_id, field, field_type, data_name) SELECT 'form_67777_92ff_view', 'Park Inventory Test/attachments', 'media', NULL, 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '92ff', 'AttachmentField', 'attachments';
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'form_67777_92ff_view', 'Park Inventory Test/attachments', 'record_id', '1', 'string', '0', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
@@ -348,8 +344,6 @@ INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, 
 SELECT 'form_67777_92ff_view', 'Park Inventory Test/attachments', 'parent_id', '2', 'string', '0', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'form_67777_92ff_view', 'Park Inventory Test/attachments', '_attachment_id', '3', 'string', '0', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
-DELETE FROM "organization_1"."tables" WHERE name = 'form_67777_5dcd_view';
-DELETE FROM "organization_1"."columns" WHERE table_name = 'form_67777_5dcd_view';
 INSERT INTO "organization_1"."tables" (name, alias, type, parent, form_id, field, field_type, data_name) SELECT 'form_67777_5dcd_view', 'Park Inventory Test/park_photos', 'media', NULL, 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '5dcd', 'PhotoField', 'park_photos';
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'form_67777_5dcd_view', 'Park Inventory Test/park_photos', 'record_id', '1', 'string', '0', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
@@ -357,8 +351,6 @@ INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, 
 SELECT 'form_67777_5dcd_view', 'Park Inventory Test/park_photos', 'parent_id', '2', 'string', '0', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'form_67777_5dcd_view', 'Park Inventory Test/park_photos', '_photo_id', '3', 'string', '0', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
-DELETE FROM "organization_1"."tables" WHERE name = 'form_67777_9f01_view';
-DELETE FROM "organization_1"."columns" WHERE table_name = 'form_67777_9f01_view';
 INSERT INTO "organization_1"."tables" (name, alias, type, parent, form_id, field, field_type, data_name) SELECT 'form_67777_9f01_view', 'Park Inventory Test/videos', 'media', NULL, 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '9f01', 'VideoField', 'videos';
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'form_67777_9f01_view', 'Park Inventory Test/videos', 'record_id', '1', 'string', '0', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
@@ -366,8 +358,6 @@ INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, 
 SELECT 'form_67777_9f01_view', 'Park Inventory Test/videos', 'parent_id', '2', 'string', '0', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'form_67777_9f01_view', 'Park Inventory Test/videos', '_video_id', '3', 'string', '0', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
-DELETE FROM "organization_1"."tables" WHERE name = 'form_67777_yui8_view';
-DELETE FROM "organization_1"."columns" WHERE table_name = 'form_67777_yui8_view';
 INSERT INTO "organization_1"."tables" (name, alias, type, parent, form_id, field, field_type, data_name) SELECT 'form_67777_yui8_view', 'Park Inventory Test/sketches', 'media', NULL, 'd3720dff-de27-4e79-a4ec-9dddb6553a45', 'yui8', 'SketchField', 'sketches';
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'form_67777_yui8_view', 'Park Inventory Test/sketches', 'record_id', '1', 'string', '0', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
@@ -375,8 +365,6 @@ INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, 
 SELECT 'form_67777_yui8_view', 'Park Inventory Test/sketches', 'parent_id', '2', 'string', '0', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'form_67777_yui8_view', 'Park Inventory Test/sketches', '_sketch_id', '3', 'string', '0', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
-DELETE FROM "organization_1"."tables" WHERE name = 'form_67777_view';
-DELETE FROM "organization_1"."columns" WHERE table_name = 'form_67777_view';
 INSERT INTO "organization_1"."tables" (name, alias, type, parent, form_id, field, field_type, data_name) SELECT 'form_67777_view', 'Park Inventory Test', 'form', NULL, 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'form_67777_view', 'Park Inventory Test', '_record_id', '1', 'string', '0', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;
@@ -534,8 +522,6 @@ INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, 
 SELECT 'form_67777_view', 'Park Inventory Test', 'sketches', '77', 'array', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', 'yui8', 'SketchField', 'sketches', NULL, NULL;
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'form_67777_view', 'Park Inventory Test', 'sketches_captions', '78', 'array', '1', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', 'yui8', 'SketchField', 'sketches', 'captions', NULL;
-DELETE FROM "organization_1"."tables" WHERE name = 'form_67777_4ccf_view';
-DELETE FROM "organization_1"."columns" WHERE table_name = 'form_67777_4ccf_view';
 INSERT INTO "organization_1"."tables" (name, alias, type, parent, form_id, field, field_type, data_name) SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', 'repeatable', 'Park Inventory Test', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', '4ccf', 'Repeatable', 'park_features';
 INSERT INTO "organization_1"."columns" (table_name, table_alias, name, ordinal, type, nullable, form_id, field, field_type, data_name, part, data)
 SELECT 'form_67777_4ccf_view', 'Park Inventory Test/park_features', '_child_record_id', '1', 'string', '0', 'd3720dff-de27-4e79-a4ec-9dddb6553a45', NULL, NULL, NULL, NULL, NULL;

@@ -54,6 +54,24 @@ export default class Metadata {
     const systemTablesViewName = Utils.tableName(this.options.schema, this.options.prefix, this.options.quote, 'tables_view');
     const systemColumnsName = Utils.tableName(this.options.schema, this.options.prefix, this.options.quote, 'columns');
     const systemColumnsViewName = Utils.tableName(this.options.schema, this.options.prefix, this.options.quote, 'columns_view');
+    const deletedViewNames = new Set();
+
+    const deleteViewMetadata = (name) => {
+      if (deletedViewNames.has(name)) {
+        return;
+      }
+
+      deletedViewNames.add(name);
+      statements.push(format('DELETE FROM %s WHERE name = %s;',
+                             systemTablesName,
+                             pgvalue(name)));
+
+      if (this.includeColumns) {
+        statements.push(format('DELETE FROM %s WHERE table_name = %s;',
+                               systemColumnsName,
+                               pgvalue(name)));
+      }
+    };
 
     if (METADATA) {
       statements.push(format('CREATE TABLE IF NOT EXISTS %s (name text NOT NULL, created_at timestamp with time zone NOT NULL, sql TEXT NOT NULL);',
@@ -92,15 +110,7 @@ export default class Metadata {
 
     // drop old metadata
     for (const view of this.oldViews) {
-      statements.push(format('DELETE FROM %s WHERE name = %s;',
-                             systemTablesName,
-                             pgvalue(view.name)));
-
-      if (this.includeColumns) {
-        statements.push(format('DELETE FROM %s WHERE table_name = %s;',
-                               systemColumnsName,
-                               pgvalue(view.name)));
-      }
+      deleteViewMetadata(view.name);
     }
 
     // create new metadata
@@ -114,15 +124,7 @@ export default class Metadata {
         continue;
       }
 
-      statements.push(format('DELETE FROM %s WHERE name = %s;',
-                             systemTablesName,
-                             pgvalue(viewName)));
-
-      if (this.includeColumns) {
-        statements.push(format('DELETE FROM %s WHERE table_name = %s;',
-                               systemColumnsName,
-                               pgvalue(viewName)));
-      }
+      deleteViewMetadata(viewName);
 
       let element = view.element || view.table.element;
 
