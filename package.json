@@ -27,7 +27,6 @@
     "lint": "eslint src/*.js src/**/*.js",
     "build": "tsc && cp src/fulcrum-schema.d.ts dist/fulcrum-schema.d.ts && browserify dist/fulcrum-schema.js --mangle -o dist/fulcrum-schema.min.js",
     "prepack": "yarn clean && yarn build",
-    "prepublishOnly": "yarn build",
     "clean": "rm -rf dist"
   },
   "author": "Fulcrum",
