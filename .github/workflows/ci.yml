@@ -127,9 +127,24 @@ jobs:
             sonarsource/sonar-scanner-cli@sha256:46341f2c2dc560381414e90347885f5cddc716db080adcbafc1cac13e1473094 \
             "${args[@]}"
 
+  build-and-test:
+    if: always() && (github.event_name != 'pull_request' || !github.event.pull_request.draft)
+    needs: [ci, sonar]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require CI and applicable Sonar analysis to succeed
+        env:
+          CI_RESULT: ${{ needs.ci.result }}
+          SONAR_RESULT: ${{ needs.sonar.result }}
+        run: |
+          if [ "$CI_RESULT" != success ] || { [ "$SONAR_RESULT" != success ] && [ "$SONAR_RESULT" != skipped ]; }; then
+            echo "::error::CI result: $CI_RESULT; Sonar result: $SONAR_RESULT"
+            exit 1
+          fi
+
   tag:
     name: Create npm release tag
-    needs: [ci, sonar]
+    needs: build-and-test
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     concurrency:
