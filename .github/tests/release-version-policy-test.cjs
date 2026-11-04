@@ -7,7 +7,7 @@ const { test } = require("node:test");
 
 const workflows = path.resolve(__dirname, "../workflows");
 const workflow = readFileSync(path.join(workflows, "ci.yml"), "utf8");
-const buildJob = workflow.match(/^  ci:\n([\s\S]*?)(?=^  (?:sonar|tag):)/m)?.[1];
+const buildJob = workflow.match(/^  ci:\n([\s\S]*?)(?=^  build-and-test:)/m)?.[1];
 assert.ok(buildJob, "ci job is present");
 const guard = buildJob.match(/node <<'NODE'\n([\s\S]*?)^\s*NODE$/m)?.[1];
 assert.ok(guard, "version guard is present");
@@ -47,7 +47,6 @@ test("event bases, checkout and GitHub-hosted runners are configured", () => {
   assert.match(buildJob, /runs-on:\s*ubuntu-latest/);
   assert.match(workflow, /^  tag:[\s\S]*?runs-on:\s*ubuntu-latest/m);
   assert.match(workflow, /node --test \.github\/tests\/\*\.cjs/);
-  if (/^  sonar:/m.test(workflow)) assert.match(workflow, /^  sonar:[\s\S]*?runs-on:\s*ubuntu-latest/m);
 });
 
 test("all workflow jobs use GitHub-hosted Ubuntu runners", () => {

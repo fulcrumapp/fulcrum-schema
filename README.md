@@ -18,14 +18,14 @@ yarn build
 When making changes to this library, the fulcrum-schema.js file needs to be included in the `schema-service` as a dependency.
 
 Pull requests, merge queue entries and main changes run CI on GitHub-hosted
-runners. After main validation and Sonar analysis succeed, a GitHub App commits
+runners. After main validation succeeds, a GitHub App commits
 the next version to the root `package.json` and creates its matching SemVer tag.
 Do not edit the root package version manually. Tag creation builds and publishes
 the `dist` package to GitHub Packages; this repository does not publish to
 npmjs.org.
 
 Before enabling releases, configure fork-run approval, required CI checks,
-GitHub Packages access, Sonar secrets, and the release App's branch and tag
+GitHub Packages access, and the release App's branch and tag
 protection bypasses. Disable the old Tekton publisher at cutover. If publishing
 fails, rerun the tag workflow against the same tag; it verifies the release
 commit and package version before publishing.

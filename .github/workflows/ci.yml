@@ -90,55 +90,17 @@ jobs:
       - name: Test
         run: yarn test
 
-  sonar:
-    name: SonarQube analysis
-    needs: ci
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
-        with:
-          fetch-depth: 0
-          persist-credentials: false
-      - name: Scan trusted revision
-        env:
-          SONAR_TOKEN: ${{ secrets.ACTIONS_SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.ACTIONS_SONAR_URL || 'https://sonarcloud.io' }}
-          SONAR_USER_HOME: /tmp/sonar
-          HOME: /tmp
-          EVENT_NAME: ${{ github.event_name }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-          PR_HEAD: ${{ github.head_ref }}
-          PR_BASE: ${{ github.base_ref }}
-        run: |
-          set -euo pipefail
-          test -n "$SONAR_TOKEN" || { echo "::error::A Sonar token is required"; exit 1; }
-          args=("-Dsonar.scm.revision=$GITHUB_SHA")
-          if [[ "$EVENT_NAME" == pull_request ]]; then
-            test -n "$PR_NUMBER" && test -n "$PR_HEAD" && test -n "$PR_BASE"
-            args+=("-Dsonar.pullrequest.key=$PR_NUMBER" "-Dsonar.pullrequest.branch=$PR_HEAD" "-Dsonar.pullrequest.base=$PR_BASE")
-          fi
-          docker run --rm \
-            --user "$(id -u):$(id -g)" \
-            --tmpfs /tmp:rw,exec,nosuid,nodev,mode=1777 \
-            --env SONAR_TOKEN --env SONAR_HOST_URL --env SONAR_USER_HOME --env HOME \
-            --volume "$GITHUB_WORKSPACE:/usr/src" \
-            sonarsource/sonar-scanner-cli@sha256:46341f2c2dc560381414e90347885f5cddc716db080adcbafc1cac13e1473094 \
-            "${args[@]}"
-
   build-and-test:
     if: always() && (github.event_name != 'pull_request' || !github.event.pull_request.draft)
-    needs: [ci, sonar]
+    needs: ci
     runs-on: ubuntu-latest
     steps:
-      - name: Require CI and applicable Sonar analysis to succeed
+      - name: Require CI to succeed
         env:
           CI_RESULT: ${{ needs.ci.result }}
-          SONAR_RESULT: ${{ needs.sonar.result }}
         run: |
-          if [ "$CI_RESULT" != success ] || { [ "$SONAR_RESULT" != success ] && [ "$SONAR_RESULT" != skipped ]; }; then
-            echo "::error::CI result: $CI_RESULT; Sonar result: $SONAR_RESULT"
+          if [ "$CI_RESULT" != success ]; then
+            echo "::error::CI result: $CI_RESULT"
             exit 1
           fi
 
