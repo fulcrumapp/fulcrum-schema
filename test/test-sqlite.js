@@ -48,6 +48,17 @@ describe('sqlite form schema generator', () => {
     toSQL(sql).should.eql(expected);
   });
 
+  it('includes and preserves sketch backgrounds in migrations', () => {
+    const createSQL = toSQL(compareFormSchemas(null, newForm, OPTIONS));
+    const updateSQL = toSQL(compareFormSchemas(oldForm, newForm, OPTIONS));
+    const copyStatement = updateSQL.split('\n').find((line) =>
+      line.startsWith('INSERT INTO `account_1_tmp_new_form_67777` (')
+    );
+
+    createSQL.should.include('`fyui8_backgrounds` TEXT');
+    copyStatement.should.match(/`fyui8_backgrounds`\) SELECT .* `fyui8_backgrounds` FROM `account_1_form_67777`;/);
+  });
+
   it('builds a schema diff for a deleted form', () => {
     const sql = compareFormSchemas(newForm, null, OPTIONS);
 
