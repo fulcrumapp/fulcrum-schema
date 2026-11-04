@@ -49,7 +49,7 @@ describe('postgres form schema generator', () => {
     toSQL(sql).should.eql(expected);
   });
 
-  it('includes sketch backgrounds in tables, views, metadata, and migrations', () => {
+  it('generates sketch-background columns, views, metadata, and copy expressions', () => {
     const createSQL = toSQL(compareFormSchemas(null, newForm, OPTIONS));
     const updateSQL = toSQL(compareFormSchemas(oldForm, newForm, OPTIONS));
     const copyStatement = updateSQL.split('\n').find((line) =>

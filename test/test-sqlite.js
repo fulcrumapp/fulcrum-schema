@@ -48,7 +48,7 @@ describe('sqlite form schema generator', () => {
     toSQL(sql).should.eql(expected);
   });
 
-  it('includes and preserves sketch backgrounds in migrations', () => {
+  it('generates sketch-background columns and copy expressions', () => {
     const createSQL = toSQL(compareFormSchemas(null, newForm, OPTIONS));
     const updateSQL = toSQL(compareFormSchemas(oldForm, newForm, OPTIONS));
     const copyStatement = updateSQL.split('\n').find((line) =>

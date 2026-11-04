@@ -27,8 +27,8 @@ npmjs.org.
 Before enabling releases, configure fork-run approval, required CI checks,
 GitHub Packages access, and the release App's branch and tag
 protection bypasses. Disable the old Tekton publisher at cutover. If publishing
-fails, rerun the tag workflow against the same tag; it verifies the release
-commit and package version before publishing.
+fails, rerun the failed publish workflow for the same tag; it verifies the
+release commit and package version before publishing.
 
 ### Tests
 
