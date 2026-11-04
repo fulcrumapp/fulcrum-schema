@@ -97,3 +97,27 @@ test("GitHub Packages publishing installs npm 11 before packing without scripts"
   const pack = action.indexOf("npm pack ./dist --ignore-scripts --json");
   assert.ok(install >= 0 && pack > install, "npm 11 must be installed before packing");
 });
+
+test("Corepack cannot rewrite package.json during CI or package publishing", () => {
+  const action = readFileSync(path.join(__dirname, "../actions/npm-publish-github/action.yml"), "utf8");
+  assert.match(buildJob, /^\s{4}env:\n\s{6}COREPACK_ENABLE_AUTO_PIN:\s*['"]0['"]/m);
+  for (const step of ["Enable the configured Yarn version", "Install dependencies", "Build package"]) {
+    const section = action.split(`    - name: ${step}\n`)[1]?.split("\n    - name: ")[0];
+    assert.ok(section, `${step} exists`);
+    assert.match(section, /^\s{8}COREPACK_ENABLE_AUTO_PIN:\s*['"]0['"]/m, step);
+  }
+  const dir = mkdtempSync(path.join(os.tmpdir(), "corepack-manifest-"));
+  const manifest = '{"name":"corepack-test","version":"1.0.0"}\n';
+  try {
+    writeFileSync(path.join(dir, "package.json"), manifest);
+    const result = spawnSync("corepack", ["yarn", "--version"], {
+      cwd: dir,
+      encoding: "utf8",
+      env: { ...process.env, COREPACK_ENABLE_AUTO_PIN: "0" }
+    });
+    assert.equal(result.status, 0, result.error?.message || result.stderr);
+    assert.equal(readFileSync(path.join(dir, "package.json"), "utf8"), manifest);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
