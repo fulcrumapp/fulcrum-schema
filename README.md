@@ -17,7 +17,18 @@ yarn build
 
 When making changes to this library, the fulcrum-schema.js file needs to be included in the `schema-service` as a dependency.
 
-In order to publish a new version, run `yarn publish dist --new-version $(params.version) --no-git-tag-version` where "params.version" is the version you're publishing.
+Pull requests, merge queue entries and main changes run CI on GitHub-hosted
+runners. After main validation succeeds, a GitHub App commits
+the next version to the root `package.json` and creates its matching SemVer tag.
+Do not edit the root package version manually. Tag creation builds and publishes
+the `dist` package to GitHub Packages; this repository does not publish to
+npmjs.org.
+
+Before enabling releases, configure fork-run approval, required CI checks,
+GitHub Packages access, and the release App's branch and tag
+protection bypasses. Disable the old Tekton publisher at cutover. If publishing
+fails, rerun the failed publish workflow for the same tag; it verifies the
+release commit and package version before publishing.
 
 ### Tests
 

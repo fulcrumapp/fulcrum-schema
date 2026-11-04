@@ -49,6 +49,19 @@ describe('postgres form schema generator', () => {
     toSQL(sql).should.eql(expected);
   });
 
+  it('generates sketch-background columns, views, metadata, and copy expressions', () => {
+    const createSQL = toSQL(compareFormSchemas(null, newForm, OPTIONS));
+    const updateSQL = toSQL(compareFormSchemas(oldForm, newForm, OPTIONS));
+    const copyStatement = updateSQL.split('\n').find((line) =>
+      line.startsWith('INSERT INTO organization_1.tmp_new_form_67777 (')
+    );
+
+    createSQL.should.include('fyui8_backgrounds text[]');
+    createSQL.should.include('fyui8_backgrounds AS sketches_backgrounds');
+    createSQL.should.include("'sketches_backgrounds', '77', 'array'");
+    copyStatement.should.match(/\bfyui8_backgrounds\) SELECT .* \bfyui8_backgrounds FROM organization_1\.form_67777;/);
+  });
+
   it('builds a schema diff for a deleted form', () => {
     const sql = compareFormSchemas(newForm, null, OPTIONS);
 
