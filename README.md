@@ -28,7 +28,10 @@ Before enabling releases, configure fork-run approval, required CI checks,
 GitHub Packages access, and the release App's branch and tag
 protection bypasses. Disable the old Tekton publisher at cutover. If publishing
 fails, rerun the failed publish workflow for the same tag; it verifies the
-release commit and package version before publishing.
+release commit and package version before publishing. Reruns use the workflow
+and action code from that tag, so a workflow fix on main will not change an
+older tag's run. Recovering that exact version requires a separately reviewed
+procedure; do not move the existing tag.
 
 ### Tests
 
