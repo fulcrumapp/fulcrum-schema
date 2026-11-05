@@ -22,13 +22,12 @@ Watch for changes to any of these files — they all affect the OpenAPI form sch
 | `src/data-elements.js` | Element `type` enum values in `FormBaseElement` and `FormElement.oneOf` |
 | `src/schema.js` | Per-element column definitions → per-element schema properties |
 | `src/metadata.js` | Form-level metadata fields → `FormBody` properties |
-| `test/fixtures/form-v5.json` | Authoritative JSON shape for all element types |
 
 ## Mapping: fulcrum-schema → OpenAPI
 
 ### Element Types (`src/data-elements.js`)
 
-Each entry in `DATA_ELEMENT_TYPES` maps to:
+Each entry in `DATA_ELEMENTS` maps to:
 - A type string in `FormBaseElement.properties.type.enum`
 - A `$ref` entry in `FormElement.oneOf`
 - A dedicated `Form{TypeName}Element` schema in `components.schemas`
