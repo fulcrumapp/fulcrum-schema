@@ -17,7 +17,7 @@
     "clean": "rm -rf dist"
   },
   "author": "Fulcrum",
-  "license": "BSD",
+  "license": "UNLICENSED",
   "eslintConfig": {
     "extends": "fulcrum"
   },
