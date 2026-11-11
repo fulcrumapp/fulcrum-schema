@@ -53,7 +53,7 @@ For each new system column, update all 3 sections:
 - add mapping so the field appears as a system view alias
 
 3. Schema.systemFormTableIndexes
-- add btree index (usually nullable predicate form)
+- add index (usually nullable predicate form)
 
 Pattern example:
 
