@@ -31,7 +31,7 @@ Each entry in `DATA_ELEMENTS` maps to:
 - A `$ref` entry in `FormElement.oneOf`
 - A dedicated `Form{TypeName}Element` schema in `components.schemas`
 
-### Element Properties (`src/schema.js` columns)
+### Element Properties
 
 The column definitions for each element type reveal what properties the element stores in JSON.
 For each column group in `schema.js`, map columns → OpenAPI properties:
