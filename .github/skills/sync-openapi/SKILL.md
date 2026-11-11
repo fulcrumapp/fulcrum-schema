@@ -33,7 +33,6 @@ Each entry in `DATA_ELEMENTS` maps to:
 
 ### Element Properties
 
-The column definitions for each element type reveal what properties the element stores in JSON.
 For each column group in `schema.js`, map columns → OpenAPI properties:
 
 | SQL column pattern | OpenAPI property | Schema |
