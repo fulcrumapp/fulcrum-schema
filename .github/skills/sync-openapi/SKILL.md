@@ -33,8 +33,6 @@ Each entry in `DATA_ELEMENTS` maps to:
 
 ### Element Properties
 
-For each column group in `schema.js`, map columns → OpenAPI properties:
-
 | SQL column pattern | OpenAPI property | Schema |
 |-------------------|-----------------|--------|
 | `numeric`, `format` | TextField numeric settings | `FormTextFieldElement` |
