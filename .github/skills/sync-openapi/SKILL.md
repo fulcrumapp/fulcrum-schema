@@ -45,7 +45,7 @@ Each entry in `DATA_ELEMENTS` maps to:
 | `agreement_text` | Signature text | `FormSignatureFieldElement` |
 | `auto_populate` | Address auto-fill | `FormAddressFieldElement` |
 
-### Form-Level Attributes (`src/metadata.js`)
+### Form-Level Attributes
 
 Form-level fields map to `FormBody.properties` in the OpenAPI spec:
 `name`, `description`, `elements`, `status_field`, `title_field_keys`, `record_prefix`,
