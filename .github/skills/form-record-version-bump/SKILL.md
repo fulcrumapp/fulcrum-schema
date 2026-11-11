@@ -60,7 +60,7 @@ Pattern example:
 ```js
 {
   name: "gps_device_capture",
-  type: "string",
+  type: "jsonb",
 }
 
 // in view columns:
