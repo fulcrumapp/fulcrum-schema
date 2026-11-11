@@ -53,14 +53,14 @@ For each new system column, update all 3 sections:
 - add mapping so the field appears as a system view alias
 
 3. Schema.systemFormTableIndexes
-- add btree index (usually nullable predicate form)
+- add index (usually nullable predicate form)
 
 Pattern example:
 
 ```js
 {
   name: "gps_device_capture",
-  type: "string",
+  type: "jsonb",
 }
 
 // in view columns:
@@ -69,7 +69,7 @@ gps_device_capture: "gps_device_capture",
 // in indexes:
 {
   columns: ["gps_device_capture"],
-  method: "btree",
+  method: "gin",
   predicate: "gps_device_capture IS NOT NULL",
 },
 ```
