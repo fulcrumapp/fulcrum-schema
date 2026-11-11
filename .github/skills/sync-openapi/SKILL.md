@@ -33,7 +33,7 @@ Each entry in `DATA_ELEMENTS` maps to:
 
 ### Element Properties
 
-| SQL column pattern | OpenAPI property | Schema |
+| Pattern | OpenAPI property | Schema |
 |-------------------|-----------------|--------|
 | `numeric`, `format` | TextField numeric settings | `FormTextFieldElement` |
 | `choices` JSON | Array of `FormElementChoice` | `FormChoiceFieldElement` |
