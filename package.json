@@ -12,7 +12,9 @@
       "types": "./dist/fulcrum-schema.d.ts",
       "require": "./dist/fulcrum-schema.js",
       "default": "./dist/fulcrum-schema.js"
-    }
+    },
+    "./fulcrum-schema.js": "./dist/fulcrum-schema.js",
+    "./fulcrum-schema.min.js": "./dist/fulcrum-schema.min.js"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
