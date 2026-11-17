@@ -39,7 +39,7 @@ runs:
       shell: bash
       run: |
         set -euo pipefail
-        npm pack ./dist --ignore-scripts --json --pack-destination "$RUNNER_TEMP" > "$RUNNER_TEMP/npm-pack.json"
+        npm pack . --ignore-scripts --json --pack-destination "$RUNNER_TEMP" > "$RUNNER_TEMP/npm-pack.json"
         file=$(node -e 'const p=require(process.argv[1]); if (!Array.isArray(p) || p.length !== 1 || !/^[A-Za-z0-9._-]+\.tgz$/.test(p[0].filename)) process.exit(1); console.log(p[0].filename)' "$RUNNER_TEMP/npm-pack.json")
         echo "file=$RUNNER_TEMP/$file" >> "$GITHUB_OUTPUT"
     - name: Publish package to GitHub Packages

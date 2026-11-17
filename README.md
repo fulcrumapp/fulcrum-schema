@@ -2,12 +2,16 @@
 
 ### Setup
 ```sh
-npm install -g browserify
+yarn install --frozen-lockfile
 ```
+
+This installs build tools, including `browserify`, from `devDependencies`.
 
 ### Distribute
 
-Builds the final output. The main output file `dist/fulcrum-schema.js`.
+The package compiles into the ignored `dist/` directory. The root
+`package.json` and README are included with the compiled code when the package
+is packed.
 
 ```sh
 yarn build
@@ -15,23 +19,25 @@ yarn build
 
 ### Deploying
 
-When making changes to this library, the fulcrum-schema.js file needs to be included in the `schema-service` as a dependency.
+`schema-service` uses `@fulcrumapp/fulcrum-schema` as a package dependency and
+calls `compareFormSchemas` from that package. Update its package dependency
+when a schema API change requires it; do not copy a standalone JavaScript file
+into the service.
 
-Pull requests, merge queue entries and main changes run CI on GitHub-hosted
-runners. After main validation succeeds, a GitHub App commits
-the next version to the root `package.json` and creates its matching SemVer tag.
-Do not edit the root package version manually. Tag creation builds and publishes
-the `dist` package to GitHub Packages; this repository does not publish to
-npmjs.org.
+The package publishes to GitHub Packages (`https://npm.pkg.github.com`), not
+to npmjs.org. Pull requests, merge queue entries, and changes to `main` run CI.
+After main validation succeeds, a GitHub App commits the next version to the
+root `package.json` and creates its matching SemVer tag. Do not edit the root
+package version manually. The tag-triggered publish workflow builds and packs
+the package root, including `dist/`, before publishing. A manual publish
+workflow dispatch is also supported; do not publish the `dist/` directory
+directly.
 
-Before enabling releases, configure fork-run approval, required CI checks,
-GitHub Packages access, and the release App's branch and tag
-protection bypasses. Disable the old Tekton publisher at cutover. If publishing
-fails, rerun the failed publish workflow for the same tag; it verifies the
-release commit and package version before publishing. Reruns use the workflow
-and action code from that tag, so a workflow fix on main will not change an
-older tag's run. Recovering that exact version requires a separately reviewed
-procedure; do not move the existing tag.
+If publishing fails, rerun the failed publish workflow for the same tag; it
+verifies the release commit and package version before publishing. Reruns use
+the workflow and action code from that tag, so a workflow fix on `main` will
+not change an older tag's run. Recovering that exact version requires a
+separately reviewed procedure; do not move the existing tag.
 
 ### Tests
 
