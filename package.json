@@ -1,6 +1,6 @@
 {
   "name": "@fulcrumapp/fulcrum-schema",
-  "version": "3.10.4",
+  "version": "3.10.5",
   "description": "Table schemas for Fulcrum apps",
   "main": "./dist/fulcrum-schema.js",
   "types": "./dist/fulcrum-schema.d.ts",
