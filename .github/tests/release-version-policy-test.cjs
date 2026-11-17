@@ -94,8 +94,8 @@ test("publish workflows use tag creation and appropriate runners", () => {
 test("GitHub Packages publishing installs npm 11 before packing without scripts", () => {
   const action = readFileSync(path.join(__dirname, "../actions/npm-publish-github/action.yml"), "utf8");
   const install = action.indexOf("npm install --global npm@11.5.1 --ignore-scripts");
-  const pack = action.indexOf("npm pack ./dist --ignore-scripts --json");
-  assert.ok(install >= 0 && pack > install, "npm 11 must be installed before packing");
+  const pack = action.indexOf("npm pack . --ignore-scripts --json");
+  assert.ok(install >= 0 && pack > install, "npm 11 must be installed before packing the package root");
 });
 
 test("Corepack cannot rewrite package.json during CI or package publishing", () => {
