@@ -28,7 +28,7 @@ Watch for changes to any of these files — they all affect the OpenAPI form sch
 
 ### Element Types (`src/data-elements.js`)
 
-Each entry in `DATA_ELEMENT_TYPES` maps to:
+Each entry in `DATA_ELEMENTS` maps to:
 - A type string in `FormBaseElement.properties.type.enum`
 - A `$ref` entry in `FormElement.oneOf`
 - A dedicated `Form{TypeName}Element` schema in `components.schemas`
