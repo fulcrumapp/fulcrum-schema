@@ -128,6 +128,7 @@ instance.Schema = Schema;
 instance.FormSchemaV6 = FormSchemaV6;
 instance.Metadata = Metadata;
 instance.METADATA_VIEW_COLUMNS = METADATA_VIEW_COLUMNS;
+instance.default = instance;
 
 export {
   OrganizationSchema,

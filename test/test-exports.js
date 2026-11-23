@@ -28,6 +28,7 @@ describe('root fulcrum-schema exports', () => {
     fulcrumSchema.compareOrganization.should.equal(compareOrganization);
     fulcrumSchema.compareFormSchemas.should.equal(compareFormSchemas);
     fulcrumSchema.compareForms.should.equal(compareForms);
+    fulcrumSchema.default.should.equal(fulcrumSchema);
   });
 
   it('exports schema primitives cleanly from the root entrypoint', () => {
