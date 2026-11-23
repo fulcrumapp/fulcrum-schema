@@ -8,7 +8,7 @@ import FormSchemaV4 from './schemas/v4';
 import FormSchemaV5 from "./schemas/v5";
 import FormSchemaV6 from './schemas/v6';
 import FormSchemaV7 from './schemas/v7';
-import Metadata from './metadata';
+import Metadata, { METADATA_VIEW_COLUMNS } from './metadata';
 import sqldiff from 'sqldiff';
 
 const { Postgres, SQLite, SchemaDiffer } = sqldiff;
@@ -44,7 +44,7 @@ function generateSQL(differ, { includeMetadata, dialect, tablePrefix, tableSchem
   return generator.generate();
 }
 
-instance.compareOrganization = () => {
+const compareOrganization = () => {
   let oldSchema = null;
   let newSchema = null;
 
@@ -67,7 +67,12 @@ instance.compareOrganization = () => {
   });
 };
 
-instance.compareFormSchemas = (oldForm, newForm, options = {}) => {
+/**
+ * @param {any} oldForm
+ * @param {any} newForm
+ * @param {any} [options]
+ */
+const compareFormSchemas = (oldForm, newForm, options = {}) => {
   try {
     let oldSchema = null;
     let newSchema = null;
@@ -100,7 +105,7 @@ instance.compareFormSchemas = (oldForm, newForm, options = {}) => {
   }
 };
 
-instance.compareForms = () => {
+const compareForms = () => {
   return instance.compareFormSchemas(
     instance.oldForm,
     instance.newForm,
@@ -113,5 +118,29 @@ instance.compareForms = () => {
     }
   );
 };
+
+instance.compareOrganization = compareOrganization;
+instance.compareFormSchemas = compareFormSchemas;
+instance.compareForms = compareForms;
+instance.OrganizationSchema = OrganizationSchema;
+instance.OrganizationSchemaV2 = OrganizationSchemaV2;
+instance.Schema = Schema;
+instance.FormSchemaV6 = FormSchemaV6;
+instance.Metadata = Metadata;
+instance.METADATA_VIEW_COLUMNS = METADATA_VIEW_COLUMNS;
+
+export {
+  OrganizationSchema,
+  OrganizationSchemaV2,
+  Schema,
+  FormSchemaV6,
+  Metadata,
+  METADATA_VIEW_COLUMNS,
+  compareOrganization,
+  compareFormSchemas,
+  compareForms
+};
+
+export default instance;
 
 module.exports = instance;

@@ -25,7 +25,7 @@
     "url": "git://github.com/fulcrumapp/fulcrum-schema.git"
   },
   "scripts": {
-    "test": "mocha -r ts-node/register ./test/setup.js test/test-postgres.js test/test-sqlite.js test/test-v2-to-v3.js test/test-v3-to-v4.js test/test-v4-to-v5.js test/test-v5-to-v6.js test/test-v6-to-v7.js --reporter-option maxDiffSize=20000",
+    "test": "mocha -r ts-node/register ./test/setup.js test/test-exports.js test/test-postgres.js test/test-sqlite.js test/test-v2-to-v3.js test/test-v3-to-v4.js test/test-v4-to-v5.js test/test-v5-to-v6.js test/test-v6-to-v7.js --reporter-option maxDiffSize=20000",
     "lint": "eslint src/*.js src/**/*.js",
     "build": "tsc && browserify dist/fulcrum-schema.js --mangle -o dist/fulcrum-schema.min.js",
     "prepack": "yarn clean && yarn build",

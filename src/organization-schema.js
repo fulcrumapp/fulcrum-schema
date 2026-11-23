@@ -4,6 +4,10 @@ import sqldiff from 'sqldiff';
 const {Table, View} = sqldiff;
 
 export default class OrganizationSchema {
+  /**
+   * @param {any} schema
+   * @param {any} [options]
+   */
   constructor(schema, options) {
     this.schema = schema;
     this.options = options || {};

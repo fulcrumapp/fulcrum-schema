@@ -19,6 +19,11 @@ const SIMPLE_TYPES = [
 ];
 
 export default class Schema {
+  /**
+   * @param {any} form
+   * @param {any} columns
+   * @param {any} [options]
+   */
   constructor(form, columns, options) {
     this.prefix = 'f';
     this.form = form;
