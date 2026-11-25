@@ -53,7 +53,7 @@ gps_device_capture: "gps_device_capture",
 // in indexes:
 {
   columns: ["gps_device_capture"],
-  method: "btree",
+  method: "gin",
   predicate: "gps_device_capture IS NOT NULL",
 },
 ```
