@@ -12,19 +12,6 @@ description: >
 Use this skill when a change requires a new form schema version (for example: adding
 system columns like gps_device_capture or system_status).
 
-## What This Repository Expects
-
-A full version bump in this repo has 6 required parts:
-
-1. Add new schema file src/schemas/vN+1.js
-2. Wire the new version in src/fulcrum-schema.js
-3. Add form fixture test/fixtures/form-vN+1.json
-4. Add SQL fixtures for create + upgrades
-5. Add migration test test/test-vN-to-vN+1.js
-6. Add the new test file to package.json test script
-
-If any part is missing, tests usually fail or downstream consumers cannot use the version.
-
 ## Canonical Workflow
 
 ### Step 1: Copy Previous Version as Base
