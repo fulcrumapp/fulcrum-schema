@@ -143,7 +143,7 @@ Also check diagnostics in touched files and clear new issues before finishing.
 
 1. Forgot to add schema map entry in src/fulcrum-schema.js
 2. Forgot to bump form-vN+1.json schema_version
-3. Added system column in table columns but not view columns
+3. Omitted a view mapping for a system column intended for view exposure
 4. Added column but forgot index fixture mismatch
 5. Generated SQL with trailing newline causing assertion mismatch
 6. Accidentally edited older version file instead of vN+1 file
