@@ -1,6 +1,6 @@
 import { clone } from 'lodash';
 import Utils from './utils';
-import sqldiff from 'sqldiff';
+import sqldiff from '@fulcrumapp/sqldiff';
 import { format } from 'util';
 import DataElements from './data-elements';
 
@@ -19,6 +19,11 @@ const SIMPLE_TYPES = [
 ];
 
 export default class Schema {
+  /**
+   * @param {any} form
+   * @param {any} columns
+   * @param {any} [options]
+   */
   constructor(form, columns, options) {
     this.prefix = 'f';
     this.form = form;

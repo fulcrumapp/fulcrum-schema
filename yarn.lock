@@ -24,6 +24,13 @@
     minimatch "^3.1.2"
     strip-json-comments "^3.1.1"
 
+"@fulcrumapp/sqldiff@^0.3.2":
+  version "0.3.2"
+  resolved "https://npm.pkg.github.com/download/@fulcrumapp/sqldiff/0.3.2/2c07ca59d91ecb947813c4415f7786461d3ba1c2#2c07ca59d91ecb947813c4415f7786461d3ba1c2"
+  integrity sha512-2WOmya6CpwPBCG5qeQ6EKSbmmLmmBTSBVpgZuVgbIyz6IEiWRxs9SIQBFsQP2GH5LB5vcjTItz/IiKzzaMrtgw==
+  dependencies:
+    lodash "^4.17.21"
+
 "@humanwhocodes/config-array@^0.11.6":
   version "0.11.7"
   resolved "https://registry.npmjs.org/@humanwhocodes/config-array/-/config-array-0.11.7.tgz"
@@ -2835,13 +2842,6 @@ source-map@~0.5.3:
   version "0.5.7"
   resolved "https://registry.npmjs.org/source-map/-/source-map-0.5.7.tgz"
   integrity sha512-LbrmJOMUSdEVxIKvdcJzQC+nQhe8FUZQTXQy6+I75skNgn3OoQ0DZA8YnFa7gp8tqtL3KPf1kmo0R5DoApeSGQ==
-
-sqldiff@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.npmjs.org/sqldiff/-/sqldiff-0.3.0.tgz"
-  integrity sha512-RMazRniPB7S7RO9Ep/hXIFIqBEowgSiP0F9RD8YuKqfsqBDrWomeJ2sTrYqjjQOIy/TvFFw7G+r81KksN83fpw==
-  dependencies:
-    lodash "^4.17.21"
 
 stream-browserify@^3.0.0:
   version "3.0.0"

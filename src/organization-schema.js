@@ -1,9 +1,13 @@
 import { clone } from 'lodash';
-import sqldiff from 'sqldiff';
+import sqldiff from '@fulcrumapp/sqldiff';
 
 const {Table, View} = sqldiff;
 
 export default class OrganizationSchema {
+  /**
+   * @param {any} schema
+   * @param {any} [options]
+   */
   constructor(schema, options) {
     this.schema = schema;
     this.options = options || {};

@@ -1,7 +1,7 @@
 // import pgformat from 'pg-format';
 import {format} from 'util';
 import Utils from './utils';
-import sqldiff from 'sqldiff';
+import sqldiff from '@fulcrumapp/sqldiff';
 
 function pgvalue(value) {
   if (value == null) {
@@ -10,7 +10,60 @@ function pgvalue(value) {
   return "'" + value.toString().replace(/'/g, "''") + "'";
 }
 
+/**
+ * @typedef {{
+ *   readonly name: string,
+ *   readonly type: string,
+ *   readonly nullable: boolean,
+ *   readonly source: string
+ * }} MetadataViewColumn
+ */
+
+/**
+ * @type {{
+ *   readonly tables: ReadonlyArray<MetadataViewColumn>,
+ *   readonly columns: ReadonlyArray<MetadataViewColumn>
+ * }}
+ */
+export const METADATA_VIEW_COLUMNS = Object.freeze({
+  tables: Object.freeze([
+    Object.freeze({ name: 'name', type: 'text', nullable: true, source: 'alias' }),
+    Object.freeze({ name: 'type', type: 'text', nullable: true, source: 'type' }),
+    Object.freeze({ name: 'parent', type: 'text', nullable: true, source: 'parent' }),
+    Object.freeze({ name: 'form_id', type: 'text', nullable: true, source: 'form_id' }),
+    Object.freeze({ name: 'field', type: 'text', nullable: true, source: 'field' }),
+    Object.freeze({ name: 'field_type', type: 'text', nullable: true, source: 'field_type' }),
+    Object.freeze({ name: 'data_name', type: 'text', nullable: true, source: 'data_name' })
+  ]),
+  columns: Object.freeze([
+    Object.freeze({ name: 'table_name', type: 'text', nullable: true, source: 'table_alias' }),
+    Object.freeze({ name: 'name', type: 'text', nullable: true, source: 'name' }),
+    Object.freeze({ name: 'ordinal', type: 'bigint', nullable: true, source: 'ordinal' }),
+    Object.freeze({ name: 'type', type: 'text', nullable: true, source: 'type' }),
+    Object.freeze({ name: 'nullable', type: 'boolean', nullable: true, source: 'nullable' }),
+    Object.freeze({ name: 'form_id', type: 'text', nullable: true, source: 'form_id' }),
+    Object.freeze({ name: 'field', type: 'text', nullable: true, source: 'field' }),
+    Object.freeze({ name: 'field_type', type: 'text', nullable: true, source: 'field_type' }),
+    Object.freeze({ name: 'data_name', type: 'text', nullable: true, source: 'data_name' }),
+    Object.freeze({ name: 'part', type: 'text', nullable: true, source: 'part' })
+  ])
+});
+
+function viewSelectColumns(columns) {
+  return columns
+    .map((column) => (column.source && column.source !== column.name ? `${column.source} AS ${column.name}` : column.name))
+    .join(', ');
+}
+
 export default class Metadata {
+  static get VIEW_COLUMNS() {
+    return METADATA_VIEW_COLUMNS;
+  }
+
+  /**
+   * @param {any} diff
+   * @param {any} [options]
+   */
   constructor(diff, options) {
     this.options = options || {};
     this.includeColumns = this.options.includeColumns == null ? true : this.options.includeColumns;
@@ -83,8 +136,8 @@ export default class Metadata {
       statements.push(format('CREATE TABLE IF NOT EXISTS %s (name text, alias text, type text, parent text, form_id text, field text, field_type text, data_name text);',
                              systemTablesName));
 
-      statements.push(format('CREATE OR REPLACE VIEW %s AS SELECT alias AS name, type, parent, form_id, field, field_type, data_name FROM %s;',
-                             systemTablesViewName, systemTablesName));
+      statements.push(format('CREATE OR REPLACE VIEW %s AS SELECT %s FROM %s;',
+                             systemTablesViewName, viewSelectColumns(METADATA_VIEW_COLUMNS.tables), systemTablesName));
 
       statements.push(format('CREATE INDEX idx_tables_name ON %s (name);',
                              systemTablesName));
@@ -97,8 +150,8 @@ export default class Metadata {
         statements.push(format('CREATE TABLE IF NOT EXISTS %s (table_name text, table_alias text, name text, ordinal bigint, type text, nullable boolean, form_id text, field text, field_type text, data_name text, part text, data text);',
                                systemColumnsName));
 
-        statements.push(format('CREATE OR REPLACE VIEW %s AS SELECT table_alias AS table_name, name, ordinal, type, nullable, form_id, field, field_type, data_name, part FROM %s;',
-                               systemColumnsViewName, systemColumnsName));
+        statements.push(format('CREATE OR REPLACE VIEW %s AS SELECT %s FROM %s;',
+                               systemColumnsViewName, viewSelectColumns(METADATA_VIEW_COLUMNS.columns), systemColumnsName));
 
         statements.push(format('CREATE INDEX idx_columns_table_name ON %s (table_name);',
                                systemColumnsName));
