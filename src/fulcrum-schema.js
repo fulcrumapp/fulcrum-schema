@@ -9,7 +9,7 @@ import FormSchemaV5 from "./schemas/v5";
 import FormSchemaV6 from './schemas/v6';
 import FormSchemaV7 from './schemas/v7';
 import Metadata, { METADATA_VIEW_COLUMNS } from './metadata';
-import sqldiff from 'sqldiff';
+import sqldiff from '@fulcrumapp/sqldiff';
 
 const { Postgres, SQLite, SchemaDiffer } = sqldiff;
 

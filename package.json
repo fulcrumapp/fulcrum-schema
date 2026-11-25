@@ -37,8 +37,8 @@
     "extends": "fulcrum"
   },
   "dependencies": {
-    "lodash": "^4.18.1",
-    "sqldiff": "^0.3.0"
+    "@fulcrumapp/sqldiff": "^0.3.2",
+    "lodash": "^4.18.1"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.42.1",

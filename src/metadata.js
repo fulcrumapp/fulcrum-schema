@@ -1,7 +1,7 @@
 // import pgformat from 'pg-format';
 import {format} from 'util';
 import Utils from './utils';
-import sqldiff from 'sqldiff';
+import sqldiff from '@fulcrumapp/sqldiff';
 
 function pgvalue(value) {
   if (value == null) {

@@ -1,6 +1,6 @@
 import { clone } from 'lodash';
 import Utils from './utils';
-import sqldiff from 'sqldiff';
+import sqldiff from '@fulcrumapp/sqldiff';
 import { format } from 'util';
 import DataElements from './data-elements';
 

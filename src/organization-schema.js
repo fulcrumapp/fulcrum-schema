@@ -1,5 +1,5 @@
 import { clone } from 'lodash';
-import sqldiff from 'sqldiff';
+import sqldiff from '@fulcrumapp/sqldiff';
 
 const {Table, View} = sqldiff;
 

@@ -21,6 +21,9 @@ jobs:
     if: github.event_name != 'pull_request' || !github.event.pull_request.draft
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    permissions:
+      contents: read
+      packages: read
     env:
       COREPACK_ENABLE_AUTO_PIN: '0'
     steps:
@@ -81,7 +84,17 @@ jobs:
           if-no-files-found: error
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile --production=false --ignore-scripts --non-interactive
+        run: |
+          set -euo pipefail
+          umask 077
+          NPM_CONFIG_USERCONFIG="$(mktemp "$RUNNER_TEMP/npm-install-XXXXXX.npmrc")"
+          export NPM_CONFIG_USERCONFIG
+          trap 'rm -f "$NPM_CONFIG_USERCONFIG"' EXIT
+          printf '%s\n' '@fulcrumapp:registry=https://npm.pkg.github.com/' \
+            '//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}' > "$NPM_CONFIG_USERCONFIG"
+          yarn install --frozen-lockfile --production=false --ignore-scripts --non-interactive
+        env:
+          NODE_AUTH_TOKEN: ${{ github.token }}
 
       - name: Lint
         run: yarn lint
