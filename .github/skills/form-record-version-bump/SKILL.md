@@ -31,16 +31,13 @@ Then update test/fixtures/form-v6.json:
 
 Edit src/schemas/vN+1.js only (do not mutate old versions).
 
-For each new system column, update all 3 sections:
+For each new system column, add its table definition; add a view mapping when the column should be exposed in the system view.
 
 1. Schema.systemFormTableColumns
 - add object with column name and type
 
 2. Schema.systemFormViewColumns
 - add mapping so the field appears as a system view alias
-
-3. Schema.systemFormTableIndexes
-- add btree index (usually nullable predicate form)
 
 Pattern example:
 
